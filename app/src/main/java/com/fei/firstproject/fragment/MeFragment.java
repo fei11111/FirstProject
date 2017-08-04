@@ -59,7 +59,7 @@ public class MeFragment extends BaseFragment {
     private void initRecyclerView() {
         GridLayoutManager manager = new GridLayoutManager(activity, 3);
         nsrv.setLayoutManager(manager);
-        nsrv.addItemDecoration(new ItemDecoration(1, R.color.colorGray, 1));
+        nsrv.addItemDecoration(new ItemDecoration(activity));
         nsrv.setAdapter(new MyRecyclerViewAdapter(activity));
     }
 }
