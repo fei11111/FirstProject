@@ -2,9 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/selector_white_to_gray"
     android:gravity="center_vertical"
-    android:padding="@dimen/size_20"
-    >
+    android:paddingBottom="@dimen/size_10"
+    android:paddingLeft="@dimen/size_20"
+    android:paddingRight="@dimen/size_20"
+    android:paddingTop="@dimen/size_10">
 
     <TextView
         android:id="@+id/tv_title"
