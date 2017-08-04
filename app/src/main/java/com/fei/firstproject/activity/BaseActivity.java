@@ -32,6 +32,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseInte
 
     private Unbinder unbinder;
     protected CustomeProgressDialog progressDialog;
+    private int a;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
