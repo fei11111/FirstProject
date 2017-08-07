@@ -30,8 +30,8 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="@dimen/size_30"
-                    android:layout_height="@dimen/size_30"
+                    android:layout_width="@dimen/size_45"
+                    android:layout_height="@dimen/size_45"
                     android:src="@drawable/selector_main"
                     android:background="@drawable/selector_bg"/>
 
@@ -46,9 +46,9 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="@dimen/size_30"
-                    android:layout_height="@dimen/size_30"
-                    android:src="@drawable/selector_shopping_cart"
+                    android:layout_width="@dimen/size_45"
+                    android:layout_height="@dimen/size_45"
+                    android:src="@drawable/selector_make"
                     android:background="@drawable/selector_bg"/>
 
             </LinearLayout>
@@ -62,8 +62,8 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="@dimen/size_30"
-                    android:layout_height="@dimen/size_30"
+                    android:layout_width="@dimen/size_45"
+                    android:layout_height="@dimen/size_45"
                     android:src="@drawable/selector_me"
                     android:background="@drawable/selector_bg"/>
 
