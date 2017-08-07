@@ -2,11 +2,12 @@ package com.fei.firstproject.fragment;
 
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.LinearLayout;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.MyRecyclerViewAdapter;
-import com.fei.firstproject.decoration.ItemDecoration;
+import com.fei.firstproject.decoration.DividerGridItemDecoration;
 import com.fei.firstproject.widget.NoScrollRecyclerView;
 import com.fei.firstproject.widget.SettingView;
 
@@ -58,8 +59,9 @@ public class MeFragment extends BaseFragment {
 
     private void initRecyclerView() {
         GridLayoutManager manager = new GridLayoutManager(activity, 3);
+        RecyclerView.ItemDecoration itemDecoration = new DividerGridItemDecoration(activity);
         nsrv.setLayoutManager(manager);
-        nsrv.addItemDecoration(new ItemDecoration(activity));
+        nsrv.addItemDecoration(itemDecoration);
         nsrv.setAdapter(new MyRecyclerViewAdapter(activity));
     }
 }
