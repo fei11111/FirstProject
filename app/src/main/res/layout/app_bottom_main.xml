@@ -7,7 +7,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/colorWhite">
 
         <View
             android:layout_width="match_parent"
@@ -31,14 +32,8 @@
                 <ImageView
                     android:layout_width="@dimen/size_30"
                     android:layout_height="@dimen/size_30"
-                    android:src="@drawable/selector_main" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/size_2"
-                    android:text="@string/main"
-                    android:textColor="@color/selector_gray_to_green" />
+                    android:src="@drawable/selector_main"
+                    android:background="@drawable/selector_bg"/>
 
             </LinearLayout>
 
@@ -53,14 +48,8 @@
                 <ImageView
                     android:layout_width="@dimen/size_30"
                     android:layout_height="@dimen/size_30"
-                    android:src="@drawable/selector_shopping_cart" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/size_2"
-                    android:text="@string/shoppingCart"
-                    android:textColor="@color/selector_gray_to_green" />
+                    android:src="@drawable/selector_shopping_cart"
+                    android:background="@drawable/selector_bg"/>
 
             </LinearLayout>
 
@@ -75,14 +64,8 @@
                 <ImageView
                     android:layout_width="@dimen/size_30"
                     android:layout_height="@dimen/size_30"
-                    android:src="@drawable/selector_me" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/size_2"
-                    android:text="@string/me"
-                    android:textColor="@color/selector_gray_to_green" />
+                    android:src="@drawable/selector_me"
+                    android:background="@drawable/selector_bg"/>
 
             </LinearLayout>
         </LinearLayout>
