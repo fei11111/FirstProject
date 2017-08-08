@@ -23,10 +23,8 @@ public class TextSwitchView extends TextSwitcher implements ViewSwitcher.ViewFac
 
     private Context mContext;
     private String[] resources = {
-            "静夜思",
-            "床前明月光", "疑是地上霜",
-            "举头望明月",
-            "低头思故乡"
+            "阵雨28℃",
+            "阵雨转雷阵雨32℃/27℃",
     };
     private int position = 0;
     private long timeDelay;
@@ -69,11 +67,11 @@ public class TextSwitchView extends TextSwitcher implements ViewSwitcher.ViewFac
     public View makeView() {
         TextView tv = new TextView(mContext);
         tv.setTextSize(mContext.getResources().getDimension(R.dimen.tx_8));
-        tv.setTextColor(ContextCompat.getColor(mContext, R.color.colorRed));
+        tv.setTextColor(ContextCompat.getColor(mContext, R.color.colorText));
         tv.setGravity(Gravity.CENTER_VERTICAL);
         Drawable drawable = ContextCompat.getDrawable(mContext, R.drawable.shape_red_dot);
         tv.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
-        tv.setCompoundDrawablePadding(20);
+        tv.setCompoundDrawablePadding(30);
         return tv;
     }
 
