@@ -10,8 +10,8 @@
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/size_5"
         android:background="@color/colorTitleBar"
+        android:padding="@dimen/size_5"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
@@ -31,10 +31,13 @@
         </android.support.v7.widget.Toolbar>
 
         <LinearLayout
+            android:id="@+id/ll_top_me"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/size_10">
+            android:padding="@dimen/size_10"
+            android:visibility="gone"
+            app:layout_scrollFlags="scroll|enterAlways">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -108,32 +111,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp_main"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fadingEdge="none"
-        android:overScrollMode="never"
-        android:requiresFadingEdge="none"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"></android.support.v4.view.ViewPager>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical"
-        app:layout_behavior="@string/bottom_sheet_behavior">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorAlphaGreen" />
-
-        <include
-            layout="@layout/app_bottom_main"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size_50" />
-
-    </LinearLayout>
+    <include layout="@layout/content_main" />
 
 </android.support.design.widget.CoordinatorLayout>
