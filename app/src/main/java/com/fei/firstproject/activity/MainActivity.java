@@ -12,8 +12,8 @@ import android.widget.TextView;
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.FragmentAdapter;
 import com.fei.firstproject.fragment.MainFragment;
-import com.fei.firstproject.fragment.MeFragment;
 import com.fei.firstproject.fragment.MakeFragment;
+import com.fei.firstproject.fragment.MeFragment;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -27,8 +27,6 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.ll_top_me)
-    LinearLayout ll_top_me;
     @BindView(R.id.tv_title)
     TextView tv_title;
     @BindView(R.id.vp_main)
@@ -91,19 +89,14 @@ public class MainActivity extends BaseActivity {
             case 0:
                 llBottomMain.setSelected(true);
                 tv_title.setText(getString(R.string.main));
-                toolbar.setVisibility(View.VISIBLE);
-                ll_top_me.setVisibility(View.GONE);
                 break;
             case 1:
                 llBottomShoppingCart.setSelected(true);
                 tv_title.setText(getString(R.string.make));
-                toolbar.setVisibility(View.VISIBLE);
-                ll_top_me.setVisibility(View.GONE);
                 break;
             case 2:
                 llBottomMe.setSelected(true);
-                toolbar.setVisibility(View.GONE);
-                ll_top_me.setVisibility(View.VISIBLE);
+                tv_title.setText(getString(R.string.me));
                 break;
         }
     }

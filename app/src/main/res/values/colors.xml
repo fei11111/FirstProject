@@ -2,10 +2,8 @@
 <resources>
     <color name="colorWhite">#fff</color>
     <color name="colorGray">#F7F7F7</color>
-    <color name="colorPrimary">#2E7D32</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#2E7D32</color>
-    <color name="colorTitleBar">#4CAF50</color>
+    <color name="colorPrimary">#4CAF50</color>
+    <color name="colorPrimaryDark">#2E7D32</color>
     <color name="colorRipple">#58FAAC</color>
     <color name="colorAlphaGreen">#a02E7D32</color>
     <color name="colorBackground">#F1F1F1</color>
