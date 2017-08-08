@@ -9,6 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_150"></com.fei.banner.Banner>
 
+    <com.fei.firstproject.widget.TextSwitchView
+        android:id="@+id/tsv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"></com.fei.firstproject.widget.TextSwitchView>
+
     <com.fei.firstproject.widget.MyHorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_50"

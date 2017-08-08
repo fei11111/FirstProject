@@ -1,10 +1,12 @@
 package com.fei.firstproject.fragment;
 
 import android.os.Bundle;
+import android.widget.LinearLayout;
 
 import com.fei.banner.Banner;
 import com.fei.firstproject.R;
 import com.fei.firstproject.image.GlideImageLoader;
+import com.fei.firstproject.widget.TextSwitchView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,10 @@ public class MainFragment extends BaseFragment {
 
     @BindView(R.id.banner)
     Banner banner;
+    @BindView(R.id.tsv)
+    TextSwitchView tsv;
+    @BindView(R.id.ll_menu)
+    LinearLayout llMenu;
 
     private List<String> imageUrls = new ArrayList<>();
 
@@ -44,6 +50,11 @@ public class MainFragment extends BaseFragment {
 
     @Override
     public void init(Bundle savedInstanceState) {
+        initBanner();
+        tsv.setTimeDelay(2000);
+    }
+
+    private void initBanner() {
         //设置图片加载器
         banner.setImageLoader(new GlideImageLoader());
         //设置图片集合
@@ -54,10 +65,5 @@ public class MainFragment extends BaseFragment {
         banner.setImages(imageUrls);
         //banner设置方法全部调用完毕时最后调用
         banner.start();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
     }
 }
