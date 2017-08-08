@@ -27,6 +27,8 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+//    @BindView(R.id.ll_top_me)
+//    LinearLayout ll_top_me;
     @BindView(R.id.tv_title)
     TextView tv_title;
     @BindView(R.id.vp_main)
@@ -89,14 +91,17 @@ public class MainActivity extends BaseActivity {
             case 0:
                 llBottomMain.setSelected(true);
                 tv_title.setText(getString(R.string.main));
+//                ll_top_me.setVisibility(View.GONE);
                 break;
             case 1:
                 llBottomShoppingCart.setSelected(true);
                 tv_title.setText(getString(R.string.make));
+//                ll_top_me.setVisibility(View.GONE);
                 break;
             case 2:
                 llBottomMe.setSelected(true);
                 tv_title.setText(getString(R.string.me));
+//                ll_top_me.setVisibility(View.VISIBLE);
                 break;
         }
     }

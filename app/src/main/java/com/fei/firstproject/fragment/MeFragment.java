@@ -31,6 +31,8 @@ public class MeFragment extends BaseFragment {
     LinearLayout llWaitEvaluate;
     @BindView(R.id.nsrv)
     NoScrollRecyclerView nsrv;
+    @BindView(R.id.nsrv2)
+    NoScrollRecyclerView nsrv2;
 
     @Override
     public void requestPermissionsBeforeInit() {
@@ -58,10 +60,24 @@ public class MeFragment extends BaseFragment {
     }
 
     private void initRecyclerView() {
+        initView1();
+        initView2();
+    }
+
+    private void initView1() {
         GridLayoutManager manager = new GridLayoutManager(activity, 3);
         RecyclerView.ItemDecoration itemDecoration = new DividerGridItemDecoration(activity);
         nsrv.setLayoutManager(manager);
         nsrv.addItemDecoration(itemDecoration);
-        nsrv.setAdapter(new MyRecyclerViewAdapter(activity));
+        nsrv.setAdapter(new MyRecyclerViewAdapter(activity, R.array.list_me_drawable, getResources().getStringArray(R.array.list_me_str)));
     }
+
+    private void initView2() {
+        GridLayoutManager manager = new GridLayoutManager(activity, 3);
+        RecyclerView.ItemDecoration itemDecoration = new DividerGridItemDecoration(activity);
+        nsrv2.setLayoutManager(manager);
+        nsrv2.addItemDecoration(itemDecoration);
+        nsrv2.setAdapter(new MyRecyclerViewAdapter(activity, R.array.list_other_drawable, getResources().getStringArray(R.array.list_other_str)));
+    }
+
 }

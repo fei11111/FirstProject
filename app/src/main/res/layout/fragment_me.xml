@@ -1,93 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nsv"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
-    android:fadeScrollbars="false"
-    android:requiresFadingEdge="none">
+    android:background="@color/colorBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorTitleBar"
-            android:orientation="vertical"
-            android:padding="@dimen/size_10">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_scan" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/size_10"
-                        android:src="@drawable/ic_setting" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/size_10"
-                        android:src="@drawable/ic_share" />
-
-                </LinearLayout>
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_10"
-                android:orientation="horizontal">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:layout_width="@dimen/size_65"
-                    android:layout_height="@dimen/size_65"
-                    android:src="@drawable/ic_head"
-                    app:civ_border_color="@color/colorWhite"
-                    app:civ_border_overlay="false"
-                    app:civ_border_width="@dimen/size_5"
-                    app:civ_fill_color="@color/colorWhite" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/size_10"
-                    android:gravity="center_vertical"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/nologin"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/tx_15" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/person_info"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/tx_15" />
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
 
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -219,11 +141,28 @@
             app:divider="@drawable/shape_line"
             app:showDividers="middle">
 
-            <com.fei.firstproject.widget.SettingView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:title="@string/me"></com.fei.firstproject.widget.SettingView>
+                android:background="@color/colorWhite"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/size_5">
 
+                <ImageView
+                    android:layout_width="@dimen/size_25"
+                    android:layout_height="@dimen/size_25"
+                    android:src="@drawable/ic_me" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_10"
+                    android:gravity="center"
+                    android:text="@string/me"
+                    android:textSize="@dimen/tx_15" />
+
+            </LinearLayout>
 
             <com.fei.firstproject.widget.NoScrollRecyclerView
                 android:id="@+id/nsrv"
@@ -232,5 +171,52 @@
                 android:background="@color/colorWhite"></com.fei.firstproject.widget.NoScrollRecyclerView>
 
         </android.support.v7.widget.LinearLayoutCompat>
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_10"
+            android:orientation="vertical"
+            app:divider="@drawable/shape_line"
+            app:showDividers="middle">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/size_5">
+
+                <ImageView
+                    android:layout_width="@dimen/size_25"
+                    android:layout_height="@dimen/size_25"
+                    android:src="@drawable/ic_other" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_10"
+                    android:gravity="center"
+                    android:text="@string/other"
+                    android:textSize="@dimen/tx_15" />
+
+            </LinearLayout>
+
+            <com.fei.firstproject.widget.NoScrollRecyclerView
+                android:id="@+id/nsrv2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"></com.fei.firstproject.widget.NoScrollRecyclerView>
+        </android.support.v7.widget.LinearLayoutCompat>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/size_20"
+            android:text="就是这么帅"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/tx_12"></TextView>
     </LinearLayout>
 </ScrollView>

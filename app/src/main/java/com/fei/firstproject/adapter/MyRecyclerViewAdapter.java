@@ -1,6 +1,7 @@
 package com.fei.firstproject.adapter;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,15 +21,24 @@ import butterknife.ButterKnife;
 
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
-    private int[] res = {R.drawable.ic_my_ask, R.drawable.ic_my_answer, R.drawable.ic_my_attention,
-            R.drawable.ic_my_collection, R.drawable.ic_my_file};
-    private int[] desps = {R.string.my_ask, R.string.my_answer, R.string.my_attention, R.string.my_attention,
-            R.string.my_collection, R.string.my_file};
+    private int[] res;//图片
+    private String[] desps;//描述
 
     private Context mContext;
 
-    public MyRecyclerViewAdapter(Context mContext) {
+    public MyRecyclerViewAdapter(Context mContext, int ids, String[] desps) {
         this.mContext = mContext;
+        this.desps = desps;
+        initDrawable(ids);
+    }
+
+    private void initDrawable(int ids) {
+        TypedArray ar = mContext.getResources().obtainTypedArray(ids);
+        int len = ar.length();
+        res = new int[len];
+        for (int i = 0; i < len; i++)
+            res[i] = ar.getResourceId(i, 0);
+        ar.recycle();
     }
 
     @Override

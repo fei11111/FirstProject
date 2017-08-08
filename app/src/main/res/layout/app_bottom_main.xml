@@ -1,74 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical"
-        android:background="@color/colorWhite">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorAlphaGreen" />
+        android:orientation="horizontal"
+        android:padding="@dimen/size_5">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size_50"
-            android:layout_marginTop="@dimen/size_5"
-            android:orientation="horizontal">
+            android:id="@+id/ll_bottom_main"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/ll_bottom_main"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
+            <ImageView
+                android:layout_width="@dimen/size_45"
+                android:layout_height="@dimen/size_45"
+                android:background="@drawable/selector_bg"
+                android:src="@drawable/selector_main" />
 
-                <ImageView
-                    android:layout_width="@dimen/size_45"
-                    android:layout_height="@dimen/size_45"
-                    android:src="@drawable/selector_main"
-                    android:background="@drawable/selector_bg"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_bottom_shopping_cart"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="@dimen/size_45"
-                    android:layout_height="@dimen/size_45"
-                    android:src="@drawable/selector_make"
-                    android:background="@drawable/selector_bg"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_bottom_me"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="@dimen/size_45"
-                    android:layout_height="@dimen/size_45"
-                    android:src="@drawable/selector_me"
-                    android:background="@drawable/selector_bg"/>
-
-            </LinearLayout>
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/ll_bottom_shopping_cart"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/size_45"
+                android:layout_height="@dimen/size_45"
+                android:background="@drawable/selector_bg"
+                android:src="@drawable/selector_make" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_bottom_me"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/size_45"
+                android:layout_height="@dimen/size_45"
+                android:background="@drawable/selector_bg"
+                android:src="@drawable/selector_me" />
+
+        </LinearLayout>
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>
