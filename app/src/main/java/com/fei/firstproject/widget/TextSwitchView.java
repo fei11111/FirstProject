@@ -1,9 +1,12 @@
 package com.fei.firstproject.widget;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.TextSwitcher;
@@ -31,18 +34,17 @@ public class TextSwitchView extends TextSwitcher implements ViewSwitcher.ViewFac
     private Handler mHander = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            position = getPosition();
+            checkPosition();
             TextSwitchView.this.setText(resources[position]);
             mHander.sendMessageDelayed(Message.obtain(), timeDelay);
         }
     };
 
-    private int getPosition() {
+    private void checkPosition() {
         position++;
         if (position == resources.length) {
             position = 0;
         }
-        return position;
     }
 
     public TextSwitchView(Context context) {
@@ -66,12 +68,17 @@ public class TextSwitchView extends TextSwitcher implements ViewSwitcher.ViewFac
     @Override
     public View makeView() {
         TextView tv = new TextView(mContext);
-        tv.setTextSize(mContext.getResources().getDimension(R.dimen.tx_12));
-        tv.setTextColor(mContext.getResources().getColor(R.color.colorText));
+        tv.setTextSize(mContext.getResources().getDimension(R.dimen.tx_8));
+        tv.setTextColor(ContextCompat.getColor(mContext, R.color.colorRed));
+        tv.setGravity(Gravity.CENTER_VERTICAL);
+        Drawable drawable = ContextCompat.getDrawable(mContext, R.drawable.shape_red_dot);
+        tv.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
+        tv.setCompoundDrawablePadding(20);
         return tv;
     }
 
     public void setTimeDelay(long timeDelay) {
+        TextSwitchView.this.setText(resources[position]);
         this.timeDelay = timeDelay;
         mHander.sendMessageDelayed(Message.obtain(), timeDelay);
     }

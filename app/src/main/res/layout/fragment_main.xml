@@ -9,11 +9,26 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_150"></com.fei.banner.Banner>
 
-    <com.fei.firstproject.widget.TextSwitchView
-        android:id="@+id/tsv"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorWhite"></com.fei.firstproject.widget.TextSwitchView>
+        android:background="@color/colorWhite"
+        android:orientation="horizontal"
+        android:padding="@dimen/size_10">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_headline" />
+
+        <com.fei.firstproject.widget.TextSwitchView
+            android:id="@+id/tsv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_10"
+            android:padding="@dimen/size_10"></com.fei.firstproject.widget.TextSwitchView>
+
+    </LinearLayout>
 
     <com.fei.firstproject.widget.MyHorizontalScrollView
         android:layout_width="match_parent"
