@@ -53,6 +53,10 @@
     <string name="accounting_revenue">收支核算</string>
     <string name="complaint_advice">投诉建议</string>
     <string name="call_center">客服中心</string>
+    <string name="plan_check">方案查询</string>
+    <string name="make_fertilizer">肥料定制</string>
+    <string name="fast_make">快速定制</string>
+    <string name="plan_make">方案定制</string>
 
     <!-- Strings related to Settings -->
 

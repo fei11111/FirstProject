@@ -13,7 +13,7 @@ import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.FragmentAdapter;
 import com.fei.firstproject.fragment.MainFragment;
 import com.fei.firstproject.fragment.MeFragment;
-import com.fei.firstproject.fragment.ShoppingCartFragment;
+import com.fei.firstproject.fragment.MakeFragment;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -78,7 +78,7 @@ public class MainActivity extends BaseActivity {
     private void initViewPager() {
         ArrayList<Fragment> fragments = new ArrayList<>();
         fragments.add(new MainFragment());
-        fragments.add(new ShoppingCartFragment());
+        fragments.add(new MakeFragment());
         fragments.add(new MeFragment());
         vpMain.setAdapter(new FragmentAdapter(getSupportFragmentManager(), fragments));
         llBottomMain.setSelected(true);

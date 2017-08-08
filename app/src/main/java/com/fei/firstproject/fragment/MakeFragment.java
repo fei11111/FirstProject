@@ -8,7 +8,7 @@ import com.fei.firstproject.R;
  * Created by Administrator on 2017/7/29.
  */
 
-public class ShoppingCartFragment extends BaseFragment {
+public class MakeFragment extends BaseFragment {
 
     @Override
     public void requestPermissionsBeforeInit() {
@@ -27,7 +27,7 @@ public class ShoppingCartFragment extends BaseFragment {
 
     @Override
     public int getContentViewResId() {
-        return R.layout.fragment_shopping_cart;
+        return R.layout.fragment_make;
     }
 
     @Override
