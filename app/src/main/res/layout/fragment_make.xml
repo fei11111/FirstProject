@@ -34,7 +34,7 @@
                 android:layout_marginTop="@dimen/size_10"
                 android:text="方案查询"
                 android:textColor="@color/colorText"
-                android:textSize="@dimen/tx_20" />
+                android:textSize="@dimen/tx_15" />
         </LinearLayout>
 
         <View
@@ -61,7 +61,7 @@
                 android:layout_marginTop="@dimen/size_10"
                 android:text="方案查询"
                 android:textColor="@color/colorText"
-                android:textSize="@dimen/tx_20" />
+                android:textSize="@dimen/tx_15" />
         </LinearLayout>
 
     </LinearLayout>
@@ -91,7 +91,7 @@
                 android:layout_marginTop="@dimen/size_10"
                 android:text="方案查询"
                 android:textColor="@color/colorText"
-                android:textSize="@dimen/tx_20" />
+                android:textSize="@dimen/tx_15" />
         </LinearLayout>
 
         <View
@@ -118,7 +118,7 @@
                 android:layout_marginTop="@dimen/size_10"
                 android:text="方案查询"
                 android:textColor="@color/colorText"
-                android:textSize="@dimen/tx_20" />
+                android:textSize="@dimen/tx_15" />
         </LinearLayout>
 
     </LinearLayout>

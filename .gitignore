@@ -7,3 +7,5 @@
 /build
 /captures
 build/
+*.apk
+
