@@ -7,27 +7,6 @@ import java.util.List;
  */
 
 public class UserBean {
-
-    /**
-     * success : YES
-     * returnMsg : 成功
-     * img :
-     * gender :
-     * name : 111920
-     * nameString : 黄锦飞
-     * mobile : 13652025632
-     * id : 1119200
-     * roleId : 20,40,63,70
-     * page : 1
-     * chatAccount : 111920
-     * chatUserId : e54a5d4562074295976830423e47f475
-     * inviteCode : 109863
-     * QRCode : /images/user/QRCode/1119200.jpg
-     * roleName : 种植户 专家 高层 公司职员
-     * currentRole : 20
-     * userName : 黄锦飞
-     */
-
     private String success;
     private String returnMsg;
     private String img;

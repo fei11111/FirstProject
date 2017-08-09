@@ -1,7 +1,7 @@
-package com.fei.firstproject.manager;
+package com.fei.firstproject.http.manager;
 
 import com.fei.firstproject.config.AppConfig;
-import com.fei.firstproject.inter.RequestApi;
+import com.fei.firstproject.http.inter.RequestApi;
 import com.fei.firstproject.utils.PathUtls;
 
 import java.io.File;

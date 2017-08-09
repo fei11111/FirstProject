@@ -102,7 +102,7 @@ public class MainActivity extends BaseActivity {
     }
 
     @OnClick({R.id.ll_bottom_main, R.id.ll_bottom_shopping_cart, R.id.ll_bottom_me})
-    void bottom(View view) {
+    void clickBottom(View view) {
         int id = view.getId();
         switch (id) {
             case R.id.ll_bottom_main:

@@ -1,17 +1,23 @@
 package com.fei.firstproject.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.fei.firstproject.R;
+import com.fei.firstproject.activity.LoginActivity;
+import com.fei.firstproject.activity.SettingsActivity;
 import com.fei.firstproject.adapter.MyRecyclerViewAdapter;
+import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.decoration.DividerGridItemDecoration;
 import com.fei.firstproject.widget.NoScrollRecyclerView;
 import com.fei.firstproject.widget.SettingView;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2017/7/29.
@@ -78,6 +84,15 @@ public class MeFragment extends BaseFragment {
         nsrv2.setLayoutManager(manager);
         nsrv2.addItemDecoration(itemDecoration);
         nsrv2.setAdapter(new MyRecyclerViewAdapter(activity, R.array.list_other_drawable, getResources().getStringArray(R.array.list_other_str)));
+    }
+
+    @OnClick(R.id.ll_me_info)
+    void clickMeInfo(View view) {
+        if (AppConfig.ISLOGIN) {
+            startActivity(new Intent(activity, SettingsActivity.class));
+        } else {
+            startActivity(new Intent(activity, LoginActivity.class));
+        }
     }
 
 }

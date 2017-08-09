@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fei.firstproject.toast.inter.IToast;
 import com.fei.firstproject.utils.Utils;
 
 import java.util.concurrent.BlockingQueue;

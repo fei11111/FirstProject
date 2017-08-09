@@ -1,4 +1,4 @@
-package com.fei.firstproject.toast;
+package com.fei.firstproject.toast.inter;
 
 import android.view.View;
 

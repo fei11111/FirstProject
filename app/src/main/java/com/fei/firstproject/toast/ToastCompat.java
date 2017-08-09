@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.view.View;
 
+import com.fei.firstproject.toast.inter.IToast;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 

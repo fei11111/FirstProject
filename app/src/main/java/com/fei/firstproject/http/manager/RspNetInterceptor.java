@@ -1,4 +1,4 @@
-package com.fei.firstproject.manager;
+package com.fei.firstproject.http.manager;
 
 import com.fei.firstproject.MyApplication;
 import com.fei.firstproject.utils.NetUtils;

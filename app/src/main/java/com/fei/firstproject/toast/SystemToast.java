@@ -5,6 +5,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
+import com.fei.firstproject.toast.inter.IToast;
 import com.fei.firstproject.utils.Utils;
 
 /**
