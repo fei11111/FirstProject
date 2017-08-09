@@ -15,6 +15,7 @@ import android.widget.EditText;
 import com.fei.firstproject.R;
 import com.fei.firstproject.bean.UserBean;
 import com.fei.firstproject.http.manager.RetrofitManager;
+import com.fei.firstproject.utils.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,12 +48,21 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
-        showMissingPermissionDialog("需要获取设备状态才能正常运行");
+        showMissingPermissionDialog("需要获取设备状态才能正常运行", requestCode);
     }
 
     @Override
     public void permissionsGrantCallBack(int requestCode) {
 
+    }
+
+
+    @Override
+    public void permissionDialogDismiss(int requestCode) {
+        if (requestCode == REQUEST_CODE_1) {
+            Utils.showToast(this, "授权不成功，将无法登陆");
+            finish();
+        }
     }
 
     @Override

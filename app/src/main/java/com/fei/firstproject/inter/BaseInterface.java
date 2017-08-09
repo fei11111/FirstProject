@@ -18,4 +18,6 @@ public interface BaseInterface {
 
     public void init(Bundle savedInstanceState);
 
+    public void permissionDialogDismiss(int requestCode);
+
 }

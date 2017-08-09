@@ -48,11 +48,16 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
-        showMissingPermissionDialog("需要访问存储权限");
+        showMissingPermissionDialog("需要访问存储权限", requestCode);
     }
 
     @Override
     public void permissionsGrantCallBack(int requestCode) {
+
+    }
+
+    @Override
+    public void permissionDialogDismiss(int requestCode) {
 
     }
 

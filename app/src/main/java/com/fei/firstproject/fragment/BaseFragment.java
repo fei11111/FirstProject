@@ -108,7 +108,7 @@ public abstract class BaseFragment extends Fragment implements BaseInterface {
         }
     }
 
-    protected void showMissingPermissionDialog(String message) {
+    protected void showMissingPermissionDialog(String message, final int requestCode) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle("提示");
         builder.setMessage(message);
@@ -123,6 +123,7 @@ public abstract class BaseFragment extends Fragment implements BaseInterface {
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                permissionDialogDismiss(requestCode);
                 dialog.dismiss();
             }
         });

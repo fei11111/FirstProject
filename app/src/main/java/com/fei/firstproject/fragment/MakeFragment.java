@@ -26,6 +26,11 @@ public class MakeFragment extends BaseFragment {
     }
 
     @Override
+    public void permissionDialogDismiss(int requestCode) {
+
+    }
+
+    @Override
     public int getContentViewResId() {
         return R.layout.fragment_make;
     }
