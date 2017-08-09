@@ -18,7 +18,10 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        init();
+    }
 
+    private void init() {
         AppConfig.user = (UserBean) SPUtils.get(this, "user", null);
         if (AppConfig.user == null) {
             AppConfig.ISLOGIN = false;
