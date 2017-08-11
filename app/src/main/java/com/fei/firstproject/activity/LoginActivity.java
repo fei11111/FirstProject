@@ -121,8 +121,7 @@ public class LoginActivity extends BaseActivity {
         map.put("password", passwordText);
         map.put("deviceId", deviceId);
         map.put("mobile", userNameText);
-        //转换
-        //http://blog.chengyunfeng.com/?p=964
+        //http://blog.csdn.net/jdsjlzx/article/details/51882661
         proShow();
         RetrofitManager.getInstance().getRequestApi().login(map)
                 .enqueue(new Callback<ResponseBody>() {
