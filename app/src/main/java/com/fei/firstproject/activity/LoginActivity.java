@@ -7,25 +7,16 @@ import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.fei.firstproject.R;
-import com.fei.firstproject.bean.UserBean;
-import com.fei.firstproject.http.manager.RetrofitManager;
 import com.fei.firstproject.utils.Utils;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * A login screen that offers login via email/password.
@@ -36,32 +27,33 @@ public class LoginActivity extends BaseActivity {
     AutoCompleteTextView etUsername;
     @BindView(R.id.et_password)
     EditText etPassword;
-    @BindView(R.id.rv_sign_in)
+    @BindView(R.id.btn_login)
     Button rvSignIn;
 
     private static final int REQUEST_CODE_1 = 100;
 
     @Override
     public void requestPermissionsBeforeInit() {
-        checkPermissions(new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_CODE_1);
+
     }
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
-        showMissingPermissionDialog("需要获取设备状态才能正常运行", requestCode);
+        showMissingPermissionDialog("需要获取设备信息才能登录", requestCode);
     }
 
     @Override
     public void permissionsGrantCallBack(int requestCode) {
-
+        if (requestCode == REQUEST_CODE_1) {
+            attemptLogin();
+        }
     }
 
 
     @Override
     public void permissionDialogDismiss(int requestCode) {
         if (requestCode == REQUEST_CODE_1) {
-            Utils.showToast(this, "授权不成功，将无法登陆");
-            finish();
+            Utils.showToast(this, "授权不成功，将无法登陆/注册");
         }
     }
 
@@ -101,33 +93,22 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    @OnClick(R.id.rv_sign_in)
+    @OnClick(R.id.btn_login)
     void sign_in() {
-        String userNameText = etUsername.getText().toString();
-        String passwordText = etPassword.getText().toString();
-        attemptLogin(userNameText, passwordText);
+        checkPermissions(new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_CODE_1);
     }
 
-    private void attemptLogin(String userId, String password) {
+    private void attemptLogin() {
         //password=10160411920&deviceID=863978010682477&mobile=111920
+        String userNameText = etUsername.getText().toString();
+        String passwordText = etPassword.getText().toString();
         TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         String deviceId = tm.getDeviceId();
-        Map<String, String> map = new HashMap<>();
-        map.put("password", password);
-        map.put("deviceId", deviceId);
-        map.put("mobile", userId);
-        Call<UserBean> login = RetrofitManager.getInstance().createReq().login(map);
-        login.enqueue(new Callback<UserBean>() {
-            @Override
-            public void onResponse(Call<UserBean> call, Response<UserBean> response) {
-                Log.i("tag", response.body().toString());
-            }
+//        Map<String, String> map = new HashMap<>();
+//        map.put("password", userNameText);
+//        map.put("deviceId", deviceId);
+//        map.put("mobile", passwordText);
 
-            @Override
-            public void onFailure(Call<UserBean> call, Throwable t) {
-
-            }
-        });
 
 //        String uuid = UUID.randomUUID().toString().substring(0, 10);
 //        String userName = "_bbyy" + uuid;
@@ -136,7 +117,7 @@ public class LoginActivity extends BaseActivity {
 //        AppConfig.user.setName(userName);
 //        AppConfig.ISLOGIN = true;
 //        SPUtils.put(MyApplication.getInstance(), "user", AppConfig.user);
-        finish();
+//        finish();
     }
 }
 

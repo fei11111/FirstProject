@@ -52,8 +52,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:id="@+id/rv_sign_in"
-                style="?android:textAppearanceSmall"
+                android:id="@+id/btn_login"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size_50"
                 android:layout_marginTop="16dp"

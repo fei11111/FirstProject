@@ -4,6 +4,7 @@ import com.fei.firstproject.bean.UserBean;
 
 import java.util.Map;
 
+import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -19,5 +20,8 @@ public interface RequestApi {
     Call<ResponseBody> update();
 
     @GET("App/login.shtml")
-    Call<UserBean> login(@QueryMap Map<String, String> map);
+    Observable<UserBean> login(@QueryMap Map<String, String> map);
+
+//    @GET("App/getUserInFoByToken.shtml")
+//    Observable<UserBean> getUserInfo()
 }

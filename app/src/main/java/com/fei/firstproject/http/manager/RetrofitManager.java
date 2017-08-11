@@ -1,12 +1,15 @@
 package com.fei.firstproject.http.manager;
 
+import com.fei.firstproject.bean.UserBean;
 import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.http.inter.RequestApi;
 import com.fei.firstproject.utils.PathUtls;
 
 import java.io.File;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observer;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -21,6 +24,8 @@ public class RetrofitManager {
 
     private static RetrofitManager instance = null;
     private Retrofit retrofit;
+    private RequestApi requestApi;
+    private String baseUrl = "http://192.168.1.198:8080/bigdb/";
 
     public RetrofitManager() {
         initRetrofit();
@@ -38,8 +43,10 @@ public class RetrofitManager {
         retrofit = new Retrofit.Builder().client(httpClientBuilder.build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl("http://192.168.1.198:8081/bigdb/")
+                .baseUrl(baseUrl)
                 .build();
+
+        requestApi = retrofit.create(RequestApi.class);
     }
 
     public static RetrofitManager getInstance() {
@@ -53,7 +60,7 @@ public class RetrofitManager {
         return instance;
     }
 
-    public RequestApi createReq() {
-        return retrofit.create(RequestApi.class);
+    public void login(Map<String, String> map, Observer<UserBean> observer) {
+
     }
 }

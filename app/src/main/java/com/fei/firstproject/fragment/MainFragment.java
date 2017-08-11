@@ -70,5 +70,34 @@ public class MainFragment extends BaseFragment {
         banner.setImages(imageUrls);
         //banner设置方法全部调用完毕时最后调用
         banner.start();
+//
+//        if (ids.get(i).equals("83")) {
+//            bt.setCompoundDrawablesWithIntrinsicBounds(null, getResources()
+//                    .getDrawable(R.drawable.icon_zjzs), null, null);
+////                    } else if (tabs.get(i).equals("田间管理")) {
+//        } else if (ids.get(i).equals("82")) {
+//            bt.setCompoundDrawablesWithIntrinsicBounds(null, getResources()
+//                    .getDrawable(R.drawable.icon_tjgl), null, null);
+////                    } else if (tabs.get(i).equals("农业定制")) {
+//        } else if (ids.get(i).equals("84")) {
+//            bt.setCompoundDrawablesWithIntrinsicBounds(null, getResources()
+//                    .getDrawable(R.drawable.icon_nydz), null, null);
+////                    } else if (tabs.get(i).equals("测量")) {
+//        } else if (ids.get(i).equals("87")) {
+//            bt.setCompoundDrawablesWithIntrinsicBounds(null, getResources()
+//                    .getDrawable(R.drawable.icon_setting), null, null);
+////                    } else if (tabs.get(i).equals("市场行情")) {
+//        } else if (ids.get(i).equals("103")) {
+//            bt.setCompoundDrawablesWithIntrinsicBounds(null, getResources()
+//                    .getDrawable(R.drawable.icon_schx), null, null);
+////                    } else if (tabs.get(i).equals("农财商城")) {
+//        } else if (ids.get(i).equals("109")) {
+//            bt.setCompoundDrawablesWithIntrinsicBounds(null, getResources()
+//                    .getDrawable(R.drawable.icon_ds), null, null);
+////                    } else if (tabs.get(i).equals("产品库")) {
+//        } else if (ids.get(i).equals("124")) {
+//            bt.setCompoundDrawablesWithIntrinsicBounds(null, getResources()
+//                    .getDrawable(R.drawable.icon_productlibrary), null, null);
+//        }
     }
 }
