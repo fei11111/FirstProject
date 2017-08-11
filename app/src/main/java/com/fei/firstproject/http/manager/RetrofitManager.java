@@ -1,17 +1,17 @@
 package com.fei.firstproject.http.manager;
 
-import com.fei.firstproject.bean.UserBean;
+import android.util.Log;
+
 import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.http.inter.RequestApi;
 import com.fei.firstproject.utils.PathUtls;
 
 import java.io.File;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observer;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -37,6 +37,15 @@ public class RetrofitManager {
         httpClientBuilder.readTimeout(20, TimeUnit.SECONDS);
         httpClientBuilder.writeTimeout(20, TimeUnit.SECONDS);
         httpClientBuilder.addNetworkInterceptor(new RspNetInterceptor());
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+            @Override
+            public void log(String message) {
+                //打印retrofit日志
+                Log.i("RetrofitLog", "retrofitBack = " + message);
+            }
+        });
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        httpClientBuilder.addInterceptor(loggingInterceptor);
         File cacheFile = new File(PathUtls.cachePath);
         Cache cache = new Cache(cacheFile, AppConfig.CACHE_SIZE);
         httpClientBuilder.cache(cache);
@@ -60,7 +69,8 @@ public class RetrofitManager {
         return instance;
     }
 
-    public void login(Map<String, String> map, Observer<UserBean> observer) {
-
+    public RequestApi getRequestApi(){
+        return requestApi;
     }
+
 }

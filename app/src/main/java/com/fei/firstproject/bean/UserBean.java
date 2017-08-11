@@ -25,6 +25,7 @@ public class UserBean {
     private String currentRole;
     private String userName;
     private List<RoleBean> roles;
+    private String token;
 
     public String getSuccess() {
         return success;
@@ -170,6 +171,14 @@ public class UserBean {
         this.roles = roles;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     @Override
     public String toString() {
         return "UserBean{" +
@@ -191,6 +200,7 @@ public class UserBean {
                 ", currentRole='" + currentRole + '\'' +
                 ", userName='" + userName + '\'' +
                 ", roles=" + roles +
+                ", token='" + token + '\'' +
                 '}';
     }
 }
