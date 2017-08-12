@@ -24,10 +24,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitFactory {
 
 
-    public static final String BIGDB_URL = "http://218.18.114.100:8880/bigdb/";
+    public static final String BIGDB_URL = AppConfig.HOST + "/bigdb/";
     public static final String NCW_URL = "http://batian.ncw365.com/";
-    public static final String BT_WEB_URL = "http://218.18.114.97:3392/bt-web/app/";
-    public static final String BT_PLANT_WEB_URL = "http://218.18.114.97:3391/bt-plant-web/";
+    public static final String BT_WEB_URL = AppConfig.HOST2 + "/bt-web/app/";
+    public static final String BT_PLANT_WEB_URL = AppConfig.HOST3 + "/bt-plant-web/";
     private static File cacheFile = new File(PathUtls.cachePath);
     private static Cache cache = new Cache(cacheFile, AppConfig.CACHE_SIZE);
 
