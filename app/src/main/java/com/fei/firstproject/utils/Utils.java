@@ -2,6 +2,7 @@ package com.fei.firstproject.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.DisplayMetrics;
@@ -61,5 +62,24 @@ public class Utils {
         } catch (IllegalAccessException e) {
 //            Log.e("IllegalAccessException", e.getMessage().toString());
         }
+    }
+
+    //获取屏幕高度宽度
+    public static int[] getScreen(Activity activity) {
+        DisplayMetrics metric = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(metric);
+        int width = metric.widthPixels;     // 屏幕宽度（像素）
+        int height = metric.heightPixels;   // 屏幕高度（像素）
+        return new int[]{width, height};
+    }
+
+    public static int[] getDrawableByArray(Context mContext, int ids) {
+        TypedArray ar = mContext.getResources().obtainTypedArray(ids);
+        int len = ar.length();
+        int[] res = new int[len];
+        for (int i = 0; i < len; i++)
+            res[i] = ar.getResourceId(i, 0);
+        ar.recycle();
+        return res;
     }
 }

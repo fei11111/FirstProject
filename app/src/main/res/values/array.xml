@@ -30,6 +30,26 @@
         <item>@drawable/ic_complaint_advice</item>
     </string-array>
 
+    <string-array name="list_menu_head_drawable">
+        <item>@drawable/ic_tjgl</item>
+        <item>@drawable/ic_zjzs</item>
+        <item>@drawable/ic_ncsc</item>
+        <item>@drawable/ic_nydz</item>
+        <item>@drawable/ic_cpk</item>
+        <item>@drawable/ic_schq</item>
+        <item>@drawable/ic_cl</item>
+    </string-array>
+
+    <string-array name="list_menu_head_str">
+        <item>@string/tjgl</item>
+        <item>@string/zjzs</item>
+        <item>@string/ncsc</item>
+        <item>@string/nydz</item>
+        <item>@string/cpk</item>
+        <item>@string/schq</item>
+        <item>@string/cl</item>
+    </string-array>
+
     <string-array name="pref_sync_frequency_values">
         <item>15</item>
         <item>30</item>

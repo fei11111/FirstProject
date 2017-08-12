@@ -58,6 +58,15 @@
     <string name="fast_make">快速定制</string>
     <string name="plan_make">方案定制</string>
     <string name="toast_network_error">网络异常，请检查您的网络设置！</string>
+    <string name="zjzs">专家诊室</string>
+    <string name="tjgl">田间管理</string>
+    <string name="nydz">农业定制</string>
+    <string name="cl">测量</string>
+    <string name="schq">市场行情</string>
+    <string name="ncsc">农财商城</string>
+    <string name="cpk">产品库</string>
+    <string name="more">更多</string>
+    <string name="ncw">农财网</string>
 
     <!-- Strings related to Settings -->
 
@@ -91,7 +100,5 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
-    <string name="title_activity_splash">SplashActivity</string>
-    <string name="section_format">Hello World from section: %1$d</string>
 
 </resources>

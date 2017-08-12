@@ -14,6 +14,8 @@ import com.fei.firstproject.adapter.FragmentAdapter;
 import com.fei.firstproject.fragment.MainFragment;
 import com.fei.firstproject.fragment.MakeFragment;
 import com.fei.firstproject.fragment.MeFragment;
+import com.fei.firstproject.toast.ToastCompat;
+import com.fei.firstproject.utils.Utils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -58,7 +60,9 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void permissionDialogDismiss(int requestCode) {
-
+        if (requestCode == REQUEST_CODE_1) {
+            Utils.showToast(this, "无法访问存储，将影响APP使用");
+        }
     }
 
     @Override

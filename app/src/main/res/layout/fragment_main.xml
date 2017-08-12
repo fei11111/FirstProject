@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -33,7 +34,11 @@
     <com.fei.firstproject.widget.MyHorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10"
+        android:background="@color/colorWhite"
         android:fadeScrollbars="false"
+        android:paddingBottom="@dimen/size_5"
+        android:paddingTop="@dimen/size_5"
         android:scrollbars="none">
 
         <LinearLayout
@@ -42,7 +47,24 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"></LinearLayout>
 
-
     </com.fei.firstproject.widget.MyHorizontalScrollView>
 
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10"
+        android:orientation="vertical"
+        app:divider="@drawable/shape_line"
+        app:showDividers="middle">
+
+        <com.fei.firstproject.widget.SettingView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:desc="@string/more"
+            app:title="@string/ncw"></com.fei.firstproject.widget.SettingView>
+
+        <com.fei.firstproject.widget.NoScrollListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></com.fei.firstproject.widget.NoScrollListView>
+    </android.support.v7.widget.LinearLayoutCompat>
 </LinearLayout>
