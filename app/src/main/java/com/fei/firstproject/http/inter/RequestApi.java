@@ -1,7 +1,11 @@
 package com.fei.firstproject.http.inter;
 
+import com.fei.firstproject.entity.BaseEntity;
+import com.fei.firstproject.entity.UserEntity;
+
 import java.util.Map;
 
+import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -17,9 +21,8 @@ public interface RequestApi {
     Call<ResponseBody> update();
 
     //http://192.168.1.198:8080/bigdb/App/login.shtml
-    @GET("App/login.shtml")
-    Call<ResponseBody> login(@QueryMap Map<String, String> map);
 
-//    @GET("App/getUserInFoByToken.shtml")
-//    Observable<UserBean> getUserInfo()
+    @GET("App/login.shtml")
+    Observable<BaseEntity<UserEntity>> login(@QueryMap Map<String, String> map);
+
 }

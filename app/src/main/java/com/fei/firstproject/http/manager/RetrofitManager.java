@@ -22,54 +22,34 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitManager {
 
-    private static RetrofitManager instance = null;
-    private Retrofit retrofit;
-    private RequestApi requestApi;
-    private String baseUrl = "http://192.168.1.198:8080/bigdb/";
+    private static String BASE_URL = "http://192.168.1.198:8080/bigdb/";
+    private static File cacheFile = new File(PathUtls.cachePath);
+    private static Cache cache = new Cache(cacheFile, AppConfig.CACHE_SIZE);
 
-    public RetrofitManager() {
-        initRetrofit();
-    }
-
-    private void initRetrofit() {
-        OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
-        httpClientBuilder.connectTimeout(15, TimeUnit.SECONDS);
-        httpClientBuilder.readTimeout(20, TimeUnit.SECONDS);
-        httpClientBuilder.writeTimeout(20, TimeUnit.SECONDS);
-        httpClientBuilder.addNetworkInterceptor(new RspNetInterceptor());
-        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-            @Override
-            public void log(String message) {
-                //打印retrofit日志
-                Log.i("RetrofitLog", "retrofitBack = " + message);
-            }
-        });
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        httpClientBuilder.addInterceptor(loggingInterceptor);
-        File cacheFile = new File(PathUtls.cachePath);
-        Cache cache = new Cache(cacheFile, AppConfig.CACHE_SIZE);
-        httpClientBuilder.cache(cache);
-        retrofit = new Retrofit.Builder().client(httpClientBuilder.build())
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl(baseUrl)
-                .build();
-
-        requestApi = retrofit.create(RequestApi.class);
-    }
-
-    public static RetrofitManager getInstance() {
-        if (instance == null) {
-            synchronized (RetrofitManager.class) {
-                if (instance == null) {
-                    instance = new RetrofitManager();
+    private static OkHttpClient httpClient = new OkHttpClient.Builder()
+            .connectTimeout(15, TimeUnit.SECONDS)
+            .readTimeout(20, TimeUnit.SECONDS)
+            .writeTimeout(20, TimeUnit.SECONDS)
+            .addNetworkInterceptor(new RspNetInterceptor())
+            .addInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+                @Override
+                public void log(String message) {
+                    //打印retrofit日志
+                    Log.i("RetrofitLog", "retrofitBack = " + message);
                 }
-            }
-        }
-        return instance;
-    }
+            }).setLevel(HttpLoggingInterceptor.Level.BODY))
+            .cache(cache).build();
 
-    public RequestApi getRequestApi(){
+    private static RequestApi requestApi = new Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            // 添加Gson转换器
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .client(httpClient)
+            .build()
+            .create(RequestApi.class);
+
+    public static RequestApi getInstance() {
         return requestApi;
     }
 

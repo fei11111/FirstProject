@@ -1,10 +1,10 @@
-package com.fei.firstproject.bean;
+package com.fei.firstproject.entity;
 
 /**
  * Created by Administrator on 2017/7/29.
  */
 
-public class RoleBean {
+public class RoleEntity {
 
 
     /**
@@ -53,7 +53,7 @@ public class RoleBean {
 
     @Override
     public String toString() {
-        return "RoleBean{" +
+        return "RoleEntity{" +
                 "id='" + id + '\'' +
                 ", menuName='" + menuName + '\'' +
                 ", menuSort='" + menuSort + '\'' +

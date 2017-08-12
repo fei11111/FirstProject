@@ -7,29 +7,25 @@ import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.fei.firstproject.R;
+import com.fei.firstproject.entity.BaseEntity;
+import com.fei.firstproject.entity.UserEntity;
+import com.fei.firstproject.http.BaseObserver;
+import com.fei.firstproject.http.RxSchedulers;
 import com.fei.firstproject.http.manager.RetrofitManager;
 import com.fei.firstproject.utils.Utils;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.Observable;
 
 /**
  * A login screen that offers login via email/password.
@@ -121,40 +117,15 @@ public class LoginActivity extends BaseActivity {
         map.put("password", passwordText);
         map.put("deviceId", deviceId);
         map.put("mobile", userNameText);
-        //http://blog.csdn.net/jdsjlzx/article/details/51882661
+        //http://www.jianshu.com/p/9674f6df910d
         proShow();
-        RetrofitManager.getInstance().getRequestApi().login(map)
-                .enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        proDisimis();
-                        try {
-                            JSONObject json = new JSONObject(response.body().string());
-                            if (json.has("tokenId")) {
-                                String tokenId = json.getString("tokenId");
-                                Log.i("tag", tokenId);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
+        Observable<BaseEntity<UserEntity>> login = RetrofitManager.getInstance().login(map);
+        login.compose(RxSchedulers.compose(this, this.<BaseEntity<UserEntity>>bindToLifecycle())).subscribe(new BaseObserver<UserEntity>(this) {
+            @Override
+            protected void onHandleSuccess(UserEntity userEntity) {
 
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        proDisimis();
-                    }
-                });
-
-//        String uuid = UUID.randomUUID().toString().substring(0, 10);
-//        String userName = "_bbyy" + uuid;
-//        AppConfig.user = new UserBean();
-//        AppConfig.user.setUserName(userId);
-//        AppConfig.user.setName(userName);
-//        AppConfig.ISLOGIN = true;
-//        SPUtils.put(MyApplication.getInstance(), "user", AppConfig.user);
-//        finish();
+            }
+        });
     }
 }
 

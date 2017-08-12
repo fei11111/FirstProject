@@ -57,6 +57,7 @@
     <string name="make_fertilizer">肥料定制</string>
     <string name="fast_make">快速定制</string>
     <string name="plan_make">方案定制</string>
+    <string name="toast_network_error">网络异常，请检查您的网络设置！</string>
 
     <!-- Strings related to Settings -->
 

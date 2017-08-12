@@ -1,4 +1,4 @@
-package com.fei.firstproject.bean;
+package com.fei.firstproject.entity;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import java.util.List;
  * Created by Administrator on 2017/7/29.
  */
 
-public class UserBean {
+public class UserEntity {
     private String success;
     private String returnMsg;
     private String img;
@@ -24,7 +24,7 @@ public class UserBean {
     private String roleName;
     private String currentRole;
     private String userName;
-    private List<RoleBean> roles;
+    private List<RoleEntity> roles;
     private String token;
 
     public String getSuccess() {
@@ -163,14 +163,6 @@ public class UserBean {
         this.userName = userName;
     }
 
-    public List<RoleBean> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<RoleBean> roles) {
-        this.roles = roles;
-    }
-
     public String getToken() {
         return token;
     }
@@ -179,9 +171,17 @@ public class UserBean {
         this.token = token;
     }
 
+    public List<RoleEntity> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<RoleEntity> roles) {
+        this.roles = roles;
+    }
+
     @Override
     public String toString() {
-        return "UserBean{" +
+        return "UserEntity{" +
                 "success='" + success + '\'' +
                 ", returnMsg='" + returnMsg + '\'' +
                 ", img='" + img + '\'' +
