@@ -30,7 +30,6 @@ public class RetrofitFactory {
     public static final String BT_PLANT_WEB_URL = "http://218.18.114.97:3391/bt-plant-web/";
     private static File cacheFile = new File(PathUtls.cachePath);
     private static Cache cache = new Cache(cacheFile, AppConfig.CACHE_SIZE);
-    //api.php?op=content
 
     private static OkHttpClient httpClient = new OkHttpClient.Builder()
             .connectTimeout(15, TimeUnit.SECONDS)

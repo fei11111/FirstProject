@@ -23,4 +23,7 @@ public interface RequestApi {
     @GET("App/login.shtml")
     Observable<BaseEntity<UserEntity>> login(@QueryMap Map<String, String> map);
 
+//    @GET("api.php?op=content")
+//    Observable
+
 }
