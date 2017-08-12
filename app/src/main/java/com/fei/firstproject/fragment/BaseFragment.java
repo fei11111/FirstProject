@@ -158,14 +158,7 @@ public abstract class BaseFragment extends Fragment implements BaseInterface {
 
     @Override
     public void startActivityWithCodeAndPair(Intent intent, int requestCode, Pair<View, String>... sharedElements) {
-        ActivityOptionsCompat transitionActivityOptions = null;
-        if (sharedElements == null) {
-            transitionActivityOptions =
-                    ActivityOptionsCompat.makeSceneTransitionAnimation(activity);
-        } else {
-            transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, sharedElements);
-        }
-        startActivityForResult(intent, requestCode, transitionActivityOptions.toBundle());
+        startActivityForResult(intent, requestCode, ActivityOptionsCompat.makeSceneTransitionAnimation(activity, sharedElements).toBundle());
     }
 
     @Override

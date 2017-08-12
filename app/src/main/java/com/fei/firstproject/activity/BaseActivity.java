@@ -173,20 +173,13 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseIn
 
     @Override
     public void startActivityWithCodeAndPair(Intent intent, int requestCode, Pair<View, String>... sharedElements) {
-        ActivityOptionsCompat transitionActivityOptions = null;
-        if (sharedElements == null) {
-            transitionActivityOptions =
-                    ActivityOptionsCompat.makeSceneTransitionAnimation(this);
-        } else {
-            transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(this, sharedElements);
-        }
-        startActivityForResult(intent, requestCode, transitionActivityOptions.toBundle());
+        startActivityForResult(intent, requestCode, ActivityOptionsCompat.makeSceneTransitionAnimation(this, sharedElements).toBundle());
     }
 
 
     @Override
     public void startActivityWithCode(Intent intent, int requestCode) {
-        startActivityWithCodeAndPair(intent, requestCode, null);
+        startActivityForResult(intent, requestCode, ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle());
     }
 
     @Override

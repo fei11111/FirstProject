@@ -66,7 +66,7 @@ public class TextSwitchView extends TextSwitcher implements ViewSwitcher.ViewFac
     @Override
     public View makeView() {
         TextView tv = new TextView(mContext);
-        tv.setTextSize(mContext.getResources().getDimension(R.dimen.tx_8));
+//        tv.setTextSize(mContext.getResources().getDimension(R.dimen.tx_8));
         tv.setTextColor(ContextCompat.getColor(mContext, R.color.colorText));
         tv.setGravity(Gravity.CENTER_VERTICAL);
         Drawable drawable = ContextCompat.getDrawable(mContext, R.drawable.shape_red_dot);
