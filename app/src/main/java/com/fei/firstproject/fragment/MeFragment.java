@@ -94,10 +94,9 @@ public class MeFragment extends BaseFragment {
     @OnClick(R.id.ll_me_info)
     void clickMeInfo(View view) {
         if (AppConfig.ISLOGIN) {
-            startActivity(new Intent(activity, SettingsActivity.class));
+            startActivityWithoutCode(new Intent(activity, SettingsActivity.class));
         } else {
-            startActivity(new Intent(activity, LoginActivity.class));
+            startActivityWithoutCode(new Intent(activity, LoginActivity.class));
         }
     }
-
 }

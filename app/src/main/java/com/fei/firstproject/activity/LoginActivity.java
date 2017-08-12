@@ -2,11 +2,13 @@ package com.fei.firstproject.activity;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -103,8 +105,13 @@ public class LoginActivity extends BaseActivity {
     }
 
     @OnClick(R.id.btn_login)
-    void sign_in() {
+    void clickSignIn(View view) {
         checkPermissions(new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_CODE_1);
+    }
+
+    @OnClick(R.id.tv_register)
+    void clickRegister(View view) {
+        startActivityWithoutCode(new Intent(this, RegisterActivity.class));
     }
 
     private void attemptLogin() {

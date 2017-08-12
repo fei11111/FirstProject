@@ -10,9 +10,12 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.View;
 
 import com.fei.firstproject.dialog.CustomeProgressDialog;
 import com.fei.firstproject.inter.BaseInterface;
@@ -168,4 +171,26 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseIn
         return true;
     }
 
+    @Override
+    public void startActivityWithCodeAndPair(Intent intent, int requestCode, Pair<View, String>... sharedElements) {
+        ActivityOptionsCompat transitionActivityOptions = null;
+        if (sharedElements == null) {
+            transitionActivityOptions =
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(this);
+        } else {
+            transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(this, sharedElements);
+        }
+        startActivityForResult(intent, requestCode, transitionActivityOptions.toBundle());
+    }
+
+
+    @Override
+    public void startActivityWithCode(Intent intent, int requestCode) {
+        startActivityWithCodeAndPair(intent, requestCode, null);
+    }
+
+    @Override
+    public void startActivityWithoutCode(Intent intent) {
+        startActivityWithCode(intent, -1);
+    }
 }

@@ -14,6 +14,11 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="ActivityAnimateStyle">
+        <item name="android:windowEnterAnimation">@transition/explode_activity</item>
+        <item name="android:windowExitAnimation">@transition/slide_activity</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

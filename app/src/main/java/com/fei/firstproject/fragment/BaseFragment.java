@@ -12,8 +12,10 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -99,7 +101,7 @@ public abstract class BaseFragment extends Fragment implements BaseInterface {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.i("tag","fragment");
+        Log.i("tag", "fragment");
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (!vertifyPermission(grantResults)) {
             permissionsDeniedCallBack(requestCode);
@@ -152,6 +154,28 @@ public abstract class BaseFragment extends Fragment implements BaseInterface {
             }
         }
         return true;
+    }
+
+    @Override
+    public void startActivityWithCodeAndPair(Intent intent, int requestCode, Pair<View, String>... sharedElements) {
+        ActivityOptionsCompat transitionActivityOptions = null;
+        if (sharedElements == null) {
+            transitionActivityOptions =
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(activity);
+        } else {
+            transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, sharedElements);
+        }
+        startActivityForResult(intent, requestCode, transitionActivityOptions.toBundle());
+    }
+
+    @Override
+    public void startActivityWithCode(Intent intent, int requestCode) {
+        startActivityForResult(intent, requestCode, ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle());
+    }
+
+    @Override
+    public void startActivityWithoutCode(Intent intent) {
+        startActivityWithCode(intent, -1);
     }
 
 }
