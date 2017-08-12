@@ -7,16 +7,13 @@
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="android:listDivider">@drawable/shape_divider</item>
+        <item name="android:windowEnterAnimation">@transition/explode_activity</item>
+        <item name="android:windowExitAnimation">@transition/slide_activity</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="ActivityAnimateStyle">
-        <item name="android:windowEnterAnimation">@transition/explode_activity</item>
-        <item name="android:windowExitAnimation">@transition/slide_activity</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
