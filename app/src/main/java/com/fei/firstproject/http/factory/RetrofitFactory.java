@@ -1,9 +1,10 @@
-package com.fei.firstproject.http.manager;
+package com.fei.firstproject.http.factory;
 
 import android.util.Log;
 
 import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.http.inter.RequestApi;
+import com.fei.firstproject.http.manager.RspNetInterceptor;
 import com.fei.firstproject.utils.PathUtls;
 
 import java.io.File;
@@ -20,11 +21,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Administrator on 2017/7/27.
  */
 
-public class RetrofitManager {
+public class RetrofitFactory {
 
-    private static String BASE_URL = "http://192.168.1.198:8080/bigdb/";
+
+    public static final String BIGDB_URL = "http://218.18.114.100:8880/bigdb/";
+    public static final String NCW_URL = "http://batian.ncw365.com/";
+    public static final String BT_WEB_URL = "http://218.18.114.97:3392/bt-web/app/";
+    public static final String BT_PLANT_WEB_URL = "http://218.18.114.97:3391/bt-plant-web/";
     private static File cacheFile = new File(PathUtls.cachePath);
     private static Cache cache = new Cache(cacheFile, AppConfig.CACHE_SIZE);
+    //api.php?op=content
 
     private static OkHttpClient httpClient = new OkHttpClient.Builder()
             .connectTimeout(15, TimeUnit.SECONDS)
@@ -40,17 +46,46 @@ public class RetrofitManager {
             }).setLevel(HttpLoggingInterceptor.Level.BODY))
             .cache(cache).build();
 
-    private static RequestApi requestApi = new Retrofit.Builder()
-            .baseUrl(BASE_URL)
+    private static Retrofit.Builder builder = new Retrofit.Builder()
             // 添加Gson转换器
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .client(httpClient)
+            .client(httpClient);
+
+    private static RequestApi requestBDApi = builder.
+            baseUrl(BIGDB_URL).
+            build().
+            create(RequestApi.class);
+
+    private static RequestApi requestNcwApi = builder
+            .baseUrl(NCW_URL)
             .build()
             .create(RequestApi.class);
 
-    public static RequestApi getInstance() {
-        return requestApi;
+    private static RequestApi requestBtWebApi = builder
+            .baseUrl(BT_WEB_URL)
+            .build()
+            .create(RequestApi.class);
+
+    private static RequestApi requestBtPlantWebApi = builder
+            .baseUrl(BT_PLANT_WEB_URL)
+            .build()
+            .create(RequestApi.class);
+
+    public static RequestApi getBigDb() {
+        return requestBDApi;
+    }
+
+    public static RequestApi getNcw() {
+        return requestNcwApi;
+    }
+
+    public static RequestApi getBtWeb() {
+        return requestBtWebApi;
+    }
+
+    public static RequestApi getBtPlantWeb() {
+        return requestBtPlantWebApi;
     }
 
 }
