@@ -20,8 +20,6 @@ public interface RequestApi {
     @GET("versionUpdate/update_info.do")
     Call<ResponseBody> update();
 
-    //http://192.168.1.198:8080/bigdb/App/login.shtml
-
     @GET("App/login.shtml")
     Observable<BaseEntity<UserEntity>> login(@QueryMap Map<String, String> map);
 
