@@ -1,10 +1,9 @@
 package com.fei.firstproject.http.factory;
 
-import android.util.Log;
-
 import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.http.inter.RequestApi;
 import com.fei.firstproject.http.manager.RspNetInterceptor;
+import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.PathUtls;
 
 import java.io.File;
@@ -28,7 +27,7 @@ public class RetrofitFactory {
     public static final String NCW_URL = "http://batian.ncw365.com/";
     public static final String BT_WEB_URL = AppConfig.HOST2 + "/bt-web/app/";
     public static final String BT_PLANT_WEB_URL = AppConfig.HOST3 + "/bt-plant-web/";
-    private static File cacheFile = new File(PathUtls.cachePath);
+    private static File cacheFile = new File(PathUtls.getCachePath());
     private static Cache cache = new Cache(cacheFile, AppConfig.CACHE_SIZE);
 
     private static OkHttpClient httpClient = new OkHttpClient.Builder()
@@ -40,7 +39,7 @@ public class RetrofitFactory {
                 @Override
                 public void log(String message) {
                     //打印retrofit日志
-                    Log.i("RetrofitLog", "retrofitBack = " + message);
+                    LogUtils.i("RetrofitLog", "retrofitBack = " + message);
                 }
             }).setLevel(HttpLoggingInterceptor.Level.BODY))
             .cache(cache).build();

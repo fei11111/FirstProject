@@ -14,11 +14,11 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.View;
 
 import com.fei.firstproject.dialog.CustomeProgressDialog;
 import com.fei.firstproject.inter.BaseInterface;
+import com.fei.firstproject.utils.LogUtils;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import java.util.ArrayList;
@@ -116,7 +116,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseIn
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.i("tag", "activity");
+        LogUtils.i("tag", "activity");
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (!vertifyPermission(grantResults)) {
             permissionsDeniedCallBack(requestCode);

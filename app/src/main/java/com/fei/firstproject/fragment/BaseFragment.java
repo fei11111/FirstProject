@@ -16,12 +16,12 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.fei.firstproject.inter.BaseInterface;
+import com.fei.firstproject.utils.LogUtils;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
 import java.util.ArrayList;
@@ -105,7 +105,7 @@ public abstract class BaseFragment extends RxFragment implements BaseInterface {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.i("tag", "fragment");
+        LogUtils.i("tag", "fragment");
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (!vertifyPermission(grantResults)) {
             permissionsDeniedCallBack(requestCode);

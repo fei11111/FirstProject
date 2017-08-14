@@ -1,9 +1,9 @@
 package com.fei.firstproject.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import com.fei.firstproject.R;
+import com.fei.firstproject.utils.LogUtils;
 
 /**
  * Created by Administrator on 2017/7/29.
@@ -38,6 +38,6 @@ public class MakeFragment extends BaseFragment {
 
     @Override
     public void init(Bundle savedInstanceState) {
-        Log.i("tag","make");
+        LogUtils.i("tag","make");
     }
 }

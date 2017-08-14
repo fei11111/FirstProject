@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -14,6 +13,7 @@ import com.fei.firstproject.activity.SettingsActivity;
 import com.fei.firstproject.adapter.MyRecyclerViewAdapter;
 import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.decoration.DividerGridItemDecoration;
+import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.widget.NoScrollRecyclerView;
 import com.fei.firstproject.widget.SettingView;
 
@@ -68,7 +68,7 @@ public class MeFragment extends BaseFragment {
 
     @Override
     public void init(Bundle savedInstanceState) {
-        Log.i("tag","me");
+        LogUtils.i("tag","me");
         initRecyclerView();
     }
 

@@ -4,8 +4,9 @@ import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
+
+import com.fei.firstproject.utils.LogUtils;
 
 import butterknife.ButterKnife;
 
@@ -37,13 +38,13 @@ public class MyViewPager extends ViewPager {
     public boolean dispatchTouchEvent(MotionEvent ev) {
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                Log.i("tag", "viewpager_dispatch_down");
+                LogUtils.i("tag", "viewpager_dispatch_down");
                 break;
             case MotionEvent.ACTION_MOVE:
-                Log.i("tag", "viewpager_dispatch_move");
+                LogUtils.i("tag", "viewpager_dispatch_move");
                 break;
             case MotionEvent.ACTION_UP:
-                Log.i("tag", "viewpager_dispatch_up");
+                LogUtils.i("tag", "viewpager_dispatch_up");
                 break;
         }
         return super.dispatchTouchEvent(ev);
@@ -53,13 +54,13 @@ public class MyViewPager extends ViewPager {
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                Log.i("tag", "viewpager_Intercept_down");
+                LogUtils.i("tag", "viewpager_Intercept_down");
                 break;
             case MotionEvent.ACTION_MOVE:
-                Log.i("tag", "viewpager_Intercept_move");
+                LogUtils.i("tag", "viewpager_Intercept_move");
                 break;
             case MotionEvent.ACTION_UP:
-                Log.i("tag", "viewpager_Intercept_up");
+                LogUtils.i("tag", "viewpager_Intercept_up");
                 break;
         }
         return super.onInterceptTouchEvent(ev);
@@ -70,13 +71,13 @@ public class MyViewPager extends ViewPager {
     public boolean onTouchEvent(MotionEvent ev) {
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                Log.i("tag", "viewpager_onTouchEvent_down");
+                LogUtils.i("tag", "viewpager_onTouchEvent_down");
                 break;
             case MotionEvent.ACTION_MOVE:
-                Log.i("tag", "viewpager_onTouchEvent_move");
+                LogUtils.i("tag", "viewpager_onTouchEvent_move");
                 break;
             case MotionEvent.ACTION_UP:
-                Log.i("tag", "viewpager_onTouchEvent_up");
+                LogUtils.i("tag", "viewpager_onTouchEvent_up");
                 break;
         }
         return super.onTouchEvent(ev);

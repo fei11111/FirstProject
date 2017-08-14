@@ -6,7 +6,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,6 +24,7 @@ import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
 import com.fei.firstproject.http.RxSchedulers;
 import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.image.GlideImageLoader;
+import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.MyHorizontalScrollView;
 import com.fei.firstproject.widget.NoScrollListView;
@@ -112,7 +112,7 @@ public class MainFragment extends BaseFragment {
 
     @Override
     public void init(Bundle savedInstanceState) {
-        Log.i("tag", "main");
+        LogUtils.i("tag", "main");
         initBanner();
         initSwitch();
         initMenu();
@@ -155,7 +155,7 @@ public class MainFragment extends BaseFragment {
             @Override
             protected void onHandleSuccess(List<NcwEntity> ncwEntities) {
                 if (ncwEntities != null && ncwEntities.size() > 0) {
-                    Log.i("tag", ncwEntities.toString());
+                    LogUtils.i("tag", ncwEntities.toString());
                     llNcw.setVisibility(View.VISIBLE);
                     lvNcw.setAdapter(new NcwAdapter(activity, ncwEntities));
                 }

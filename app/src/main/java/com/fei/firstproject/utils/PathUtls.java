@@ -12,7 +12,27 @@ public class PathUtls {
 
     private static String rootPath = Environment.getExternalStorageDirectory().getAbsolutePath();
     private static String appPath = rootPath + File.separator + "fei";
-    public static String imgPath = appPath + File.separator + "image";
-    public static String logPath = appPath + File.separator + "log";
-    public static String cachePath = appPath + File.separator + "cache";
+    private static String imgPath = appPath + File.separator + "image";
+    private static String cachePath = appPath + File.separator + "cache";
+    private static String logPath = appPath + File.separator + "log";
+
+    public static String getRootPath() {
+        return rootPath;
+    }
+
+    public static String getAppPath() {
+        return appPath;
+    }
+
+    public static String getImgPath() {
+        return imgPath;
+    }
+
+    public static String getLogPath() {
+        return logPath;
+    }
+
+    public static String getCachePath() {
+        return cachePath;
+    }
 }

@@ -2,8 +2,8 @@ package com.fei.firstproject;
 
 import android.app.Application;
 
-import com.fei.firstproject.entity.UserEntity;
 import com.fei.firstproject.config.AppConfig;
+import com.fei.firstproject.entity.UserEntity;
 import com.fei.firstproject.utils.SPUtils;
 
 /**
@@ -22,6 +22,15 @@ public class MyApplication extends Application {
     }
 
     private void init() {
+        initUserInfo();
+        initCrashHandler();
+    }
+
+    private void initCrashHandler() {
+        CrashHandler.getInstance().init();
+    }
+
+    private void initUserInfo() {
         AppConfig.user = (UserEntity) SPUtils.get(this, "user", null);
         if (AppConfig.user == null) {
             AppConfig.ISLOGIN = false;

@@ -1,9 +1,9 @@
 package com.fei.firstproject.http;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.fei.firstproject.entity.BaseEntity;
+import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.Utils;
 
 import io.reactivex.Observer;
@@ -39,12 +39,12 @@ public abstract class BaseObserver<T> implements Observer<BaseEntity<T>> {
 
     @Override
     public void onError(Throwable e) {
-        Log.e(TAG, "error:" + e.toString());
+        LogUtils.e(TAG, "error:" + e.toString());
     }
 
     @Override
     public void onComplete() {
-        Log.d(TAG, "onComplete");
+        LogUtils.d(TAG, "onComplete");
     }
 
 
