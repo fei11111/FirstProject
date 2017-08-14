@@ -32,6 +32,7 @@
     </LinearLayout>
 
     <com.fei.firstproject.widget.MyHorizontalScrollView
+        android:id="@+id/hsv_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/size_10"

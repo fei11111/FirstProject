@@ -42,6 +42,12 @@ public class MainActivity extends BaseActivity {
     private static final int REQUEST_CODE_1 = 100;
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     public void requestPermissionsBeforeInit() {
 
         checkPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_1);
@@ -67,12 +73,6 @@ public class MainActivity extends BaseActivity {
     @Override
     public int getContentViewResId() {
         return R.layout.activity_main;
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
     }
 
     @Override

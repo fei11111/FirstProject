@@ -1,5 +1,9 @@
 package com.fei.firstproject.fragment;
 
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +16,7 @@ import com.fei.banner.Banner;
 import com.fei.firstproject.R;
 import com.fei.firstproject.image.GlideImageLoader;
 import com.fei.firstproject.utils.Utils;
+import com.fei.firstproject.widget.MyHorizontalScrollView;
 import com.fei.firstproject.widget.TextSwitchView;
 
 import java.util.ArrayList;
@@ -19,6 +24,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.content.Context.SENSOR_SERVICE;
 
 /**
  * Created by Administrator on 2017/7/29.
@@ -32,8 +39,18 @@ public class MainFragment extends BaseFragment {
     TextSwitchView tsv;
     @BindView(R.id.ll_menu)
     LinearLayout llMenu;
+    @BindView(R.id.hsv_main)
+    MyHorizontalScrollView hsvMain;
 
     private List<String> imageUrls = new ArrayList<>();
+    private SensorManager mSensorManager;
+    private Sensor mSensor;
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mSensorManager.unregisterListener(lsn);
+    }
 
     @Override
     public void requestPermissionsBeforeInit() {
@@ -62,10 +79,18 @@ public class MainFragment extends BaseFragment {
 
     @Override
     public void init(Bundle savedInstanceState) {
-        Log.i("tag","main");
+        Log.i("tag", "main");
         initBanner();
         initSwitch();
         initMenu();
+        //重力感应
+        initSensor();
+    }
+
+    private void initSensor() {
+        mSensorManager = (SensorManager) activity.getSystemService(SENSOR_SERVICE);
+        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mSensorManager.registerListener(lsn, mSensor, SensorManager.SENSOR_DELAY_GAME);
     }
 
     private void initMenu() {
@@ -105,4 +130,20 @@ public class MainFragment extends BaseFragment {
         //banner设置方法全部调用完毕时最后调用
         banner.start();
     }
+
+    SensorEventListener lsn = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            float x = event.values[SensorManager.DATA_X];
+            if (hsvMain != null) {
+                if (x > 0 && x < 0.2f) return;
+                hsvMain.scrollBy((int) (x), 0);
+            }
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+            // TODO Auto-generated method stub
+        }
+    };
 }

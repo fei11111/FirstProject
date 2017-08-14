@@ -46,6 +46,12 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseIn
         init(savedInstanceState);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
+    }
+
     private void initProgress() {
         progressDialog = new CustomeProgressDialog(this);
         progressDialog.setCanceledOnTouchOutside(false);
@@ -69,12 +75,6 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseIn
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unbinder.unbind();
     }
 
     /**
