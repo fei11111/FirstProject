@@ -78,4 +78,18 @@ public class NcwEntity {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    @Override
+    public String toString() {
+        return "NcwEntity{" +
+                "catid='" + catid + '\'' +
+                ", catname='" + catname + '\'' +
+                ", description='" + description + '\'' +
+                ", id='" + id + '\'' +
+                ", inputtime='" + inputtime + '\'' +
+                ", thumb='" + thumb + '\'' +
+                ", title='" + title + '\'' +
+                ", url='" + url + '\'' +
+                '}';
+    }
 }

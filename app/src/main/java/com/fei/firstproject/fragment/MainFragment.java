@@ -5,6 +5,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,16 +15,29 @@ import android.widget.TextView;
 
 import com.fei.banner.Banner;
 import com.fei.firstproject.R;
+import com.fei.firstproject.adapter.NcwAdapter;
+import com.fei.firstproject.adapter.RecommandPlanAdapter;
+import com.fei.firstproject.entity.BaseEntity;
+import com.fei.firstproject.entity.NcwEntity;
+import com.fei.firstproject.entity.RecommendEntity;
+import com.fei.firstproject.http.BaseObserver;
+import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
+import com.fei.firstproject.http.RxSchedulers;
+import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.image.GlideImageLoader;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.MyHorizontalScrollView;
+import com.fei.firstproject.widget.NoScrollListView;
 import com.fei.firstproject.widget.TextSwitchView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
 
 import static android.content.Context.SENSOR_SERVICE;
 
@@ -41,15 +55,34 @@ public class MainFragment extends BaseFragment {
     LinearLayout llMenu;
     @BindView(R.id.hsv_main)
     MyHorizontalScrollView hsvMain;
+    @BindView(R.id.lv_ncw)
+    NoScrollListView lvNcw;
+    @BindView(R.id.ll_ncw)
+    LinearLayoutCompat llNcw;
+    @BindView(R.id.lv_recommend_plan)
+    NoScrollListView lvRecommendPlan;
+    @BindView(R.id.ll_recommend_plan)
+    LinearLayoutCompat llRecommendPlan;
 
     private List<String> imageUrls = new ArrayList<>();
     private SensorManager mSensorManager;
     private Sensor mSensor;
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mSensorManager.registerListener(lsn, mSensor, SensorManager.SENSOR_DELAY_GAME);
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         mSensorManager.unregisterListener(lsn);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 
     @Override
@@ -85,12 +118,54 @@ public class MainFragment extends BaseFragment {
         initMenu();
         //重力感应
         initSensor();
+        initData();
+    }
+
+    private void initData() {
+        //农财网
+        initNcw();
+        //推荐方案
+        initRecommendPlan();
+    }
+
+    private void initRecommendPlan() {
+        //province=&county=&city=&
+        Map<String, String> map = new HashMap<>();
+        map.put("province", "");
+        map.put("county", "");
+        map.put("city", "");
+        Observable<BaseEntity<List<RecommendEntity>>> recommendPlan =
+                RetrofitFactory.getBtPlantWeb().getRecommendPlan(map);
+        recommendPlan
+                .compose(RxSchedulers.compose(activity, this.<BaseEntity<List<RecommendEntity>>>bindToLifecycle()))
+                .subscribe(new BaseObserver<List<RecommendEntity>>(activity) {
+                    @Override
+                    protected void onHandleSuccess(List<RecommendEntity> recommendEntities) {
+                        if (recommendEntities != null && recommendEntities.size() > 0) {
+                            llRecommendPlan.setVisibility(View.VISIBLE);
+                            lvRecommendPlan.setAdapter(new RecommandPlanAdapter(activity, recommendEntities));
+                        }
+                    }
+                });
+    }
+
+    private void initNcw() {
+        Observable<List<NcwEntity>> ncw = RetrofitFactory.getNcw().getNcw();
+        ncw.compose(RxSchedulers.compose(activity, this.<List<NcwEntity>>bindToLifecycle())).subscribe(new BaseWithoutBaseEntityObserver<List<NcwEntity>>(activity) {
+            @Override
+            protected void onHandleSuccess(List<NcwEntity> ncwEntities) {
+                if (ncwEntities != null && ncwEntities.size() > 0) {
+                    Log.i("tag", ncwEntities.toString());
+                    llNcw.setVisibility(View.VISIBLE);
+                    lvNcw.setAdapter(new NcwAdapter(activity, ncwEntities));
+                }
+            }
+        });
     }
 
     private void initSensor() {
         mSensorManager = (SensorManager) activity.getSystemService(SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        mSensorManager.registerListener(lsn, mSensor, SensorManager.SENSOR_DELAY_GAME);
     }
 
     private void initMenu() {
@@ -146,4 +221,5 @@ public class MainFragment extends BaseFragment {
             // TODO Auto-generated method stub
         }
     };
+
 }

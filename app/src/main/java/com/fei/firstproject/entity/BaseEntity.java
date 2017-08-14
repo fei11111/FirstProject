@@ -6,28 +6,24 @@ package com.fei.firstproject.entity;
 
 public class BaseEntity<T> {
 
-    private int resultCode;
-    private String resultMessage;
+    private boolean state;
+    private String message;
     private T data;
 
-    public boolean isSuccess() {
-        return resultCode == 0;
+    public boolean isState() {
+        return state;
     }
 
-    public int getResultCode() {
-        return resultCode;
+    public void setState(boolean state) {
+        this.state = state;
     }
 
-    public void setResultCode(int resultCode) {
-        this.resultCode = resultCode;
+    public String getMessage() {
+        return message;
     }
 
-    public String getResultMessage() {
-        return resultMessage;
-    }
-
-    public void setResultMessage(String resultMessage) {
-        this.resultMessage = resultMessage;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public T getData() {

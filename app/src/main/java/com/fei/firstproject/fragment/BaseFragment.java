@@ -13,7 +13,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
@@ -23,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fei.firstproject.inter.BaseInterface;
+import com.trello.rxlifecycle2.components.support.RxFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ import butterknife.Unbinder;
  * Created by Administrator on 2017/7/27.
  */
 
-public abstract class BaseFragment extends Fragment implements BaseInterface {
+public abstract class BaseFragment extends RxFragment implements BaseInterface {
 
     private Unbinder unbinder;
     protected Activity activity;
