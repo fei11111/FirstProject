@@ -6,12 +6,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
-
-import com.fei.firstproject.R;
 
 import butterknife.ButterKnife;
-import butterknife.OnTouch;
 
 /**
  * Created by Administrator on 2017/7/29.
@@ -86,31 +82,31 @@ public class MyViewPager extends ViewPager {
         return super.onTouchEvent(ev);
     }
 
-    @OnTouch(R.id.vp_main)
-    boolean touch(View view, MotionEvent motionEvent) {
-        int action = motionEvent.getAction();
-        switch (action) {
-            case MotionEvent.ACTION_DOWN:
-                Log.i("tag", "viewpager_touch_down");
-                down_x = motionEvent.getX();
-                drawerLayout.requestDisallowInterceptTouchEvent(true);
-                break;
-            case MotionEvent.ACTION_MOVE:
-                Log.i("tag", "viewpager_touch_move");
-                move_x = motionEvent.getX();
-                int currentItem = getCurrentItem();
-                if (currentItem == 0 && move_x - down_x > 60f) {
-                    drawerLayout.requestDisallowInterceptTouchEvent(false);
-                } else {
-                    drawerLayout.requestDisallowInterceptTouchEvent(true);
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                Log.i("tag", "viewpager_touch_up");
-                break;
-        }
-        return false;
-    }
+//    @OnTouch(R.id.vp_main)
+//    boolean touch(View view, MotionEvent motionEvent) {
+//        int action = motionEvent.getAction();
+//        switch (action) {
+//            case MotionEvent.ACTION_DOWN:
+//                Log.i("tag", "viewpager_touch_down");
+//                down_x = motionEvent.getX();
+//                drawerLayout.requestDisallowInterceptTouchEvent(true);
+//                break;
+//            case MotionEvent.ACTION_MOVE:
+//                Log.i("tag", "viewpager_touch_move");
+//                move_x = motionEvent.getX();
+//                int currentItem = getCurrentItem();
+//                if (currentItem == 0 && move_x - down_x > 60f) {
+//                    drawerLayout.requestDisallowInterceptTouchEvent(false);
+//                } else {
+//                    drawerLayout.requestDisallowInterceptTouchEvent(true);
+//                }
+//                break;
+//            case MotionEvent.ACTION_UP:
+//                Log.i("tag", "viewpager_touch_up");
+//                break;
+//        }
+//        return false;
+//    }
 
 
 }

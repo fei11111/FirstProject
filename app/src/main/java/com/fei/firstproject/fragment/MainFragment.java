@@ -1,6 +1,7 @@
 package com.fei.firstproject.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -61,6 +62,7 @@ public class MainFragment extends BaseFragment {
 
     @Override
     public void init(Bundle savedInstanceState) {
+        Log.i("tag","main");
         initBanner();
         initSwitch();
         initMenu();

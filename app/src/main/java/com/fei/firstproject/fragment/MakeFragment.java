@@ -1,6 +1,7 @@
 package com.fei.firstproject.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.fei.firstproject.R;
 
@@ -37,6 +38,6 @@ public class MakeFragment extends BaseFragment {
 
     @Override
     public void init(Bundle savedInstanceState) {
-
+        Log.i("tag","make");
     }
 }

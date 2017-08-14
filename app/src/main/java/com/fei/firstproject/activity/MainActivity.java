@@ -3,27 +3,24 @@ package com.fei.firstproject.activity;
 import android.Manifest;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
-import com.fei.firstproject.adapter.FragmentAdapter;
 import com.fei.firstproject.fragment.MainFragment;
 import com.fei.firstproject.fragment.MakeFragment;
 import com.fei.firstproject.fragment.MeFragment;
-import com.fei.firstproject.toast.ToastCompat;
+import com.fei.firstproject.fragment.manager.FragmentInstanceManager;
 import com.fei.firstproject.utils.Utils;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.OnClick;
-import butterknife.OnPageChange;
 
 public class MainActivity extends BaseActivity {
 
@@ -31,15 +28,17 @@ public class MainActivity extends BaseActivity {
     Toolbar toolbar;
     @BindView(R.id.tv_title)
     TextView tv_title;
-    @BindView(R.id.vp_main)
-    ViewPager vpMain;
     @BindView(R.id.ll_bottom_main)
     LinearLayout llBottomMain;
-    @BindView(R.id.ll_bottom_shopping_cart)
-    LinearLayout llBottomShoppingCart;
+    @BindView(R.id.ll_bottom_make)
+    LinearLayout llBottomMake;
     @BindView(R.id.ll_bottom_me)
     LinearLayout llBottomMe;
 
+    private FragmentManager mFragmentManager;
+    private MainFragment mainFragment;
+    private MakeFragment makeFragment;
+    private MeFragment meFragment;
     private static final int REQUEST_CODE_1 = 100;
 
     @Override
@@ -79,57 +78,79 @@ public class MainActivity extends BaseActivity {
     @Override
     public void init(Bundle savedInstanceState) {
         setSupportActionBar(toolbar);
-        initViewPager();
+        mFragmentManager = getSupportFragmentManager();
+        llBottomMain.performClick();
     }
 
-    private void initViewPager() {
-        ArrayList<Fragment> fragments = new ArrayList<>();
-        fragments.add(new MainFragment());
-        fragments.add(new MakeFragment());
-        fragments.add(new MeFragment());
-        vpMain.setAdapter(new FragmentAdapter(getSupportFragmentManager(), fragments));
-        llBottomMain.setSelected(true);
-    }
-
-    @OnPageChange(value = R.id.vp_main, callback = OnPageChange.Callback.PAGE_SELECTED)
-    void pageChange(int select) {
-        resetAllState();
-        switch (select) {
-            case 0:
-                llBottomMain.setSelected(true);
-                tv_title.setText(getString(R.string.main));
-                break;
-            case 1:
-                llBottomShoppingCart.setSelected(true);
-                tv_title.setText(getString(R.string.make));
-                break;
-            case 2:
-                llBottomMe.setSelected(true);
-                tv_title.setText(getString(R.string.me));
-                break;
-        }
-    }
-
-    @OnClick({R.id.ll_bottom_main, R.id.ll_bottom_shopping_cart, R.id.ll_bottom_me})
+    @OnClick({R.id.ll_bottom_main, R.id.ll_bottom_make, R.id.ll_bottom_me})
     void clickBottom(View view) {
         int id = view.getId();
+        resetAllState();
         switch (id) {
             case R.id.ll_bottom_main:
-                vpMain.setCurrentItem(0);
+                llBottomMain.setSelected(true);
+                tv_title.setText(getString(R.string.main));
+                tv_title.setText(getString(R.string.main));
+                if (mainFragment == null) {
+                    mainFragment = (MainFragment) FragmentInstanceManager.getInstance().getFragmet(MainFragment.class);
+                    switchFragment(mainFragment, true);
+                } else {
+                    switchFragment(mainFragment, false);
+                }
                 break;
-            case R.id.ll_bottom_shopping_cart:
-                vpMain.setCurrentItem(1);
+            case R.id.ll_bottom_make:
+                llBottomMake.setSelected(true);
+                tv_title.setText(getString(R.string.make));
+                tv_title.setText(getString(R.string.make));
+                if (makeFragment == null) {
+                    makeFragment = (MakeFragment) FragmentInstanceManager.getInstance().getFragmet(MakeFragment.class);
+                    switchFragment(makeFragment, true);
+                } else {
+                    switchFragment(makeFragment, false);
+                }
                 break;
             case R.id.ll_bottom_me:
-                vpMain.setCurrentItem(2);
+                llBottomMe.setSelected(true);
+                tv_title.setText(getString(R.string.me));
+                tv_title.setText(getString(R.string.me));
+                if (meFragment == null) {
+                    meFragment = (MeFragment) FragmentInstanceManager.getInstance().getFragmet(MeFragment.class);
+                    switchFragment(meFragment, true);
+                } else {
+                    switchFragment(meFragment, false);
+                }
                 break;
         }
     }
 
     private void resetAllState() {
         llBottomMain.setSelected(false);
-        llBottomShoppingCart.setSelected(false);
+        llBottomMake.setSelected(false);
         llBottomMe.setSelected(false);
+    }
+
+    //隐藏所有的fragment
+    private void hideFragment(FragmentTransaction transaction) {
+        if (mainFragment != null) {
+            transaction.hide(mainFragment);
+        }
+        if (makeFragment != null) {
+            transaction.hide(makeFragment);
+        }
+        if (meFragment != null) {
+            transaction.hide(meFragment);
+        }
+    }
+
+    // 提供方法切换Fragment
+    public void switchFragment(Fragment fragment, boolean isNeedAdd) {
+        FragmentTransaction transaction = mFragmentManager.beginTransaction();
+        if (isNeedAdd) {
+            transaction.add(R.id.fl_main_container, fragment);
+        }
+        hideFragment(transaction);
+        transaction.show(fragment);
+        transaction.commit();
     }
 
     @Override

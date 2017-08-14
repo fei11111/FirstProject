@@ -51,9 +51,13 @@ public abstract class BaseFragment extends Fragment implements BaseInterface {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(getContentViewResId(), container, false);
         unbinder = ButterKnife.bind(this, view);
-
-        init(savedInstanceState);
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        init(savedInstanceState);
     }
 
     @Override
