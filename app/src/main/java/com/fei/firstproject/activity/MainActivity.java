@@ -90,7 +90,6 @@ public class MainActivity extends BaseActivity {
             case R.id.ll_bottom_main:
                 llBottomMain.setSelected(true);
                 tv_title.setText(getString(R.string.main));
-                tv_title.setText(getString(R.string.main));
                 if (mainFragment == null) {
                     mainFragment = (MainFragment) FragmentInstanceManager.getInstance().getFragmet(MainFragment.class);
                     switchFragment(mainFragment, true);
@@ -101,7 +100,6 @@ public class MainActivity extends BaseActivity {
             case R.id.ll_bottom_make:
                 llBottomMake.setSelected(true);
                 tv_title.setText(getString(R.string.make));
-                tv_title.setText(getString(R.string.make));
                 if (makeFragment == null) {
                     makeFragment = (MakeFragment) FragmentInstanceManager.getInstance().getFragmet(MakeFragment.class);
                     switchFragment(makeFragment, true);
@@ -111,7 +109,6 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.ll_bottom_me:
                 llBottomMe.setSelected(true);
-                tv_title.setText(getString(R.string.me));
                 tv_title.setText(getString(R.string.me));
                 if (meFragment == null) {
                     meFragment = (MeFragment) FragmentInstanceManager.getInstance().getFragmet(MeFragment.class);
