@@ -1,37 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:background="@color/colorPrimary"
-    android:gravity="center_vertical"
-    android:padding="@dimen/size_10">
+    android:background="@color/colorPrimary">
 
-    <ImageView
-        android:id="@+id/iv_head_arrow"
-        android:layout_width="@dimen/size_40"
-        android:layout_height="@dimen/size_40"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_head_left_arrow" />
+    <FrameLayout
+        android:id="@+id/fl_head_left"
+        android:layout_width="@dimen/size_50"
+        android:layout_height="@dimen/size_50"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
-    <TextView
-        android:id="@+id/tv_head_desp"
-        android:layout_width="@dimen/size_40"
-        android:layout_height="@dimen/size_40"
+        <ImageView
+            android:id="@+id/iv_head_left"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/size_8"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_head_left_arrow"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_head_left"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="消息"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/tx_18" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_head_right"
+        android:layout_width="@dimen/size_50"
+        android:layout_height="@dimen/size_50"
         android:layout_alignParentRight="true"
-        android:gravity="center"
-        android:text="消息"
-        android:textColor="@color/colorWhite"
-        android:textSize="@dimen/tx_15" />
+        android:layout_centerVertical="true">
+
+        <ImageView
+            android:id="@+id/iv_head_right"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/size_8"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_message"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_head_right"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="消息"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/tx_18" />
+    </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_40"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/size_5"
-        android:layout_marginRight="@dimen/size_5"
-        android:layout_toLeftOf="@id/tv_head_desp"
-        android:layout_toRightOf="@id/iv_head_arrow">
+        android:layout_toLeftOf="@id/fl_head_right"
+        android:layout_toRightOf="@id/fl_head_left">
 
         <RelativeLayout
             android:id="@+id/rl_search"
@@ -65,10 +96,8 @@
             android:ellipsize="end"
             android:gravity="center"
             android:lines="1"
-            android:text="title"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/tx_20"
-            android:visibility="gone" />
+            android:textSize="@dimen/tx_22" />
 
     </FrameLayout>
 
