@@ -93,17 +93,6 @@ public class AppHeadView extends RelativeLayout {
     private void initView() {
         LayoutInflater.from(mContext).inflate(R.layout.app_head_view, this);
         ButterKnife.bind(this);
-        setLeftRightStyle(ivHeadLeft, tvHeadLeft, leftStyle);
-        setImageResource(leftDrawable, ivHeadLeft);
-        setText(leftText, tvHeadLeft);
-        setBackgroundResource(leftBackground, flHeadLeft);
-        setLeftRightStyle(ivHeadRight, tvHeadRight, rightStyle);
-        setImageResource(rightDrawable, ivHeadRight);
-        setText(rightText, tvHeadRight);
-        setBackgroundResource(rightBackground, flHeadRight);
-        setMiddleStyle(rlSearch, tvTitle, middleStyle);
-        setText(middleText, tvTitle);
-        setMiddleSearchHint(middleSearchHint, etSearch);
         initContent();
     }
 
@@ -158,6 +147,17 @@ public class AppHeadView extends RelativeLayout {
     }
 
     private void initContent() {
+        setLeftRightStyle(ivHeadLeft, tvHeadLeft, leftStyle);
+        setImageResource(leftDrawable, ivHeadLeft);
+        setText(leftText, tvHeadLeft);
+        setBackgroundResource(leftBackground, flHeadLeft);
+        setLeftRightStyle(ivHeadRight, tvHeadRight, rightStyle);
+        setImageResource(rightDrawable, ivHeadRight);
+        setText(rightText, tvHeadRight);
+        setBackgroundResource(rightBackground, flHeadRight);
+        setMiddleStyle(rlSearch, tvTitle, middleStyle);
+        setText(middleText, tvTitle);
+        setMiddleSearchHint(middleSearchHint, etSearch);
     }
 
 }
