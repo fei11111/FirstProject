@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="?attr/actionBarSize"
     android:background="@color/colorPrimary"
     android:gravity="center_vertical"
     android:padding="@dimen/size_10">
@@ -21,7 +21,8 @@
         android:layout_alignParentRight="true"
         android:gravity="center"
         android:text="消息"
-        android:textColor="@color/colorWhite" />
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/tx_15" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -32,11 +33,30 @@
         android:layout_toLeftOf="@id/tv_head_desp"
         android:layout_toRightOf="@id/iv_head_arrow">
 
-        <android.support.v7.widget.SearchView
-            android:id="@+id/sv_head_view"
+        <RelativeLayout
+            android:id="@+id/rl_search"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:searchIcon="@drawable/ic_search"></android.support.v7.widget.SearchView>
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/et_search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_search_bg"
+                android:gravity="center_vertical"
+                android:imeOptions="actionSearch"
+                android:lines="1"
+                android:paddingLeft="@dimen/size_30"
+                android:textColorHint="@color/colorTextSub"
+                android:textSize="@dimen/tx_15" />
+
+            <ImageView
+                android:layout_width="@dimen/size_20"
+                android:layout_height="@dimen/size_20"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/size_5"
+                android:src="@drawable/ic_search" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/tv_title"
@@ -48,7 +68,7 @@
             android:text="title"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/tx_20"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </FrameLayout>
 
