@@ -4,4 +4,27 @@
         <attr name="title" format="string"></attr>
         <attr name="desc" format="string"></attr>
     </declare-styleable>
+
+    <declare-styleable name="AppHeadView">
+        <attr name="leftStyle" format="enum">
+            <enum name="text" value="0" />
+            <enum name="image" value="1" />
+        </attr>
+        <attr name="leftText" format="string"></attr>
+        <attr name="leftDrawable" format="reference"></attr>
+        <attr name="leftBackground" format="reference"></attr>
+        <attr name="rightStyle" format="enum">
+            <enum name="text" value="0" />
+            <enum name="image" value="1" />
+        </attr>
+        <attr name="rightText" format="string"></attr>
+        <attr name="rightDrawable" format="reference"></attr>
+        <attr name="rightBackground" format="reference"></attr>
+        <attr name="middleStyle" format="enum">
+            <enum name="text" value="0" />
+            <enum name="search" value="1" />
+        </attr>
+        <attr name="middleText" format="string"></attr>
+        <attr name="middleSearchHint" format="string"></attr>
+    </declare-styleable>
 </resources>
