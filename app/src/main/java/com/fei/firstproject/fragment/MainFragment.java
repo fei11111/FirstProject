@@ -5,7 +5,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.HorizontalScrollView;
@@ -58,11 +57,11 @@ public class MainFragment extends BaseFragment {
     @BindView(R.id.lv_ncw)
     NoScrollListView lvNcw;
     @BindView(R.id.ll_ncw)
-    LinearLayoutCompat llNcw;
+    LinearLayout llNcw;
     @BindView(R.id.lv_recommend_plan)
     NoScrollListView lvRecommendPlan;
     @BindView(R.id.ll_recommend_plan)
-    LinearLayoutCompat llRecommendPlan;
+    LinearLayout llRecommendPlan;
 
     private List<String> imageUrls = new ArrayList<>();
     private SensorManager mSensorManager;

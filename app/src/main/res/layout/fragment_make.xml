@@ -21,7 +21,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="@dimen/size_20">
+            android:padding="@dimen/size_10">
 
             <ImageView
                 android:layout_width="@dimen/size_45"
@@ -38,9 +38,9 @@
         </LinearLayout>
 
         <View
-            android:layout_width="@dimen/size_2"
+            android:layout_width="@dimen/size_1"
             android:layout_height="match_parent"
-            android:background="@color/colorGray" />
+            android:background="@color/colorBackground" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -48,7 +48,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="@dimen/size_20">
+            android:padding="@dimen/size_10">
 
             <ImageView
                 android:layout_width="@dimen/size_45"
@@ -78,7 +78,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="@dimen/size_20">
+            android:padding="@dimen/size_10">
 
             <ImageView
                 android:layout_width="@dimen/size_45"
@@ -95,9 +95,9 @@
         </LinearLayout>
 
         <View
-            android:layout_width="@dimen/size_2"
+            android:layout_width="@dimen/size_1"
             android:layout_height="match_parent"
-            android:background="@color/colorGray" />
+            android:background="@color/colorBackground" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -105,7 +105,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="@dimen/size_20">
+            android:padding="@dimen/size_10">
 
             <ImageView
                 android:layout_width="@dimen/size_45"

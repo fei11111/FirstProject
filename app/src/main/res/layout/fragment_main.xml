@@ -12,7 +12,8 @@
         <com.fei.banner.Banner
             android:id="@+id/banner"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/size_150"></com.fei.banner.Banner>
+            android:layout_height="@dimen/size_150"
+            android:background="@color/colorPrimary"></com.fei.banner.Banner>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -54,15 +55,13 @@
 
         </HorizontalScrollView>
 
-        <android.support.v7.widget.LinearLayoutCompat
+        <LinearLayout
             android:id="@+id/ll_ncw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_10"
             android:orientation="vertical"
-            android:visibility="gone"
-            app:divider="@drawable/shape_line"
-            app:showDividers="middle">
+            android:visibility="gone">
 
             <com.fei.firstproject.widget.SettingView
                 android:layout_width="match_parent"
@@ -74,21 +73,18 @@
                 android:id="@+id/lv_ncw"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:divider="@color/colorGray"
-                android:dividerHeight="@dimen/size_1"
-                android:listSelector="@android:color/transparent"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="0dp"
                 android:scrollbars="none"></com.fei.firstproject.widget.NoScrollListView>
-        </android.support.v7.widget.LinearLayoutCompat>
+        </LinearLayout>
 
-        <android.support.v7.widget.LinearLayoutCompat
+        <LinearLayout
             android:id="@+id/ll_recommend_plan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_10"
             android:orientation="vertical"
-            android:visibility="gone"
-            app:divider="@drawable/shape_line"
-            app:showDividers="middle">
+            android:visibility="gone">
 
             <com.fei.firstproject.widget.SettingView
                 android:layout_width="match_parent"
@@ -100,10 +96,10 @@
                 android:id="@+id/lv_recommend_plan"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:divider="@color/colorGray"
-                android:dividerHeight="@dimen/size_1"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="0dp"
                 android:listSelector="@android:color/transparent"
                 android:scrollbars="none"></com.fei.firstproject.widget.NoScrollListView>
-        </android.support.v7.widget.LinearLayoutCompat>
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

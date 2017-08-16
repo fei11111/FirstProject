@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:padding="@dimen/size_10">
+        android:padding="@dimen/size_10"
+        android:layout_marginTop="@dimen/size_1"
+        android:background="@color/colorWhite">
 
         <ImageView
             android:id="@+id/iv_recommend_plan"
@@ -22,6 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/size_10"
             android:src="@drawable/ic_arrow" />
 
@@ -32,6 +36,7 @@
             android:layout_marginRight="@dimen/size_5"
             android:layout_toLeftOf="@id/iv_recommend_plan_arrow"
             android:layout_toRightOf="@id/iv_recommend_plan"
+            android:gravity="center_vertical"
             android:orientation="vertical">
 
             <TextView
@@ -55,4 +60,4 @@
 
     </RelativeLayout>
 
-</android.support.v7.widget.CardView>
+</LinearLayout>
