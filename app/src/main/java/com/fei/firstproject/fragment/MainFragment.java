@@ -66,19 +66,30 @@ public class MainFragment extends BaseFragment {
     private List<String> imageUrls = new ArrayList<>();
     private SensorManager mSensorManager;
     private Sensor mSensor;
-    private boolean isScrollLeft = true;
-    private boolean isScrollRight = false;
 
     @Override
-    public void onResume() {
-        super.onResume();
-        mSensorManager.registerListener(lsn, mSensor, SensorManager.SENSOR_DELAY_GAME);
+    public void onHiddenChanged(boolean hidden) {
+        if (hidden) {
+            stopBanner();
+            mSensorManager.unregisterListener(lsn);
+        } else {
+            startBanner();
+            mSensorManager.registerListener(lsn, mSensor, SensorManager.SENSOR_DELAY_GAME);
+        }
+        super.onHiddenChanged(hidden);
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        mSensorManager.unregisterListener(lsn);
+    private void startBanner() {
+        //banner设置方法全部调用完毕时最后调用
+        if (banner != null) {
+            banner.startAutoPlay();
+        }
+    }
+
+    private void stopBanner() {
+        if (banner != null) {
+            banner.stopAutoPlay();
+        }
     }
 
     @Override
@@ -203,7 +214,6 @@ public class MainFragment extends BaseFragment {
         imageUrls.add("http://exp.cdn-hotels.com/hotels/4000000/3900000/3893200/3893187/3893187_25_y.jpg");
         imageUrls.add("http://s3.lvjs.com.cn/trip/original/20140818131550_1792868513.jpg");
         banner.setImages(imageUrls);
-        //banner设置方法全部调用完毕时最后调用
         banner.start();
     }
 
@@ -214,6 +224,7 @@ public class MainFragment extends BaseFragment {
             if (hsvMain != null) {
                 if (x > 0 && x < 0.2f) return;
                 hsvMain.scrollBy((int) (x), 0);
+                LogUtils.i("tag", x + "");
             }
         }
 
