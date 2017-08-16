@@ -74,6 +74,7 @@ public abstract class BaseFragment extends RxFragment implements BaseInterface {
      */
     protected void checkPermissions(String[] mNeedPermissions, int requestCode) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            permissionsGrantCallBack(requestCode);
             return;
         }
         if (mNeedPermissions == null || mNeedPermissions.length == 0) return;

@@ -1,6 +1,7 @@
 package com.fei.firstproject.activity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,7 @@ import com.fei.firstproject.fragment.manager.FragmentInstanceManager;
 import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.AppHeadView;
+import com.fei.firstproject.zxing.activity.CaptureActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -76,6 +78,7 @@ public class MainActivity extends BaseActivity {
     public void permissionsGrantCallBack(int requestCode) {
         if (requestCode == REQUEST_CODE_2) {
             //相机权限
+            startActivity(new Intent(this, CaptureActivity.class));
         }
     }
 

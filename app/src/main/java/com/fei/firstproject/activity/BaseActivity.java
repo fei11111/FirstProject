@@ -85,6 +85,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseIn
      */
     protected void checkPermissions(String[] mNeedPermissions, int requestCode) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            permissionsGrantCallBack(requestCode);
             return;
         }
         if (mNeedPermissions == null || mNeedPermissions.length == 0) return;
