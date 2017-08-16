@@ -224,7 +224,6 @@ public class MainFragment extends BaseFragment {
             if (hsvMain != null) {
                 if (x > 0 && x < 0.2f) return;
                 hsvMain.scrollBy((int) (x), 0);
-                LogUtils.i("tag", x + "");
             }
         }
 

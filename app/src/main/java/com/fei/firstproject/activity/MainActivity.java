@@ -17,6 +17,7 @@ import com.fei.firstproject.fragment.MainFragment;
 import com.fei.firstproject.fragment.MakeFragment;
 import com.fei.firstproject.fragment.MeFragment;
 import com.fei.firstproject.fragment.manager.FragmentInstanceManager;
+import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.AppHeadView;
 
@@ -97,6 +98,21 @@ public class MainActivity extends BaseActivity {
         } else {
             apv.setFlHeadLeftVisible(View.VISIBLE);
         }
+        initToolBarListener();
+    }
+
+    private void initToolBarListener() {
+        apv.setOnLeftRightClickListener(new AppHeadView.OnLeftRightClickListener() {
+            @Override
+            public void onLeft(View view) {
+                LogUtils.i("tag", "可点击");
+            }
+
+            @Override
+            public void onRight(View view) {
+                LogUtils.i("tag", "可点击");
+            }
+        });
     }
 
     @OnClick({R.id.ll_bottom_main, R.id.ll_bottom_make, R.id.ll_bottom_me})
