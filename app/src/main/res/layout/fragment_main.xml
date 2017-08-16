@@ -74,6 +74,8 @@
                 android:id="@+id/lv_ncw"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:divider="@color/colorGray"
+                android:dividerHeight="@dimen/size_1"
                 android:listSelector="@android:color/transparent"
                 android:scrollbars="none"></com.fei.firstproject.widget.NoScrollListView>
         </android.support.v7.widget.LinearLayoutCompat>
@@ -92,12 +94,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:desc="@string/more"
-                app:title="@string/ncw"></com.fei.firstproject.widget.SettingView>
+                app:title="@string/recommend_plan"></com.fei.firstproject.widget.SettingView>
 
             <com.fei.firstproject.widget.NoScrollListView
                 android:id="@+id/lv_recommend_plan"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:divider="@color/colorGray"
+                android:dividerHeight="@dimen/size_1"
                 android:listSelector="@android:color/transparent"
                 android:scrollbars="none"></com.fei.firstproject.widget.NoScrollListView>
         </android.support.v7.widget.LinearLayoutCompat>

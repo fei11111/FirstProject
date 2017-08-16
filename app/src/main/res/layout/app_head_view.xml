@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
+    android:layout_height="wrap_content"
     android:background="@color/colorPrimary"
     android:focusable="true"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    android:padding="@dimen/size_5">
 
     <FrameLayout
         android:id="@+id/fl_head_left"
-        android:layout_width="@dimen/size_60"
-        android:layout_height="@dimen/size_60"
+        android:layout_width="@dimen/size_30"
+        android:layout_height="@dimen/size_30"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="@dimen/size_5"
-        android:layout_marginTop="@dimen/size_5">
+        android:layout_centerVertical="true">
 
         <ImageView
             android:id="@+id/iv_head_left"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/size_10"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_head_left_arrow"
             android:visibility="gone" />
@@ -37,12 +35,10 @@
 
     <FrameLayout
         android:id="@+id/fl_head_right"
-        android:layout_width="@dimen/size_60"
-        android:layout_height="@dimen/size_60"
+        android:layout_width="@dimen/size_30"
+        android:layout_height="@dimen/size_30"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginBottom="@dimen/size_5"
-        android:layout_marginTop="@dimen/size_5">
+        android:layout_centerVertical="true">
 
         <TextView
             android:id="@+id/tv_head_right"
@@ -57,7 +53,6 @@
             android:id="@+id/iv_head_right"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/size_10"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_message"
             android:visibility="gone" />
@@ -65,10 +60,10 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/size_40"
+        android:layout_height="@dimen/size_30"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/size_5"
-        android:layout_marginRight="@dimen/size_5"
+        android:layout_marginLeft="@dimen/size_10"
+        android:layout_marginRight="@dimen/size_10"
         android:layout_toLeftOf="@id/fl_head_right"
         android:layout_toRightOf="@id/fl_head_left">
 
@@ -88,13 +83,13 @@
                 android:lines="1"
                 android:paddingLeft="@dimen/size_30"
                 android:textColorHint="@color/colorTextSub"
-                android:textSize="@dimen/tx_15" />
+                android:textSize="@dimen/tx_12" />
 
             <ImageView
-                android:layout_width="@dimen/size_20"
-                android:layout_height="@dimen/size_20"
+                android:layout_width="@dimen/size_15"
+                android:layout_height="@dimen/size_15"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/size_5"
+                android:layout_marginLeft="@dimen/size_10"
                 android:src="@drawable/ic_search" />
         </RelativeLayout>
 
@@ -106,7 +101,7 @@
             android:gravity="center"
             android:lines="1"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/tx_22" />
+            android:textSize="@dimen/tx_20" />
 
     </FrameLayout>
 
