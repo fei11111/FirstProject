@@ -453,13 +453,14 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         public void run() {
             if (count > 1 && isAutoPlay) {
                 currentItem = currentItem % (count + 1) + 1;
-                if (currentItem == 1) {
-                    viewPager.setCurrentItem(currentItem, false);
-                    handler.post(task);
-                } else {
+                Log.i("tag", "currentItem---------" + currentItem);
+//                if (currentItem == 1) {
+//                    viewPager.setCurrentItem(currentItem, false);
+//                    handler.post(task);
+//                } else {
                     viewPager.setCurrentItem(currentItem);
                     handler.postDelayed(task, delayTime);
-                }
+//                }
             }
         }
     };
@@ -545,7 +546,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         switch (state) {
             case 0://No operation
                 if (currentItem == 0) {
-                    viewPager.setCurrentItem(count, false);
+//                    viewPager.setCurrentItem(count, false);
                 } else if (currentItem == count + 1) {
                     viewPager.setCurrentItem(1, false);
                 }
@@ -581,8 +582,11 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
             indicatorImages.get((position - 1 + count) % count).setImageResource(mIndicatorSelectedResId);
             lastPosition = position;
         }
+        currentItem = viewPager.getCurrentItem();
+        if (currentItem == 0) {
+            currentItem = count + 1;
+        }
         if (position == 0) position = count;
-        if (currentItem == 0) currentItem = count;
         if (position > count) position = 1;
         switch (bannerStyle) {
             case BannerConfig.CIRCLE_INDICATOR:
