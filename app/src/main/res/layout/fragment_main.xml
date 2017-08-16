@@ -35,7 +35,7 @@
 
         </LinearLayout>
 
-        <com.fei.firstproject.widget.MyHorizontalScrollView
+        <HorizontalScrollView
             android:id="@+id/hsv_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"></LinearLayout>
 
-        </com.fei.firstproject.widget.MyHorizontalScrollView>
+        </HorizontalScrollView>
 
         <android.support.v7.widget.LinearLayoutCompat
             android:id="@+id/ll_ncw"

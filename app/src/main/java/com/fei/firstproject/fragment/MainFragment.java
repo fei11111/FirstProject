@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,7 +27,6 @@ import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.image.GlideImageLoader;
 import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.Utils;
-import com.fei.firstproject.widget.MyHorizontalScrollView;
 import com.fei.firstproject.widget.NoScrollListView;
 import com.fei.firstproject.widget.TextSwitchView;
 
@@ -54,7 +54,7 @@ public class MainFragment extends BaseFragment {
     @BindView(R.id.ll_menu)
     LinearLayout llMenu;
     @BindView(R.id.hsv_main)
-    MyHorizontalScrollView hsvMain;
+    HorizontalScrollView hsvMain;
     @BindView(R.id.lv_ncw)
     NoScrollListView lvNcw;
     @BindView(R.id.ll_ncw)
@@ -67,6 +67,8 @@ public class MainFragment extends BaseFragment {
     private List<String> imageUrls = new ArrayList<>();
     private SensorManager mSensorManager;
     private Sensor mSensor;
+    private boolean isScrollLeft = true;
+    private boolean isScrollRight = false;
 
     @Override
     public void onResume() {
