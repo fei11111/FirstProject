@@ -204,8 +204,8 @@ public class AppHeadView extends RelativeLayout {
         tvTitle.setVisibility(visible);
     }
 
-    public void setTvTitle(TextView tvTitle) {
-        this.tvTitle = tvTitle;
+    public void setTvTitleText(String text) {
+        tvTitle.setText(text);
     }
 
     public interface OnLeftRightClickListener {

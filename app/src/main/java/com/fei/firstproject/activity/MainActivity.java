@@ -2,19 +2,23 @@ package com.fei.firstproject.activity;
 
 import android.Manifest;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.fei.firstproject.R;
+import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.fragment.MainFragment;
 import com.fei.firstproject.fragment.MakeFragment;
 import com.fei.firstproject.fragment.MeFragment;
 import com.fei.firstproject.fragment.manager.FragmentInstanceManager;
 import com.fei.firstproject.utils.Utils;
+import com.fei.firstproject.widget.AppHeadView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -31,6 +35,14 @@ public class MainActivity extends BaseActivity {
     LinearLayout llBottomMake;
     @BindView(R.id.ll_bottom_me)
     LinearLayout llBottomMe;
+    @BindView(R.id.apv)
+    AppHeadView apv;
+    @BindView(R.id.app_bar_layout)
+    AppBarLayout appBarLayout;
+    @BindView(R.id.bottom_layout)
+    LinearLayout bottomLayout;
+    @BindView(R.id.fl_main_container)
+    FrameLayout flMainContainer;
 
     private FragmentManager mFragmentManager;
     private MainFragment mainFragment;
@@ -46,7 +58,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void requestPermissionsBeforeInit() {
-
         checkPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_1);
     }
 
@@ -75,8 +86,17 @@ public class MainActivity extends BaseActivity {
     @Override
     public void init(Bundle savedInstanceState) {
         setSupportActionBar(toolbar);
+        initToolBar();
         mFragmentManager = getSupportFragmentManager();
         llBottomMain.performClick();
+    }
+
+    private void initToolBar() {
+        if (AppConfig.ISLOGIN) {
+            apv.setFlHeadLeftVisible(View.INVISIBLE);
+        } else {
+            apv.setFlHeadLeftVisible(View.VISIBLE);
+        }
     }
 
     @OnClick({R.id.ll_bottom_main, R.id.ll_bottom_make, R.id.ll_bottom_me})
@@ -86,6 +106,7 @@ public class MainActivity extends BaseActivity {
         switch (id) {
             case R.id.ll_bottom_main:
                 llBottomMain.setSelected(true);
+                setAppHeadViewSearchMode();
                 if (mainFragment == null) {
                     mainFragment = (MainFragment) FragmentInstanceManager.getInstance().getFragmet(MainFragment.class);
                     switchFragment(mainFragment, true);
@@ -95,6 +116,7 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.ll_bottom_make:
                 llBottomMake.setSelected(true);
+                setAppHeadViewTitleMode(getResources().getString(R.string.make));
                 if (makeFragment == null) {
                     makeFragment = (MakeFragment) FragmentInstanceManager.getInstance().getFragmet(MakeFragment.class);
                     switchFragment(makeFragment, true);
@@ -104,6 +126,7 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.ll_bottom_me:
                 llBottomMe.setSelected(true);
+                setAppHeadViewTitleMode(getResources().getString(R.string.me));
                 if (meFragment == null) {
                     meFragment = (MeFragment) FragmentInstanceManager.getInstance().getFragmet(MeFragment.class);
                     switchFragment(meFragment, true);
@@ -112,6 +135,23 @@ public class MainActivity extends BaseActivity {
                 }
                 break;
         }
+    }
+
+    //设置头部是搜索模式
+    private void setAppHeadViewSearchMode() {
+        apv.setFlHeadLeftVisible(View.VISIBLE);
+        apv.setFlHeadRightVisible(View.VISIBLE);
+        apv.setMiddleSearchVisible(View.VISIBLE);
+        apv.setTvTitleVisible(View.GONE);
+    }
+
+    //设置头部是文本模式
+    private void setAppHeadViewTitleMode(String title) {
+        apv.setFlHeadLeftVisible(View.INVISIBLE);
+        apv.setFlHeadRightVisible(View.INVISIBLE);
+        apv.setMiddleSearchVisible(View.GONE);
+        apv.setTvTitleVisible(View.VISIBLE);
+        apv.setTvTitleText(title);
     }
 
     private void resetAllState() {
