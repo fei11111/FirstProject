@@ -29,7 +29,7 @@
                 app:leftVisible="visible"
                 app:middleSearchHint="@string/recommend_tip"
                 app:middleStyle="search"
-                app:rightDrawable="@drawable/ic_message"
+                app:rightDrawable="@drawable/ic_main_message"
                 app:rightStyle="image"
                 app:rightVisible="visible"></com.fei.firstproject.widget.AppHeadView>
         </android.support.v7.widget.Toolbar>

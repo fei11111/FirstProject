@@ -13,7 +13,7 @@
             android:id="@+id/banner"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_150"
-            android:background="@color/colorPrimary"></com.fei.banner.Banner>
+            android:background="@drawable/ic_banner_default"></com.fei.banner.Banner>
 
         <LinearLayout
             android:layout_width="match_parent"

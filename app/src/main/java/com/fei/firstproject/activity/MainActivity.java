@@ -50,6 +50,7 @@ public class MainActivity extends BaseActivity {
     private MakeFragment makeFragment;
     private MeFragment meFragment;
     private static final int REQUEST_CODE_1 = 100;
+    private static final int REQUEST_CODE_2 = 101;
 
     @Override
     protected void onDestroy() {
@@ -64,18 +65,26 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
-        showMissingPermissionDialog("需要访问存储权限", requestCode);
+        if (requestCode == REQUEST_CODE_1) {
+            showMissingPermissionDialog("需要访问存储权限", requestCode);
+        } else if (requestCode == REQUEST_CODE_2) {
+            showMissingPermissionDialog("需要打开相机扫描", requestCode);
+        }
     }
 
     @Override
     public void permissionsGrantCallBack(int requestCode) {
-
+        if (requestCode == REQUEST_CODE_2) {
+            //相机权限
+        }
     }
 
     @Override
     public void permissionDialogDismiss(int requestCode) {
         if (requestCode == REQUEST_CODE_1) {
             Utils.showToast(this, "无法访问存储，将影响APP使用");
+        } else if (requestCode == REQUEST_CODE_2) {
+            Utils.showToast(this, "无法获取相机使用权限");
         }
     }
 
@@ -105,7 +114,7 @@ public class MainActivity extends BaseActivity {
         apv.setOnLeftRightClickListener(new AppHeadView.OnLeftRightClickListener() {
             @Override
             public void onLeft(View view) {
-                LogUtils.i("tag", "可点击");
+                checkPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_2);
             }
 
             @Override
