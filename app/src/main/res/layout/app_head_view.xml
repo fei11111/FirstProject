@@ -2,7 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPrimary"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <FrameLayout
         android:id="@+id/fl_head_left"
@@ -27,10 +29,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="消息"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/tx_18"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </FrameLayout>
 
@@ -48,10 +49,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="消息"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/tx_18"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/iv_head_right"
@@ -106,8 +106,7 @@
             android:gravity="center"
             android:lines="1"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/tx_22"
-            android:visibility="gone"/>
+            android:textSize="@dimen/tx_22" />
 
     </FrameLayout>
 

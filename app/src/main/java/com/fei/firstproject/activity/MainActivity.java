@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.fragment.MainFragment;
@@ -26,8 +25,6 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.tv_title)
-    TextView tv_title;
     @BindView(R.id.ll_bottom_main)
     LinearLayout llBottomMain;
     @BindView(R.id.ll_bottom_make)
@@ -89,7 +86,6 @@ public class MainActivity extends BaseActivity {
         switch (id) {
             case R.id.ll_bottom_main:
                 llBottomMain.setSelected(true);
-                tv_title.setText(getString(R.string.main));
                 if (mainFragment == null) {
                     mainFragment = (MainFragment) FragmentInstanceManager.getInstance().getFragmet(MainFragment.class);
                     switchFragment(mainFragment, true);
@@ -99,7 +95,6 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.ll_bottom_make:
                 llBottomMake.setSelected(true);
-                tv_title.setText(getString(R.string.make));
                 if (makeFragment == null) {
                     makeFragment = (MakeFragment) FragmentInstanceManager.getInstance().getFragmet(MakeFragment.class);
                     switchFragment(makeFragment, true);
@@ -109,7 +104,6 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.ll_bottom_me:
                 llBottomMe.setSelected(true);
-                tv_title.setText(getString(R.string.me));
                 if (meFragment == null) {
                     meFragment = (MeFragment) FragmentInstanceManager.getInstance().getFragmet(MeFragment.class);
                     switchFragment(meFragment, true);

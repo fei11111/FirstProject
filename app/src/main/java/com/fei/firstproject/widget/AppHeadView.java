@@ -16,6 +16,7 @@ import com.fei.firstproject.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Fei on 2017/8/15.
@@ -43,10 +44,12 @@ public class AppHeadView extends RelativeLayout {
     TextView tvTitle;
 
     private Context mContext;
+    private int leftVisible = View.VISIBLE;
     private int leftStyle = 0;
     private String leftText;
     private int leftDrawable = -1;
     private int leftBackground = -1;
+    private int rightVisible = View.VISIBLE;
     private int rightStyle = 0;
     private String rightText;
     private int rightDrawable = -1;
@@ -54,6 +57,11 @@ public class AppHeadView extends RelativeLayout {
     private int middleStyle = 0;
     private String middleText;
     private String middleSearchHint;
+    private OnLeftRightClickListener onLeftRightClickListener;
+
+    public void setOnLeftRightClickListener(OnLeftRightClickListener onLeftRightClickListener) {
+        this.onLeftRightClickListener = onLeftRightClickListener;
+    }
 
     public AppHeadView(Context context) throws Exception {
         super(context);
@@ -74,10 +82,12 @@ public class AppHeadView extends RelativeLayout {
 
     private void initAttribute(AttributeSet attrs) {
         TypedArray typedArray = mContext.obtainStyledAttributes(attrs, R.styleable.AppHeadView);
+        leftVisible = typedArray.getInt(R.styleable.AppHeadView_leftVisible, View.VISIBLE);
         leftStyle = typedArray.getInt(R.styleable.AppHeadView_leftStyle, 0);
         leftDrawable = typedArray.getResourceId(R.styleable.AppHeadView_leftDrawable, -1);
         leftText = typedArray.getString(R.styleable.AppHeadView_leftText);
         leftBackground = typedArray.getInt(R.styleable.AppHeadView_leftBackground, -1);
+        rightVisible = typedArray.getInt(R.styleable.AppHeadView_rightVisible, View.VISIBLE);
         rightStyle = typedArray.getInt(R.styleable.AppHeadView_rightStyle, 0);
         rightDrawable = typedArray.getResourceId(R.styleable.AppHeadView_rightDrawable, -1);
         rightText = typedArray.getString(R.styleable.AppHeadView_rightText);
@@ -89,14 +99,33 @@ public class AppHeadView extends RelativeLayout {
         initView();
     }
 
-
     private void initView() {
         LayoutInflater.from(mContext).inflate(R.layout.app_head_view, this);
         ButterKnife.bind(this);
         initContent();
     }
 
-    private void setLeftRightStyle(ImageView iv, TextView tv, int style) {
+    private void initContent() {
+        setLayoutvisible(leftVisible, flHeadLeft);
+        setLeftRightStyle(leftStyle, ivHeadLeft, tvHeadLeft);
+        setImageResource(leftDrawable, ivHeadLeft);
+        setText(leftText, tvHeadLeft);
+        setBackgroundResource(leftBackground, flHeadLeft);
+        setLayoutvisible(rightVisible, flHeadRight);
+        setLeftRightStyle(rightStyle, ivHeadRight, tvHeadRight);
+        setImageResource(rightDrawable, ivHeadRight);
+        setText(rightText, tvHeadRight);
+        setBackgroundResource(rightBackground, flHeadRight);
+        setMiddleStyle(middleStyle, rlSearch, tvTitle);
+        setText(middleText, tvTitle);
+        setMiddleSearchHint(middleSearchHint, etSearch);
+    }
+
+    private void setLayoutvisible(int visible, FrameLayout fl) {
+        fl.setVisibility(visible);
+    }
+
+    private void setLeftRightStyle(int style, ImageView iv, TextView tv) {
         switch (style) {
             case 0:
                 iv.setVisibility(View.GONE);
@@ -109,15 +138,15 @@ public class AppHeadView extends RelativeLayout {
         }
     }
 
-    private void setMiddleStyle(RelativeLayout relativeLayout, TextView tv, int style) {
+    private void setMiddleStyle(int style, RelativeLayout relativeLayout, TextView tv) {
         switch (style) {
             case 0:
-                relativeLayout.setVisibility(View.VISIBLE);
-                tv.setVisibility(View.GONE);
-                break;
-            case 1:
                 relativeLayout.setVisibility(View.GONE);
                 tv.setVisibility(View.VISIBLE);
+                break;
+            case 1:
+                relativeLayout.setVisibility(View.VISIBLE);
+                tv.setVisibility(View.GONE);
                 break;
         }
     }
@@ -146,18 +175,42 @@ public class AppHeadView extends RelativeLayout {
         }
     }
 
-    private void initContent() {
-        setLeftRightStyle(ivHeadLeft, tvHeadLeft, leftStyle);
-        setImageResource(leftDrawable, ivHeadLeft);
-        setText(leftText, tvHeadLeft);
-        setBackgroundResource(leftBackground, flHeadLeft);
-        setLeftRightStyle(ivHeadRight, tvHeadRight, rightStyle);
-        setImageResource(rightDrawable, ivHeadRight);
-        setText(rightText, tvHeadRight);
-        setBackgroundResource(rightBackground, flHeadRight);
-        setMiddleStyle(rlSearch, tvTitle, middleStyle);
-        setText(middleText, tvTitle);
-        setMiddleSearchHint(middleSearchHint, etSearch);
+    @OnClick({R.id.fl_head_left, R.id.fl_head_right})
+    void onLeftRightClick(View view) {
+        if (onLeftRightClickListener == null) return;
+        switch (view.getId()) {
+            case R.id.fl_head_left:
+                onLeftRightClickListener.onLeft(view);
+                break;
+            case R.id.fl_head_right:
+                onLeftRightClickListener.onRight(view);
+                break;
+        }
     }
 
+    public void setFlHeadLeftVisible(int visible) {
+        setLayoutvisible(visible, flHeadLeft);
+    }
+
+    public void setFlHeadRightVisible(int visible) {
+        setLayoutvisible(visible, flHeadRight);
+    }
+
+    public void setMiddleSearchVisible(int visible) {
+        rlSearch.setVisibility(visible);
+    }
+
+    public void setTvTitleVisible(int visible) {
+        tvTitle.setVisibility(visible);
+    }
+
+    public void setTvTitle(TextView tvTitle) {
+        this.tvTitle = tvTitle;
+    }
+
+    public interface OnLeftRightClickListener {
+        public void onLeft(View view);
+
+        public void onRight(View view);
+    }
 }

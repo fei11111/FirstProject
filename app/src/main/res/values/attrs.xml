@@ -6,6 +6,10 @@
     </declare-styleable>
 
     <declare-styleable name="AppHeadView">
+        <attr name="leftVisible" format="integer">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="4" />
+        </attr>
         <attr name="leftStyle" format="enum">
             <enum name="text" value="0" />
             <enum name="image" value="1" />
@@ -13,6 +17,10 @@
         <attr name="leftText" format="string"></attr>
         <attr name="leftDrawable" format="reference"></attr>
         <attr name="leftBackground" format="reference"></attr>
+        <attr name="rightVisible" format="integer">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="4" />
+        </attr>
         <attr name="rightStyle" format="enum">
             <enum name="text" value="0" />
             <enum name="image" value="1" />

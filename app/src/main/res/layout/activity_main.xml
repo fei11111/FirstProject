@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.fei.firstproject.activity.MainActivity"
-    android:background="@color/colorBackground">
+    android:background="@color/colorBackground"
+    tools:context="com.fei.firstproject.activity.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"
@@ -20,14 +20,18 @@
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <TextView
-                android:id="@+id/tv_title"
+            <com.fei.firstproject.widget.AppHeadView
+                android:id="@+id/apv"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/main"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/tx_20" />
+                android:layout_height="match_parent"
+                app:leftStyle="text"
+                app:leftText="@string/login"
+                app:leftVisible="visible"
+                app:middleSearchHint="@string/recommend_tip"
+                app:middleStyle="search"
+                app:rightDrawable="@drawable/ic_message"
+                app:rightStyle="image"
+                app:rightVisible="visible"></com.fei.firstproject.widget.AppHeadView>
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>

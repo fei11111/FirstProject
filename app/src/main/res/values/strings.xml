@@ -34,6 +34,7 @@
     <string name="share">分享</string>
     <string name="version_update">版本更新</string>
     <string name="about_us">关于我们</string>
+    <string name="login">登录</string>
     <string name="log_out">退出账户</string>
     <string name="title_activity_register">Sign in</string>
     <string name="title_activity_settings">Settings</string>
@@ -67,6 +68,7 @@
     <string name="cpk">产品库</string>
     <string name="more">更多</string>
     <string name="ncw">农财网</string>
+    <string name="recommend_tip">请输入推荐方案的关键字</string>
 
     <!-- Strings related to Settings -->
 
