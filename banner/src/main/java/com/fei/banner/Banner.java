@@ -19,6 +19,7 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.fei.banner.listener.OnBannerClickListener;
 import com.fei.banner.listener.OnBannerListener;
 import com.fei.banner.loader.ImageLoaderInterface;
@@ -581,6 +582,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
             lastPosition = position;
         }
         if (position == 0) position = count;
+        if (currentItem == 0) currentItem = count;
         if (position > count) position = 1;
         switch (bannerStyle) {
             case BannerConfig.CIRCLE_INDICATOR:

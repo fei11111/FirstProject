@@ -73,7 +73,7 @@ public class BannerViewPager extends ViewPager {
     @Override
     protected void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-        if (position==count) {
+        if (position == count) {
             super.onPageScrolled(position, positionOffset, positionOffsetPixels);
             return;
         }
