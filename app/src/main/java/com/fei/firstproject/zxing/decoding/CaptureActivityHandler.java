@@ -26,7 +26,7 @@ import android.os.Message;
 import android.util.Log;
 
 import com.fei.firstproject.R;
-import com.fei.firstproject.zxing.activity.CaptureActivity;
+import com.fei.firstproject.activity.CaptureActivity;
 import com.fei.firstproject.zxing.camera.CameraManager;
 import com.fei.firstproject.zxing.view.ViewfinderResultPointCallback;
 import com.google.zxing.BarcodeFormat;

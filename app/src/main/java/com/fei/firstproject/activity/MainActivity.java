@@ -21,7 +21,6 @@ import com.fei.firstproject.fragment.manager.FragmentInstanceManager;
 import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.AppHeadView;
-import com.fei.firstproject.zxing.activity.CaptureActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
