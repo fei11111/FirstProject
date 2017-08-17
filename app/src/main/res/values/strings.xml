@@ -71,6 +71,8 @@
     <string name="recommend_tip">请输入推荐方案的关键字</string>
     <string name="recommend_plan">推荐方案</string>
     <string name="scan">扫一扫</string>
+    <string name="web_search_tip">请输入网址</string>
+    <string name="go_to">前往</string>
 
     <!-- Strings related to Settings -->
 

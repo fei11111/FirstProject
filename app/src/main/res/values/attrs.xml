@@ -17,6 +17,7 @@
         <attr name="leftText" format="string"></attr>
         <attr name="leftDrawable" format="reference"></attr>
         <attr name="leftBackground" format="reference"></attr>
+        <attr name="leftPadding" format="dimension"></attr>
         <attr name="rightVisible" format="integer">
             <enum name="visible" value="0" />
             <enum name="invisible" value="4" />
@@ -28,6 +29,7 @@
         <attr name="rightText" format="string"></attr>
         <attr name="rightDrawable" format="reference"></attr>
         <attr name="rightBackground" format="reference"></attr>
+        <attr name="rightPadding" format="dimension"></attr>
         <attr name="middleStyle" format="enum">
             <enum name="text" value="0" />
             <enum name="search" value="1" />

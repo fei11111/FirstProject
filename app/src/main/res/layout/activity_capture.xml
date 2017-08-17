@@ -22,16 +22,33 @@
         android:fitsSystemWindows="true"
         android:orientation="vertical">
 
-        <com.fei.firstproject.widget.AppHeadView
-            android:id="@+id/ahv"
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:leftDrawable="@drawable/ic_head_left_arrow"
-            app:leftStyle="image"
-            app:leftVisible="visible"
-            app:middleStyle="text"
-            app:middleText="@string/scan"
-            app:rightVisible="invisible"></com.fei.firstproject.widget.AppHeadView>
+            android:theme="@style/AppTheme.AppBarOverlay"
+            app:elevation="0dp">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                <com.fei.firstproject.widget.AppHeadView
+                    android:id="@+id/ahv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:leftDrawable="@drawable/ic_head_left_arrow"
+                    app:leftPadding="@dimen/size_10"
+                    app:leftStyle="image"
+                    app:leftVisible="visible"
+                    app:middleStyle="text"
+                    app:middleText="@string/scan"
+                    app:rightVisible="invisible"></com.fei.firstproject.widget.AppHeadView>
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.AppBarLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"

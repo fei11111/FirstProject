@@ -27,6 +27,11 @@ public interface BaseInterface {
     public void permissionsGrantCallBack(int requestCode);
 
     /**
+     * dialog提示被拒返回
+     */
+    public void permissionDialogDismiss(int requestCode);
+
+    /**
      * 返回布局
      */
     public int getContentViewResId();
@@ -35,11 +40,6 @@ public interface BaseInterface {
      * 初始化
      */
     public void init(Bundle savedInstanceState);
-
-    /**
-     * dialog提示被拒返回
-     */
-    public void permissionDialogDismiss(int requestCode);
 
     /**
      * 没有请求码启动Activity

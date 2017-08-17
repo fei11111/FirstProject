@@ -49,11 +49,13 @@ public class AppHeadView extends RelativeLayout {
     private String leftText;
     private int leftDrawable = -1;
     private int leftBackground = -1;
+    private int leftPadding = 0;
     private int rightVisible = View.VISIBLE;
     private int rightStyle = 0;
     private String rightText;
     private int rightDrawable = -1;
     private int rightBackground = -1;
+    private int rightPadding = 0;
     private int middleStyle = 0;
     private String middleText;
     private String middleSearchHint;
@@ -87,11 +89,13 @@ public class AppHeadView extends RelativeLayout {
         leftDrawable = typedArray.getResourceId(R.styleable.AppHeadView_leftDrawable, -1);
         leftText = typedArray.getString(R.styleable.AppHeadView_leftText);
         leftBackground = typedArray.getInt(R.styleable.AppHeadView_leftBackground, -1);
+        leftPadding = typedArray.getDimensionPixelSize(R.styleable.AppHeadView_leftPadding, 0);
         rightVisible = typedArray.getInt(R.styleable.AppHeadView_rightVisible, View.VISIBLE);
         rightStyle = typedArray.getInt(R.styleable.AppHeadView_rightStyle, 0);
         rightDrawable = typedArray.getResourceId(R.styleable.AppHeadView_rightDrawable, -1);
         rightText = typedArray.getString(R.styleable.AppHeadView_rightText);
         rightBackground = typedArray.getResourceId(R.styleable.AppHeadView_rightBackground, -1);
+        rightPadding = typedArray.getDimensionPixelSize(R.styleable.AppHeadView_rightPadding, 0);
         middleStyle = typedArray.getInt(R.styleable.AppHeadView_middleStyle, 0);
         middleText = typedArray.getString(R.styleable.AppHeadView_middleText);
         middleSearchHint = typedArray.getString(R.styleable.AppHeadView_middleSearchHint);
@@ -111,11 +115,13 @@ public class AppHeadView extends RelativeLayout {
         setImageResource(leftDrawable, ivHeadLeft);
         setText(leftText, tvHeadLeft);
         setBackgroundResource(leftBackground, flHeadLeft);
+        setFrameLayoutPadding(flHeadLeft, leftPadding);
         setLayoutvisible(rightVisible, flHeadRight);
         setLeftRightStyle(rightStyle, ivHeadRight, tvHeadRight);
         setImageResource(rightDrawable, ivHeadRight);
         setText(rightText, tvHeadRight);
         setBackgroundResource(rightBackground, flHeadRight);
+        setFrameLayoutPadding(flHeadRight, rightPadding);
         setMiddleStyle(middleStyle, rlSearch, tvTitle);
         setText(middleText, tvTitle);
         setMiddleSearchHint(middleSearchHint, etSearch);
@@ -169,6 +175,10 @@ public class AppHeadView extends RelativeLayout {
         }
     }
 
+    private void setFrameLayoutPadding(FrameLayout fl, int padding) {
+        fl.setPadding(0, padding, 0, padding);
+    }
+
     private void setMiddleSearchHint(String text, EditText editText) {
         if (!TextUtils.isEmpty(text)) {
             editText.setHint(text);
@@ -206,6 +216,14 @@ public class AppHeadView extends RelativeLayout {
 
     public void setTvTitleText(String text) {
         tvTitle.setText(text);
+    }
+
+    public void setEtSearchText(String text) {
+        etSearch.setText(text);
+    }
+
+    public String getEtSearchText() {
+        return etSearch.getText().toString();
     }
 
     public interface OnLeftRightClickListener {

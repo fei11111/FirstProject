@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -20,6 +21,7 @@ import com.fei.firstproject.fragment.MeFragment;
 import com.fei.firstproject.fragment.manager.FragmentInstanceManager;
 import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.Utils;
+import com.fei.firstproject.web.WebActivity;
 import com.fei.firstproject.widget.AppHeadView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -50,8 +52,11 @@ public class MainActivity extends BaseActivity {
     private MainFragment mainFragment;
     private MakeFragment makeFragment;
     private MeFragment meFragment;
-    private static final int REQUEST_CODE_1 = 100;
-    private static final int REQUEST_CODE_2 = 101;
+    //权限请求
+    private static final int REQUEST_PERMISSION_CODE_1 = 100;
+    private static final int REQUEST_PERMISSION_CODE_2 = 101;
+    //Activity请求返回
+    private static final int REQUEST_ACTIVITY_CODE_1 = 200;
 
     @Override
     protected void onDestroy() {
@@ -61,31 +66,31 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void requestPermissionsBeforeInit() {
-        checkPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_1);
+        checkPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION_CODE_1);
     }
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
-        if (requestCode == REQUEST_CODE_1) {
+        if (requestCode == REQUEST_PERMISSION_CODE_1) {
             showMissingPermissionDialog("需要访问存储权限", requestCode);
-        } else if (requestCode == REQUEST_CODE_2) {
+        } else if (requestCode == REQUEST_PERMISSION_CODE_2) {
             showMissingPermissionDialog("需要打开相机扫描", requestCode);
         }
     }
 
     @Override
     public void permissionsGrantCallBack(int requestCode) {
-        if (requestCode == REQUEST_CODE_2) {
+        if (requestCode == REQUEST_PERMISSION_CODE_2) {
             //相机权限
-            startActivity(new Intent(this, CaptureActivity.class));
+            startActivityWithCode(new Intent(this, CaptureActivity.class), REQUEST_ACTIVITY_CODE_1);
         }
     }
 
     @Override
     public void permissionDialogDismiss(int requestCode) {
-        if (requestCode == REQUEST_CODE_1) {
+        if (requestCode == REQUEST_PERMISSION_CODE_1) {
             Utils.showToast(this, "无法访问存储，将影响APP使用");
-        } else if (requestCode == REQUEST_CODE_2) {
+        } else if (requestCode == REQUEST_PERMISSION_CODE_2) {
             Utils.showToast(this, "无法获取相机使用权限");
         }
     }
@@ -116,7 +121,7 @@ public class MainActivity extends BaseActivity {
         apv.setOnLeftRightClickListener(new AppHeadView.OnLeftRightClickListener() {
             @Override
             public void onLeft(View view) {
-                checkPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_2);
+                checkPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION_CODE_2);
             }
 
             @Override
@@ -216,4 +221,24 @@ public class MainActivity extends BaseActivity {
         super.onBackPressed();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_ACTIVITY_CODE_1) {
+                if (data != null) {
+                    String result = data.getStringExtra("result");
+                    if (!TextUtils.isEmpty(result)) {
+                        if (result.contains("http") || result.contains("https")) {
+                                Intent intent = new Intent(this, WebActivity.class);
+                                intent.putExtra("url", result);
+                                startActivityWithoutCode(intent);
+                        } else {
+                            Utils.showToast(this, "臣妾能力有限，二维码解析不到");
+                        }
+                    }
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }
