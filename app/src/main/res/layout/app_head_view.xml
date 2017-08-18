@@ -9,8 +9,8 @@
 
     <FrameLayout
         android:id="@+id/fl_head_left"
-        android:layout_width="@dimen/size_40"
-        android:layout_height="@dimen/size_40"
+        android:layout_width="@dimen/size_35"
+        android:layout_height="@dimen/size_35"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true">
 
@@ -18,8 +18,7 @@
             android:id="@+id/iv_head_left"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="center"
-            android:src="@drawable/ic_head_left_arrow"
+            android:scaleType="centerCrop"
             android:visibility="gone" />
 
         <TextView
@@ -27,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/selector_color_white_to_gray"
             android:textSize="@dimen/tx_15"
             android:visibility="gone" />
 
@@ -35,27 +34,27 @@
 
     <FrameLayout
         android:id="@+id/fl_head_right"
-        android:layout_width="@dimen/size_40"
-        android:layout_height="@dimen/size_40"
+        android:layout_width="@dimen/size_35"
+        android:layout_height="@dimen/size_35"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true">
-
-        <TextView
-            android:id="@+id/tv_head_right"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/tx_15"
-            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/iv_head_right"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_main_message"
             android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_head_right"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/selector_color_white_to_gray"
+            android:textSize="@dimen/tx_15"
+            android:visibility="gone" />
+
     </FrameLayout>
 
     <FrameLayout

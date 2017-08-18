@@ -43,6 +43,6 @@
     </style>
 
     <style name="CustomerDialog" parent="dialog">
-        <item name="background">@drawable/shape_circle_bg</item>
+        <item name="background">@drawable/shape_loading_bg</item>
     </style>
 </resources>

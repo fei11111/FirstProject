@@ -17,7 +17,7 @@
             android:layout_width="@dimen/size_40"
             android:layout_height="@dimen/size_40"
             android:layout_alignParentLeft="true"
-            android:background="@drawable/shape_image_bg"
+            android:background="@drawable/shape_image_border_bg"
             android:scaleType="centerCrop" />
 
         <ImageView

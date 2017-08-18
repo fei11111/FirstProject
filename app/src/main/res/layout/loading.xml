@@ -7,7 +7,7 @@
     <ProgressBar
         android:layout_width="@dimen/size_120"
         android:layout_height="@dimen/size_120"
-        android:background="@drawable/shape_circle_bg"
+        android:background="@drawable/shape_loading_bg"
         android:indeterminateDrawable="@drawable/anim_loading" />
 
 </LinearLayout>

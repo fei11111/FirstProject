@@ -39,7 +39,7 @@
                     android:id="@+id/ahv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:leftDrawable="@drawable/ic_head_left_arrow"
+                    app:leftDrawable="@drawable/selector_head_left_arrow"
                     app:leftPadding="@dimen/size_10"
                     app:leftStyle="image"
                     app:leftVisible="visible"
