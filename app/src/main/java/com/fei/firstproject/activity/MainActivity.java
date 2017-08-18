@@ -9,9 +9,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.config.AppConfig;
@@ -118,7 +120,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initToolBarListener() {
-        apv.setOnLeftRightClickListener(new AppHeadView.OnLeftRightClickListener() {
+        apv.setOnLeftRightClickListener(new AppHeadView.onAppHeadViewListener() {
             @Override
             public void onLeft(View view) {
                 checkPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION_CODE_2);
@@ -127,6 +129,11 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onRight(View view) {
                 LogUtils.i("tag", "可点击");
+            }
+
+            @Override
+            public void onEdit(TextView v, int actionId, KeyEvent event) {
+                Utils.showToast(MainActivity.this, "hellow");
             }
         });
     }
@@ -229,9 +236,9 @@ public class MainActivity extends BaseActivity {
                     String result = data.getStringExtra("result");
                     if (!TextUtils.isEmpty(result)) {
                         if (result.contains("http") || result.contains("https")) {
-                                Intent intent = new Intent(this, WebActivity.class);
-                                intent.putExtra("url", result);
-                                startActivityWithoutCode(intent);
+                            Intent intent = new Intent(this, WebActivity.class);
+                            intent.putExtra("url", result);
+                            startActivityWithoutCode(intent);
                         } else {
                             Utils.showToast(this, "臣妾能力有限，二维码解析不到");
                         }

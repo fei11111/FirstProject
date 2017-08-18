@@ -63,8 +63,9 @@ public class RecommandPlanAdapter extends BaseAdapter {
         holder.tv_recommand_plan_desp.setText(recommendEntity.getContent());
         Glide.with(mContext)
                 .load(recommendEntity.getImgPath())
-                .placeholder(R.drawable.ic_default)
+                .placeholder(R.drawable.ic_app)
                 .crossFade()
+                .error(R.drawable.ic_pic_error)
                 .into(holder.iv_recommand_plan);
         return view;
     }

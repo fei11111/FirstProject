@@ -63,8 +63,9 @@ public class NcwAdapter extends BaseAdapter {
         holder.tv_nwc_desp.setText(ncwEntity.getDescription().replaceAll("\\s*", ""));
         Glide.with(mContext)
                 .load(ncwEntity.getThumb())
-                .placeholder(R.drawable.ic_default)
+                .placeholder(R.drawable.ic_app)
                 .crossFade()
+                .error(R.drawable.ic_pic_error)
                 .into(holder.iv_ncw);
         return view;
     }

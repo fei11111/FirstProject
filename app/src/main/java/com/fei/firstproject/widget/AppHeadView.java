@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -13,10 +15,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
+import com.fei.firstproject.utils.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnEditorAction;
 
 /**
  * Created by Fei on 2017/8/15.
@@ -59,10 +63,10 @@ public class AppHeadView extends RelativeLayout {
     private int middleStyle = 0;
     private String middleText;
     private String middleSearchHint;
-    private OnLeftRightClickListener onLeftRightClickListener;
+    private onAppHeadViewListener onAppHeadViewListener;
 
-    public void setOnLeftRightClickListener(OnLeftRightClickListener onLeftRightClickListener) {
-        this.onLeftRightClickListener = onLeftRightClickListener;
+    public void setOnLeftRightClickListener(onAppHeadViewListener onAppHeadViewListener) {
+        this.onAppHeadViewListener = onAppHeadViewListener;
     }
 
     public AppHeadView(Context context) throws Exception {
@@ -187,15 +191,31 @@ public class AppHeadView extends RelativeLayout {
 
     @OnClick({R.id.fl_head_left, R.id.fl_head_right})
     void onLeftRightClick(View view) {
-        if (onLeftRightClickListener == null) return;
+        if (onAppHeadViewListener == null) return;
         switch (view.getId()) {
             case R.id.fl_head_left:
-                onLeftRightClickListener.onLeft(view);
+                onAppHeadViewListener.onLeft(view);
                 break;
             case R.id.fl_head_right:
-                onLeftRightClickListener.onRight(view);
+                etSearch.clearFocus();
+                Utils.hideInputManager(mContext);
+                onAppHeadViewListener.onRight(view);
                 break;
         }
+    }
+
+    @OnEditorAction(R.id.et_search)
+    boolean search(TextView v, int actionId,
+                   KeyEvent event) {
+        if (onAppHeadViewListener == null) return false;
+        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+            //点击搜索要做的操作
+            etSearch.clearFocus();
+            Utils.hideInputManager(mContext);
+            onAppHeadViewListener.onEdit(v, actionId, event);
+            return true;
+        }
+        return false;
     }
 
     public void setFlHeadLeftVisible(int visible) {
@@ -226,9 +246,12 @@ public class AppHeadView extends RelativeLayout {
         return etSearch.getText().toString();
     }
 
-    public interface OnLeftRightClickListener {
+    public interface onAppHeadViewListener {
         public void onLeft(View view);
 
         public void onRight(View view);
+
+        public void onEdit(TextView v, int actionId,
+                           KeyEvent event);
     }
 }

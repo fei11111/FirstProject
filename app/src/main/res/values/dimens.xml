@@ -16,6 +16,7 @@
     <dimen name="tx_18">18sp</dimen>
     <dimen name="tx_20">20sp</dimen>
     <dimen name="tx_22">22sp</dimen>
+    <dimen name="size_160">160dp</dimen>
     <dimen name="size_150">150dp</dimen>
     <dimen name="size_120">120dp</dimen>
     <dimen name="size_80">80dp</dimen>

@@ -80,6 +80,7 @@
                 android:background="@drawable/shape_search_bg"
                 android:gravity="center_vertical"
                 android:imeOptions="actionSearch"
+                android:inputType="text"
                 android:lines="1"
                 android:paddingLeft="@dimen/size_30"
                 android:textColor="@color/colorText"

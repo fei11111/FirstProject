@@ -43,11 +43,45 @@
         android:background="@null"
         android:indeterminateOnly="false"
         android:max="100"
-        android:progressDrawable="@drawable/progress_bar_horizontal" />
+        android:progressDrawable="@drawable/layer_progress_bar_horizontal" />
 
-    <WebView
-        android:id="@+id/webView"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></WebView>
+        android:layout_height="match_parent">
+
+        <WebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fadeScrollbars="false"
+            android:overScrollMode="never"
+            android:requiresFadingEdge="none"></WebView>
+
+        <LinearLayout
+            android:id="@+id/ll_web_error"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="@dimen/size_160"
+                android:layout_height="@dimen/size_160"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_web_error" />
+
+            <Button
+                android:id="@+id/btn_web_error"
+                android:layout_width="@dimen/size_120"
+                android:layout_height="@dimen/size_40"
+                android:background="@drawable/selector_btn_bg"
+                android:text="刷新重试"
+                android:textColor="@color/colorWhite" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
 
 </LinearLayout>

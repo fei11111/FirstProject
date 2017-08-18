@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.DisplayMetrics;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.fei.firstproject.toast.ToastCompat;
@@ -73,6 +74,7 @@ public class Utils {
         return new int[]{width, height};
     }
 
+    //通过array-string获取drawable
     public static int[] getDrawableByArray(Context mContext, int ids) {
         TypedArray ar = mContext.getResources().obtainTypedArray(ids);
         int len = ar.length();
@@ -81,6 +83,12 @@ public class Utils {
             res[i] = ar.getResourceId(i, 0);
         ar.recycle();
         return res;
+    }
+
+    //隐藏输入法
+    public static void hideInputManager(Context mContext) {
+        InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
 }

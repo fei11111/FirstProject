@@ -3,13 +3,18 @@ package com.fei.firstproject.web;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.activity.BaseActivity;
@@ -17,6 +22,7 @@ import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.AppHeadView;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by Fei on 2017/8/17.
@@ -30,6 +36,10 @@ public class WebActivity extends BaseActivity {
     ProgressBar progressBar;
     @BindView(R.id.webView)
     WebView webView;
+    @BindView(R.id.ll_web_error)
+    LinearLayout ll_web_error;
+
+    private boolean isNeedClearHistory = false;
 
     @Override
     public void requestPermissionsBeforeInit() {
@@ -72,10 +82,10 @@ public class WebActivity extends BaseActivity {
     private void initListener() {
         webView.setWebChromeClient(chromeClient);
         webView.setWebViewClient(viewClient);
-        appHeadView.setOnLeftRightClickListener(onLeftRightClickListener);
+        appHeadView.setOnLeftRightClickListener(onAppHeadViewListener);
     }
 
-    private AppHeadView.OnLeftRightClickListener onLeftRightClickListener = new AppHeadView.OnLeftRightClickListener() {
+    private AppHeadView.onAppHeadViewListener onAppHeadViewListener = new AppHeadView.onAppHeadViewListener() {
         @Override
         public void onLeft(View view) {
             onBackPressed();
@@ -84,21 +94,31 @@ public class WebActivity extends BaseActivity {
         @Override
         public void onRight(View view) {
             String text = appHeadView.getEtSearchText();
-            if (text.contains("www")) {
-                if (!text.contains("http")) {
-                    text = "http://" + text;
-                }
-            } else {
-                if (!text.contains("http")) {
-                    text = "http://www." + text;
-                }
-            }
-            webView.clearHistory();
-            webView.clearCache(true);
-            webView.clearFormData();
-            webView.loadUrl(text);
+            enterWebSite(text);
+        }
+
+        @Override
+        public void onEdit(TextView v, int actionId, KeyEvent event) {
+            String text = v.getText().toString();
+            enterWebSite(text);
         }
     };
+
+    private void enterWebSite(String url) {
+        ll_web_error.setVisibility(View.GONE);
+        webView.setVisibility(View.VISIBLE);
+        if (url.contains("www")) {
+            if (!url.contains("http")) {
+                url = "http://" + url;
+            }
+        } else {
+            if (!url.contains("http")) {
+                url = "http://www." + url;
+            }
+        }
+        isNeedClearHistory = true;
+        webView.loadUrl(url);
+    }
 
     private void initWebView() {
         WebSettings settings = webView.getSettings();
@@ -119,12 +139,14 @@ public class WebActivity extends BaseActivity {
 
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
-            progressBar.setProgress(newProgress);
-            if (newProgress == 100) {
-                progressBar.setVisibility(View.GONE);
-            } else {
-                progressBar.setVisibility(View.VISIBLE);
+            if (progressBar != null) {
+                progressBar.setProgress(newProgress);
+                if (newProgress == 100) {
+                    progressBar.setVisibility(View.GONE);
+                } else {
+                    progressBar.setVisibility(View.VISIBLE);
 
+                }
             }
             super.onProgressChanged(view, newProgress);
         }
@@ -133,6 +155,9 @@ public class WebActivity extends BaseActivity {
     private WebViewClient viewClient = new WebViewClient() {
 
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            ll_web_error.setVisibility(View.GONE);
+            webView.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
             appHeadView.setEtSearchText(url);
             super.onPageStarted(view, url, favicon);
         }
@@ -147,7 +172,28 @@ public class WebActivity extends BaseActivity {
             view.loadUrl(url);
             return true;
         }
+
+        @Override
+        public void doUpdateVisitedHistory(WebView view, String url, boolean isReload) {
+            super.doUpdateVisitedHistory(view, url, isReload);
+            if (isNeedClearHistory) {
+                isNeedClearHistory = false;
+                view.clearHistory();//清除历史记录
+            }
+        }
+
+        @Override
+        public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+            super.onReceivedError(view, request, error);
+            ll_web_error.setVisibility(View.VISIBLE);
+            webView.setVisibility(View.GONE);
+        }
     };
+
+    @OnClick(R.id.btn_web_error)
+    void clickWebError(View view) {
+        webView.reload();
+    }
 
     @Override
     public void onBackPressed() {

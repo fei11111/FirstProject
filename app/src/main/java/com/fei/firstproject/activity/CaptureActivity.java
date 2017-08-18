@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
@@ -147,7 +148,7 @@ public class CaptureActivity extends BaseActivity implements Callback {
     }
 
     private void initListener() {
-        ahv.setOnLeftRightClickListener(new AppHeadView.OnLeftRightClickListener() {
+        ahv.setOnLeftRightClickListener(new AppHeadView.onAppHeadViewListener() {
             @Override
             public void onLeft(View view) {
                 onBackPressed();
@@ -155,6 +156,11 @@ public class CaptureActivity extends BaseActivity implements Callback {
 
             @Override
             public void onRight(View view) {
+
+            }
+
+            @Override
+            public void onEdit(TextView v, int actionId, KeyEvent event) {
 
             }
         });
