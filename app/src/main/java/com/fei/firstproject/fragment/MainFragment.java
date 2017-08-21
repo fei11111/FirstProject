@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.fei.banner.Banner;
 import com.fei.firstproject.R;
+import com.fei.firstproject.activity.MainActivity;
 import com.fei.firstproject.adapter.NcwAdapter;
 import com.fei.firstproject.adapter.RecommandPlanAdapter;
 import com.fei.firstproject.entity.BaseEntity;
@@ -28,6 +29,9 @@ import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.NoScrollListView;
 import com.fei.firstproject.widget.TextSwitchView;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,6 +66,8 @@ public class MainFragment extends BaseFragment {
     NoScrollListView lvRecommendPlan;
     @BindView(R.id.ll_recommend_plan)
     LinearLayout llRecommendPlan;
+    @BindView(R.id.refreshLayout)
+    SmartRefreshLayout refreshLayout;
 
     private List<String> imageUrls = new ArrayList<>();
     private SensorManager mSensorManager;
@@ -125,6 +131,7 @@ public class MainFragment extends BaseFragment {
     @Override
     public void init(Bundle savedInstanceState) {
         LogUtils.i("tag", "main");
+        initRefreshLayoutListener();
         initBanner();
         initSwitch();
         initMenu();
@@ -133,19 +140,31 @@ public class MainFragment extends BaseFragment {
         initData();
     }
 
-    private void initData() {
-        //农财网
-        initNcw();
-        //推荐方案
-        initRecommendPlan();
+    private void initRefreshLayoutListener() {
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                //推荐方案
+                getRecommendPlan();
+            }
+        });
     }
 
-    private void initRecommendPlan() {
+    private void initData() {
+        //农财网
+        getNcw();
+        //推荐方案
+        getRecommendPlan();
+    }
+
+    private void getRecommendPlan() {
         //province=&county=&city=&
+        String searchWord = ((MainActivity) activity).getAppHeadView().getEtSearchText();
         Map<String, String> map = new HashMap<>();
         map.put("province", "");
         map.put("county", "");
         map.put("city", "");
+        map.put("searchWord", searchWord);
         Observable<BaseEntity<List<RecommendEntity>>> recommendPlan =
                 RetrofitFactory.getBtPlantWeb().getRecommendPlan(map);
         recommendPlan
@@ -161,7 +180,7 @@ public class MainFragment extends BaseFragment {
                 });
     }
 
-    private void initNcw() {
+    private void getNcw() {
         Observable<List<NcwEntity>> ncw = RetrofitFactory.getNcw().getNcw();
         ncw.compose(RxSchedulers.compose(activity, this.<List<NcwEntity>>bindToLifecycle())).subscribe(new BaseWithoutBaseEntityObserver<List<NcwEntity>>(activity) {
             @Override

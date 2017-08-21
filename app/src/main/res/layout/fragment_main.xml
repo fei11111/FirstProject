@@ -1,105 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/refreshLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:srlEnableLoadmore="false"
+    app:srlPrimaryColor="@color/colorPrimary">
 
-    <LinearLayout
+    <com.scwang.smartrefresh.header.CircleHeader
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="@dimen/size_40" />
 
-        <com.fei.banner.Banner
-            android:id="@+id/banner"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size_150"
-            android:background="@drawable/ic_banner_default"></com.fei.banner.Banner>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorWhite"
-            android:orientation="horizontal"
-            android:padding="@dimen/size_10">
+            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_headline" />
-
-            <com.fei.firstproject.widget.TextSwitchView
-                android:id="@+id/tsv"
+            <com.fei.banner.Banner
+                android:id="@+id/banner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/size_10"
-                android:padding="@dimen/size_10"></com.fei.firstproject.widget.TextSwitchView>
-
-        </LinearLayout>
-
-        <HorizontalScrollView
-            android:id="@+id/hsv_main"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/size_10"
-            android:background="@color/colorWhite"
-            android:fadeScrollbars="false"
-            android:paddingBottom="@dimen/size_5"
-            android:paddingTop="@dimen/size_5"
-            android:scrollbars="none">
+                android:layout_height="@dimen/size_150"
+                android:background="@drawable/ic_banner_default"></com.fei.banner.Banner>
 
             <LinearLayout
-                android:id="@+id/ll_menu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"></LinearLayout>
+                android:background="@color/colorWhite"
+                android:orientation="horizontal"
+                android:padding="@dimen/size_10">
 
-        </HorizontalScrollView>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_headline" />
 
-        <LinearLayout
-            android:id="@+id/ll_ncw"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/size_10"
-            android:orientation="vertical"
-            android:visibility="gone">
+                <com.fei.firstproject.widget.TextSwitchView
+                    android:id="@+id/tsv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_10"
+                    android:padding="@dimen/size_10"></com.fei.firstproject.widget.TextSwitchView>
 
-            <com.fei.firstproject.widget.SettingView
+            </LinearLayout>
+
+            <HorizontalScrollView
+                android:id="@+id/hsv_main"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:desc="@string/more"
-                app:title="@string/ncw"></com.fei.firstproject.widget.SettingView>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_10"
+                android:background="@color/colorWhite"
+                android:fadeScrollbars="false"
+                android:paddingBottom="@dimen/size_5"
+                android:paddingTop="@dimen/size_5"
+                android:scrollbars="none">
 
-            <com.fei.firstproject.widget.NoScrollListView
-                android:id="@+id/lv_ncw"
+                <LinearLayout
+                    android:id="@+id/ll_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"></LinearLayout>
+
+            </HorizontalScrollView>
+
+            <LinearLayout
+                android:id="@+id/ll_ncw"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:divider="@android:color/transparent"
-                android:dividerHeight="0dp"
-                android:scrollbars="none"></com.fei.firstproject.widget.NoScrollListView>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_10"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <com.fei.firstproject.widget.SettingView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:desc="@string/more"
+                    app:title="@string/ncw"></com.fei.firstproject.widget.SettingView>
+
+                <com.fei.firstproject.widget.NoScrollListView
+                    android:id="@+id/lv_ncw"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@android:color/transparent"
+                    android:dividerHeight="0dp"
+                    android:scrollbars="none"></com.fei.firstproject.widget.NoScrollListView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_recommend_plan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_10"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <com.fei.firstproject.widget.SettingView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:desc="@string/more"
+                    app:title="@string/recommend_plan"></com.fei.firstproject.widget.SettingView>
+
+                <com.fei.firstproject.widget.NoScrollListView
+                    android:id="@+id/lv_recommend_plan"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@android:color/transparent"
+                    android:dividerHeight="0dp"
+                    android:listSelector="@android:color/transparent"
+                    android:scrollbars="none"></com.fei.firstproject.widget.NoScrollListView>
+            </LinearLayout>
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_recommend_plan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/size_10"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <com.fei.firstproject.widget.SettingView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:desc="@string/more"
-                app:title="@string/recommend_plan"></com.fei.firstproject.widget.SettingView>
-
-            <com.fei.firstproject.widget.NoScrollListView
-                android:id="@+id/lv_recommend_plan"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:divider="@android:color/transparent"
-                android:dividerHeight="0dp"
-                android:listSelector="@android:color/transparent"
-                android:scrollbars="none"></com.fei.firstproject.widget.NoScrollListView>
-        </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</com.scwang.smartrefresh.layout.SmartRefreshLayout>

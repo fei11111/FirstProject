@@ -41,8 +41,8 @@ public class MainActivity extends BaseActivity {
     LinearLayout llBottomMake;
     @BindView(R.id.ll_bottom_me)
     LinearLayout llBottomMe;
-    @BindView(R.id.apv)
-    AppHeadView apv;
+    @BindView(R.id.appHeadView)
+    AppHeadView appHeadView;
     @BindView(R.id.app_bar_layout)
     AppBarLayout appBarLayout;
     @BindView(R.id.bottom_layout)
@@ -112,15 +112,15 @@ public class MainActivity extends BaseActivity {
 
     private void initToolBar() {
         if (AppConfig.ISLOGIN) {
-            apv.setFlHeadLeftVisible(View.INVISIBLE);
+            appHeadView.setFlHeadLeftVisible(View.INVISIBLE);
         } else {
-            apv.setFlHeadLeftVisible(View.VISIBLE);
+            appHeadView.setFlHeadLeftVisible(View.VISIBLE);
         }
         initToolBarListener();
     }
 
     private void initToolBarListener() {
-        apv.setOnLeftRightClickListener(new AppHeadView.onAppHeadViewListener() {
+        appHeadView.setOnLeftRightClickListener(new AppHeadView.onAppHeadViewListener() {
             @Override
             public void onLeft(View view) {
                 checkPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION_CODE_2);
@@ -178,19 +178,19 @@ public class MainActivity extends BaseActivity {
 
     //设置头部是搜索模式
     private void setAppHeadViewSearchMode() {
-        apv.setFlHeadLeftVisible(View.VISIBLE);
-        apv.setFlHeadRightVisible(View.VISIBLE);
-        apv.setMiddleSearchVisible(View.VISIBLE);
-        apv.setTvTitleVisible(View.GONE);
+        appHeadView.setFlHeadLeftVisible(View.VISIBLE);
+        appHeadView.setFlHeadRightVisible(View.VISIBLE);
+        appHeadView.setMiddleSearchVisible(View.VISIBLE);
+        appHeadView.setTvTitleVisible(View.GONE);
     }
 
     //设置头部是文本模式
     private void setAppHeadViewTitleMode(String title) {
-        apv.setFlHeadLeftVisible(View.INVISIBLE);
-        apv.setFlHeadRightVisible(View.INVISIBLE);
-        apv.setMiddleSearchVisible(View.GONE);
-        apv.setTvTitleVisible(View.VISIBLE);
-        apv.setTvTitleText(title);
+        appHeadView.setFlHeadLeftVisible(View.INVISIBLE);
+        appHeadView.setFlHeadRightVisible(View.INVISIBLE);
+        appHeadView.setMiddleSearchVisible(View.GONE);
+        appHeadView.setTvTitleVisible(View.VISIBLE);
+        appHeadView.setTvTitleText(title);
     }
 
     private void resetAllState() {
@@ -247,5 +247,9 @@ public class MainActivity extends BaseActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public AppHeadView getAppHeadView() {
+        return appHeadView;
     }
 }

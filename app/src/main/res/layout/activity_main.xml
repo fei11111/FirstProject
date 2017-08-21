@@ -21,7 +21,7 @@
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <com.fei.firstproject.widget.AppHeadView
-                android:id="@+id/apv"
+                android:id="@+id/appHeadView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:leftStyle="image"
