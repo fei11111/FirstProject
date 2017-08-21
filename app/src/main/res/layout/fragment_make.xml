@@ -1,126 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
-    android:orientation="vertical"
-    app:divider="@drawable/shape_line"
-    app:showDividers="middle">
+    android:background="@color/colorBackground">
 
-    <LinearLayout
+    <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorWhite"
-        android:layout_marginTop="@dimen/size_10"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        app:divider="@drawable/shape_line"
+        app:showDividers="middle">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="@dimen/size_10">
+            android:layout_marginTop="@dimen/size_10"
+            android:background="@color/colorWhite"
+            android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="@dimen/size_45"
-                android:layout_height="@dimen/size_45"
-                android:src="@drawable/ic_check" />
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_10"
-                android:text="方案查询"
-                android:textColor="@color/colorText"
-                android:textSize="@dimen/tx_15" />
-        </LinearLayout>
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/size_10">
 
-        <View
-            android:layout_width="@dimen/size_1"
-            android:layout_height="match_parent"
-            android:background="@color/colorBackground" />
+                <ImageView
+                    android:layout_width="@dimen/size_45"
+                    android:layout_height="@dimen/size_45"
+                    android:src="@drawable/ic_check" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:text="方案查询"
+                    android:textColor="@color/colorText"
+                    android:textSize="@dimen/tx_15" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="@dimen/size_1"
+                android:layout_height="match_parent"
+                android:background="@color/colorBackground" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/size_10">
+
+                <ImageView
+                    android:layout_width="@dimen/size_45"
+                    android:layout_height="@dimen/size_45"
+                    android:src="@drawable/ic_check" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:text="方案查询"
+                    android:textColor="@color/colorText"
+                    android:textSize="@dimen/tx_15" />
+            </LinearLayout>
+
+        </LinearLayout>
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="@dimen/size_10">
+            android:background="@color/colorWhite"
+            android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="@dimen/size_45"
-                android:layout_height="@dimen/size_45"
-                android:src="@drawable/ic_check" />
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_10"
-                android:text="方案查询"
-                android:textColor="@color/colorText"
-                android:textSize="@dimen/tx_15" />
-        </LinearLayout>
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/size_10">
 
-    </LinearLayout>
+                <ImageView
+                    android:layout_width="@dimen/size_45"
+                    android:layout_height="@dimen/size_45"
+                    android:src="@drawable/ic_check" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorWhite"
-        android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:text="方案查询"
+                    android:textColor="@color/colorText"
+                    android:textSize="@dimen/tx_15" />
+            </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="@dimen/size_10">
+            <View
+                android:layout_width="@dimen/size_1"
+                android:layout_height="match_parent"
+                android:background="@color/colorBackground" />
 
-            <ImageView
-                android:layout_width="@dimen/size_45"
-                android:layout_height="@dimen/size_45"
-                android:src="@drawable/ic_check" />
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_10"
-                android:text="方案查询"
-                android:textColor="@color/colorText"
-                android:textSize="@dimen/tx_15" />
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/size_10">
+
+                <ImageView
+                    android:layout_width="@dimen/size_45"
+                    android:layout_height="@dimen/size_45"
+                    android:src="@drawable/ic_check" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:text="方案查询"
+                    android:textColor="@color/colorText"
+                    android:textSize="@dimen/tx_15" />
+            </LinearLayout>
         </LinearLayout>
+    </android.support.v7.widget.LinearLayoutCompat>
 
-        <View
-            android:layout_width="@dimen/size_1"
-            android:layout_height="match_parent"
-            android:background="@color/colorBackground" />
+    <include layout="@layout/app_bottom_signature" />
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="@dimen/size_10">
-
-            <ImageView
-                android:layout_width="@dimen/size_45"
-                android:layout_height="@dimen/size_45"
-                android:src="@drawable/ic_check" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_10"
-                android:text="方案查询"
-                android:textColor="@color/colorText"
-                android:textSize="@dimen/tx_15" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-</android.support.v7.widget.LinearLayoutCompat>
+</RelativeLayout>

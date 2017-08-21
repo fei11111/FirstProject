@@ -263,7 +263,7 @@
                 </LinearLayout>
 
                 <com.fei.firstproject.widget.NoScrollRecyclerView
-                    android:id="@+id/nsrv"
+                    android:id="@+id/recycler_me"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"></com.fei.firstproject.widget.NoScrollRecyclerView>
@@ -302,20 +302,13 @@
                 </LinearLayout>
 
                 <com.fei.firstproject.widget.NoScrollRecyclerView
-                    android:id="@+id/nsrv2"
+                    android:id="@+id/recycler_other"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"></com.fei.firstproject.widget.NoScrollRecyclerView>
             </android.support.v7.widget.LinearLayoutCompat>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="@dimen/size_20"
-                android:text="就是这么帅"
-                android:textColor="@color/colorText"
-                android:textSize="@dimen/tx_12"></TextView>
+            <include layout="@layout/app_bottom_signature" />
 
         </LinearLayout>
 

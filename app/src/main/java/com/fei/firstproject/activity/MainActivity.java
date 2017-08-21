@@ -21,7 +21,6 @@ import com.fei.firstproject.fragment.MainFragment;
 import com.fei.firstproject.fragment.MakeFragment;
 import com.fei.firstproject.fragment.MeFragment;
 import com.fei.firstproject.fragment.manager.FragmentInstanceManager;
-import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.web.WebActivity;
 import com.fei.firstproject.widget.AppHeadView;
@@ -128,7 +127,7 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onRight(View view) {
-                LogUtils.i("tag", "可点击");
+                startActivityWithoutCode(new Intent(MainActivity.this,MessageActivity.class));
             }
 
             @Override

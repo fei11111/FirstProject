@@ -113,6 +113,9 @@
                     android:listSelector="@android:color/transparent"
                     android:scrollbars="none"></com.fei.firstproject.widget.NoScrollListView>
             </LinearLayout>
+
+            <include layout="@layout/app_bottom_signature" />
+
         </LinearLayout>
     </ScrollView>
 </com.scwang.smartrefresh.layout.SmartRefreshLayout>

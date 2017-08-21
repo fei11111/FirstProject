@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:padding="@dimen/size_10"
+        android:padding="@dimen/size_16"
         android:layout_marginTop="@dimen/size_1"
         android:background="@color/colorWhite">
 
@@ -17,7 +17,7 @@
             android:layout_width="@dimen/size_40"
             android:layout_height="@dimen/size_40"
             android:layout_alignParentLeft="true"
-            android:background="@drawable/shape_image_border_bg"
+            android:background="@drawable/shape_image_rect_border_bg"
             android:scaleType="centerCrop" />
 
         <ImageView
@@ -26,7 +26,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/size_10"
             android:src="@drawable/ic_arrow" />
 
         <LinearLayout

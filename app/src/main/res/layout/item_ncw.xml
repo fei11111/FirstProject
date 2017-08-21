@@ -10,7 +10,7 @@
         android:layout_marginTop="@dimen/size_1"
         android:background="@color/colorWhite"
         android:orientation="horizontal"
-        android:padding="@dimen/size_10">
+        android:padding="@dimen/size_16">
 
         <ImageView
             android:id="@+id/iv_ncw"

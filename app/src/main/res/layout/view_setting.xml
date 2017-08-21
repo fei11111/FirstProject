@@ -5,8 +5,8 @@
     android:background="@drawable/selector_color_white_to_gray"
     android:gravity="center_vertical"
     android:paddingBottom="@dimen/size_10"
-    android:paddingLeft="@dimen/size_20"
-    android:paddingRight="@dimen/size_20"
+    android:paddingLeft="@dimen/size_16"
+    android:paddingRight="@dimen/size_16"
     android:paddingTop="@dimen/size_10">
 
     <TextView

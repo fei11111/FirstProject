@@ -131,7 +131,7 @@ public class MainFragment extends BaseFragment {
     @Override
     public void init(Bundle savedInstanceState) {
         LogUtils.i("tag", "main");
-        initRefreshLayoutListener();
+        initListener();
         initBanner();
         initSwitch();
         initMenu();
@@ -140,7 +140,7 @@ public class MainFragment extends BaseFragment {
         initData();
     }
 
-    private void initRefreshLayoutListener() {
+    private void initListener() {
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
@@ -172,6 +172,7 @@ public class MainFragment extends BaseFragment {
                 .subscribe(new BaseObserver<List<RecommendEntity>>(activity) {
                     @Override
                     protected void onHandleSuccess(List<RecommendEntity> recommendEntities) {
+                        refreshLayout.finishRefresh();
                         if (recommendEntities != null && recommendEntities.size() > 0) {
                             llRecommendPlan.setVisibility(View.VISIBLE);
                             lvRecommendPlan.setAdapter(new RecommandPlanAdapter(activity, recommendEntities));

@@ -36,10 +36,10 @@ public class MeFragment extends BaseFragment {
     LinearLayout llWaitReceive;
     @BindView(R.id.ll_wait_evaluate)
     LinearLayout llWaitEvaluate;
-    @BindView(R.id.nsrv)
-    NoScrollRecyclerView nsrv;
-    @BindView(R.id.nsrv2)
-    NoScrollRecyclerView nsrv2;
+    @BindView(R.id.recycler_me)
+    NoScrollRecyclerView recycler_me;
+    @BindView(R.id.recycler_other)
+    NoScrollRecyclerView recycler_other;
 
     @Override
     public void requestPermissionsBeforeInit() {
@@ -80,17 +80,17 @@ public class MeFragment extends BaseFragment {
     private void initView1() {
         GridLayoutManager manager = new GridLayoutManager(activity, 3);
         RecyclerView.ItemDecoration itemDecoration = new DividerGridItemDecoration(activity);
-        nsrv.setLayoutManager(manager);
-        nsrv.addItemDecoration(itemDecoration);
-        nsrv.setAdapter(new MyRecyclerViewAdapter(activity, R.array.list_me_drawable, getResources().getStringArray(R.array.list_me_str)));
+        recycler_me.setLayoutManager(manager);
+        recycler_me.addItemDecoration(itemDecoration);
+        recycler_me.setAdapter(new MyRecyclerViewAdapter(activity, R.array.list_me_drawable, getResources().getStringArray(R.array.list_me_str)));
     }
 
     private void initView2() {
         GridLayoutManager manager = new GridLayoutManager(activity, 3);
         RecyclerView.ItemDecoration itemDecoration = new DividerGridItemDecoration(activity);
-        nsrv2.setLayoutManager(manager);
-        nsrv2.addItemDecoration(itemDecoration);
-        nsrv2.setAdapter(new MyRecyclerViewAdapter(activity, R.array.list_other_drawable, getResources().getStringArray(R.array.list_other_str)));
+        recycler_other.setLayoutManager(manager);
+        recycler_other.addItemDecoration(itemDecoration);
+        recycler_other.setAdapter(new MyRecyclerViewAdapter(activity, R.array.list_other_drawable, getResources().getStringArray(R.array.list_other_str)));
     }
 
     @OnClick(R.id.ll_me_info)

@@ -66,8 +66,8 @@ public class CaptureActivity extends BaseActivity implements Callback {
     Button btnLight;
     @BindView(R.id.btn_openimg)
     Button btnOpenimg;
-    @BindView(R.id.ahv)
-    AppHeadView ahv;
+    @BindView(R.id.appHeadView)
+    AppHeadView appHeadView;
 
     private boolean playBeep;
     private boolean vibrate;
@@ -148,7 +148,7 @@ public class CaptureActivity extends BaseActivity implements Callback {
     }
 
     private void initListener() {
-        ahv.setOnLeftRightClickListener(new AppHeadView.onAppHeadViewListener() {
+        appHeadView.setOnLeftRightClickListener(new AppHeadView.onAppHeadViewListener() {
             @Override
             public void onLeft(View view) {
                 onBackPressed();
