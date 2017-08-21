@@ -5,6 +5,9 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.TextView;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.MyMessageAdapter;
@@ -58,6 +61,26 @@ public class MessageActivity extends BaseActivity {
     @Override
     public void init(Bundle savedInstanceState) {
         initRecycler();
+        initListener();
+    }
+
+    private void initListener() {
+        appHeadView.setOnLeftRightClickListener(new AppHeadView.onAppHeadViewListener() {
+            @Override
+            public void onLeft(View view) {
+                onBackPressed();
+            }
+
+            @Override
+            public void onRight(View view) {
+
+            }
+
+            @Override
+            public void onEdit(TextView v, int actionId, KeyEvent event) {
+
+            }
+        });
     }
 
     private void initRecycler() {

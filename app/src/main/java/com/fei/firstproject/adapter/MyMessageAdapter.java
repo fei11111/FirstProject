@@ -33,7 +33,7 @@ public class MyMessageAdapter extends RecyclerView.Adapter<MyMessageAdapter.MyMe
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 10;
     }
 
     class MyMessageViewHolder extends RecyclerView.ViewHolder {
