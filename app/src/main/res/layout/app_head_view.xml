@@ -82,6 +82,7 @@
                 android:inputType="text"
                 android:lines="1"
                 android:paddingLeft="@dimen/size_30"
+                android:paddingRight="@dimen/size_30"
                 android:textColor="@color/colorText"
                 android:textColorHint="@color/colorTextSub"
                 android:textSize="@dimen/tx_12" />
@@ -92,6 +93,16 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/size_10"
                 android:src="@drawable/ic_search" />
+
+            <ImageView
+                android:id="@+id/iv_delete"
+                android:layout_width="@dimen/size_15"
+                android:layout_height="@dimen/size_15"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/size_10"
+                android:src="@drawable/ic_delete"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <TextView

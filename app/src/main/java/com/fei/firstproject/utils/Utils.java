@@ -86,11 +86,9 @@ public class Utils {
     }
 
     //隐藏输入法
-    public static void hideInputManager(Context mContext) {
-        InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm.isActive()) {
-            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-        }
+    public static void hideKeyBoard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(activity.getWindow().getDecorView().getWindowToken(), 0);
     }
 
 }

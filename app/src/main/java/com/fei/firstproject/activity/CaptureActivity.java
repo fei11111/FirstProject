@@ -46,7 +46,6 @@ import java.util.Map;
 import java.util.Vector;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 
 /**
@@ -407,11 +406,4 @@ public class CaptureActivity extends BaseActivity implements Callback {
             mediaPlayer.seekTo(0);
         }
     };
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

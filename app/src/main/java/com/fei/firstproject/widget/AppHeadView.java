@@ -15,12 +15,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
-import com.fei.firstproject.utils.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
+import butterknife.OnTextChanged;
 
 /**
  * Created by Fei on 2017/8/15.
@@ -46,6 +46,8 @@ public class AppHeadView extends RelativeLayout {
     RelativeLayout rlSearch;
     @BindView(R.id.tv_title)
     TextView tvTitle;
+    @BindView(R.id.iv_delete)
+    ImageView ivDelete;
 
     private Context mContext;
     private int leftVisible = View.VISIBLE;
@@ -198,7 +200,6 @@ public class AppHeadView extends RelativeLayout {
                 break;
             case R.id.fl_head_right:
                 etSearch.clearFocus();
-                Utils.hideInputManager(mContext);
                 onAppHeadViewListener.onRight(view);
                 break;
         }
@@ -211,11 +212,24 @@ public class AppHeadView extends RelativeLayout {
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
             //点击搜索要做的操作
             etSearch.clearFocus();
-            Utils.hideInputManager(mContext);
             onAppHeadViewListener.onEdit(v, actionId, event);
             return true;
         }
         return false;
+    }
+
+    @OnTextChanged(value = R.id.et_search, callback = OnTextChanged.Callback.TEXT_CHANGED)
+    void onTextChanged(CharSequence s, int start, int before, int count) {
+        if (!TextUtils.isEmpty(s)) {
+            ivDelete.setVisibility(View.VISIBLE);
+        } else {
+            ivDelete.setVisibility(View.GONE);
+        }
+    }
+
+    @OnClick(R.id.iv_delete)
+    void delteEtText() {
+        etSearch.setText("");
     }
 
     public void setFlHeadLeftVisible(int visible) {

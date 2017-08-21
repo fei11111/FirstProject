@@ -103,13 +103,17 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
-        setSupportActionBar(toolbar);
         initToolBar();
+        initSetting();
+    }
+
+    private void initSetting() {
         mFragmentManager = getSupportFragmentManager();
         llBottomMain.performClick();
     }
 
     private void initToolBar() {
+        setSupportActionBar(toolbar);
         if (AppConfig.ISLOGIN) {
             appHeadView.setFlHeadLeftVisible(View.INVISIBLE);
         } else {
@@ -127,12 +131,13 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onRight(View view) {
-                startActivityWithoutCode(new Intent(MainActivity.this,MessageActivity.class));
+                startActivityWithoutCode(new Intent(MainActivity.this, MessageActivity.class));
             }
 
             @Override
             public void onEdit(TextView v, int actionId, KeyEvent event) {
                 Utils.showToast(MainActivity.this, "hellow");
+                Utils.hideKeyBoard(MainActivity.this);
             }
         });
     }

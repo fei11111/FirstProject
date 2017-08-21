@@ -1,6 +1,8 @@
 package com.fei.firstproject.web;
 
+import android.annotation.TargetApi;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -105,6 +107,7 @@ public class WebActivity extends BaseActivity {
     };
 
     private void enterWebSite(String url) {
+        Utils.hideKeyBoard(this);
         ll_web_error.setVisibility(View.GONE);
         webView.setVisibility(View.VISIBLE);
         if (url.contains("www")) {
@@ -183,12 +186,30 @@ public class WebActivity extends BaseActivity {
         }
 
         @Override
+        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+            super.onReceivedError(view, errorCode, description, failingUrl);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                return;
+            }
+            // 在这里显示自定义错误页
+            showErrView();
+        }
+
+        @TargetApi(Build.VERSION_CODES.M)
+        @Override
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
             super.onReceivedError(view, request, error);
-            ll_web_error.setVisibility(View.VISIBLE);
-            webView.setVisibility(View.GONE);
+            if (request.isForMainFrame()) {
+                showErrView();
+            }
         }
+
     };
+
+    private void showErrView() {
+        ll_web_error.setVisibility(View.VISIBLE);
+        webView.setVisibility(View.GONE);
+    }
 
     @OnClick(R.id.btn_web_error)
     void clickWebError(View view) {
