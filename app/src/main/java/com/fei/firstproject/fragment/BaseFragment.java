@@ -44,26 +44,33 @@ import io.reactivex.ObservableTransformer;
 
 public abstract class BaseFragment extends RxFragment implements BaseInterface {
 
+    @Nullable
     @BindView(R.id.pb_loading)
     ProgressBar pbLoading;
+    @Nullable
     @BindView(R.id.ll_no_data)
     LinearLayout llNoData;
+    @Nullable
     @BindView(R.id.rl_default)
     RelativeLayout rlDefault;
+    @Nullable
     @BindView(R.id.btn_request_error)
     Button btnRequestError;
+    @Nullable
     @BindView(R.id.ll_request_error)
     LinearLayout llRequestError;
 
     private Unbinder unbinder;
     protected BaseActivity activity;
 
-    protected ObservableTransformer compse = RxSchedulers.compose(activity, this.bindToLifecycle(), new RxSchedulers.OnConnectError() {
-        @Override
-        public void onError() {
-            showRequestErrorView();
-        }
-    });
+    protected <T> ObservableTransformer<T, T> createTransformer() {
+        return RxSchedulers.compose(activity, this.<T>bindToLifecycle(), new RxSchedulers.OnConnectError() {
+            @Override
+            public void onError() {
+                showRequestErrorView();
+            }
+        });
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -84,6 +91,7 @@ public abstract class BaseFragment extends RxFragment implements BaseInterface {
         super.onViewCreated(view, savedInstanceState);
         initlistener();
         init(savedInstanceState);
+        initRequest();
     }
 
     @Override
@@ -199,23 +207,27 @@ public abstract class BaseFragment extends RxFragment implements BaseInterface {
     }
 
     protected void showRequestErrorView() {
-        if (pbLoading != null && llRequestError != null) {
+        if (pbLoading != null && llRequestError != null && rlDefault != null) {
+            rlDefault.setVisibility(View.VISIBLE);
             pbLoading.setVisibility(View.GONE);
             llRequestError.setVisibility(View.VISIBLE);
         }
     }
 
     protected void showNoDataView() {
-        if (llNoData != null) {
+        if (llNoData != null && rlDefault != null) {
+            rlDefault.setVisibility(View.VISIBLE);
             llNoData.setVisibility(View.VISIBLE);
         }
     }
 
     protected void dismissLoading() {
-        if (pbLoading != null) {
+        if (pbLoading != null && rlDefault != null) {
+            rlDefault.setVisibility(View.GONE);
             pbLoading.setVisibility(View.GONE);
         }
     }
+
 
     @Override
     public void startActivityWithCodeAndPair(Intent intent, int requestCode, Pair<View, String>... sharedElements) {

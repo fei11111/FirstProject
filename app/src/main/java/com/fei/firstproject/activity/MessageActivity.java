@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import io.reactivex.Observable;
 
 /**
@@ -87,7 +86,7 @@ public class MessageActivity extends BaseActivity {
         map.put("pageSize", "10");
         map.put("userId", AppConfig.user.getId());
         final Observable<BaseEntity<List<MessageEntity>>> message = RetrofitFactory.getBtWeb().getMessage(map);
-        message.compose(compse)
+        message.compose(this.<BaseEntity<List<MessageEntity>>>createTransformer())
                 .subscribe(new BaseObserver<List<MessageEntity>>(this) {
                     @Override
                     protected void onHandleSuccess(List<MessageEntity> messageEntities) {
@@ -144,10 +143,4 @@ public class MessageActivity extends BaseActivity {
         recyclerMessage.addItemDecoration(itemDecoration);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

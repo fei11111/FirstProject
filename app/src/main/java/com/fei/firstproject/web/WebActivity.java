@@ -44,11 +44,6 @@ public class WebActivity extends BaseActivity {
     private boolean isNeedClearHistory = false;
 
     @Override
-    public void requestPermissionsBeforeInit() {
-
-    }
-
-    @Override
     public void permissionsDeniedCallBack(int requestCode) {
 
     }
@@ -73,6 +68,11 @@ public class WebActivity extends BaseActivity {
         initWebView();
         initListener();
         initUrl();
+    }
+
+    @Override
+    public void initRequest() {
+
     }
 
     private void initUrl() {

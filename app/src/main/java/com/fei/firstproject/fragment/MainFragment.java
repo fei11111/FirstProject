@@ -1,5 +1,6 @@
 package com.fei.firstproject.fragment;
 
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -7,6 +8,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,6 +28,7 @@ import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.image.GlideImageLoader;
 import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.Utils;
+import com.fei.firstproject.web.WebActivity;
 import com.fei.firstproject.widget.NoScrollListView;
 import com.fei.firstproject.widget.TextSwitchView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -39,6 +42,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.reactivex.Observable;
 
 import static android.content.Context.SENSOR_SERVICE;
@@ -71,6 +75,8 @@ public class MainFragment extends BaseFragment {
     private List<String> imageUrls = new ArrayList<>();
     private SensorManager mSensorManager;
     private Sensor mSensor;
+    private RecommandPlanAdapter recommandPlanAdapter;
+    private NcwAdapter ncwAdapter;
 
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -171,14 +177,26 @@ public class MainFragment extends BaseFragment {
 
     private void getNcw() {
         Observable<List<NcwEntity>> ncw = RetrofitFactory.getNcw().getNcw();
-        ncw.compose(compse).subscribe(new BaseWithoutBaseEntityObserver<List<NcwEntity>>(activity) {
+        ncw.compose(this.<List<NcwEntity>>createTransformer()).subscribe(new BaseWithoutBaseEntityObserver<List<NcwEntity>>(activity) {
             @Override
-            protected void onHandleSuccess(List<NcwEntity> ncwEntities) {
-                dismissLoading();
+            protected void onHandleSuccess(final List<NcwEntity> ncwEntities) {
                 if (ncwEntities != null && ncwEntities.size() > 0) {
+                    dismissLoading();
+                    refreshLayout.setVisibility(View.VISIBLE);
                     LogUtils.i("tag", ncwEntities.toString());
                     llNcw.setVisibility(View.VISIBLE);
                     lvNcw.setAdapter(new NcwAdapter(activity, ncwEntities));
+                    lvNcw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            String url = ncwEntities.get(position).getUrl();
+                            Intent intent = new Intent(activity, WebActivity.class);
+                            intent.putExtra("url", url + "&a=show");
+                            startActivityWithoutCode(intent);
+                        }
+                    });
+                } else {
+                    showNoDataView();
                 }
             }
 
@@ -247,5 +265,12 @@ public class MainFragment extends BaseFragment {
             // TODO Auto-generated method stub
         }
     };
+
+    @OnClick(R.id.ll_ncw)
+    void clickNcw() {
+        Intent intent = new Intent(activity, WebActivity.class);
+        intent.putExtra("url", RetrofitFactory.NCW_URL);
+        startActivityWithoutCode(intent);
+    }
 
 }

@@ -41,26 +41,33 @@ import io.reactivex.ObservableTransformer;
 
 public abstract class BaseActivity extends RxAppCompatActivity implements BaseInterface {
 
+    @Nullable
     @BindView(R.id.pb_loading)
     ProgressBar pbLoading;
+    @Nullable
     @BindView(R.id.ll_no_data)
     LinearLayout llNoData;
+    @Nullable
     @BindView(R.id.rl_default)
     RelativeLayout rlDefault;
+    @Nullable
     @BindView(R.id.btn_request_error)
     Button btnRequestError;
+    @Nullable
     @BindView(R.id.ll_request_error)
     LinearLayout llRequestError;
 
     private Unbinder unbinder;
     protected CustomeProgressDialog progressDialog;
 
-    protected ObservableTransformer compse = RxSchedulers.compose(this, this.bindToLifecycle(), new RxSchedulers.OnConnectError() {
-        @Override
-        public void onError() {
-            showRequestErrorView();
-        }
-    });
+    protected <T> ObservableTransformer<T, T> createTransformer() {
+        return RxSchedulers.compose(this, this.<T>bindToLifecycle(), new RxSchedulers.OnConnectError() {
+            @Override
+            public void onError() {
+                showRequestErrorView();
+            }
+        });
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,6 +77,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseIn
         initProgress();
         initlistener();
         init(savedInstanceState);
+        initRequest();
     }
 
     @Override
@@ -209,21 +217,24 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseIn
         return true;
     }
 
-    public void showRequestErrorView() {
-        if (pbLoading != null && llRequestError != null) {
+    protected void showRequestErrorView() {
+        if (pbLoading != null && llRequestError != null && rlDefault != null) {
+            rlDefault.setVisibility(View.VISIBLE);
             pbLoading.setVisibility(View.GONE);
             llRequestError.setVisibility(View.VISIBLE);
         }
     }
 
-    public void showNoDataView() {
-        if (llNoData != null) {
+    protected void showNoDataView() {
+        if (llNoData != null && rlDefault != null) {
+            rlDefault.setVisibility(View.VISIBLE);
             llNoData.setVisibility(View.VISIBLE);
         }
     }
 
-    public void dismissLoading() {
-        if (pbLoading != null) {
+    protected void dismissLoading() {
+        if (pbLoading != null && rlDefault != null) {
+            rlDefault.setVisibility(View.GONE);
             pbLoading.setVisibility(View.GONE);
         }
     }
