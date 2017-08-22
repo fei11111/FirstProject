@@ -10,8 +10,7 @@
         android:layout_height="@dimen/size_120"
         android:layout_centerInParent="true"
         android:background="@drawable/shape_loading_bg"
-        android:indeterminateDrawable="@drawable/anim_loading"
-        android:visibility="gone" />
+        android:indeterminateDrawable="@drawable/anim_loading" />
 
     <LinearLayout
         android:id="@+id/ll_no_data"

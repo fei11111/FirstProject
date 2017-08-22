@@ -16,6 +16,8 @@ import android.widget.EditText;
 import com.fei.firstproject.R;
 import com.fei.firstproject.entity.BaseEntity;
 import com.fei.firstproject.entity.UserEntity;
+import com.fei.firstproject.http.BaseObserver;
+import com.fei.firstproject.http.RxSchedulers;
 import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.utils.Utils;
 
@@ -125,12 +127,17 @@ public class LoginActivity extends BaseActivity {
         //http://www.jianshu.com/p/9674f6df910d
         proShow();
         Observable<BaseEntity<UserEntity>> login = RetrofitFactory.getBigDb().login(map);
-//        login.compose(RxSchedulers.compose(this, this.<BaseEntity<UserEntity>>bindToLifecycle())).subscribe(new BaseObserver<UserEntity>(this) {
-//            @Override
-//            protected void onHandleSuccess(UserEntity userEntity) {
-//                proDisimis();
-//            }
-//        });
+        login.compose(RxSchedulers.compose(this, this.<BaseEntity<UserEntity>>bindToLifecycle(), new RxSchedulers.OnConnectError() {
+            @Override
+            public void onError() {
+
+            }
+        })).subscribe(new BaseObserver<UserEntity>(this) {
+            @Override
+            protected void onHandleSuccess(UserEntity userEntity) {
+                proDisimis();
+            }
+        });
     }
 }
 
