@@ -1,6 +1,5 @@
 package com.fei.firstproject.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,14 +11,19 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
+import com.fei.firstproject.R;
+import com.fei.firstproject.activity.BaseActivity;
+import com.fei.firstproject.http.RxSchedulers;
 import com.fei.firstproject.inter.BaseInterface;
 import com.fei.firstproject.utils.LogUtils;
 import com.trello.rxlifecycle2.components.support.RxFragment;
@@ -27,8 +31,10 @@ import com.trello.rxlifecycle2.components.support.RxFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.ObservableTransformer;
 
 /**
  * Created by Administrator on 2017/7/27.
@@ -36,14 +42,31 @@ import butterknife.Unbinder;
 
 public abstract class BaseFragment extends RxFragment implements BaseInterface {
 
+    @BindView(R.id.pb_loading)
+    ProgressBar pbLoading;
+    @BindView(R.id.ll_no_data)
+    LinearLayout llNoData;
+    @BindView(R.id.rl_default)
+    RelativeLayout rlDefault;
+    @BindView(R.id.btn_request_error)
+    Button btnRequestError;
+    @BindView(R.id.ll_request_error)
+    LinearLayout llRequestError;
+
     private Unbinder unbinder;
-    protected Activity activity;
-    protected static final int REQUEST_CODE_1 = 100;
+    protected BaseActivity activity;
+
+    protected ObservableTransformer compse = RxSchedulers.compose(activity, this.bindToLifecycle(), new RxSchedulers.OnConnectError() {
+        @Override
+        public void onError() {
+            showRequestErrorView();
+        }
+    });
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        activity = (Activity) context;
+        activity = (BaseActivity) context;
     }
 
     @Nullable
@@ -57,6 +80,7 @@ public abstract class BaseFragment extends RxFragment implements BaseInterface {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initlistener();
         init(savedInstanceState);
     }
 
@@ -64,6 +88,17 @@ public abstract class BaseFragment extends RxFragment implements BaseInterface {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    private void initlistener() {
+        if (btnRequestError != null) {
+            btnRequestError.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    initRequest();
+                }
+            });
+        }
     }
 
     /**
@@ -161,19 +196,22 @@ public abstract class BaseFragment extends RxFragment implements BaseInterface {
         return true;
     }
 
-    @Override
-    public void startActivityWithCodeAndPair(Intent intent, int requestCode, Pair<View, String>... sharedElements) {
-        startActivityForResult(intent, requestCode, ActivityOptionsCompat.makeSceneTransitionAnimation(activity, sharedElements).toBundle());
+    protected void showRequestErrorView() {
+        if (pbLoading != null && llRequestError != null) {
+            pbLoading.setVisibility(View.GONE);
+            llRequestError.setVisibility(View.VISIBLE);
+        }
     }
 
-    @Override
-    public void startActivityWithCode(Intent intent, int requestCode) {
-        startActivityForResult(intent, requestCode, ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle());
+    protected void showNoDataView() {
+        if (llNoData != null) {
+            llNoData.setVisibility(View.VISIBLE);
+        }
     }
 
-    @Override
-    public void startActivityWithoutCode(Intent intent) {
-        startActivityWithCode(intent, -1);
+    protected void dismissLoading() {
+        if (pbLoading != null) {
+            pbLoading.setVisibility(View.GONE);
+        }
     }
-
 }

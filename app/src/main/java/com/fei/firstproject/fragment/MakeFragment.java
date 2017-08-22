@@ -11,10 +11,6 @@ import com.fei.firstproject.utils.LogUtils;
 
 public class MakeFragment extends BaseFragment {
 
-    @Override
-    public void requestPermissionsBeforeInit() {
-
-    }
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
@@ -39,5 +35,10 @@ public class MakeFragment extends BaseFragment {
     @Override
     public void init(Bundle savedInstanceState) {
         LogUtils.i("tag","make");
+    }
+
+    @Override
+    public void initRequest() {
+
     }
 }

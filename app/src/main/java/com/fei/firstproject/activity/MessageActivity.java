@@ -7,10 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
@@ -20,7 +16,6 @@ import com.fei.firstproject.decoration.DividerItemDecoration;
 import com.fei.firstproject.entity.BaseEntity;
 import com.fei.firstproject.entity.MessageEntity;
 import com.fei.firstproject.http.BaseObserver;
-import com.fei.firstproject.http.RxSchedulers;
 import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.AppHeadView;
@@ -50,24 +45,9 @@ public class MessageActivity extends BaseActivity {
     RecyclerView recyclerMessage;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
-    @BindView(R.id.pb_loading)
-    ProgressBar pbLoading;
-    @BindView(R.id.ll_no_data)
-    LinearLayout llNoData;
-    @BindView(R.id.rl_default)
-    RelativeLayout rlDefault;
-    @BindView(R.id.btn_request_error)
-    Button btnRequestError;
-    @BindView(R.id.ll_request_error)
-    LinearLayout llRequestError;
 
     private int currentPage = 1;
     private MyMessageAdapter messageAdapter;
-
-    @Override
-    public void requestPermissionsBeforeInit() {
-
-    }
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
@@ -93,6 +73,10 @@ public class MessageActivity extends BaseActivity {
     public void init(Bundle savedInstanceState) {
         initRecycler();
         initListener();
+    }
+
+    @Override
+    public void initRequest() {
         getMessage();
     }
 
@@ -103,17 +87,11 @@ public class MessageActivity extends BaseActivity {
         map.put("pageSize", "10");
         map.put("userId", AppConfig.user.getId());
         final Observable<BaseEntity<List<MessageEntity>>> message = RetrofitFactory.getBtWeb().getMessage(map);
-        message.compose(RxSchedulers.compose(this, this.<BaseEntity<List<MessageEntity>>>bindToLifecycle(), new RxSchedulers.OnConnectError() {
-            @Override
-            public void onError() {
-                pbLoading.setVisibility(View.GONE);
-                llRequestError.setVisibility(View.VISIBLE);
-            }
-        }))
+        message.compose(compse)
                 .subscribe(new BaseObserver<List<MessageEntity>>(this) {
                     @Override
                     protected void onHandleSuccess(List<MessageEntity> messageEntities) {
-                        pbLoading.setVisibility(View.GONE);
+                        dismissLoading();
                         if (messageEntities.size() > 0) {
                             refreshLayout.setVisibility(View.VISIBLE);
                             if (messageAdapter == null) {
@@ -125,7 +103,7 @@ public class MessageActivity extends BaseActivity {
                             }
                         } else {
                             if (messageAdapter == null) {
-                                llNoData.setVisibility(View.VISIBLE);
+                                showNoDataView();
                             } else {
                                 Utils.showToast(MessageActivity.this, "没有更多数据");
                             }
@@ -135,8 +113,7 @@ public class MessageActivity extends BaseActivity {
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
-                        pbLoading.setVisibility(View.GONE);
-                        llRequestError.setVisibility(View.VISIBLE);
+                        showRequestErrorView();
                     }
                 });
     }

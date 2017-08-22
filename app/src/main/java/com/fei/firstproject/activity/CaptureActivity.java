@@ -119,11 +119,6 @@ public class CaptureActivity extends BaseActivity implements Callback {
     }
 
     @Override
-    public void requestPermissionsBeforeInit() {
-
-    }
-
-    @Override
     public void permissionsDeniedCallBack(int requestCode) {
 
     }
@@ -144,6 +139,11 @@ public class CaptureActivity extends BaseActivity implements Callback {
         hasSurface = false;
         inactivityTimer = new InactivityTimer(this);
         initListener();
+    }
+
+    @Override
+    public void initRequest() {
+
     }
 
     private void initListener() {

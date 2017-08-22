@@ -12,11 +12,6 @@ import android.view.View;
 public interface BaseInterface {
 
     /**
-     * 初始化前请求权限
-     */
-    public void requestPermissionsBeforeInit();
-
-    /**
      * 权限被拒返回
      */
     public void permissionsDeniedCallBack(int requestCode);
@@ -40,6 +35,11 @@ public interface BaseInterface {
      * 初始化
      */
     public void init(Bundle savedInstanceState);
+
+    /**
+     * 初始化接口
+     */
+    public void initRequest();
 
     /**
      * 没有请求码启动Activity

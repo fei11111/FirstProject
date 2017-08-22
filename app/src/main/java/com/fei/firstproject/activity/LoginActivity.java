@@ -44,11 +44,6 @@ public class LoginActivity extends BaseActivity {
     private static final int REQUEST_CODE_1 = 100;
 
     @Override
-    public void requestPermissionsBeforeInit() {
-
-    }
-
-    @Override
     public void permissionsDeniedCallBack(int requestCode) {
         showMissingPermissionDialog("需要获取设备信息才能登录", requestCode);
     }
@@ -91,6 +86,11 @@ public class LoginActivity extends BaseActivity {
 
             }
         });
+    }
+
+    @Override
+    public void initRequest() {
+
     }
 
     @OnTextChanged(value = {R.id.et_password, R.id.et_username}, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)

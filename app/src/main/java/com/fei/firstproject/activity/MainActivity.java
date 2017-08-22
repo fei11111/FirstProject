@@ -66,11 +66,6 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    public void requestPermissionsBeforeInit() {
-        checkPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION_CODE_1);
-    }
-
-    @Override
     public void permissionsDeniedCallBack(int requestCode) {
         if (requestCode == REQUEST_PERMISSION_CODE_1) {
             showMissingPermissionDialog("需要访问存储权限", requestCode);
@@ -103,8 +98,18 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
+        initPermission();
         initToolBar();
         initSetting();
+    }
+
+    private void initPermission() {
+        checkPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION_CODE_1);
+    }
+
+    @Override
+    public void initRequest() {
+
     }
 
     private void initSetting() {

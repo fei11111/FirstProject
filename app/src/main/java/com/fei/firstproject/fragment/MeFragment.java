@@ -42,11 +42,6 @@ public class MeFragment extends BaseFragment {
     NoScrollRecyclerView recycler_other;
 
     @Override
-    public void requestPermissionsBeforeInit() {
-
-    }
-
-    @Override
     public void permissionsDeniedCallBack(int requestCode) {
 
     }
@@ -68,8 +63,13 @@ public class MeFragment extends BaseFragment {
 
     @Override
     public void init(Bundle savedInstanceState) {
-        LogUtils.i("tag","me");
+        LogUtils.i("tag", "me");
         initRecyclerView();
+    }
+
+    @Override
+    public void initRequest() {
+
     }
 
     private void initRecyclerView() {

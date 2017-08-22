@@ -7,13 +7,9 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fei.banner.Banner;
@@ -26,7 +22,6 @@ import com.fei.firstproject.entity.NcwEntity;
 import com.fei.firstproject.entity.RecommendEntity;
 import com.fei.firstproject.http.BaseObserver;
 import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
-import com.fei.firstproject.http.RxSchedulers;
 import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.image.GlideImageLoader;
 import com.fei.firstproject.utils.LogUtils;
@@ -44,7 +39,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import io.reactivex.Observable;
 
 import static android.content.Context.SENSOR_SERVICE;
@@ -73,17 +67,6 @@ public class MainFragment extends BaseFragment {
     LinearLayout llRecommendPlan;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
-    @BindView(R.id.pb_loading)
-    ProgressBar pbLoading;
-    @BindView(R.id.ll_no_data)
-    LinearLayout llNoData;
-    @BindView(R.id.btn_request_error)
-    Button btnRequestError;
-    @BindView(R.id.ll_request_error)
-    LinearLayout llRequestError;
-    @BindView(R.id.rl_default)
-    RelativeLayout rlDefault;
-    Unbinder unbinder;
 
     private List<String> imageUrls = new ArrayList<>();
     private SensorManager mSensorManager;
@@ -115,17 +98,6 @@ public class MainFragment extends BaseFragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-    @Override
-    public void requestPermissionsBeforeInit() {
-
-    }
-
-    @Override
     public void permissionsDeniedCallBack(int requestCode) {
 
     }
@@ -154,7 +126,14 @@ public class MainFragment extends BaseFragment {
         initMenu();
         //重力感应
         initSensor();
-        initData();
+    }
+
+    @Override
+    public void initRequest() {
+        //农财网
+        getNcw();
+        //推荐方案
+        getRecommendPlan();
     }
 
     private void initListener() {
@@ -165,13 +144,6 @@ public class MainFragment extends BaseFragment {
                 getRecommendPlan();
             }
         });
-    }
-
-    private void initData() {
-        //农财网
-        getNcw();
-        //推荐方案
-        getRecommendPlan();
     }
 
     private void getRecommendPlan() {
@@ -185,12 +157,6 @@ public class MainFragment extends BaseFragment {
         Observable<BaseEntity<List<RecommendEntity>>> recommendPlan =
                 RetrofitFactory.getBtPlantWeb().getRecommendPlan(map);
         recommendPlan
-                .compose(RxSchedulers.compose(activity, this.<BaseEntity<List<RecommendEntity>>>bindToLifecycle(), new RxSchedulers.OnConnectError() {
-                    @Override
-                    public void onError() {
-
-                    }
-                }))
                 .subscribe(new BaseObserver<List<RecommendEntity>>(activity) {
                     @Override
                     protected void onHandleSuccess(List<RecommendEntity> recommendEntities) {
@@ -205,16 +171,10 @@ public class MainFragment extends BaseFragment {
 
     private void getNcw() {
         Observable<List<NcwEntity>> ncw = RetrofitFactory.getNcw().getNcw();
-        ncw.compose(RxSchedulers.compose(activity, this.<List<NcwEntity>>bindToLifecycle(), new RxSchedulers.OnConnectError() {
-            @Override
-            public void onError() {
-                pbLoading.setVisibility(View.GONE);
-                llRequestError.setVisibility(View.VISIBLE);
-            }
-        })).subscribe(new BaseWithoutBaseEntityObserver<List<NcwEntity>>(activity) {
+        ncw.compose(compse).subscribe(new BaseWithoutBaseEntityObserver<List<NcwEntity>>(activity) {
             @Override
             protected void onHandleSuccess(List<NcwEntity> ncwEntities) {
-                pbLoading.setVisibility(View.GONE);
+                dismissLoading();
                 if (ncwEntities != null && ncwEntities.size() > 0) {
                     LogUtils.i("tag", ncwEntities.toString());
                     llNcw.setVisibility(View.VISIBLE);
@@ -225,8 +185,7 @@ public class MainFragment extends BaseFragment {
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
-                pbLoading.setVisibility(View.GONE);
-                llRequestError.setVisibility(View.VISIBLE);
+                showRequestErrorView();
             }
         });
     }
@@ -289,11 +248,4 @@ public class MainFragment extends BaseFragment {
         }
     };
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
-    }
 }

@@ -15,8 +15,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
+import com.fei.firstproject.R;
 import com.fei.firstproject.dialog.CustomeProgressDialog;
+import com.fei.firstproject.http.RxSchedulers;
 import com.fei.firstproject.inter.BaseInterface;
 import com.fei.firstproject.utils.LogUtils;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
@@ -24,8 +30,10 @@ import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.ObservableTransformer;
 
 /**
  * Created by Administrator on 2017/7/27.
@@ -33,8 +41,26 @@ import butterknife.Unbinder;
 
 public abstract class BaseActivity extends RxAppCompatActivity implements BaseInterface {
 
+    @BindView(R.id.pb_loading)
+    ProgressBar pbLoading;
+    @BindView(R.id.ll_no_data)
+    LinearLayout llNoData;
+    @BindView(R.id.rl_default)
+    RelativeLayout rlDefault;
+    @BindView(R.id.btn_request_error)
+    Button btnRequestError;
+    @BindView(R.id.ll_request_error)
+    LinearLayout llRequestError;
+
     private Unbinder unbinder;
     protected CustomeProgressDialog progressDialog;
+
+    protected ObservableTransformer compse = RxSchedulers.compose(this, this.bindToLifecycle(), new RxSchedulers.OnConnectError() {
+        @Override
+        public void onError() {
+            showRequestErrorView();
+        }
+    });
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,7 +68,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseIn
         setContentView(getContentViewResId());
         unbinder = ButterKnife.bind(this);
         initProgress();
-        requestPermissionsBeforeInit();
+        initlistener();
         init(savedInstanceState);
     }
 
@@ -52,17 +78,27 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseIn
         unbinder.unbind();
     }
 
+    private void initlistener() {
+        if (btnRequestError != null) {
+            btnRequestError.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    initRequest();
+                }
+            });
+        }
+    }
+
     private void initProgress() {
         progressDialog = new CustomeProgressDialog(this);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.setCancelable(true);
     }
 
-
     /**
      * 显示进度条
      */
-    protected void proShow() {
+    public void proShow() {
         if (progressDialog != null && !progressDialog.isShowing()) {
             progressDialog.show();
         }
@@ -170,6 +206,25 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseIn
             }
         }
         return true;
+    }
+
+    protected void showRequestErrorView() {
+        if (pbLoading != null && llRequestError != null) {
+            pbLoading.setVisibility(View.GONE);
+            llRequestError.setVisibility(View.VISIBLE);
+        }
+    }
+
+    protected void showNoDataView() {
+        if (llNoData != null) {
+            llNoData.setVisibility(View.VISIBLE);
+        }
+    }
+
+    protected void dismissLoading() {
+        if (pbLoading != null) {
+            pbLoading.setVisibility(View.GONE);
+        }
     }
 
     @Override
