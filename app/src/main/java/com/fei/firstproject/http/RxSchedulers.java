@@ -2,6 +2,7 @@ package com.fei.firstproject.http;
 
 import android.content.Context;
 
+import com.fei.firstproject.utils.NetUtils;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 
 import io.reactivex.Observable;
@@ -17,7 +18,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class RxSchedulers {
-    public static <T> ObservableTransformer<T, T> compose(final Context mContext, final LifecycleTransformer<T> lifecycle) {
+    public static <T> ObservableTransformer<T, T> compose(final Context mContext, final LifecycleTransformer<T> lifecycle, final OnConnectError onConnectError) {
         return new ObservableTransformer<T, T>() {
             @Override
             public ObservableSource<T> apply(Observable<T> observable) {
@@ -27,12 +28,18 @@ public class RxSchedulers {
                             @Override
                             public void accept(Disposable disposable) throws Exception {
                                 // 可添加网络连接判断等
-
+                                if (!NetUtils.isConnected(mContext)) {
+                                    onConnectError.onError();
+                                }
                             }
                         })
                         .observeOn(AndroidSchedulers.mainThread())
                         .compose(lifecycle);
             }
         };
+    }
+
+    public interface OnConnectError {
+        void onError();
     }
 }

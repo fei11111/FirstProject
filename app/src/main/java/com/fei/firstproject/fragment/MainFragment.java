@@ -15,14 +15,7 @@ import android.widget.TextView;
 import com.fei.banner.Banner;
 import com.fei.firstproject.R;
 import com.fei.firstproject.activity.MainActivity;
-import com.fei.firstproject.adapter.NcwAdapter;
-import com.fei.firstproject.adapter.RecommandPlanAdapter;
-import com.fei.firstproject.entity.BaseEntity;
 import com.fei.firstproject.entity.NcwEntity;
-import com.fei.firstproject.entity.RecommendEntity;
-import com.fei.firstproject.http.BaseObserver;
-import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
-import com.fei.firstproject.http.RxSchedulers;
 import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.image.GlideImageLoader;
 import com.fei.firstproject.utils.LogUtils;
@@ -165,34 +158,34 @@ public class MainFragment extends BaseFragment {
         map.put("county", "");
         map.put("city", "");
         map.put("searchWord", searchWord);
-        Observable<BaseEntity<List<RecommendEntity>>> recommendPlan =
-                RetrofitFactory.getBtPlantWeb().getRecommendPlan(map);
-        recommendPlan
-                .compose(RxSchedulers.compose(activity, this.<BaseEntity<List<RecommendEntity>>>bindToLifecycle()))
-                .subscribe(new BaseObserver<List<RecommendEntity>>(activity) {
-                    @Override
-                    protected void onHandleSuccess(List<RecommendEntity> recommendEntities) {
-                        refreshLayout.finishRefresh();
-                        if (recommendEntities != null && recommendEntities.size() > 0) {
-                            llRecommendPlan.setVisibility(View.VISIBLE);
-                            lvRecommendPlan.setAdapter(new RecommandPlanAdapter(activity, recommendEntities));
-                        }
-                    }
-                });
+//        Observable<BaseEntity<List<RecommendEntity>>> recommendPlan =
+//                RetrofitFactory.getBtPlantWeb().getRecommendPlan(map);
+//        recommendPlan
+//                .compose(RxSchedulers.compose(activity, this.<BaseEntity<List<RecommendEntity>>>bindToLifecycle()))
+//                .subscribe(new BaseObserver<List<RecommendEntity>>(activity) {
+//                    @Override
+//                    protected void onHandleSuccess(List<RecommendEntity> recommendEntities) {
+//                        refreshLayout.finishRefresh();
+//                        if (recommendEntities != null && recommendEntities.size() > 0) {
+//                            llRecommendPlan.setVisibility(View.VISIBLE);
+//                            lvRecommendPlan.setAdapter(new RecommandPlanAdapter(activity, recommendEntities));
+//                        }
+//                    }
+//                });
     }
 
     private void getNcw() {
         Observable<List<NcwEntity>> ncw = RetrofitFactory.getNcw().getNcw();
-        ncw.compose(RxSchedulers.compose(activity, this.<List<NcwEntity>>bindToLifecycle())).subscribe(new BaseWithoutBaseEntityObserver<List<NcwEntity>>(activity) {
-            @Override
-            protected void onHandleSuccess(List<NcwEntity> ncwEntities) {
-                if (ncwEntities != null && ncwEntities.size() > 0) {
-                    LogUtils.i("tag", ncwEntities.toString());
-                    llNcw.setVisibility(View.VISIBLE);
-                    lvNcw.setAdapter(new NcwAdapter(activity, ncwEntities));
-                }
-            }
-        });
+//        ncw.compose(RxSchedulers.compose(activity, this.<List<NcwEntity>>bindToLifecycle())).subscribe(new BaseWithoutBaseEntityObserver<List<NcwEntity>>(activity) {
+//            @Override
+//            protected void onHandleSuccess(List<NcwEntity> ncwEntities) {
+//                if (ncwEntities != null && ncwEntities.size() > 0) {
+//                    LogUtils.i("tag", ncwEntities.toString());
+//                    llNcw.setVisibility(View.VISIBLE);
+//                    lvNcw.setAdapter(new NcwAdapter(activity, ncwEntities));
+//                }
+//            }
+//        });
     }
 
     private void initSensor() {

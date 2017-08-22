@@ -7,6 +7,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -47,10 +50,16 @@ public class MessageActivity extends BaseActivity {
     RecyclerView recyclerMessage;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
-    @BindView(R.id.rl_loading)
-    RelativeLayout rlLoading;
-    @BindView(R.id.rl_no_data)
-    RelativeLayout rlNoData;
+    @BindView(R.id.pb_loading)
+    ProgressBar pbLoading;
+    @BindView(R.id.ll_no_data)
+    LinearLayout llNoData;
+    @BindView(R.id.rl_default)
+    RelativeLayout rlDefault;
+    @BindView(R.id.btn_request_error)
+    Button btnRequestError;
+    @BindView(R.id.ll_request_error)
+    LinearLayout llRequestError;
 
     private int currentPage = 1;
     private MyMessageAdapter messageAdapter;
@@ -94,11 +103,17 @@ public class MessageActivity extends BaseActivity {
         map.put("pageSize", "10");
         map.put("userId", AppConfig.user.getId());
         final Observable<BaseEntity<List<MessageEntity>>> message = RetrofitFactory.getBtWeb().getMessage(map);
-        message.compose(RxSchedulers.compose(this, this.<BaseEntity<List<MessageEntity>>>bindToLifecycle()))
+        message.compose(RxSchedulers.compose(this, this.<BaseEntity<List<MessageEntity>>>bindToLifecycle(), new RxSchedulers.OnConnectError() {
+            @Override
+            public void onError() {
+                pbLoading.setVisibility(View.GONE);
+                llRequestError.setVisibility(View.VISIBLE);
+            }
+        }))
                 .subscribe(new BaseObserver<List<MessageEntity>>(this) {
                     @Override
                     protected void onHandleSuccess(List<MessageEntity> messageEntities) {
-                        rlLoading.setVisibility(View.GONE);
+                        pbLoading.setVisibility(View.GONE);
                         if (messageEntities.size() > 0) {
                             refreshLayout.setVisibility(View.VISIBLE);
                             if (messageAdapter == null) {
@@ -110,11 +125,18 @@ public class MessageActivity extends BaseActivity {
                             }
                         } else {
                             if (messageAdapter == null) {
-                                rlNoData.setVisibility(View.VISIBLE);
+                                llNoData.setVisibility(View.VISIBLE);
                             } else {
                                 Utils.showToast(MessageActivity.this, "没有更多数据");
                             }
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        pbLoading.setVisibility(View.GONE);
+                        llRequestError.setVisibility(View.VISIBLE);
                     }
                 });
     }

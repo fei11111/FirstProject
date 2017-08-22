@@ -33,14 +33,7 @@
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
-    <include
-        layout="@layout/view_loading"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-    <include
-        layout="@layout/view_no_data"
-        android:visibility="gone"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    <include android:id="@+id/layout_error" />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"

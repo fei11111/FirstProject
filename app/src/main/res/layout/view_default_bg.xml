@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_default"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ProgressBar
+        android:id="@+id/pb_loading"
+        android:layout_width="@dimen/size_120"
+        android:layout_height="@dimen/size_120"
+        android:layout_centerInParent="true"
+        android:background="@drawable/shape_loading_bg"
+        android:indeterminateDrawable="@drawable/anim_loading"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/ll_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="@dimen/size_120"
+            android:layout_height="@dimen/size_120"
+            android:padding="@dimen/size_10"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_no_data" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_10"
+            android:text="@string/no_data"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/tx_18" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_request_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="@dimen/size_120"
+            android:layout_height="@dimen/size_120"
+            android:padding="@dimen/size_10"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_request_fail" />
+
+        <Button
+            android:id="@+id/btn_request_error"
+            android:layout_width="@dimen/size_120"
+            android:layout_height="@dimen/size_40"
+            android:background="@drawable/selector_btn_bg"
+            android:text="@string/refresh_and_retry"
+            android:textColor="@color/colorWhite" />
+
+    </LinearLayout>
+
+</RelativeLayout>
