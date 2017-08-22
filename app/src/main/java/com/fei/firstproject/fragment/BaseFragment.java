@@ -11,7 +11,9 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -213,5 +215,21 @@ public abstract class BaseFragment extends RxFragment implements BaseInterface {
         if (pbLoading != null) {
             pbLoading.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void startActivityWithCodeAndPair(Intent intent, int requestCode, Pair<View, String>... sharedElements) {
+        startActivityForResult(intent, requestCode, ActivityOptionsCompat.makeSceneTransitionAnimation(activity, sharedElements).toBundle());
+    }
+
+
+    @Override
+    public void startActivityWithCode(Intent intent, int requestCode) {
+        startActivityForResult(intent, requestCode, ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle());
+    }
+
+    @Override
+    public void startActivityWithoutCode(Intent intent) {
+        startActivityWithCode(intent, -1);
     }
 }

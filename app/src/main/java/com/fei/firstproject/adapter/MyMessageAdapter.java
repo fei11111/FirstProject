@@ -39,8 +39,16 @@ public class MyMessageAdapter extends RecyclerView.Adapter<MyMessageAdapter.MyMe
     @Override
     public void onBindViewHolder(MyMessageViewHolder holder, int position) {
         MessageEntity messageEntity = messageEntities.get(position);
+        int flag = messageEntity.getFlag();
+        if (flag == 1) {
+            //已读
+            holder.tvTitle.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+        } else {
+            holder.tvTitle.setCompoundDrawablesWithIntrinsicBounds(mContext.getResources().getDrawable(R.drawable.shape_red_dot), null, null, null);
+        }
         holder.tvTitle.setText(messageEntity.getTitle());
         holder.tvContent.setText(messageEntity.getContent());
+        holder.tvTime.setText(messageEntity.getSendTime());
     }
 
     public void addMessageList(List<MessageEntity> messageList) {

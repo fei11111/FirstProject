@@ -95,6 +95,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseIn
         progressDialog.setCancelable(true);
     }
 
+
     /**
      * 显示进度条
      */
@@ -208,20 +209,20 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseIn
         return true;
     }
 
-    protected void showRequestErrorView() {
+    public void showRequestErrorView() {
         if (pbLoading != null && llRequestError != null) {
             pbLoading.setVisibility(View.GONE);
             llRequestError.setVisibility(View.VISIBLE);
         }
     }
 
-    protected void showNoDataView() {
+    public void showNoDataView() {
         if (llNoData != null) {
             llNoData.setVisibility(View.VISIBLE);
         }
     }
 
-    protected void dismissLoading() {
+    public void dismissLoading() {
         if (pbLoading != null) {
             pbLoading.setVisibility(View.GONE);
         }

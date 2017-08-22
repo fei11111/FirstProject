@@ -17,7 +17,6 @@ import com.fei.firstproject.R;
 import com.fei.firstproject.entity.BaseEntity;
 import com.fei.firstproject.entity.UserEntity;
 import com.fei.firstproject.http.BaseObserver;
-import com.fei.firstproject.http.RxSchedulers;
 import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.utils.Utils;
 
@@ -115,7 +114,6 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void attemptLogin() {
-        //password=10160411920&deviceID=863978010682477&mobile=111920
         final String userNameText = etUsername.getText().toString();
         String passwordText = etPassword.getText().toString();
         TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
@@ -124,15 +122,9 @@ public class LoginActivity extends BaseActivity {
         map.put("password", passwordText);
         map.put("deviceId", deviceId);
         map.put("mobile", userNameText);
-        //http://www.jianshu.com/p/9674f6df910d
         proShow();
         Observable<BaseEntity<UserEntity>> login = RetrofitFactory.getBigDb().login(map);
-        login.compose(RxSchedulers.compose(this, this.<BaseEntity<UserEntity>>bindToLifecycle(), new RxSchedulers.OnConnectError() {
-            @Override
-            public void onError() {
-
-            }
-        })).subscribe(new BaseObserver<UserEntity>(this) {
+        login.subscribe(new BaseObserver<UserEntity>(this) {
             @Override
             protected void onHandleSuccess(UserEntity userEntity) {
                 proDisimis();
