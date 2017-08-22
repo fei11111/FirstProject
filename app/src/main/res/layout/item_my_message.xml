@@ -51,7 +51,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@id/ll_right_time"
-                android:drawableLeft="@drawable/shape_red_dot"
                 android:drawablePadding="@dimen/size_5"
                 android:gravity="center_vertical"
                 android:textColor="@color/colorText"

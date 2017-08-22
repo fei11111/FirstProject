@@ -76,7 +76,7 @@
                 android:layout_width="@dimen/size_120"
                 android:layout_height="@dimen/size_40"
                 android:background="@drawable/selector_btn_bg"
-                android:text="刷新重试"
+                android:text="@string/refresh_and_retry"
                 android:textColor="@color/colorWhite" />
 
         </LinearLayout>

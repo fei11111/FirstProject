@@ -1,10 +1,7 @@
 package com.fei.firstproject.http;
 
 import android.content.Context;
-import android.widget.Toast;
 
-import com.fei.firstproject.R;
-import com.fei.firstproject.utils.NetUtils;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 
 import io.reactivex.Observable;
@@ -30,9 +27,7 @@ public class RxSchedulers {
                             @Override
                             public void accept(Disposable disposable) throws Exception {
                                 // 可添加网络连接判断等
-                                if (!NetUtils.isConnected(mContext)) {
-                                    Toast.makeText(mContext, R.string.toast_network_error, Toast.LENGTH_SHORT).show();
-                                }
+
                             }
                         })
                         .observeOn(AndroidSchedulers.mainThread())

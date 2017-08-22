@@ -1,6 +1,7 @@
 package com.fei.firstproject.http.inter;
 
 import com.fei.firstproject.entity.BaseEntity;
+import com.fei.firstproject.entity.MessageEntity;
 import com.fei.firstproject.entity.NcwEntity;
 import com.fei.firstproject.entity.RecommendEntity;
 import com.fei.firstproject.entity.UserEntity;
@@ -12,6 +13,7 @@ import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.QueryMap;
 
 /**
@@ -33,4 +35,7 @@ public interface RequestApi {
 
     @GET("app/field/getRecommendPlans.do")
     Observable<BaseEntity<List<RecommendEntity>>> getRecommendPlan(@QueryMap Map<String, String> map);
+
+    @POST("app/notice/listNotices.do")
+    Observable<BaseEntity<List<MessageEntity>>> getMessage(@QueryMap Map<String, String> map);
 }

@@ -52,7 +52,7 @@ public class CustomeProgressDialog extends ProgressDialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view = LayoutInflater.from(mContext).inflate(R.layout.loading, null);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.view_loading, null);
         setContentView(view);
     }
 

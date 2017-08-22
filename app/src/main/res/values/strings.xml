@@ -73,6 +73,9 @@
     <string name="scan">扫一扫</string>
     <string name="web_search_tip">请输入网址</string>
     <string name="go_to">前往</string>
+    <string name="refresh_and_retry">刷新重试</string>
+    <string name="no_data">没有任何数据</string>
+    <string name="signature">伦家也是有下限的</string>
 
     <!-- Strings related to Settings -->
 

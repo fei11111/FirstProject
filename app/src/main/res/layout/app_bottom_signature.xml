@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="@dimen/size_16"
-        android:text="就是这么帅"
+        android:text="@string/signature"
         android:textColor="@color/colorText"
         android:textSize="@dimen/tx_12"></TextView>
 

@@ -7,15 +7,29 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.MyMessageAdapter;
+import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.decoration.DividerItemDecoration;
+import com.fei.firstproject.entity.BaseEntity;
+import com.fei.firstproject.entity.MessageEntity;
+import com.fei.firstproject.http.BaseObserver;
+import com.fei.firstproject.http.RxSchedulers;
+import com.fei.firstproject.http.factory.RetrofitFactory;
+import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.AppHeadView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import io.reactivex.Observable;
 
 /**
  * Created by Administrator on 2017/8/21.
@@ -33,6 +47,13 @@ public class MessageActivity extends BaseActivity {
     RecyclerView recyclerMessage;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
+    @BindView(R.id.rl_loading)
+    RelativeLayout rlLoading;
+    @BindView(R.id.rl_no_data)
+    RelativeLayout rlNoData;
+
+    private int currentPage = 1;
+    private MyMessageAdapter messageAdapter;
 
     @Override
     public void requestPermissionsBeforeInit() {
@@ -63,6 +84,39 @@ public class MessageActivity extends BaseActivity {
     public void init(Bundle savedInstanceState) {
         initRecycler();
         initListener();
+        getMessage();
+    }
+
+    private void getMessage() {
+        if (currentPage < 1) currentPage = 1;
+        Map<String, String> map = new HashMap<>();
+        map.put("currentPage", currentPage + "");
+        map.put("pageSize", "10");
+        map.put("userId", AppConfig.user.getId());
+        final Observable<BaseEntity<List<MessageEntity>>> message = RetrofitFactory.getBtWeb().getMessage(map);
+        message.compose(RxSchedulers.compose(this, this.<BaseEntity<List<MessageEntity>>>bindToLifecycle()))
+                .subscribe(new BaseObserver<List<MessageEntity>>(this) {
+                    @Override
+                    protected void onHandleSuccess(List<MessageEntity> messageEntities) {
+                        rlLoading.setVisibility(View.GONE);
+                        if (messageEntities.size() > 0) {
+                            refreshLayout.setVisibility(View.VISIBLE);
+                            if (messageAdapter == null) {
+                                messageAdapter = new MyMessageAdapter(MessageActivity.this, messageEntities);
+                                recyclerMessage.setAdapter(messageAdapter);
+                            } else {
+                                messageAdapter.addMessageList(messageEntities);
+                                messageAdapter.notifyDataSetChanged();
+                            }
+                        } else {
+                            if (messageAdapter == null) {
+                                rlNoData.setVisibility(View.VISIBLE);
+                            } else {
+                                Utils.showToast(MessageActivity.this, "没有更多数据");
+                            }
+                        }
+                    }
+                });
     }
 
     private void initListener() {
@@ -89,8 +143,12 @@ public class MessageActivity extends BaseActivity {
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
         recyclerMessage.setLayoutManager(linearLayoutManager);
         recyclerMessage.addItemDecoration(itemDecoration);
-        MyMessageAdapter messageAdapter = new MyMessageAdapter(this);
-        recyclerMessage.setAdapter(messageAdapter);
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }
