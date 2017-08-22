@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.MyMessageAdapter;
+import com.fei.firstproject.decoration.DividerItemDecoration;
 import com.fei.firstproject.widget.AppHeadView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
@@ -85,7 +86,9 @@ public class MessageActivity extends BaseActivity {
 
     private void initRecycler() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
         recyclerMessage.setLayoutManager(linearLayoutManager);
+        recyclerMessage.addItemDecoration(itemDecoration);
         MyMessageAdapter messageAdapter = new MyMessageAdapter(this);
         recyclerMessage.setAdapter(messageAdapter);
     }
