@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.fei.firstproject.toast.ToastCompat;
 
 import java.lang.reflect.Field;
+import java.net.URLEncoder;
 
 /**
  * Created by Administrator on 2017/7/28.
@@ -89,6 +90,28 @@ public class Utils {
     public static void hideKeyBoard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(activity.getWindow().getDecorView().getWindowToken(), 0);
+    }
+
+    /**
+     * 将中文参数进行编码
+     *
+     * @param paramString
+     * @return
+     */
+
+    public static String toURLEncoded(String paramString) {
+        if (paramString == null || paramString.equals("")) {
+            return "";
+        }
+
+        try {
+            String str = new String(paramString.getBytes(), "UTF-8");
+            str = URLEncoder.encode(str, "UTF-8");
+            return str;
+        } catch (Exception localException) {
+        }
+
+        return "";
     }
 
 }

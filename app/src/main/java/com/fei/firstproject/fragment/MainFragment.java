@@ -18,7 +18,8 @@ import com.fei.banner.Banner;
 import com.fei.firstproject.R;
 import com.fei.firstproject.activity.MainActivity;
 import com.fei.firstproject.adapter.NcwAdapter;
-import com.fei.firstproject.adapter.RecommandPlanAdapter;
+import com.fei.firstproject.adapter.RecommendPlanAdapter;
+import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.entity.BaseEntity;
 import com.fei.firstproject.entity.NcwEntity;
 import com.fei.firstproject.entity.RecommendEntity;
@@ -30,6 +31,7 @@ import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.web.WebActivity;
 import com.fei.firstproject.widget.NoScrollListView;
+import com.fei.firstproject.widget.SettingView;
 import com.fei.firstproject.widget.TextSwitchView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -71,12 +73,24 @@ public class MainFragment extends BaseFragment {
     LinearLayout llRecommendPlan;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
+    @BindView(R.id.sv_ncw)
+    SettingView svNcw;
+    @BindView(R.id.sv_recommend_plan)
+    SettingView svRecommendPlan;
 
     private List<String> imageUrls = new ArrayList<>();
     private SensorManager mSensorManager;
     private Sensor mSensor;
-    private RecommandPlanAdapter recommandPlanAdapter;
+    private RecommendPlanAdapter recommendPlanAdapter;
     private NcwAdapter ncwAdapter;
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        recommendPlanAdapter = null;
+        ncwAdapter = null;
+    }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -147,12 +161,12 @@ public class MainFragment extends BaseFragment {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 //推荐方案
-                getRecommendPlan();
+                initRequest();
             }
         });
     }
 
-    private void getRecommendPlan() {
+    public void getRecommendPlan() {
         //province=&county=&city=&
         String searchWord = ((MainActivity) activity).getAppHeadView().getEtSearchText();
         Map<String, String> map = new HashMap<>();
@@ -165,36 +179,68 @@ public class MainFragment extends BaseFragment {
         recommendPlan
                 .subscribe(new BaseObserver<List<RecommendEntity>>(activity) {
                     @Override
-                    protected void onHandleSuccess(List<RecommendEntity> recommendEntities) {
+                    protected void onHandleSuccess(final List<RecommendEntity> recommendEntities) {
                         refreshLayout.finishRefresh();
                         if (recommendEntities != null && recommendEntities.size() > 0) {
                             llRecommendPlan.setVisibility(View.VISIBLE);
-                            lvRecommendPlan.setAdapter(new RecommandPlanAdapter(activity, recommendEntities));
+                            if (recommendPlanAdapter == null) {
+                                recommendPlanAdapter = new RecommendPlanAdapter(activity, recommendEntities);
+                                lvRecommendPlan.setAdapter(recommendPlanAdapter);
+                                lvRecommendPlan.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                        RecommendEntity recommendEntity = recommendEntities.get(position);
+                                        String url = AppConfig.PLANT_DESC_URL + "?id=" + recommendEntity.getId() + "&version="
+                                                + recommendEntity.getVersion()
+                                                + "&cropCode=" + recommendEntity.getCropCode()
+                                                + "&categoryCode=" + recommendEntity.getCropCategoryCode()
+                                                + "&title=" + recommendEntity.getTitle();
+                                        Intent intent = new Intent(activity, WebActivity.class);
+                                        intent.putExtra("url", url);
+                                        startActivityWithoutCode(intent);
+                                    }
+                                });
+                            } else {
+                                recommendPlanAdapter.setRecommendEntities(recommendEntities);
+                                recommendPlanAdapter.notifyDataSetChanged();
+                            }
                         }
+                    }
+
+                    @Override
+                    protected void onHandleError(String msg) {
+                        super.onHandleError(msg);
+                        refreshLayout.finishRefresh();
                     }
                 });
     }
 
     private void getNcw() {
-        Observable<List<NcwEntity>> ncw = RetrofitFactory.getNcw().getNcw();
+        final Observable<List<NcwEntity>> ncw = RetrofitFactory.getNcw().getNcw();
         ncw.compose(this.<List<NcwEntity>>createTransformer()).subscribe(new BaseWithoutBaseEntityObserver<List<NcwEntity>>(activity) {
             @Override
             protected void onHandleSuccess(final List<NcwEntity> ncwEntities) {
+                refreshLayout.finishRefresh();
                 if (ncwEntities != null && ncwEntities.size() > 0) {
                     dismissLoading();
                     refreshLayout.setVisibility(View.VISIBLE);
-                    LogUtils.i("tag", ncwEntities.toString());
                     llNcw.setVisibility(View.VISIBLE);
-                    lvNcw.setAdapter(new NcwAdapter(activity, ncwEntities));
-                    lvNcw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            String url = ncwEntities.get(position).getUrl();
-                            Intent intent = new Intent(activity, WebActivity.class);
-                            intent.putExtra("url", url + "&a=show");
-                            startActivityWithoutCode(intent);
-                        }
-                    });
+                    if (ncwAdapter == null) {
+                        ncwAdapter = new NcwAdapter(activity, ncwEntities);
+                        lvNcw.setAdapter(ncwAdapter);
+                        lvNcw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                String url = ncwEntities.get(position).getUrl();
+                                Intent intent = new Intent(activity, WebActivity.class);
+                                intent.putExtra("url", url + "&a=show");
+                                startActivityWithoutCode(intent);
+                            }
+                        });
+                    } else {
+                        ncwAdapter.setNcwEntities(ncwEntities);
+                        ncwAdapter.notifyDataSetChanged();
+                    }
                 } else {
                     showNoDataView();
                 }
@@ -203,6 +249,7 @@ public class MainFragment extends BaseFragment {
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
+                refreshLayout.finishRefresh();
                 showRequestErrorView();
             }
         });
@@ -266,7 +313,7 @@ public class MainFragment extends BaseFragment {
         }
     };
 
-    @OnClick(R.id.ll_ncw)
+    @OnClick(R.id.sv_ncw)
     void clickNcw() {
         Intent intent = new Intent(activity, WebActivity.class);
         intent.putExtra("url", RetrofitFactory.NCW_URL);

@@ -23,6 +23,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/selector_color_white_to_gray"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:padding="@dimen/size_10">
@@ -30,13 +31,13 @@
                 <ImageView
                     android:layout_width="@dimen/size_45"
                     android:layout_height="@dimen/size_45"
-                    android:src="@drawable/ic_check" />
+                    android:src="@drawable/ic_fertilizer" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/size_10"
-                    android:text="方案查询"
+                    android:text="@string/make_fertilizer"
                     android:textColor="@color/colorText"
                     android:textSize="@dimen/tx_15" />
             </LinearLayout>
@@ -50,6 +51,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/selector_color_white_to_gray"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:padding="@dimen/size_10">
@@ -57,13 +59,13 @@
                 <ImageView
                     android:layout_width="@dimen/size_45"
                     android:layout_height="@dimen/size_45"
-                    android:src="@drawable/ic_check" />
+                    android:src="@drawable/ic_jianyi" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/size_10"
-                    android:text="方案查询"
+                    android:text="@string/fast_make"
                     android:textColor="@color/colorText"
                     android:textSize="@dimen/tx_15" />
             </LinearLayout>
@@ -80,6 +82,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/selector_color_white_to_gray"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:padding="@dimen/size_10">
@@ -87,13 +90,13 @@
                 <ImageView
                     android:layout_width="@dimen/size_45"
                     android:layout_height="@dimen/size_45"
-                    android:src="@drawable/ic_check" />
+                    android:src="@drawable/ic_write" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/size_10"
-                    android:text="方案查询"
+                    android:text="@string/plan_make"
                     android:textColor="@color/colorText"
                     android:textSize="@dimen/tx_15" />
             </LinearLayout>
@@ -107,6 +110,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/selector_color_white_to_gray"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:padding="@dimen/size_10">
@@ -120,7 +124,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/size_10"
-                    android:text="方案查询"
+                    android:text="@string/plan_search"
                     android:textColor="@color/colorText"
                     android:textSize="@dimen/tx_15" />
             </LinearLayout>

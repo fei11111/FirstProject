@@ -20,13 +20,17 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2017/8/14.
  */
 
-public class RecommandPlanAdapter extends BaseAdapter {
+public class RecommendPlanAdapter extends BaseAdapter {
 
     private Context mContext;
     private List<RecommendEntity> recommendEntities;
 
-    public RecommandPlanAdapter(Context mContext, List<RecommendEntity> recommendEntities) {
+    public RecommendPlanAdapter(Context mContext, List<RecommendEntity> recommendEntities) {
         this.mContext = mContext;
+        this.recommendEntities = recommendEntities;
+    }
+
+    public void setRecommendEntities(List<RecommendEntity> recommendEntities) {
         this.recommendEntities = recommendEntities;
     }
 

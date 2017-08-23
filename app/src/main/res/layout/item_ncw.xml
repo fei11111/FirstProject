@@ -8,9 +8,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/size_1"
-        android:background="@color/colorWhite"
         android:orientation="horizontal"
-        android:padding="@dimen/size_16">
+        android:padding="@dimen/size_16"
+        android:background="@drawable/selector_color_white_to_gray">
 
         <ImageView
             android:id="@+id/iv_ncw"

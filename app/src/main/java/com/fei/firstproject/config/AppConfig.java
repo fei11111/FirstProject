@@ -23,4 +23,8 @@ public class AppConfig {
 //    public static final String HOST = "http://192.168.1.198:8080";
 //    public static final String HOST2 = "http://192.168.1.195:3389";
 //    public static final String HOST3 = "http://192.168.1.214:3391";
+
+    // 田间管理-方案详情
+    public static final String PLANT_DESC_URL = HOST3
+            + "/bt-plant-web/brandsPlant/app/brandsPlanPage";
 }

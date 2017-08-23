@@ -91,6 +91,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseIn
             btnRequestError.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    showLoading();
                     initRequest();
                 }
             });
@@ -217,25 +218,39 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseIn
         return true;
     }
 
-    protected void showRequestErrorView() {
-        if (pbLoading != null && llRequestError != null && rlDefault != null) {
+    protected void showLoading() {
+        if (pbLoading != null && llRequestError != null && rlDefault != null && llNoData != null) {
             rlDefault.setVisibility(View.VISIBLE);
-            pbLoading.setVisibility(View.GONE);
-            llRequestError.setVisibility(View.VISIBLE);
-        }
-    }
-
-    protected void showNoDataView() {
-        if (llNoData != null && rlDefault != null) {
-            rlDefault.setVisibility(View.VISIBLE);
-            llNoData.setVisibility(View.VISIBLE);
+            pbLoading.setVisibility(View.VISIBLE);
+            llRequestError.setVisibility(View.GONE);
+            llNoData.setVisibility(View.GONE);
         }
     }
 
     protected void dismissLoading() {
-        if (pbLoading != null && rlDefault != null) {
+        if (pbLoading != null && llRequestError != null && rlDefault != null && llNoData != null) {
             rlDefault.setVisibility(View.GONE);
             pbLoading.setVisibility(View.GONE);
+            llRequestError.setVisibility(View.GONE);
+            llNoData.setVisibility(View.GONE);
+        }
+    }
+
+    protected void showRequestErrorView() {
+        if (pbLoading != null && llRequestError != null && rlDefault != null && llNoData != null) {
+            rlDefault.setVisibility(View.VISIBLE);
+            llRequestError.setVisibility(View.VISIBLE);
+            pbLoading.setVisibility(View.GONE);
+            llNoData.setVisibility(View.GONE);
+        }
+    }
+
+    protected void showNoDataView() {
+        if (pbLoading != null && llRequestError != null && rlDefault != null && llNoData != null) {
+            rlDefault.setVisibility(View.VISIBLE);
+            llNoData.setVisibility(View.VISIBLE);
+            pbLoading.setVisibility(View.GONE);
+            llRequestError.setVisibility(View.GONE);
         }
     }
 

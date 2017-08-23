@@ -58,6 +58,7 @@
     <string name="make_fertilizer">肥料定制</string>
     <string name="fast_make">快速定制</string>
     <string name="plan_make">方案定制</string>
+    <string name="plan_search">方案查询</string>
     <string name="toast_network_error">网络异常，请检查您的网络设置！</string>
     <string name="zjzs">专家诊室</string>
     <string name="tjgl">田间管理</string>

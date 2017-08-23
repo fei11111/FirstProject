@@ -141,8 +141,10 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onEdit(TextView v, int actionId, KeyEvent event) {
-                Utils.showToast(MainActivity.this, "hellow");
                 Utils.hideKeyBoard(MainActivity.this);
+                if (mainFragment != null) {
+                    mainFragment.getRecommendPlan();
+                }
             }
         });
     }

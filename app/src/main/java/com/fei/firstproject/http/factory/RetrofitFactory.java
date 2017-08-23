@@ -25,7 +25,7 @@ public class RetrofitFactory {
 
     public static final String BIGDB_URL = AppConfig.HOST + "/bigdb/";
     public static final String NCW_URL = "http://batian.ncw365.com/";
-    public static final String BT_WEB_URL = AppConfig.HOST2 + "/bt-web/app/";
+    public static final String BT_WEB_URL = AppConfig.HOST2 + "/bt-web/";
     public static final String BT_PLANT_WEB_URL = AppConfig.HOST3 + "/bt-plant-web/";
     private static File cacheFile = new File(PathUtls.getCachePath());
     private static Cache cache = new Cache(cacheFile, AppConfig.CACHE_SIZE);

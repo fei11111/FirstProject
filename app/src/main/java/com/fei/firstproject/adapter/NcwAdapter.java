@@ -30,6 +30,10 @@ public class NcwAdapter extends BaseAdapter {
         this.ncwEntities = ncwEntities;
     }
 
+    public void setNcwEntities(List<NcwEntity> ncwEntities) {
+        this.ncwEntities = ncwEntities;
+    }
+
     @Override
     public int getCount() {
         return ncwEntities.size() >= 3 ? 3 : ncwEntities.size();
