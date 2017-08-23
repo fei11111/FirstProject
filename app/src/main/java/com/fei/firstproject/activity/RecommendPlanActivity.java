@@ -81,7 +81,7 @@ public class RecommendPlanActivity extends BaseListActivity {
                                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
                                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                        RecommendEntity recommendEntity = recommendEntities.get(position);
+                                        RecommendEntity recommendEntity = (RecommendEntity) recommendPlanAdapter.getItem(position);
                                         String url = AppConfig.PLANT_DESC_URL + "?id=" + recommendEntity.getId() + "&version="
                                                 + recommendEntity.getVersion()
                                                 + "&cropCode=" + recommendEntity.getCropCode()

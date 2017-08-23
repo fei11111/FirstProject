@@ -59,8 +59,8 @@ public class TextSwitchView extends TextSwitcher implements ViewSwitcher.ViewFac
 
     private void init() {
         setFactory(this);
-        setInAnimation(AnimationUtils.loadAnimation(mContext, R.anim.in_animation));
-        setOutAnimation(AnimationUtils.loadAnimation(mContext, R.anim.out_animation));
+        setInAnimation(AnimationUtils.loadAnimation(mContext, R.anim.textswitch_in_animation));
+        setOutAnimation(AnimationUtils.loadAnimation(mContext, R.anim.textswitch_out_animation));
     }
 
     @Override

@@ -273,6 +273,12 @@ public class MainFragment extends BaseFragment {
         TextView tv_head_menu = ButterKnife.findById(itemView, R.id.tv_head_menu);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(tabWidth, LinearLayout.LayoutParams.MATCH_PARENT);
         itemView.setLayoutParams(params);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         iv_head_menu.setImageResource(drawable);
         tv_head_menu.setText(menuName);
         return itemView;

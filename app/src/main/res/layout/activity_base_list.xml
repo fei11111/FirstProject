@@ -47,7 +47,7 @@
         app:srlEnableLoadmore="true"
         app:srlEnableLoadmoreWhenContentNotFull="false"
         app:srlEnableOverScrollBounce="true"
-        app:srlEnableScrollContentWhenLoaded="false"
+        app:srlEnableScrollContentWhenLoaded="true"
         app:srlPrimaryColor="@color/colorPrimary">
 
         <com.scwang.smartrefresh.header.CircleHeader

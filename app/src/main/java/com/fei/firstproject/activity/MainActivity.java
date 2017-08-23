@@ -167,6 +167,7 @@ public class MainActivity extends BaseActivity {
             case R.id.ll_bottom_make:
                 llBottomMake.setSelected(true);
                 setAppHeadViewTitleMode(getResources().getString(R.string.make));
+
                 if (makeFragment == null) {
                     makeFragment = (MakeFragment) FragmentInstanceManager.getInstance().getFragmet(MakeFragment.class);
                     switchFragment(makeFragment, true);
@@ -263,4 +264,5 @@ public class MainActivity extends BaseActivity {
     public AppHeadView getAppHeadView() {
         return appHeadView;
     }
+
 }

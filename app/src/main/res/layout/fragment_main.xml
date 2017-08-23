@@ -65,8 +65,6 @@
                     android:layout_marginTop="@dimen/size_10"
                     android:background="@color/colorWhite"
                     android:fadeScrollbars="false"
-                    android:paddingBottom="@dimen/size_5"
-                    android:paddingTop="@dimen/size_5"
                     android:scrollbars="none">
 
                     <LinearLayout

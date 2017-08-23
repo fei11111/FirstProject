@@ -6,22 +6,25 @@
     android:background="@color/colorBackground">
 
     <android.support.v7.widget.LinearLayoutCompat
+        android:id="@+id/ll_top_make"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/size_220"
         android:orientation="vertical"
         app:divider="@drawable/shape_line"
         app:showDividers="middle">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:layout_marginTop="@dimen/size_10"
             android:background="@color/colorWhite"
             android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/ll_fertilizer"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/selector_color_white_to_gray"
                 android:gravity="center"
@@ -48,8 +51,9 @@
                 android:background="@color/colorBackground" />
 
             <LinearLayout
+                android:id="@+id/ll_fast_make"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/selector_color_white_to_gray"
                 android:gravity="center"
@@ -74,13 +78,15 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:background="@color/colorWhite"
             android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/ll_plan_make"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/selector_color_white_to_gray"
                 android:gravity="center"
@@ -107,8 +113,9 @@
                 android:background="@color/colorBackground" />
 
             <LinearLayout
+                android:id="@+id/ll_plan_search"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/selector_color_white_to_gray"
                 android:gravity="center"
@@ -131,6 +138,20 @@
         </LinearLayout>
     </android.support.v7.widget.LinearLayoutCompat>
 
-    <include layout="@layout/app_bottom_signature" />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_shopping_car"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_shopping_car"
+            app:elevation="@dimen/size_10"
+            android:layout_marginRight="@dimen/size_5"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/ll_top_make"
+            android:layout_marginTop="@dimen/size_30"
+            android:background="@drawable/selector_btn_bg"/>
+
+    <include layout="@layout/app_bottom_signature"
+        />
+
 
 </RelativeLayout>
