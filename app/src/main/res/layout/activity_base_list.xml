@@ -26,10 +26,7 @@
                 app:leftDrawable="@drawable/selector_head_left_arrow"
                 app:leftPadding="@dimen/size_10"
                 app:leftStyle="image"
-                app:leftVisible="visible"
-                app:middleStyle="text"
-                app:middleText="@string/my_message"
-                app:rightVisible="invisible"></com.fei.firstproject.widget.AppHeadView>
+                app:leftVisible="visible"></com.fei.firstproject.widget.AppHeadView>
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
@@ -39,9 +36,10 @@
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:overScrollMode="never"
         android:visibility="gone"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:srlEnableAutoLoadmore="true"
+        app:srlEnableAutoLoadmore="false"
         app:srlEnableLoadmore="true"
         app:srlEnableLoadmoreWhenContentNotFull="true"
         app:srlPrimaryColor="@color/colorPrimary">
@@ -50,11 +48,11 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_40" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_message"
+        <ListView
+            android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorWhite"></android.support.v7.widget.RecyclerView>
+            android:background="@color/colorWhite"></ListView>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </android.support.design.widget.CoordinatorLayout>

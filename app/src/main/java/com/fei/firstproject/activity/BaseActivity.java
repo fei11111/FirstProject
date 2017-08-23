@@ -25,6 +25,7 @@ import com.fei.firstproject.dialog.CustomeProgressDialog;
 import com.fei.firstproject.http.RxSchedulers;
 import com.fei.firstproject.inter.BaseInterface;
 import com.fei.firstproject.utils.LogUtils;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import java.util.ArrayList;
@@ -56,15 +57,20 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseIn
     @Nullable
     @BindView(R.id.ll_request_error)
     LinearLayout llRequestError;
+    @Nullable
+    @BindView(R.id.refreshLayout)
+    SmartRefreshLayout refreshLayout;
 
     private Unbinder unbinder;
     protected CustomeProgressDialog progressDialog;
 
-    protected <T> ObservableTransformer<T, T> createTransformer() {
+    protected <T> ObservableTransformer<T, T> createTransformer(final boolean isShow) {
         return RxSchedulers.compose(this, this.<T>bindToLifecycle(), new RxSchedulers.OnConnectError() {
             @Override
             public void onError() {
-                showRequestErrorView();
+                if (isShow) {
+                    showRequestErrorView();
+                }
             }
         });
     }
@@ -225,6 +231,10 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseIn
             llRequestError.setVisibility(View.GONE);
             llNoData.setVisibility(View.GONE);
         }
+
+        if (refreshLayout != null) {
+            refreshLayout.setVisibility(View.GONE);
+        }
     }
 
     protected void dismissLoading() {
@@ -233,6 +243,9 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseIn
             pbLoading.setVisibility(View.GONE);
             llRequestError.setVisibility(View.GONE);
             llNoData.setVisibility(View.GONE);
+        }
+        if (refreshLayout != null) {
+            refreshLayout.setVisibility(View.GONE);
         }
     }
 
@@ -243,6 +256,9 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseIn
             pbLoading.setVisibility(View.GONE);
             llNoData.setVisibility(View.GONE);
         }
+        if (refreshLayout != null) {
+            refreshLayout.setVisibility(View.GONE);
+        }
     }
 
     protected void showNoDataView() {
@@ -251,6 +267,10 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseIn
             llNoData.setVisibility(View.VISIBLE);
             pbLoading.setVisibility(View.GONE);
             llRequestError.setVisibility(View.GONE);
+        }
+
+        if (refreshLayout != null) {
+            refreshLayout.setVisibility(View.GONE);
         }
     }
 

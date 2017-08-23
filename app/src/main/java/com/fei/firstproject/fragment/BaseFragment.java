@@ -28,6 +28,7 @@ import com.fei.firstproject.activity.BaseActivity;
 import com.fei.firstproject.http.RxSchedulers;
 import com.fei.firstproject.inter.BaseInterface;
 import com.fei.firstproject.utils.LogUtils;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
 import java.util.ArrayList;
@@ -59,15 +60,20 @@ public abstract class BaseFragment extends RxFragment implements BaseInterface {
     @Nullable
     @BindView(R.id.ll_request_error)
     LinearLayout llRequestError;
+    @Nullable
+    @BindView(R.id.refreshLayout)
+    SmartRefreshLayout refreshLayout;
 
     private Unbinder unbinder;
     protected BaseActivity activity;
 
-    protected <T> ObservableTransformer<T, T> createTransformer() {
+    protected <T> ObservableTransformer<T, T> createTransformer(final boolean isShow) {
         return RxSchedulers.compose(activity, this.<T>bindToLifecycle(), new RxSchedulers.OnConnectError() {
             @Override
             public void onError() {
-                showRequestErrorView();
+                if (isShow) {
+                    showRequestErrorView();
+                }
             }
         });
     }
@@ -214,6 +220,10 @@ public abstract class BaseFragment extends RxFragment implements BaseInterface {
             llRequestError.setVisibility(View.GONE);
             llNoData.setVisibility(View.GONE);
         }
+
+        if (refreshLayout != null) {
+            refreshLayout.setVisibility(View.GONE);
+        }
     }
 
     protected void dismissLoading() {
@@ -222,6 +232,9 @@ public abstract class BaseFragment extends RxFragment implements BaseInterface {
             pbLoading.setVisibility(View.GONE);
             llRequestError.setVisibility(View.GONE);
             llNoData.setVisibility(View.GONE);
+        }
+        if (refreshLayout != null) {
+            refreshLayout.setVisibility(View.GONE);
         }
     }
 
@@ -232,6 +245,9 @@ public abstract class BaseFragment extends RxFragment implements BaseInterface {
             pbLoading.setVisibility(View.GONE);
             llNoData.setVisibility(View.GONE);
         }
+        if (refreshLayout != null) {
+            refreshLayout.setVisibility(View.GONE);
+        }
     }
 
     protected void showNoDataView() {
@@ -240,6 +256,10 @@ public abstract class BaseFragment extends RxFragment implements BaseInterface {
             llNoData.setVisibility(View.VISIBLE);
             pbLoading.setVisibility(View.GONE);
             llRequestError.setVisibility(View.GONE);
+        }
+
+        if (refreshLayout != null) {
+            refreshLayout.setVisibility(View.GONE);
         }
     }
 

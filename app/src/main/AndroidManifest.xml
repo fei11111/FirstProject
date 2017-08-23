@@ -43,6 +43,7 @@
             android:label="@string/title_activity_settings" />
         <activity android:name=".activity.CaptureActivity" />
         <activity android:name=".activity.MessageActivity" />
+        <activity android:name=".activity.RecommendPlanActivity" />
         <activity android:name=".web.WebActivity" />
     </application>
 

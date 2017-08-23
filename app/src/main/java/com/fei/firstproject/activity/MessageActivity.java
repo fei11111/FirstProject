@@ -1,50 +1,28 @@
 package com.fei.firstproject.activity;
 
-import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.View;
-import android.widget.TextView;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.MyMessageAdapter;
-import com.fei.firstproject.decoration.DividerItemDecoration;
 import com.fei.firstproject.entity.BaseEntity;
 import com.fei.firstproject.entity.MessageEntity;
 import com.fei.firstproject.http.BaseObserver;
 import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.AppHeadView;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
 import io.reactivex.Observable;
 
 /**
  * Created by Administrator on 2017/8/21.
  */
 
-public class MessageActivity extends BaseActivity {
+public class MessageActivity extends BaseListActivity {
 
-    @BindView(R.id.appHeadView)
-    AppHeadView appHeadView;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.app_bar_layout)
-    AppBarLayout appBarLayout;
-    @BindView(R.id.recycler_message)
-    RecyclerView recyclerMessage;
-    @BindView(R.id.refreshLayout)
-    SmartRefreshLayout refreshLayout;
-
-    private int currentPage = 1;
     private MyMessageAdapter messageAdapter;
 
     @Override
@@ -63,19 +41,15 @@ public class MessageActivity extends BaseActivity {
     }
 
     @Override
-    public int getContentViewResId() {
-        return R.layout.activity_message;
-    }
-
-    @Override
-    public void init(Bundle savedInstanceState) {
-        initRecycler();
-        initListener();
-    }
-
-    @Override
     public void initRequest() {
         getMessage();
+    }
+
+    @Override
+    public void initAppHeadView() {
+        appHeadView.setFlHeadRightVisible(View.INVISIBLE);
+        appHeadView.setMiddleStyle(AppHeadView.TEXT);
+        appHeadView.setMiddleText(getResources().getString(R.string.my_message));
     }
 
     private void getMessage() {
@@ -85,61 +59,43 @@ public class MessageActivity extends BaseActivity {
         map.put("pageSize", "10");
         map.put("userId", "1119200");//AppConfig.user.getId()
         final Observable<BaseEntity<List<MessageEntity>>> message = RetrofitFactory.getBtWeb().getMessage(map);
-        message.compose(this.<BaseEntity<List<MessageEntity>>>createTransformer())
+        message.compose(this.<BaseEntity<List<MessageEntity>>>createTransformer(true))
                 .subscribe(new BaseObserver<List<MessageEntity>>(this) {
                     @Override
                     protected void onHandleSuccess(List<MessageEntity> messageEntities) {
+                        refreshLayout.finishRefresh();
+                        refreshLayout.finishLoadmore();
                         dismissLoading();
-                        if (messageEntities.size() > 0) {
+                        if (messageEntities != null && messageEntities.size() > 0) {
                             refreshLayout.setVisibility(View.VISIBLE);
                             if (messageAdapter == null) {
                                 messageAdapter = new MyMessageAdapter(MessageActivity.this, messageEntities);
-                                recyclerMessage.setAdapter(messageAdapter);
+                                listView.setAdapter(messageAdapter);
                             } else {
-                                messageAdapter.addMessageList(messageEntities);
+                                if (currentPage == 1) {
+                                    messageAdapter.setMessageList(messageEntities);
+                                } else if (currentPage > 1) {
+                                    messageAdapter.addMessageList(messageEntities);
+                                }
                                 messageAdapter.notifyDataSetChanged();
                             }
                         } else {
-                            if (messageAdapter == null) {
+                            if (currentPage == 1) {
                                 showNoDataView();
-                            } else {
+                            } else if (currentPage > 1) {
                                 Utils.showToast(MessageActivity.this, "没有更多数据");
                             }
                         }
                     }
 
                     @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
+                    protected void onHandleError(String msg) {
+                        super.onHandleError(msg);
+                        currentPage--;
+                        refreshLayout.finishRefresh();
+                        refreshLayout.finishLoadmore();
                         showRequestErrorView();
                     }
                 });
     }
-
-    private void initListener() {
-        appHeadView.setOnLeftRightClickListener(new AppHeadView.onAppHeadViewListener() {
-            @Override
-            public void onLeft(View view) {
-                onBackPressed();
-            }
-
-            @Override
-            public void onRight(View view) {
-
-            }
-
-            @Override
-            public void onEdit(TextView v, int actionId, KeyEvent event) {
-
-            }
-        });
-    }
-
-    private void initRecycler() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
-        recyclerMessage.setLayoutManager(linearLayoutManager);
-        recyclerMessage.addItemDecoration(itemDecoration);
-    }
-
 }

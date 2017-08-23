@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.fei.banner.Banner;
 import com.fei.firstproject.R;
 import com.fei.firstproject.activity.MainActivity;
+import com.fei.firstproject.activity.RecommendPlanActivity;
 import com.fei.firstproject.adapter.NcwAdapter;
 import com.fei.firstproject.adapter.RecommendPlanAdapter;
 import com.fei.firstproject.config.AppConfig;
@@ -33,7 +34,6 @@ import com.fei.firstproject.web.WebActivity;
 import com.fei.firstproject.widget.NoScrollListView;
 import com.fei.firstproject.widget.SettingView;
 import com.fei.firstproject.widget.TextSwitchView;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
@@ -71,8 +71,6 @@ public class MainFragment extends BaseFragment {
     NoScrollListView lvRecommendPlan;
     @BindView(R.id.ll_recommend_plan)
     LinearLayout llRecommendPlan;
-    @BindView(R.id.refreshLayout)
-    SmartRefreshLayout refreshLayout;
     @BindView(R.id.sv_ncw)
     SettingView svNcw;
     @BindView(R.id.sv_recommend_plan)
@@ -170,13 +168,12 @@ public class MainFragment extends BaseFragment {
         //province=&county=&city=&
         String searchWord = ((MainActivity) activity).getAppHeadView().getEtSearchText();
         Map<String, String> map = new HashMap<>();
-        map.put("province", "");
-        map.put("county", "");
-        map.put("city", "");
         map.put("searchWord", searchWord);
+        map.put("pageSize", "3");
+        map.put("currentPage", "1");
         Observable<BaseEntity<List<RecommendEntity>>> recommendPlan =
                 RetrofitFactory.getBtPlantWeb().getRecommendPlan(map);
-        recommendPlan
+        recommendPlan.compose(this.<BaseEntity<List<RecommendEntity>>>createTransformer(false))
                 .subscribe(new BaseObserver<List<RecommendEntity>>(activity) {
                     @Override
                     protected void onHandleSuccess(final List<RecommendEntity> recommendEntities) {
@@ -184,7 +181,7 @@ public class MainFragment extends BaseFragment {
                         if (recommendEntities != null && recommendEntities.size() > 0) {
                             llRecommendPlan.setVisibility(View.VISIBLE);
                             if (recommendPlanAdapter == null) {
-                                recommendPlanAdapter = new RecommendPlanAdapter(activity, recommendEntities);
+                                recommendPlanAdapter = new RecommendPlanAdapter(activity, recommendEntities, 3);
                                 lvRecommendPlan.setAdapter(recommendPlanAdapter);
                                 lvRecommendPlan.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
@@ -217,7 +214,7 @@ public class MainFragment extends BaseFragment {
 
     private void getNcw() {
         final Observable<List<NcwEntity>> ncw = RetrofitFactory.getNcw().getNcw();
-        ncw.compose(this.<List<NcwEntity>>createTransformer()).subscribe(new BaseWithoutBaseEntityObserver<List<NcwEntity>>(activity) {
+        ncw.compose(this.<List<NcwEntity>>createTransformer(true)).subscribe(new BaseWithoutBaseEntityObserver<List<NcwEntity>>(activity) {
             @Override
             protected void onHandleSuccess(final List<NcwEntity> ncwEntities) {
                 refreshLayout.finishRefresh();
@@ -314,10 +311,14 @@ public class MainFragment extends BaseFragment {
     };
 
     @OnClick(R.id.sv_ncw)
-    void clickNcw() {
+    void clickNcw(View view) {
         Intent intent = new Intent(activity, WebActivity.class);
         intent.putExtra("url", RetrofitFactory.NCW_URL);
         startActivityWithoutCode(intent);
     }
 
+    @OnClick(R.id.sv_recommend_plan)
+    void clickRecommendPlan(View view) {
+        startActivityWithoutCode(new Intent(activity, RecommendPlanActivity.class));
+    }
 }

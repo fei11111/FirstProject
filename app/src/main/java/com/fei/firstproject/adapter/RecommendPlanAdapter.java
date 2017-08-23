@@ -24,19 +24,34 @@ public class RecommendPlanAdapter extends BaseAdapter {
 
     private Context mContext;
     private List<RecommendEntity> recommendEntities;
+    private int count = -1;
 
     public RecommendPlanAdapter(Context mContext, List<RecommendEntity> recommendEntities) {
         this.mContext = mContext;
         this.recommendEntities = recommendEntities;
     }
 
-    public void setRecommendEntities(List<RecommendEntity> recommendEntities) {
+    public RecommendPlanAdapter(Context mContext, List<RecommendEntity> recommendEntities, int count) {
+        this.mContext = mContext;
         this.recommendEntities = recommendEntities;
+        this.count = count;
+    }
+
+    public void setRecommendEntities(List<RecommendEntity> recommendEntities) {
+        if (recommendEntities != null) {
+            this.recommendEntities = recommendEntities;
+        }
+    }
+
+    public void addRecommendEntities(List<RecommendEntity> recommendEntities) {
+        if (this.recommendEntities != null && recommendEntities != null) {
+            this.recommendEntities.addAll(recommendEntities);
+        }
     }
 
     @Override
     public int getCount() {
-        return recommendEntities.size() >= 3 ? 3 : recommendEntities.size();
+        return recommendEntities.size() >= 3 ? count > 0 ? count : recommendEntities.size() : recommendEntities.size();
     }
 
     @Override

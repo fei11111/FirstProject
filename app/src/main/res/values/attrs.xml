@@ -12,7 +12,7 @@
         </attr>
         <attr name="leftStyle" format="enum">
             <enum name="text" value="0" />
-            <enum name="image" value="1" />
+            <enum name="image" value="2" />
         </attr>
         <attr name="leftText" format="string"></attr>
         <attr name="leftDrawable" format="reference"></attr>
@@ -24,7 +24,7 @@
         </attr>
         <attr name="rightStyle" format="enum">
             <enum name="text" value="0" />
-            <enum name="image" value="1" />
+            <enum name="image" value="2" />
         </attr>
         <attr name="rightText" format="string"></attr>
         <attr name="rightDrawable" format="reference"></attr>

@@ -201,7 +201,7 @@ public class MainActivity extends BaseActivity {
         appHeadView.setFlHeadRightVisible(View.INVISIBLE);
         appHeadView.setMiddleSearchVisible(View.GONE);
         appHeadView.setTvTitleVisible(View.VISIBLE);
-        appHeadView.setTvTitleText(title);
+        appHeadView.setMiddleText(title);
     }
 
     private void resetAllState() {

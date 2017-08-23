@@ -67,6 +67,10 @@ public class AppHeadView extends RelativeLayout {
     private String middleSearchHint;
     private onAppHeadViewListener onAppHeadViewListener;
 
+    public static final int TEXT = 0;
+    public static final int SEARCH = 1;
+    public static final int IMAGE = 2;
+
     public void setOnLeftRightClickListener(onAppHeadViewListener onAppHeadViewListener) {
         this.onAppHeadViewListener = onAppHeadViewListener;
     }
@@ -139,11 +143,11 @@ public class AppHeadView extends RelativeLayout {
 
     private void setLeftRightStyle(int style, ImageView iv, TextView tv) {
         switch (style) {
-            case 0:
+            case TEXT:
                 iv.setVisibility(View.GONE);
                 tv.setVisibility(View.VISIBLE);
                 break;
-            case 1:
+            case IMAGE:
                 iv.setVisibility(View.VISIBLE);
                 tv.setVisibility(View.GONE);
                 break;
@@ -152,11 +156,11 @@ public class AppHeadView extends RelativeLayout {
 
     private void setMiddleStyle(int style, RelativeLayout relativeLayout, TextView tv) {
         switch (style) {
-            case 0:
+            case TEXT:
                 relativeLayout.setVisibility(View.GONE);
                 tv.setVisibility(View.VISIBLE);
                 break;
-            case 1:
+            case SEARCH:
                 relativeLayout.setVisibility(View.VISIBLE);
                 tv.setVisibility(View.GONE);
                 break;
@@ -248,7 +252,7 @@ public class AppHeadView extends RelativeLayout {
         tvTitle.setVisibility(visible);
     }
 
-    public void setTvTitleText(String text) {
+    public void setMiddleText(String text) {
         tvTitle.setText(text);
     }
 
@@ -258,6 +262,30 @@ public class AppHeadView extends RelativeLayout {
 
     public String getEtSearchText() {
         return etSearch.getText().toString();
+    }
+
+    public void setLeftStyle(int leftStyle) {
+        setLeftRightStyle(leftStyle, ivHeadLeft, tvHeadLeft);
+    }
+
+    public void setRightStyle(int rightStyle) {
+        setLeftRightStyle(rightStyle, ivHeadRight, tvHeadRight);
+    }
+
+    public void setMiddleStyle(int middleStyle) {
+        setMiddleStyle(middleStyle, rlSearch, tvTitle);
+    }
+
+    public void setLeftText(String leftText) {
+        tvHeadLeft.setText(leftText);
+    }
+
+    public void setRightText(String rightText) {
+        tvHeadRight.setText(rightText);
+    }
+
+    public void setMiddleSearchHint(String middleSearchHint) {
+        etSearch.setHint(middleSearchHint);
     }
 
     public interface onAppHeadViewListener {

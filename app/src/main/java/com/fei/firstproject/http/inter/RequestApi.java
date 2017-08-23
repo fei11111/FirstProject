@@ -33,7 +33,7 @@ public interface RequestApi {
     @GET("api.php?op=content")
     Observable<List<NcwEntity>> getNcw();
 
-    @GET("app/field/getRecommendPlans.do")
+    @GET("app/field/getRecommendPlansMore.do")
     Observable<BaseEntity<List<RecommendEntity>>> getRecommendPlan(@QueryMap Map<String, String> map);
 
     @POST("app/notice/listNotices.do")
