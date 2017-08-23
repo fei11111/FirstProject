@@ -88,9 +88,25 @@ public class MakeFragment extends BaseFragment {
         }
     }
 
+    @OnClick(R.id.ll_fast_make)
+    void clickFastMake(View view) {
+        //快速定制
+
+    }
+
     @OnClick(R.id.ll_fertilizer)
     void clickFertilizer(View view) {
         //肥料定制
+    }
+
+    @OnClick(R.id.ll_plan_make)
+    void clickPlanMake(View view) {
+        //方案定制
+    }
+
+    @OnClick(R.id.ll_plan_search)
+    void clickPlanSearch(View view){
+        //方案查询
     }
 
 }

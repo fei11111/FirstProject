@@ -27,4 +27,7 @@ public class AppConfig {
     // 田间管理-方案详情
     public static final String PLANT_DESC_URL = HOST3
             + "/bt-plant-web/brandsPlant/app/brandsPlanPage";
+    // 简易定制
+    public static final String SIMPLE_CUSTOM_URL = HOST + "/"
+            + "bigdb/plantCrop/api/plant_crop_list.do";
 }
