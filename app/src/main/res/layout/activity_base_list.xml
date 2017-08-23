@@ -36,12 +36,18 @@
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fadeScrollbars="false"
         android:overScrollMode="never"
+        android:requiresFadingEdge="none"
         android:visibility="gone"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:srlDisableContentWhenLoading="true"
+        app:srlDisableContentWhenRefresh="true"
         app:srlEnableAutoLoadmore="false"
         app:srlEnableLoadmore="true"
-        app:srlEnableLoadmoreWhenContentNotFull="true"
+        app:srlEnableLoadmoreWhenContentNotFull="false"
+        app:srlEnableOverScrollBounce="true"
+        app:srlEnableScrollContentWhenLoaded="false"
         app:srlPrimaryColor="@color/colorPrimary">
 
         <com.scwang.smartrefresh.header.CircleHeader

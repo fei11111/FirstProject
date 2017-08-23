@@ -63,9 +63,9 @@ public class MessageActivity extends BaseListActivity {
                 .subscribe(new BaseObserver<List<MessageEntity>>(this) {
                     @Override
                     protected void onHandleSuccess(List<MessageEntity> messageEntities) {
+                        dismissLoading();
                         refreshLayout.finishRefresh();
                         refreshLayout.finishLoadmore();
-                        dismissLoading();
                         if (messageEntities != null && messageEntities.size() > 0) {
                             refreshLayout.setVisibility(View.VISIBLE);
                             if (messageAdapter == null) {
@@ -83,6 +83,7 @@ public class MessageActivity extends BaseListActivity {
                             if (currentPage == 1) {
                                 showNoDataView();
                             } else if (currentPage > 1) {
+                                currentPage--;
                                 Utils.showToast(MessageActivity.this, "没有更多数据");
                             }
                         }

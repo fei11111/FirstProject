@@ -233,9 +233,6 @@ public abstract class BaseFragment extends RxFragment implements BaseInterface {
             llRequestError.setVisibility(View.GONE);
             llNoData.setVisibility(View.GONE);
         }
-        if (refreshLayout != null) {
-            refreshLayout.setVisibility(View.GONE);
-        }
     }
 
     protected void showRequestErrorView() {

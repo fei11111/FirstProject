@@ -104,6 +104,7 @@ public class RecommendPlanActivity extends BaseListActivity {
                             if (currentPage == 1) {
                                 showNoDataView();
                             } else if (currentPage > 1) {
+                                currentPage--;
                                 Utils.showToast(RecommendPlanActivity.this, "没有更多数据");
                             }
                         }

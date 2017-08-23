@@ -9,6 +9,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
+import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.AppHeadView;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
@@ -53,12 +54,14 @@ public abstract class BaseListActivity extends BaseActivity {
             @Override
             public void onRight(View view) {
                 currentPage = 1;
+                Utils.hideKeyBoard(BaseListActivity.this);
                 initRequest();
             }
 
             @Override
             public void onEdit(TextView v, int actionId, KeyEvent event) {
                 currentPage = 1;
+                Utils.hideKeyBoard(BaseListActivity.this);
                 initRequest();
             }
         });
