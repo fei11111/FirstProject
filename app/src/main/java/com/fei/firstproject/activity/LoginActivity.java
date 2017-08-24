@@ -4,21 +4,33 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.fei.firstproject.R;
-import com.fei.firstproject.entity.BaseEntity;
+import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.entity.UserEntity;
+import com.fei.firstproject.event.AllEvent;
+import com.fei.firstproject.event.EventType;
+import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
 import com.fei.firstproject.http.factory.RetrofitFactory;
+import com.fei.firstproject.utils.SPUtils;
 import com.fei.firstproject.utils.Utils;
+import com.fei.firstproject.widget.AppHeadView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +38,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 
 /**
  * A login screen that offers login via email/password.
@@ -38,6 +51,14 @@ public class LoginActivity extends BaseActivity {
     EditText etPassword;
     @BindView(R.id.btn_login)
     Button rvSignIn;
+    @BindView(R.id.app_bar_layout)
+    AppBarLayout appBarLayout;
+    @BindView(R.id.tv_register)
+    TextView tvRegister;
+    @BindView(R.id.appHeadView)
+    AppHeadView appHeadView;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     private static final int REQUEST_CODE_1 = 100;
 
@@ -68,19 +89,23 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
-        etPassword.addTextChangedListener(new TextWatcher() {
+        initListener();
+    }
+
+    private void initListener() {
+        appHeadView.setOnLeftRightClickListener(new AppHeadView.onAppHeadViewListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public void onLeft(View view) {
+                onBackPressed();
+            }
+
+            @Override
+            public void onRight(View view) {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
+            public void onEdit(TextView v, int actionId, KeyEvent event) {
 
             }
         });
@@ -113,16 +138,87 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void attemptLogin() {
+        Utils.hideKeyBoard(this);
         final String userNameText = etUsername.getText().toString();
         String passwordText = etPassword.getText().toString();
         TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        String deviceId = tm.getDeviceId();
+        final String deviceId = tm.getDeviceId();
         Map<String, String> map = new HashMap<>();
         map.put("password", passwordText);
         map.put("deviceId", deviceId);
         map.put("mobile", userNameText);
         proShow();
-        Observable<BaseEntity<UserEntity>> login = RetrofitFactory.getBigDb().login(map);
+        Observable<ResponseBody> login = RetrofitFactory.getBigDb().login(map);
+        login.compose(this.<ResponseBody>createTransformer(false))
+                .subscribe(new BaseWithoutBaseEntityObserver<ResponseBody>(this) {
+                    @Override
+                    protected void onHandleSuccess(ResponseBody responseBody) {
+                        proDisimis();
+                        try {
+                            String response = responseBody.string();
+                            if (!TextUtils.isEmpty(response)) {
+                                JSONObject json = new JSONObject(response);
+                                if (json.has("tokenId")) {
+                                    String tokenId = json.getString("tokenId");
+                                    getUserInfo(tokenId, deviceId);
+                                } else {
+                                    if (json.has("returnMsg")) {
+                                        String returnMsg = json.getString("returnMsg");
+                                        Utils.showToast(LoginActivity.this, returnMsg);
+                                    } else {
+                                        Utils.showToast(LoginActivity.this, "登录失败，请重试");
+                                    }
+                                }
+                            } else {
+                                Utils.showToast(LoginActivity.this, "登录失败，请重试");
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    protected void onHandleError(String msg) {
+                        super.onHandleError(msg);
+                        proDisimis();
+                    }
+                });
+    }
+
+
+    private void getUserInfo(String tokenId, String deviceId) {
+        proShow();
+        Map<String, String> map = new HashMap<>();
+        map.put("token", tokenId);
+        map.put("deviceID", deviceId);
+        Observable<UserEntity> userInfo = RetrofitFactory.getBigDb().getUserInfo(map);
+        userInfo.compose(this.<UserEntity>createTransformer(false)).subscribe(new BaseWithoutBaseEntityObserver<UserEntity>(this) {
+            @Override
+            protected void onHandleSuccess(UserEntity userEntity) {
+                proDisimis();
+                if (userEntity != null) {
+                    if (userEntity.getSuccess().equals("YES")) {
+                        AppConfig.ISLOGIN = true;
+                        AppConfig.user = userEntity;
+                        SPUtils.put(LoginActivity.this, "user", userEntity);
+                        EventBus.getDefault().post(new AllEvent(EventType.APP_LOGIN));
+                        finish();
+                    } else {
+                        Utils.showToast(LoginActivity.this, userEntity.getReturnMsg());
+                    }
+                } else {
+                    Utils.showToast(LoginActivity.this, "登录失败，请重试");
+                }
+            }
+
+            @Override
+            protected void onHandleError(String msg) {
+                super.onHandleError(msg);
+                proDisimis();
+            }
+        });
     }
 
     @Override
@@ -130,5 +226,6 @@ public class LoginActivity extends BaseActivity {
         super.finish();
         overridePendingTransition(R.anim.activity_close_in_animation, R.anim.activity_close_out_animation);
     }
+
 }
 

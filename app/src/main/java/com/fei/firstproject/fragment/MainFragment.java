@@ -6,6 +6,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -66,11 +67,11 @@ public class MainFragment extends BaseFragment {
     @BindView(R.id.lv_ncw)
     NoScrollListView lvNcw;
     @BindView(R.id.ll_ncw)
-    LinearLayout llNcw;
+    LinearLayoutCompat llNcw;
     @BindView(R.id.lv_recommend_plan)
     NoScrollListView lvRecommendPlan;
     @BindView(R.id.ll_recommend_plan)
-    LinearLayout llRecommendPlan;
+    LinearLayoutCompat llRecommendPlan;
     @BindView(R.id.sv_ncw)
     SettingView svNcw;
     @BindView(R.id.sv_recommend_plan)

@@ -2,34 +2,39 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/selector_color_white_to_gray"
-    android:gravity="center_vertical"
-    android:paddingBottom="@dimen/size_10"
-    android:paddingLeft="@dimen/size_16"
-    android:paddingRight="@dimen/size_16"
-    android:paddingTop="@dimen/size_10">
+    android:background="@color/colorWhite"
+    android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorText"
-        android:textSize="@dimen/tx_16" />
+        android:background="?attr/selectableItemBackground"
+        android:paddingBottom="@dimen/size_10"
+        android:paddingLeft="@dimen/size_16"
+        android:paddingRight="@dimen/size_16"
+        android:paddingTop="@dimen/size_10">
 
-    <ImageView
-        android:id="@+id/iv_arrow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/ic_right_arrow" />
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/tx_16" />
 
-    <TextView
-        android:id="@+id/tv_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/size_10"
-        android:layout_toLeftOf="@id/iv_arrow"
-        android:textColor="@color/colorTextSub"
-        android:textSize="@dimen/tx_14" />
+        <ImageView
+            android:id="@+id/iv_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_right_arrow" />
 
+        <TextView
+            android:id="@+id/tv_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/size_10"
+            android:layout_toLeftOf="@id/iv_arrow"
+            android:textColor="@color/colorTextSub"
+            android:textSize="@dimen/tx_14" />
+    </RelativeLayout>
 </RelativeLayout>

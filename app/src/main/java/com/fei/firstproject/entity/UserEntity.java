@@ -1,12 +1,36 @@
 package com.fei.firstproject.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Administrator on 2017/7/29.
  */
 
-public class UserEntity {
+public class UserEntity implements Serializable {
+
+
+    /**
+     * success : YES
+     * returnMsg : 成功
+     * img :
+     * gender :
+     * name : 111920
+     * nameString : 黄锦飞
+     * mobile : 13652025632
+     * id : 1119200
+     * roleId : 20,40,63,70
+     * page : 1
+     * role : [{"list":[{"id":"109","menuName":"农财商城","menuSort":"5","menuUrl":"农财商城"},{"id":"124","menuName":"产品库","menuSort":"86","menuUrl":"产品库"},{"id":"82","menuName":"田间管理","menuSort":"82","menuUrl":"田间管理"},{"id":"83","menuName":"专家诊室","menuSort":"83","menuUrl":"专家诊室"},{"id":"103","menuName":"市场行情","menuSort":"4","menuUrl":"市场行情"},{"id":"87","menuName":"测量","menuSort":"85","menuUrl":"测量"},{"id":"84","menuName":"农业定制","menuSort":"84","menuUrl":"农业定制"}],"name":"业务"}]
+     * chatAccount : 111920
+     * chatUserId : e54a5d4562074295976830423e47f475
+     * inviteCode : 109863
+     * QRCode : /images/user/QRCode/1119200.jpg
+     * roleName : 种植户 专家 高层 公司职员
+     * currentRole : 20
+     * userName : 黄锦飞
+     */
+
     private String success;
     private String returnMsg;
     private String img;
@@ -24,8 +48,7 @@ public class UserEntity {
     private String roleName;
     private String currentRole;
     private String userName;
-    private List<RoleEntity> roles;
-    private String token;
+    private List<Role> role;
 
     public String getSuccess() {
         return success;
@@ -163,44 +186,38 @@ public class UserEntity {
         this.userName = userName;
     }
 
-    public String getToken() {
-        return token;
+    public List<Role> getRole() {
+        return role;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setRole(List<Role> role) {
+        this.role = role;
     }
 
-    public List<RoleEntity> getRoles() {
-        return roles;
-    }
+    public static class Role implements Serializable {
+        /**
+         * list : [{"id":"109","menuName":"农财商城","menuSort":"5","menuUrl":"农财商城"},{"id":"124","menuName":"产品库","menuSort":"86","menuUrl":"产品库"},{"id":"82","menuName":"田间管理","menuSort":"82","menuUrl":"田间管理"},{"id":"83","menuName":"专家诊室","menuSort":"83","menuUrl":"专家诊室"},{"id":"103","menuName":"市场行情","menuSort":"4","menuUrl":"市场行情"},{"id":"87","menuName":"测量","menuSort":"85","menuUrl":"测量"},{"id":"84","menuName":"农业定制","menuSort":"84","menuUrl":"农业定制"}]
+         * name : 业务
+         */
 
-    public void setRoles(List<RoleEntity> roles) {
-        this.roles = roles;
-    }
+        private String name;
+        private List<RoleEntity> list;
 
-    @Override
-    public String toString() {
-        return "UserEntity{" +
-                "success='" + success + '\'' +
-                ", returnMsg='" + returnMsg + '\'' +
-                ", img='" + img + '\'' +
-                ", gender='" + gender + '\'' +
-                ", name='" + name + '\'' +
-                ", nameString='" + nameString + '\'' +
-                ", mobile='" + mobile + '\'' +
-                ", id='" + id + '\'' +
-                ", roleId='" + roleId + '\'' +
-                ", page='" + page + '\'' +
-                ", chatAccount='" + chatAccount + '\'' +
-                ", chatUserId='" + chatUserId + '\'' +
-                ", inviteCode='" + inviteCode + '\'' +
-                ", QRCode='" + QRCode + '\'' +
-                ", roleName='" + roleName + '\'' +
-                ", currentRole='" + currentRole + '\'' +
-                ", userName='" + userName + '\'' +
-                ", roles=" + roles +
-                ", token='" + token + '\'' +
-                '}';
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public List<RoleEntity> getList() {
+            return list;
+        }
+
+        public void setList(List<RoleEntity> list) {
+            this.list = list;
+        }
+
     }
 }

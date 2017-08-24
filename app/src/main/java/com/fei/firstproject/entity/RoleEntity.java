@@ -1,10 +1,12 @@
 package com.fei.firstproject.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2017/7/29.
  */
 
-public class RoleEntity {
+public class RoleEntity implements Serializable{
 
 
     /**

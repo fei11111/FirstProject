@@ -10,7 +10,7 @@
     <uses-permission android:name="android.hardware.sensor.accelerometer" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.FLASHLIGHT" />9
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />

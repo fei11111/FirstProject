@@ -28,7 +28,7 @@ public interface RequestApi {
     Call<ResponseBody> update();
 
     @GET("App/login.shtml")
-    Observable<BaseEntity<UserEntity>> login(@QueryMap Map<String, String> map);
+    Observable<ResponseBody> login(@QueryMap Map<String, String> map);
 
     @GET("api.php?op=content")
     Observable<List<NcwEntity>> getNcw();
@@ -38,4 +38,7 @@ public interface RequestApi {
 
     @POST("app/notice/listNotices.do")
     Observable<BaseEntity<List<MessageEntity>>> getMessage(@QueryMap Map<String, String> map);
+
+    @GET("App/getUserInFoByToken.shtml")
+    Observable<UserEntity> getUserInfo(@QueryMap Map<String, String> map);
 }

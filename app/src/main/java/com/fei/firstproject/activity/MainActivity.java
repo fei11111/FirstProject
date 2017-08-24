@@ -25,8 +25,6 @@ import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.web.WebActivity;
 import com.fei.firstproject.widget.AppHeadView;
 
-import org.greenrobot.eventbus.EventBus;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -58,12 +56,6 @@ public class MainActivity extends BaseActivity {
     private static final int REQUEST_PERMISSION_CODE_2 = 101;
     //Activity请求返回
     private static final int REQUEST_ACTIVITY_CODE_1 = 200;
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
