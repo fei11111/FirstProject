@@ -199,14 +199,13 @@ public class LoginActivity extends BaseActivity {
             protected void onHandleSuccess(UserEntity userEntity) {
                 proDisimis();
                 if (userEntity != null) {
+                    Utils.showToast(LoginActivity.this, userEntity.getReturnMsg());
                     if (userEntity.getSuccess().equals("YES")) {
                         AppConfig.ISLOGIN = true;
                         AppConfig.user = userEntity;
                         SPUtils.put(LoginActivity.this, "user", userEntity);
                         EventBus.getDefault().post(new AllEvent(EventType.APP_LOGIN));
                         finish();
-                    } else {
-                        Utils.showToast(LoginActivity.this, userEntity.getReturnMsg());
                     }
                 } else {
                     Utils.showToast(LoginActivity.this, "登录失败，请重试");
