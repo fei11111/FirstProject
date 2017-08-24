@@ -160,6 +160,8 @@ public class LoginActivity extends BaseActivity {
                                 JSONObject json = new JSONObject(response);
                                 if (json.has("tokenId")) {
                                     String tokenId = json.getString("tokenId");
+                                    SPUtils.put(LoginActivity.this, "tokenId", tokenId);
+                                    SPUtils.put(LoginActivity.this, "deviceId", deviceId);
                                     getUserInfo(tokenId, deviceId);
                                 } else {
                                     if (json.has("returnMsg")) {

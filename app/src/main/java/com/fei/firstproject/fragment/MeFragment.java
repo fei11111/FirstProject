@@ -14,9 +14,13 @@ import com.fei.firstproject.activity.SettingsActivity;
 import com.fei.firstproject.adapter.MyRecyclerViewAdapter;
 import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.decoration.DividerGridItemDecoration;
+import com.fei.firstproject.entity.UserEntity;
 import com.fei.firstproject.event.AllEvent;
 import com.fei.firstproject.event.EventType;
+import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
+import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.utils.LogUtils;
+import com.fei.firstproject.utils.SPUtils;
 import com.fei.firstproject.widget.NoScrollRecyclerView;
 import com.fei.firstproject.widget.SettingView;
 
@@ -24,8 +28,12 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Observable;
 
 /**
  * Created by Administrator on 2017/7/29.
@@ -108,20 +116,42 @@ public class MeFragment extends BaseFragment {
     @Override
     public void initRequest() {
         if (AppConfig.ISLOGIN) {
-            getUserInfo();
+            String tokenId = SPUtils.get(activity, "tokenId", "").toString();
+            String deviceId = SPUtils.get(activity, "deviceId", "").toString();
+            getUserInfo(tokenId, deviceId);
         }
     }
 
-    private void getUserInfo() {
-//        Observable<UserEntity> userInfo = RetrofitFactory.getBigDb().getUserInfo(AppConfig.user.getTokenId());
-//        userInfo.compose(this.<UserEntity>createTransformer(false)).subscribe(new BaseWithoutBaseEntityObserver<UserEntity>(activity) {
-//            @Override
-//            protected void onHandleSuccess(UserEntity userEntity) {
-//                SPUtils.put(activity, "user", userEntity);
-//                AppConfig.ISLOGIN = true;
-//                AppConfig.user = userEntity;
-//            }
-//        });
+    private void getUserInfo(String tokenId, String deviceId) {
+        Map<String, String> map = new HashMap<>();
+        map.put("token", tokenId);
+        map.put("deviceID", deviceId);
+        Observable<UserEntity> userInfo = RetrofitFactory.getBigDb().getUserInfo(map);
+        userInfo.compose(this.<UserEntity>createTransformer(false)).subscribe(new BaseWithoutBaseEntityObserver<UserEntity>(activity) {
+            @Override
+            protected void onHandleSuccess(UserEntity userEntity) {
+                refreshLayout.finishRefresh();
+                if (userEntity != null) {
+                    if (userEntity.getSuccess().equals("YES")) {
+                        AppConfig.ISLOGIN = true;
+                        AppConfig.user = userEntity;
+                        SPUtils.put(activity, "user", userEntity);
+                        EventBus.getDefault().post(new AllEvent(EventType.APP_LOGIN));
+                    } else {
+                        activity.refreshInfoWhenLogout();
+                    }
+                } else {
+                    activity.refreshInfoWhenLogout();
+                }
+            }
+
+            @Override
+            protected void onHandleError(String msg) {
+                refreshLayout.finishRefresh();
+                super.onHandleError(msg);
+                activity.refreshInfoWhenLogout();
+            }
+        });
     }
 
     private void initRecyclerView() {

@@ -29,6 +29,8 @@ import com.fei.firstproject.http.RxSchedulers;
 import com.fei.firstproject.inter.BaseInterface;
 import com.fei.firstproject.utils.LogUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
 import java.util.ArrayList;
@@ -112,6 +114,20 @@ public abstract class BaseFragment extends RxFragment implements BaseInterface {
                 @Override
                 public void onClick(View v) {
                     showLoading();
+                    initRequest();
+                }
+            });
+        }
+
+        if(refreshLayout!=null) {
+            refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
+                @Override
+                public void onLoadmore(RefreshLayout refreshlayout) {
+                    initRequest();
+                }
+
+                @Override
+                public void onRefresh(RefreshLayout refreshlayout) {
                     initRequest();
                 }
             });
@@ -259,7 +275,6 @@ public abstract class BaseFragment extends RxFragment implements BaseInterface {
             refreshLayout.setVisibility(View.GONE);
         }
     }
-
 
     @Override
     public void startActivityWithCodeAndPair(Intent intent, int requestCode, Pair<View, String>... sharedElements) {

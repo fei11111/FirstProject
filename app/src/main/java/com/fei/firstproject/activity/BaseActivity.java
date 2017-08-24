@@ -21,12 +21,20 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.fei.firstproject.R;
+import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.dialog.CustomeProgressDialog;
+import com.fei.firstproject.event.AllEvent;
+import com.fei.firstproject.event.EventType;
 import com.fei.firstproject.http.RxSchedulers;
 import com.fei.firstproject.inter.BaseInterface;
 import com.fei.firstproject.utils.LogUtils;
+import com.fei.firstproject.utils.SPUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,6 +106,20 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseIn
                 @Override
                 public void onClick(View v) {
                     showLoading();
+                    initRequest();
+                }
+            });
+        }
+
+        if (refreshLayout != null) {
+            refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
+                @Override
+                public void onLoadmore(RefreshLayout refreshlayout) {
+                    initRequest();
+                }
+
+                @Override
+                public void onRefresh(RefreshLayout refreshlayout) {
                     initRequest();
                 }
             });
@@ -269,6 +291,14 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseIn
         if (refreshLayout != null) {
             refreshLayout.setVisibility(View.GONE);
         }
+    }
+
+    public void refreshInfoWhenLogout() {
+        AppConfig.ISLOGIN = false;
+        AppConfig.user = null;
+        SPUtils.remove(this, "user");
+        SPUtils.remove(this, "tokenId");
+        EventBus.getDefault().post(new AllEvent(EventType.APP_LOGOUT));
     }
 
     @Override

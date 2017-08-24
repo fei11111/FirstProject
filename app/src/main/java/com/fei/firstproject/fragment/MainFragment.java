@@ -35,8 +35,6 @@ import com.fei.firstproject.web.WebActivity;
 import com.fei.firstproject.widget.NoScrollListView;
 import com.fei.firstproject.widget.SettingView;
 import com.fei.firstproject.widget.TextSwitchView;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -139,7 +137,6 @@ public class MainFragment extends BaseFragment {
     @Override
     public void init(Bundle savedInstanceState) {
         LogUtils.i("tag", "main");
-        initListener();
         initBanner();
         initSwitch();
         initMenu();
@@ -153,16 +150,6 @@ public class MainFragment extends BaseFragment {
         getNcw();
         //推荐方案
         getRecommendPlan();
-    }
-
-    private void initListener() {
-        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                //推荐方案
-                initRequest();
-            }
-        });
     }
 
     public void getRecommendPlan() {
