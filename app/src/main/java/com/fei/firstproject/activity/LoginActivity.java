@@ -124,5 +124,11 @@ public class LoginActivity extends BaseActivity {
         proShow();
         Observable<BaseEntity<UserEntity>> login = RetrofitFactory.getBigDb().login(map);
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.activity_close_in_animation, R.anim.activity_close_out_animation);
+    }
 }
 

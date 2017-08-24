@@ -101,6 +101,7 @@ public class MainActivity extends BaseActivity {
         initPermission();
         initToolBar();
         initSetting();
+        initListener();
     }
 
     private void initPermission() {
@@ -124,10 +125,9 @@ public class MainActivity extends BaseActivity {
         } else {
             appHeadView.setFlHeadLeftVisible(View.VISIBLE);
         }
-        initToolBarListener();
     }
 
-    private void initToolBarListener() {
+    private void initListener() {
         appHeadView.setOnLeftRightClickListener(new AppHeadView.onAppHeadViewListener() {
             @Override
             public void onLeft(View view) {
@@ -136,7 +136,11 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onRight(View view) {
-                startActivityWithoutCode(new Intent(MainActivity.this, MessageActivity.class));
+                if (AppConfig.ISLOGIN) {
+                    startActivityWithoutCode(new Intent(MainActivity.this, MessageActivity.class));
+                } else {
+                    startActivity(new Intent(MainActivity.this,LoginActivity.class));
+                }
             }
 
             @Override

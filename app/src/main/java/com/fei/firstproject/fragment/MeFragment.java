@@ -98,7 +98,7 @@ public class MeFragment extends BaseFragment {
         if (AppConfig.ISLOGIN) {
             startActivityWithoutCode(new Intent(activity, SettingsActivity.class));
         } else {
-            startActivityWithoutCode(new Intent(activity, LoginActivity.class));
+            startActivity(new Intent(activity, LoginActivity.class));
         }
     }
 }

@@ -7,8 +7,8 @@
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="android:listDivider">@drawable/shape_divider</item>
-        <item name="android:windowEnterAnimation">@transition/explode_activity</item>
-        <item name="android:windowExitAnimation">@transition/slide_activity</item>
+        <item name="android:windowEnterAnimation">@transition/activity_explode</item>
+        <item name="android:windowExitAnimation">@transition/activity_slide</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="toolbarStyle">@style/CustomToolbar</item>
@@ -23,7 +23,7 @@
         <item name="android:minHeight">0dp</item>
     </style>
 
-    <style name="dialog" parent="@android:style/Theme.Dialog">
+    <style name="dialogStyle" parent="@android:style/Theme.Dialog">
         //Dialog的windowFrame框为无
         <item name="android:windowFrame">@null</item>
         //是否浮现在activity之上
@@ -42,7 +42,19 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
-    <style name="CustomerDialog" parent="dialog">
+    <style name="CustomerDialog" parent="dialogStyle">
         <item name="background">@drawable/shape_loading_bg</item>
     </style>
+
+    <style name="ActivityAnimationStyle" parent="@style/AppTheme">
+        <item name="android:windowAnimationStyle">@style/AnimationStyle</item>
+    </style>
+
+    <style name="AnimationStyle" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/activity_open_in_animation</item>
+        <item name="android:activityOpenExitAnimation">@anim/activity_open_out_animation</item>
+        <item name="android:activityCloseEnterAnimation">@anim/activity_close_in_animation</item>
+        <item name="android:activityCloseExitAnimation">@anim/activity_close_out_animation</item>
+    </style>
+    
 </resources>

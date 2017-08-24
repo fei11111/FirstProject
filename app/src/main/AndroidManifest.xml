@@ -34,7 +34,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.LoginActivity"
+            android:theme="@style/ActivityAnimationStyle"/>
         <activity
             android:name=".activity.RegisterActivity"
             android:label="@string/title_activity_register" />
