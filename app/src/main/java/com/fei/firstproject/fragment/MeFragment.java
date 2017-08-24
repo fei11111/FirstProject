@@ -133,15 +133,12 @@ public class MeFragment extends BaseFragment {
                 refreshLayout.finishRefresh();
                 if (userEntity != null) {
                     if (userEntity.getSuccess().equals("YES")) {
-                        AppConfig.ISLOGIN = true;
-                        AppConfig.user = userEntity;
-                        SPUtils.put(activity, "user", userEntity);
-                        EventBus.getDefault().post(new AllEvent(EventType.APP_LOGIN));
+                        activity.refreshUserInfoWhenLogin(userEntity);
                     } else {
-                        activity.refreshInfoWhenLogout();
+                        activity.refreshUserInfoWhenLogout();
                     }
                 } else {
-                    activity.refreshInfoWhenLogout();
+                    activity.refreshUserInfoWhenLogout();
                 }
             }
 
@@ -149,7 +146,7 @@ public class MeFragment extends BaseFragment {
             protected void onHandleError(String msg) {
                 refreshLayout.finishRefresh();
                 super.onHandleError(msg);
-                activity.refreshInfoWhenLogout();
+                activity.refreshUserInfoWhenLogout();
             }
         });
     }

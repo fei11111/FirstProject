@@ -13,20 +13,17 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
-import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.entity.UserEntity;
-import com.fei.firstproject.event.AllEvent;
-import com.fei.firstproject.event.EventType;
 import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
 import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.utils.SPUtils;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.AppHeadView;
 
-import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -59,6 +56,10 @@ public class LoginActivity extends BaseActivity {
     AppHeadView appHeadView;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.llweixin)
+    LinearLayout llweixin;
+    @BindView(R.id.ll_qq)
+    LinearLayout llQq;
 
     private static final int REQUEST_CODE_1 = 100;
 
@@ -203,10 +204,7 @@ public class LoginActivity extends BaseActivity {
                 if (userEntity != null) {
                     Utils.showToast(LoginActivity.this, userEntity.getReturnMsg());
                     if (userEntity.getSuccess().equals("YES")) {
-                        AppConfig.ISLOGIN = true;
-                        AppConfig.user = userEntity;
-                        SPUtils.put(LoginActivity.this, "user", userEntity);
-                        EventBus.getDefault().post(new AllEvent(EventType.APP_LOGIN));
+                        refreshUserInfoWhenLogin(userEntity);
                         finish();
                     }
                 } else {

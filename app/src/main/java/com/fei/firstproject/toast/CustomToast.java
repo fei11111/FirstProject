@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fei.firstproject.R;
 import com.fei.firstproject.toast.inter.IToast;
 import com.fei.firstproject.utils.Utils;
 
@@ -150,9 +151,10 @@ public class CustomToast implements IToast {
         // 虽然可以手动用java写，但是不同厂商系统，这个布局的设置好像是不同的，因此我们自己获取原生Toast的view进行配置
         View view = Toast.makeText(mContext, text, Toast.LENGTH_SHORT).getView();
         if (view != null) {
-            TextView tv = (TextView) view.findViewById(android.R.id.message);
-            tv.setText(text);
-            setView(view);
+            view.setBackgroundResource(android.R.color.transparent);
+            TextView message = ((TextView) view.findViewById(android.R.id.message));
+            message.setBackgroundResource(R.drawable.shape_toast_rect_border_bg);
+            message.setTextColor(mContext.getResources().getColor(R.color.colorWhite));
         }
         return this;
     }

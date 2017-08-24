@@ -78,6 +78,8 @@
     <string name="no_data">杯具啦！没有任何数据</string>
     <string name="signature">伦家也是有底线的</string>
     <string name="search">搜索</string>
+    <string name="weixin">微信</string>
+    <string name="qq">QQ</string>
 
     <!-- Strings related to Settings -->
 

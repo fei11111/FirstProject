@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 import com.fei.firstproject.R;
 import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.dialog.CustomeProgressDialog;
+import com.fei.firstproject.entity.UserEntity;
 import com.fei.firstproject.event.AllEvent;
 import com.fei.firstproject.event.EventType;
 import com.fei.firstproject.http.RxSchedulers;
@@ -293,7 +294,14 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseIn
         }
     }
 
-    public void refreshInfoWhenLogout() {
+    public void refreshUserInfoWhenLogin(UserEntity userEntity){
+        AppConfig.ISLOGIN = true;
+        AppConfig.user = userEntity;
+        SPUtils.put(this, "user", userEntity);
+        EventBus.getDefault().post(new AllEvent(EventType.APP_LOGIN));
+    }
+
+    public void refreshUserInfoWhenLogout() {
         AppConfig.ISLOGIN = false;
         AppConfig.user = null;
         SPUtils.remove(this, "user");

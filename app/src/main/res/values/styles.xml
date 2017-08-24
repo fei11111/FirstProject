@@ -58,4 +58,9 @@
         <item name="android:activityCloseExitAnimation">@anim/activity_close_out_animation</item>
     </style>
     
+    <style name="DialogAnimationStyle" parent="@style/dialogStyle">
+        <item name="android:windowEnterAnimation">@anim/dialog_in_animation</item>
+        <item name="android:windowExitAnimation">@anim/dialog_out_animation</item>
+    </style>
+    
 </resources>

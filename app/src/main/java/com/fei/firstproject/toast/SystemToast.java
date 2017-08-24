@@ -3,8 +3,10 @@ package com.fei.firstproject.toast;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fei.firstproject.R;
 import com.fei.firstproject.toast.inter.IToast;
 import com.fei.firstproject.utils.Utils;
 
@@ -20,7 +22,7 @@ public class SystemToast implements IToast {
         return new SystemToast(context)
                 .setText(text)
                 .setDuration(duration)
-                .setGravity(Gravity.BOTTOM, 0, Utils.dip2px(context,60));
+                .setGravity(Gravity.BOTTOM, 0, Utils.dip2px(context, 60));
     }
 
     public SystemToast(Context context) {
@@ -44,7 +46,6 @@ public class SystemToast implements IToast {
      * 不能和{@link #setText(String)}一起使用，要么{@link #setView(View)} 要么{@link #setView(View)}
      *
      * @param view 传入view
-     *
      * @return 自身对象
      */
     @Override
@@ -63,11 +64,18 @@ public class SystemToast implements IToast {
      * 不能和{@link #setView(View)}一起使用，要么{@link #setView(View)} 要么{@link #setView(View)}
      *
      * @param text 传入字符串
-     *
      * @return 自身对象
      */
     @Override
     public IToast setText(String text) {
+        View view = mToast.getView();
+        if (view != null) {
+            view.setBackgroundResource(android.R.color.transparent);
+            TextView message = ((TextView) view.findViewById(android.R.id.message));
+            message.setBackgroundResource(R.drawable.shape_toast_rect_border_bg);
+            message.setTextColor(mContext.getResources().getColor(R.color.colorWhite));
+        }
+
         mToast.setText(text);
         return this;
     }

@@ -62,7 +62,8 @@
                     android:hint="@string/prompt_username"
                     android:inputType="textEmailAddress"
                     android:lines="1"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:textSize="@dimen/tx_15" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -80,19 +81,21 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:lines="1"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:textSize="@dimen/tx_15" />
             </android.support.design.widget.TextInputLayout>
 
             <Button
                 android:id="@+id/btn_login"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/size_50"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/selector_color_gray_to_green"
+                android:layout_height="@dimen/size_45"
+                android:layout_marginTop="@dimen/size_16"
+                android:background="@drawable/selector_login_btn_bg"
                 android:enabled="false"
                 android:gravity="center"
                 android:text="@string/title_activity_login"
-                android:textColor="@color/colorWhite" />
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/tx_15" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -145,23 +148,54 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                    <TextView
+                    <LinearLayout
+                        android:id="@+id/llweixin"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:drawablePadding="@dimen/size_2"
-                        android:drawableTop="@mipmap/ic_launcher"
+                        android:background="?attr/selectableItemBackground"
                         android:gravity="center"
-                        android:text="微信" />
+                        android:orientation="vertical"
+                        android:padding="@dimen/size_16">
 
-                    <TextView
+                        <ImageView
+                            android:layout_width="@dimen/size_40"
+                            android:layout_height="@dimen/size_40"
+                            android:src="@drawable/ic_weixin" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/size_5"
+                            android:text="@string/weixin"
+                            android:textSize="@dimen/tx_15" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_qq"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:drawablePadding="@dimen/size_2"
-                        android:drawableTop="@mipmap/ic_launcher"
+                        android:background="?attr/selectableItemBackground"
                         android:gravity="center"
-                        android:text="QQ" />
+                        android:orientation="vertical"
+                        android:padding="@dimen/size_16">
+
+                        <ImageView
+                            android:layout_width="@dimen/size_40"
+                            android:layout_height="@dimen/size_40"
+                            android:src="@drawable/ic_qq" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/size_5"
+                            android:text="@string/qq"
+                            android:textSize="@dimen/tx_15" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
