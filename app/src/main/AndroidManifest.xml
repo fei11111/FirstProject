@@ -34,8 +34,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.LoginActivity"
-            android:theme="@style/ActivityAnimationStyle"/>
+        <activity
+            android:name=".activity.LoginActivity"
+            android:theme="@style/ActivityAnimationStyle" />
         <activity
             android:name=".activity.RegisterActivity"
             android:label="@string/title_activity_register" />
@@ -45,6 +46,7 @@
         <activity android:name=".activity.CaptureActivity" />
         <activity android:name=".activity.MessageActivity" />
         <activity android:name=".activity.RecommendPlanActivity" />
+        <activity android:name=".activity.MyOrderActivity" />
         <activity android:name=".web.WebActivity" />
     </application>
 

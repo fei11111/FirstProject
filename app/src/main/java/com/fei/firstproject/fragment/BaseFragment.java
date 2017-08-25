@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
@@ -69,17 +68,6 @@ public abstract class BaseFragment extends RxFragment implements BaseInterface {
     private Unbinder unbinder;
     protected BaseActivity activity;
 
-    protected <T> ObservableTransformer<T, T> createTransformer(final boolean isShow) {
-        return RxSchedulers.compose(activity, this.<T>bindToLifecycle(), new RxSchedulers.OnConnectError() {
-            @Override
-            public void onError() {
-                if (isShow) {
-                    showRequestErrorView();
-                }
-            }
-        });
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -108,6 +96,17 @@ public abstract class BaseFragment extends RxFragment implements BaseInterface {
         unbinder.unbind();
     }
 
+    protected <T> ObservableTransformer<T, T> createTransformer(final boolean isShow) {
+        return RxSchedulers.compose(activity, this.<T>bindToLifecycle(), new RxSchedulers.OnConnectError() {
+            @Override
+            public void onError() {
+                if (isShow) {
+                    showRequestErrorView();
+                }
+            }
+        });
+    }
+
     private void initlistener() {
         if (btnRequestError != null) {
             btnRequestError.setOnClickListener(new View.OnClickListener() {
@@ -119,7 +118,7 @@ public abstract class BaseFragment extends RxFragment implements BaseInterface {
             });
         }
 
-        if(refreshLayout!=null) {
+        if (refreshLayout != null) {
             refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
                 @Override
                 public void onLoadmore(RefreshLayout refreshlayout) {
@@ -148,8 +147,7 @@ public abstract class BaseFragment extends RxFragment implements BaseInterface {
         if (mNeedPermissions == null || mNeedPermissions.length == 0) return;
         List<String> needRequesetPermissionList = findDeniedPermissions(mNeedPermissions);
         if (null != needRequesetPermissionList && needRequesetPermissionList.size() > 0) {
-            ActivityCompat.requestPermissions(activity,
-                    needRequesetPermissionList.toArray(new String[needRequesetPermissionList.size()]), requestCode);
+            requestPermissions(needRequesetPermissionList.toArray(new String[needRequesetPermissionList.size()]), requestCode);
         } else {
             permissionsGrantCallBack(requestCode);
         }
@@ -165,7 +163,7 @@ public abstract class BaseFragment extends RxFragment implements BaseInterface {
         List<String> needRequestPermissionList = new ArrayList<>();
         for (String perm : mNeedPermissions) {
             if (ContextCompat.checkSelfPermission(activity, perm) != PackageManager.PERMISSION_GRANTED
-                    || ActivityCompat.shouldShowRequestPermissionRationale(activity, perm)) {
+                    || shouldShowRequestPermissionRationale(perm)) {
                 needRequestPermissionList.add(perm);
             }
         }

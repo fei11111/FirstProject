@@ -17,11 +17,11 @@ import android.widget.TextView;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.config.AppConfig;
-import com.fei.firstproject.dialog.TipDialog;
 import com.fei.firstproject.fragment.MainFragment;
 import com.fei.firstproject.fragment.MakeFragment;
 import com.fei.firstproject.fragment.MeFragment;
 import com.fei.firstproject.fragment.manager.FragmentInstanceManager;
+import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.web.WebActivity;
 import com.fei.firstproject.widget.AppHeadView;
@@ -53,34 +53,34 @@ public class MainActivity extends BaseActivity {
     private MakeFragment makeFragment;
     private MeFragment meFragment;
     //权限请求
-    private static final int REQUEST_PERMISSION_CODE_1 = 100;
-    private static final int REQUEST_PERMISSION_CODE_2 = 101;
+    private static final int REQUEST_PERMISSION_CODE_STORAGE = 100;
+    private static final int REQUEST_PERMISSION_CODE_CAMERA = 101;
     //Activity请求返回
-    private static final int REQUEST_ACTIVITY_CODE_1 = 200;
+    private static final int REQUEST_ACTIVITY_CODE_CAMERA = 200;
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
-        if (requestCode == REQUEST_PERMISSION_CODE_1) {
-            showMissingPermissionDialog("需要访问存储权限", requestCode);
-        } else if (requestCode == REQUEST_PERMISSION_CODE_2) {
-            showMissingPermissionDialog("需要打开相机扫描", requestCode);
+        if (requestCode == REQUEST_PERMISSION_CODE_STORAGE) {
+            showMissingPermissionDialog(getString(R.string.need_storage_permission), requestCode);
+        } else if (requestCode == REQUEST_PERMISSION_CODE_CAMERA) {
+            showMissingPermissionDialog(getString(R.string.need_camera_permission_to_scan), requestCode);
         }
     }
 
     @Override
     public void permissionsGrantCallBack(int requestCode) {
-        if (requestCode == REQUEST_PERMISSION_CODE_2) {
+        if (requestCode == REQUEST_PERMISSION_CODE_CAMERA) {
             //相机权限
-            startActivityWithCode(new Intent(this, CaptureActivity.class), REQUEST_ACTIVITY_CODE_1);
+            startActivityWithCode(new Intent(this, CaptureActivity.class), REQUEST_ACTIVITY_CODE_CAMERA);
         }
     }
 
     @Override
     public void permissionDialogDismiss(int requestCode) {
-        if (requestCode == REQUEST_PERMISSION_CODE_1) {
-            Utils.showToast(this, "无法访问存储，将影响APP使用");
-        } else if (requestCode == REQUEST_PERMISSION_CODE_2) {
-            Utils.showToast(this, "无法获取相机使用权限");
+        if (requestCode == REQUEST_PERMISSION_CODE_STORAGE) {
+            Utils.showToast(this, getString(R.string.storage_permission_fail));
+        } else if (requestCode == REQUEST_PERMISSION_CODE_CAMERA) {
+            Utils.showToast(this, getString(R.string.camera_permission_fail));
         }
     }
 
@@ -98,7 +98,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initPermission() {
-        checkPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION_CODE_1);
+        checkPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION_CODE_STORAGE);
     }
 
     @Override
@@ -124,9 +124,7 @@ public class MainActivity extends BaseActivity {
         appHeadView.setOnLeftRightClickListener(new AppHeadView.onAppHeadViewListener() {
             @Override
             public void onLeft(View view) {
-//                checkPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION_CODE_2);
-                TipDialog tipDialog = new TipDialog(MainActivity.this);
-                tipDialog.show();
+                checkPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION_CODE_CAMERA);
             }
 
             @Override
@@ -134,7 +132,7 @@ public class MainActivity extends BaseActivity {
                 if (AppConfig.ISLOGIN) {
                     startActivityWithoutCode(new Intent(MainActivity.this, MessageActivity.class));
                 } else {
-                    startActivity(new Intent(MainActivity.this,LoginActivity.class));
+                    showDialogWhenUnLogin();
                 }
             }
 
@@ -241,8 +239,9 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        LogUtils.i("tag","activity - onActivityResult");
         if (resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_ACTIVITY_CODE_1) {
+            if (requestCode == REQUEST_ACTIVITY_CODE_CAMERA) {
                 if (data != null) {
                     String result = data.getStringExtra("result");
                     if (!TextUtils.isEmpty(result)) {
@@ -251,7 +250,7 @@ public class MainActivity extends BaseActivity {
                             intent.putExtra("url", result);
                             startActivityWithoutCode(intent);
                         } else {
-                            Utils.showToast(this, "臣妾能力有限，二维码解析不到");
+                            Utils.showToast(this, getResources().getString(R.string.scan_error));
                         }
                     }
                 }

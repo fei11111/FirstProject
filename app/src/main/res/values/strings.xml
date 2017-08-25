@@ -9,6 +9,8 @@
     <string name="nologin">请点击登录</string>
     <string name="title_activity_login">登录</string>
     <string name="person_info">个人信息 ></string>
+    <string name="login_tip">亲，您还未登录</string>
+    <string name="go_to_login">去登录</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -82,6 +84,13 @@
     <string name="qq">QQ</string>
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
+    <string name="scan_fail">扫描失败!</string>
+    <string name="scan_error">臣妾能力有限，二维码解析不到</string>
+    <string name="login_fail_and_retry">登录失败，请重试</string>
+    <string name="storage_permission_fail">无法访问存储，将影响APP使用</string>
+    <string name="camera_permission_fail">无法获取相机使用权限</string>
+    <string name="need_storage_permission">需要访问存储权限</string>
+    <string name="need_camera_permission_to_scan">需要打开相机才能扫一扫</string>
 
     <!-- Strings related to Settings -->
 

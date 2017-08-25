@@ -1,15 +1,19 @@
 package com.fei.firstproject.fragment;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
+import com.fei.firstproject.activity.CaptureActivity;
 import com.fei.firstproject.activity.LoginActivity;
+import com.fei.firstproject.activity.MyOrderActivity;
 import com.fei.firstproject.activity.SettingsActivity;
 import com.fei.firstproject.adapter.MyRecyclerViewAdapter;
 import com.fei.firstproject.config.AppConfig;
@@ -21,6 +25,8 @@ import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
 import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.SPUtils;
+import com.fei.firstproject.utils.Utils;
+import com.fei.firstproject.web.WebActivity;
 import com.fei.firstproject.widget.NoScrollRecyclerView;
 import com.fei.firstproject.widget.SettingView;
 
@@ -34,6 +40,8 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.Observable;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by Administrator on 2017/7/29.
@@ -58,6 +66,9 @@ public class MeFragment extends BaseFragment {
     @BindView(R.id.tv_name)
     TextView tvName;
 
+    private static final int REQUEST_PERMISSION_CODE_CAMERA = 100;
+    private static final int REQUEST_FRAGMENT_CODE_CAMERA = 200;
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -66,17 +77,25 @@ public class MeFragment extends BaseFragment {
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
-
+        if (requestCode == REQUEST_PERMISSION_CODE_CAMERA) {
+            //相机权限
+            showMissingPermissionDialog(getString(R.string.need_camera_permission_to_scan), requestCode);
+        }
     }
 
     @Override
     public void permissionsGrantCallBack(int requestCode) {
-
+        if (requestCode == REQUEST_PERMISSION_CODE_CAMERA) {
+            //相机权限
+            startActivityWithCode(new Intent(activity, CaptureActivity.class), REQUEST_FRAGMENT_CODE_CAMERA);
+        }
     }
 
     @Override
     public void permissionDialogDismiss(int requestCode) {
-
+        if (requestCode == REQUEST_PERMISSION_CODE_CAMERA) {
+            Utils.showToast(activity, getString(R.string.camera_permission_fail));
+        }
     }
 
     @Override
@@ -172,6 +191,11 @@ public class MeFragment extends BaseFragment {
         recycler_other.setAdapter(new MyRecyclerViewAdapter(activity, R.array.list_other_drawable, getResources().getStringArray(R.array.list_other_str)));
     }
 
+    @OnClick(R.id.iv_scan)
+    void clickScan(View view) {
+        checkPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION_CODE_CAMERA);
+    }
+
     @OnClick(R.id.ll_me_info)
     void clickMeInfo(View view) {
         if (AppConfig.ISLOGIN) {
@@ -181,4 +205,34 @@ public class MeFragment extends BaseFragment {
         }
     }
 
+    @OnClick(R.id.rl_order)
+    void clickMyOrder(View view) {
+        if (AppConfig.ISLOGIN) {
+            startActivityWithoutCode(new Intent(activity, MyOrderActivity.class));
+        } else {
+            activity.showDialogWhenUnLogin();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        LogUtils.i("tag", "fragment - onActivityResult");
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_FRAGMENT_CODE_CAMERA) {
+                if (data != null) {
+                    String result = data.getStringExtra("result");
+                    if (!TextUtils.isEmpty(result)) {
+                        if (result.contains("http") || result.contains("https")) {
+                            Intent intent = new Intent(activity, WebActivity.class);
+                            intent.putExtra("url", result);
+                            startActivityWithoutCode(intent);
+                        } else {
+                            Utils.showToast(activity, getResources().getString(R.string.scan_error));
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 import com.fei.firstproject.R;
 import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.dialog.CustomeProgressDialog;
+import com.fei.firstproject.dialog.TipDialog;
 import com.fei.firstproject.entity.UserEntity;
 import com.fei.firstproject.event.AllEvent;
 import com.fei.firstproject.event.EventType;
@@ -72,6 +73,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseIn
 
     private Unbinder unbinder;
     protected CustomeProgressDialog progressDialog;
+    private TipDialog tipDialog;
 
     protected <T> ObservableTransformer<T, T> createTransformer(final boolean isShow) {
         return RxSchedulers.compose(this, this.<T>bindToLifecycle(), new RxSchedulers.OnConnectError() {
@@ -132,7 +134,6 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseIn
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.setCancelable(true);
     }
-
 
     /**
      * 显示进度条
@@ -294,19 +295,38 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseIn
         }
     }
 
-    public void refreshUserInfoWhenLogin(UserEntity userEntity){
+    //登录
+    public void refreshUserInfoWhenLogin(UserEntity userEntity) {
         AppConfig.ISLOGIN = true;
         AppConfig.user = userEntity;
         SPUtils.put(this, "user", userEntity);
         EventBus.getDefault().post(new AllEvent(EventType.APP_LOGIN));
     }
 
+    //退出登录
     public void refreshUserInfoWhenLogout() {
         AppConfig.ISLOGIN = false;
         AppConfig.user = null;
         SPUtils.remove(this, "user");
         SPUtils.remove(this, "tokenId");
         EventBus.getDefault().post(new AllEvent(EventType.APP_LOGOUT));
+    }
+
+    //提示登录
+    public void showDialogWhenUnLogin() {
+        if (tipDialog == null) {
+            tipDialog = new TipDialog(this);
+            tipDialog.setCanceledOnTouchOutside(false);
+            tipDialog.setContentText(getResources().getString(R.string.login_tip));
+            tipDialog.setConfirmButtonText(getResources().getString(R.string.go_to_login));
+            tipDialog.setOnConfirmListener(new TipDialog.OnConfirmListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(BaseActivity.this, LoginActivity.class));
+                }
+            });
+        }
+        tipDialog.show();
     }
 
     @Override

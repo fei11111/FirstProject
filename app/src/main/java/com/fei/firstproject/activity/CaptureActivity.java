@@ -182,7 +182,7 @@ public class CaptureActivity extends BaseActivity implements Callback {
         String resultString = result.getText();
         // FIXME
         if (resultString.equals("")) {
-            Utils.showToast(this, "扫描失败!");
+            Utils.showToast(this, getResources().getString(R.string.scan_fail));
         } else {
             Intent resultIntent = new Intent();
             Bundle bundle = new Bundle();
@@ -235,7 +235,7 @@ public class CaptureActivity extends BaseActivity implements Callback {
 
                         String resultImage = resultString.getText();
                         if (resultImage.equals("")) {
-                            Utils.showToast(this, "扫描失败");
+                            Utils.showToast(this, getResources().getString(R.string.scan_fail));
                         } else {
 
                             Intent resultIntent = new Intent();

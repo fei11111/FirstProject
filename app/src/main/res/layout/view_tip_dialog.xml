@@ -34,7 +34,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/size_16"
-                    android:text="您确定要删除选中的商品吗？"
                     android:textColor="@color/colorText"
                     android:textSize="@dimen/tx_16" />
 

@@ -277,15 +277,21 @@ public class AppHeadView extends RelativeLayout {
     }
 
     public void setLeftText(String leftText) {
-        tvHeadLeft.setText(leftText);
+        if (!TextUtils.isEmpty(leftText)) {
+            tvHeadLeft.setText(leftText);
+        }
     }
 
     public void setRightText(String rightText) {
-        tvHeadRight.setText(rightText);
+        if (!TextUtils.isEmpty(rightText)) {
+            tvHeadRight.setText(rightText);
+        }
     }
 
     public void setMiddleSearchHint(String middleSearchHint) {
-        etSearch.setHint(middleSearchHint);
+        if (!TextUtils.isEmpty(middleSearchHint)) {
+            etSearch.setHint(middleSearchHint);
+        }
     }
 
     public interface onAppHeadViewListener {

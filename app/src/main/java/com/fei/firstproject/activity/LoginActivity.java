@@ -169,11 +169,11 @@ public class LoginActivity extends BaseActivity {
                                         String returnMsg = json.getString("returnMsg");
                                         Utils.showToast(LoginActivity.this, returnMsg);
                                     } else {
-                                        Utils.showToast(LoginActivity.this, "登录失败，请重试");
+                                        Utils.showToast(LoginActivity.this, getString(R.string.login_fail_and_retry));
                                     }
                                 }
                             } else {
-                                Utils.showToast(LoginActivity.this, "登录失败，请重试");
+                                Utils.showToast(LoginActivity.this, getString(R.string.login_fail_and_retry));
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -208,7 +208,7 @@ public class LoginActivity extends BaseActivity {
                         finish();
                     }
                 } else {
-                    Utils.showToast(LoginActivity.this, "登录失败，请重试");
+                    Utils.showToast(LoginActivity.this, getString(R.string.login_fail_and_retry));
                 }
             }
 
