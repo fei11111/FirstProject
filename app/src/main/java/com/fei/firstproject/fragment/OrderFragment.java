@@ -6,6 +6,8 @@ package com.fei.firstproject.fragment;
 
 public class OrderFragment extends BaseListFragment {
 
+    private int index;
+
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
 
@@ -24,5 +26,10 @@ public class OrderFragment extends BaseListFragment {
     @Override
     public void initRequest() {
 
+    }
+
+    @Override
+    public void initData() {
+        index = getArguments().getInt("index", 0);
     }
 }

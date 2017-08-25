@@ -74,7 +74,6 @@ public class MyOrderActivity extends BaseActivity {
 
     @Override
     public void initRequest() {
-
     }
 
 }

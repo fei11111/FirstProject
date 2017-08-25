@@ -33,6 +33,7 @@ public abstract class BaseListFragment extends BaseFragment {
     public void init(Bundle savedInstanceState) {
         initListener();
         initRecyclerView();
+        initData();
     }
 
     private void initListener() {
@@ -62,4 +63,5 @@ public abstract class BaseListFragment extends BaseFragment {
         recycleViewSetting.addItemDecoration(dividerItemDecoration);
     }
 
+    public abstract void initData();
 }
