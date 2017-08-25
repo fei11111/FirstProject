@@ -11,7 +11,8 @@
     <color name="colorTextSub">#a6aab0</color>
     <color name="colorRed">#f05353</color>
     <color name="colorBlack">#000</color>
-
+    <color name="colorBlue">#76d8df</color>
+    <color name="colorBlueDark">#14b2d9</color>
     <!--scan code -->
     <color name="viewfinder_frame">#ff000000</color>
     <color name="viewfinder_laser">#ffff0000</color>

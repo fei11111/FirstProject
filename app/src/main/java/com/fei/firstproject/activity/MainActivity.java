@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.config.AppConfig;
+import com.fei.firstproject.dialog.TipDialog;
 import com.fei.firstproject.fragment.MainFragment;
 import com.fei.firstproject.fragment.MakeFragment;
 import com.fei.firstproject.fragment.MeFragment;
@@ -123,7 +124,9 @@ public class MainActivity extends BaseActivity {
         appHeadView.setOnLeftRightClickListener(new AppHeadView.onAppHeadViewListener() {
             @Override
             public void onLeft(View view) {
-                checkPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION_CODE_2);
+//                checkPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION_CODE_2);
+                TipDialog tipDialog = new TipDialog(MainActivity.this);
+                tipDialog.show();
             }
 
             @Override

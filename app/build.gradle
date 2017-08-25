@@ -50,5 +50,6 @@ dependencies {
     compile 'com.alibaba:fastjson:1.2.36'
     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
     compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.3'
+    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.8'
     compile files('libs/zxing.jar')
 }
