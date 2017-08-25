@@ -207,11 +207,11 @@ public class MeFragment extends BaseFragment {
 
     @OnClick(R.id.rl_order)
     void clickMyOrder(View view) {
-        if (AppConfig.ISLOGIN) {
+//        if (AppConfig.ISLOGIN) {
             startActivityWithoutCode(new Intent(activity, MyOrderActivity.class));
-        } else {
-            activity.showDialogWhenUnLogin();
-        }
+//        } else {
+//            activity.showDialogWhenUnLogin();
+//        }
     }
 
     @Override

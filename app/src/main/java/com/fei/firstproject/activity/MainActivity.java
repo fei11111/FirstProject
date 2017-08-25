@@ -222,7 +222,7 @@ public class MainActivity extends BaseActivity {
     }
 
     // 提供方法切换Fragment
-    public void switchFragment(Fragment fragment, boolean isNeedAdd) {
+    private void switchFragment(Fragment fragment, boolean isNeedAdd) {
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
         if (isNeedAdd) {
             transaction.add(R.id.fl_main_container, fragment);
