@@ -6,10 +6,12 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,10 +31,11 @@ import com.fei.firstproject.http.BaseObserver;
 import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
 import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.image.GlideImageLoader;
+import com.fei.firstproject.inter.OnItemClickListener;
 import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.web.WebActivity;
-import com.fei.firstproject.widget.NoScrollListView;
+import com.fei.firstproject.widget.NoScrollRecyclerView;
 import com.fei.firstproject.widget.SettingView;
 import com.fei.firstproject.widget.TextSwitchView;
 
@@ -62,12 +65,12 @@ public class MainFragment extends BaseFragment {
     LinearLayout llMenu;
     @BindView(R.id.hsv_main)
     HorizontalScrollView hsvMain;
-    @BindView(R.id.lv_ncw)
-    NoScrollListView lvNcw;
+    @BindView(R.id.rv_ncw)
+    NoScrollRecyclerView rvNcw;
     @BindView(R.id.ll_ncw)
     LinearLayoutCompat llNcw;
-    @BindView(R.id.lv_recommend_plan)
-    NoScrollListView lvRecommendPlan;
+    @BindView(R.id.rv_recommend_plan)
+    NoScrollRecyclerView rvRecommendPlan;
     @BindView(R.id.ll_recommend_plan)
     LinearLayoutCompat llRecommendPlan;
     @BindView(R.id.sv_ncw)
@@ -169,12 +172,14 @@ public class MainFragment extends BaseFragment {
                         if (recommendEntities != null && recommendEntities.size() > 0) {
                             llRecommendPlan.setVisibility(View.VISIBLE);
                             if (recommendPlanAdapter == null) {
+                                setRecycleViewSetting(rvRecommendPlan);
                                 recommendPlanAdapter = new RecommendPlanAdapter(activity, recommendEntities, 3);
-                                lvRecommendPlan.setAdapter(recommendPlanAdapter);
-                                lvRecommendPlan.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                rvRecommendPlan.setAdapter(recommendPlanAdapter);
+                                recommendPlanAdapter.setOnItemClickListener(new OnItemClickListener() {
                                     @Override
-                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                        RecommendEntity recommendEntity = recommendEntities.get(position);
+                                    public void onItemClick(View view) {
+                                        int position = rvRecommendPlan.getChildAdapterPosition(view);
+                                        RecommendEntity recommendEntity = recommendPlanAdapter.getRecommendEntities().get(position);
                                         String url = AppConfig.PLANT_DESC_URL + "?id=" + recommendEntity.getId() + "&version="
                                                 + recommendEntity.getVersion()
                                                 + "&cropCode=" + recommendEntity.getCropCode()
@@ -211,17 +216,19 @@ public class MainFragment extends BaseFragment {
                     refreshLayout.setVisibility(View.VISIBLE);
                     llNcw.setVisibility(View.VISIBLE);
                     if (ncwAdapter == null) {
+                        setRecycleViewSetting(rvNcw);
                         ncwAdapter = new NcwAdapter(activity, ncwEntities);
-                        lvNcw.setAdapter(ncwAdapter);
-                        lvNcw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        ncwAdapter.setOnItemClickListener(new OnItemClickListener() {
                             @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                String url = ncwEntities.get(position).getUrl();
+                            public void onItemClick(View view) {
+                                int position = rvNcw.getChildAdapterPosition(view);
+                                String url = ncwAdapter.getNcwEntities().get(position).getUrl();
                                 Intent intent = new Intent(activity, WebActivity.class);
                                 intent.putExtra("url", url + "&a=show");
                                 startActivityWithoutCode(intent);
                             }
                         });
+                        rvNcw.setAdapter(ncwAdapter);
                     } else {
                         ncwAdapter.setNcwEntities(ncwEntities);
                         ncwAdapter.notifyDataSetChanged();
@@ -238,6 +245,13 @@ public class MainFragment extends BaseFragment {
                 showRequestErrorView();
             }
         });
+    }
+
+    private void setRecycleViewSetting(RecyclerView recycleViewSetting) {
+        LinearLayoutManager manager = new LinearLayoutManager(activity);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(activity, LinearLayout.VERTICAL);
+        recycleViewSetting.setLayoutManager(manager);
+        recycleViewSetting.addItemDecoration(dividerItemDecoration);
     }
 
     private void initSensor() {

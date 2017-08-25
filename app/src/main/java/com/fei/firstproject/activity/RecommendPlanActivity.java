@@ -2,7 +2,6 @@ package com.fei.firstproject.activity;
 
 import android.content.Intent;
 import android.view.View;
-import android.widget.AdapterView;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.RecommendPlanAdapter;
@@ -11,6 +10,7 @@ import com.fei.firstproject.entity.BaseEntity;
 import com.fei.firstproject.entity.RecommendEntity;
 import com.fei.firstproject.http.BaseObserver;
 import com.fei.firstproject.http.factory.RetrofitFactory;
+import com.fei.firstproject.inter.OnItemClickListener;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.web.WebActivity;
 import com.fei.firstproject.widget.AppHeadView;
@@ -77,11 +77,12 @@ public class RecommendPlanActivity extends BaseListActivity {
                             refreshLayout.setVisibility(View.VISIBLE);
                             if (recommendPlanAdapter == null) {
                                 recommendPlanAdapter = new RecommendPlanAdapter(RecommendPlanActivity.this, recommendEntities);
-                                listView.setAdapter(recommendPlanAdapter);
-                                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                recyclerView.setAdapter(recommendPlanAdapter);
+                                recommendPlanAdapter.setOnItemClickListener(new OnItemClickListener() {
                                     @Override
-                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                        RecommendEntity recommendEntity = (RecommendEntity) recommendPlanAdapter.getItem(position);
+                                    public void onItemClick(View view) {
+                                        int position = recyclerView.getChildAdapterPosition(view);
+                                        RecommendEntity recommendEntity = recommendPlanAdapter.getRecommendEntities().get(position);
                                         String url = AppConfig.PLANT_DESC_URL + "?id=" + recommendEntity.getId() + "&version="
                                                 + recommendEntity.getVersion()
                                                 + "&cropCode=" + recommendEntity.getCropCode()

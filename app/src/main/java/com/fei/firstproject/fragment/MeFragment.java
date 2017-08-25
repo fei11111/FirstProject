@@ -15,7 +15,7 @@ import com.fei.firstproject.activity.CaptureActivity;
 import com.fei.firstproject.activity.LoginActivity;
 import com.fei.firstproject.activity.MyOrderActivity;
 import com.fei.firstproject.activity.SettingsActivity;
-import com.fei.firstproject.adapter.MyRecyclerViewAdapter;
+import com.fei.firstproject.adapter.MeFragmentAdapter;
 import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.decoration.DividerGridItemDecoration;
 import com.fei.firstproject.entity.UserEntity;
@@ -180,7 +180,7 @@ public class MeFragment extends BaseFragment {
         RecyclerView.ItemDecoration itemDecoration = new DividerGridItemDecoration(activity);
         recycler_me.setLayoutManager(manager);
         recycler_me.addItemDecoration(itemDecoration);
-        recycler_me.setAdapter(new MyRecyclerViewAdapter(activity, R.array.list_me_drawable, getResources().getStringArray(R.array.list_me_str)));
+        recycler_me.setAdapter(new MeFragmentAdapter(activity, R.array.list_me_drawable, getResources().getStringArray(R.array.list_me_str)));
     }
 
     private void initViewOther() {
@@ -188,7 +188,7 @@ public class MeFragment extends BaseFragment {
         RecyclerView.ItemDecoration itemDecoration = new DividerGridItemDecoration(activity);
         recycler_other.setLayoutManager(manager);
         recycler_other.addItemDecoration(itemDecoration);
-        recycler_other.setAdapter(new MyRecyclerViewAdapter(activity, R.array.list_other_drawable, getResources().getStringArray(R.array.list_other_str)));
+        recycler_other.setAdapter(new MeFragmentAdapter(activity, R.array.list_other_drawable, getResources().getStringArray(R.array.list_other_str)));
     }
 
     @OnClick(R.id.iv_scan)

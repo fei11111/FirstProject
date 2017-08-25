@@ -16,7 +16,6 @@
         android:overScrollMode="never"
         android:requiresFadingEdge="none"
         android:visibility="gone"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:srlDisableContentWhenLoading="true"
         app:srlDisableContentWhenRefresh="true"
         app:srlEnableAutoLoadmore="false"
@@ -30,11 +29,12 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_40" />
 
-        <ListView
-            android:id="@+id/listView"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorWhite"></ListView>
+            android:background="@color/colorWhite"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"></android.support.v7.widget.RecyclerView>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </FrameLayout>

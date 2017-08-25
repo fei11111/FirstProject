@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_40" />
 
-        <ScrollView
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never">
@@ -98,13 +98,11 @@
                         app:desc="@string/more"
                         app:title="@string/ncw"></com.fei.firstproject.widget.SettingView>
 
-                    <com.fei.firstproject.widget.NoScrollListView
-                        android:id="@+id/lv_ncw"
+                    <com.fei.firstproject.widget.NoScrollRecyclerView
+                        android:id="@+id/rv_ncw"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:divider="@color/colorBackground"
-                        android:dividerHeight="1dp"
-                        android:scrollbars="none"></com.fei.firstproject.widget.NoScrollListView>
+                        android:scrollbars="none"></com.fei.firstproject.widget.NoScrollRecyclerView>
                 </android.support.v7.widget.LinearLayoutCompat>
 
                 <android.support.v7.widget.LinearLayoutCompat
@@ -124,18 +122,18 @@
                         app:desc="@string/more"
                         app:title="@string/recommend_plan"></com.fei.firstproject.widget.SettingView>
 
-                    <com.fei.firstproject.widget.NoScrollListView
-                        android:id="@+id/lv_recommend_plan"
+                    <com.fei.firstproject.widget.NoScrollRecyclerView
+                        android:id="@+id/rv_recommend_plan"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:divider="@color/colorBackground"
                         android:dividerHeight="1dp"
-                        android:scrollbars="none"></com.fei.firstproject.widget.NoScrollListView>
+                        android:scrollbars="none"></com.fei.firstproject.widget.NoScrollRecyclerView>
                 </android.support.v7.widget.LinearLayoutCompat>
 
                 <include layout="@layout/app_bottom_signature" />
 
             </LinearLayout>
-        </ScrollView>
+        </android.support.v4.widget.NestedScrollView>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </FrameLayout>

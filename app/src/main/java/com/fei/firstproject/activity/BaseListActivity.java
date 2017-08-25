@@ -2,10 +2,13 @@ package com.fei.firstproject.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
@@ -18,6 +21,7 @@ import butterknife.BindView;
 
 /**
  * Created by Fei on 2017/8/23.
+ * 有头部,内容是RecyclerView
  */
 
 public abstract class BaseListActivity extends BaseActivity {
@@ -28,8 +32,8 @@ public abstract class BaseListActivity extends BaseActivity {
     Toolbar toolbar;
     @BindView(R.id.app_bar_layout)
     AppBarLayout appBarLayout;
-    @BindView(R.id.listView)
-    ListView listView;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
 
     protected int currentPage = 1;
 
@@ -42,6 +46,11 @@ public abstract class BaseListActivity extends BaseActivity {
     public void init(Bundle savedInstanceState) {
         initListener();
         initAppHeadView();
+        initRecyclerView();
+    }
+
+    private void initRecyclerView() {
+        setRecycleViewSetting(recyclerView);
     }
 
     private void initListener() {
@@ -79,7 +88,13 @@ public abstract class BaseListActivity extends BaseActivity {
                 initRequest();
             }
         });
+    }
 
+    private void setRecycleViewSetting(RecyclerView recycleViewSetting) {
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, LinearLayout.VERTICAL);
+        recycleViewSetting.setLayoutManager(manager);
+        recycleViewSetting.addItemDecoration(dividerItemDecoration);
     }
 
     //设置头部

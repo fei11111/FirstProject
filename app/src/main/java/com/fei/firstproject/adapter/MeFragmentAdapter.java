@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
-import com.fei.firstproject.adapter.MyRecyclerViewAdapter.MyViewHolder;
 import com.fei.firstproject.utils.Utils;
 
 import butterknife.BindView;
@@ -19,14 +18,14 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2017/8/4.
  */
 
-public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyViewHolder> {
+public class MeFragmentAdapter extends RecyclerView.Adapter<MeFragmentAdapter.MyViewHolder> {
 
     private int[] res;//图片
     private String[] desps;//描述
 
     private Context mContext;
 
-    public MyRecyclerViewAdapter(Context mContext, int ids, String[] desps) {
+    public MeFragmentAdapter(Context mContext, int ids, String[] desps) {
         this.mContext = mContext;
         this.desps = desps;
         res = Utils.getDrawableByArray(mContext, ids);

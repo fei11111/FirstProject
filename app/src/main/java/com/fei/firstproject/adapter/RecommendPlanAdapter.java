@@ -1,30 +1,37 @@
 package com.fei.firstproject.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.fei.firstproject.R;
 import com.fei.firstproject.entity.RecommendEntity;
+import com.fei.firstproject.inter.OnItemClickListener;
 
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2017/8/14.
  */
 
-public class RecommendPlanAdapter extends BaseAdapter {
+public class RecommendPlanAdapter extends RecyclerView.Adapter<RecommendPlanAdapter.RecommendViewHoder> {
 
     private Context mContext;
     private List<RecommendEntity> recommendEntities;
     private int count = -1;
+    private OnItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
 
     public RecommendPlanAdapter(Context mContext, List<RecommendEntity> recommendEntities) {
         this.mContext = mContext;
@@ -49,14 +56,27 @@ public class RecommendPlanAdapter extends BaseAdapter {
         }
     }
 
-    @Override
-    public int getCount() {
-        return recommendEntities.size() >= 3 ? count > 0 ? count : recommendEntities.size() : recommendEntities.size();
+    public List<RecommendEntity> getRecommendEntities() {
+        return recommendEntities;
     }
 
     @Override
-    public Object getItem(int i) {
-        return recommendEntities.get(i);
+    public RecommendViewHoder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_recommend_plan, parent, false);
+        return new RecommendViewHoder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(RecommendViewHoder holder, int position) {
+        RecommendEntity recommendEntity = recommendEntities.get(position);
+        holder.tvRecommendPlanTitle.setText(recommendEntity.getTitle());
+        holder.tvRecommendPlanDesp.setText(recommendEntity.getContent());
+        Glide.with(mContext)
+                .load(recommendEntity.getImgPath())
+                .placeholder(R.drawable.ic_app)
+                .crossFade()
+                .error(R.drawable.ic_pic_error)
+                .into(holder.ivRecommendPlan);
     }
 
     @Override
@@ -65,33 +85,32 @@ public class RecommendPlanAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        ViewHolder holder = null;
-        if (view == null) {
-            holder = new ViewHolder();
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_recommend_plan, viewGroup, false);
-            holder.iv_recommand_plan = ButterKnife.findById(view, R.id.iv_recommend_plan);
-            holder.tv_recommand_plan_title = ButterKnife.findById(view, R.id.tv_recommend_plan_title);
-            holder.tv_recommand_plan_desp = ButterKnife.findById(view, R.id.tv_recommend_plan_desp);
-            view.setTag(holder);
-        } else {
-            holder = (ViewHolder) view.getTag();
-        }
-        RecommendEntity recommendEntity = recommendEntities.get(i);
-        holder.tv_recommand_plan_title.setText(recommendEntity.getTitle());
-        holder.tv_recommand_plan_desp.setText(recommendEntity.getContent());
-        Glide.with(mContext)
-                .load(recommendEntity.getImgPath())
-                .placeholder(R.drawable.ic_app)
-                .crossFade()
-                .error(R.drawable.ic_pic_error)
-                .into(holder.iv_recommand_plan);
-        return view;
+    public int getItemCount() {
+        return recommendEntities.size() >= 3 ? count > 0 ? count : recommendEntities.size() : recommendEntities.size();
     }
 
-    class ViewHolder {
-        ImageView iv_recommand_plan;
-        TextView tv_recommand_plan_title;
-        TextView tv_recommand_plan_desp;
+    class RecommendViewHoder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        @BindView(R.id.iv_recommend_plan)
+        ImageView ivRecommendPlan;
+        @BindView(R.id.iv_recommend_plan_arrow)
+        ImageView ivRecommendPlanArrow;
+        @BindView(R.id.tv_recommend_plan_title)
+        TextView tvRecommendPlanTitle;
+        @BindView(R.id.tv_recommend_plan_desp)
+        TextView tvRecommendPlanDesp;
+
+        public RecommendViewHoder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(v);
+            }
+        }
     }
 }
