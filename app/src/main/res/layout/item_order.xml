@@ -48,7 +48,7 @@
                 android:layout_width="@dimen/size_56"
                 android:layout_height="@dimen/size_56"
                 android:background="@drawable/shape_image_rect_border_bg"
-                android:src="@drawable/ic_my_message" />
+                android:src="@drawable/ic_app" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -60,15 +60,15 @@
                     android:id="@+id/tv_desc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:Lines="2"
                     android:ellipsize="end"
                     android:gravity="left|center_vertical"
-                    android:maxLines="2"
                     android:text=""
                     android:textColor="@color/colorText"
                     android:textSize="@dimen/tx_15" />
 
                 <TextView
-                    android:id="@+id/count"
+                    android:id="@+id/tv_count"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/size_5"
@@ -130,10 +130,9 @@
                     android:id="@+id/btn_pay"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/size_36"
-                    android:background="@drawable/shape_btn_bg_normal"
+                    android:background="@drawable/selector_pay_btn_bg"
                     android:gravity="center"
-                    android:text="@string/immediately_pay"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/selector_color_white_to_black"
                     android:textSize="@dimen/tx_15" />
 
                 <Button
@@ -141,10 +140,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/size_36"
                     android:layout_marginLeft="@dimen/size_8"
-                    android:background="@drawable/shape_btn_bg_normal"
+                    android:background="@drawable/selector_pay_btn_bg"
                     android:gravity="center"
-                    android:text="@string/cancel_pay"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/selector_color_white_to_black"
                     android:textSize="@dimen/tx_15" />
 
             </LinearLayout>

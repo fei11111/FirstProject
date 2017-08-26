@@ -133,7 +133,7 @@ public class OrderEntity {
         private String pay_date;
         private String user_desc;
         private String payment_id;
-        private String order_flag_id;
+        private int order_flag_id;
         private String addr_delivery;
         private String Formula_head_id;
         private double atm_payable;
@@ -420,11 +420,11 @@ public class OrderEntity {
             this.payment_id = payment_id;
         }
 
-        public String getOrder_flag_id() {
+        public int getOrder_flag_id() {
             return order_flag_id;
         }
 
-        public void setOrder_flag_id(String order_flag_id) {
+        public void setOrder_flag_id(int order_flag_id) {
             this.order_flag_id = order_flag_id;
         }
 

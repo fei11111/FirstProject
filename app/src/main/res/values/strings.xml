@@ -95,6 +95,14 @@
     <string name="payment_declare">实付款：¥</string>
     <string name="immediately_pay">立即付款</string>
     <string name="cancel_pay">撤单</string>
+    <string name="complete_transaction">交易完成</string>
+    <string name="sales_return">退货</string>
+    <string name="go_to_evaluate">去评价</string>
+    <string name="sales_returning">退货中</string>
+    <string name="cancel_paying">撤单中</string>
+    <string name="remind_delivery">提醒发货</string>
+    <string name="confrim_receive">确认收货</string>
+    <string name="close_transaction">交易结束</string>
 
     <!-- Strings related to Settings -->
 
