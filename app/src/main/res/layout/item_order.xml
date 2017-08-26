@@ -52,7 +52,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/size_5"
                 android:orientation="vertical">
 
@@ -60,10 +60,10 @@
                     android:id="@+id/tv_desc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:Lines="2"
+                    android:lines="2"
                     android:ellipsize="end"
                     android:gravity="left|center_vertical"
-                    android:text=""
+                    android:text="11111111111111111112222222222222222222222222222221"
                     android:textColor="@color/colorText"
                     android:textSize="@dimen/tx_15" />
 
@@ -75,6 +75,7 @@
                     android:ellipsize="end"
                     android:gravity="right"
                     android:lines="1"
+                    android:text="22222222222222222222"
                     android:textColor="@color/colorTextSub"
                     android:textSize="@dimen/tx_15" />
             </LinearLayout>

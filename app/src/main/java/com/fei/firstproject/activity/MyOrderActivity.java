@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.fragment.OrderFragment;
+import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.widget.AppHeadView;
 
 import butterknife.BindView;
@@ -44,6 +45,8 @@ public class MyOrderActivity extends BaseActivity {
     private OrderFragment postFragment;
     private OrderFragment evaluateFragment;
     private FragmentManager mFragmentManager;
+    private int selectPostion = 0;
+    public static String SELECT_POSITION_EXTRA = "select_postion_extra";
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
@@ -74,11 +77,16 @@ public class MyOrderActivity extends BaseActivity {
 
     private void initSetting() {
         mFragmentManager = getSupportFragmentManager();
+        selectPostion = getIntent().getIntExtra(SELECT_POSITION_EXTRA, selectPostion);
     }
 
     private void initTableLayout() {
-        for (int title : titles) {
-            tableLayout.addTab(tableLayout.newTab().setText(getString(title)));
+        for (int i = 0; i < titles.length; i++) {
+            if (i == selectPostion) {
+                tableLayout.addTab(tableLayout.newTab().setText(getString(titles[i])), true);
+            } else {
+                tableLayout.addTab(tableLayout.newTab().setText(getString(titles[i])), false);
+            }
         }
     }
 
@@ -127,6 +135,7 @@ public class MyOrderActivity extends BaseActivity {
     private void selectFragment(int position) {
         switch (position) {
             case 0:
+                LogUtils.i("tag", "进入tab0");
                 if (allFragment == null) {
                     allFragment = OrderFragment.newInstance(position);
                     switchFragment(allFragment, true);
@@ -135,6 +144,7 @@ public class MyOrderActivity extends BaseActivity {
                 }
                 break;
             case 1:
+                LogUtils.i("tag", "进入tab1");
                 if (obligationFragment == null) {
                     obligationFragment = OrderFragment.newInstance(position);
                     switchFragment(obligationFragment, true);
@@ -143,6 +153,7 @@ public class MyOrderActivity extends BaseActivity {
                 }
                 break;
             case 2:
+                LogUtils.i("tag", "进入tab2");
                 if (receiveFragment == null) {
                     receiveFragment = OrderFragment.newInstance(position);
                     switchFragment(receiveFragment, true);
@@ -151,6 +162,7 @@ public class MyOrderActivity extends BaseActivity {
                 }
                 break;
             case 3:
+                LogUtils.i("tag", "进入tab3");
                 if (postFragment == null) {
                     postFragment = OrderFragment.newInstance(position);
                     switchFragment(postFragment, true);
@@ -159,6 +171,7 @@ public class MyOrderActivity extends BaseActivity {
                 }
                 break;
             case 4:
+                LogUtils.i("tag", "进入tab4");
                 if (evaluateFragment == null) {
                     evaluateFragment = OrderFragment.newInstance(position);
                     switchFragment(evaluateFragment, true);

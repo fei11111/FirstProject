@@ -61,6 +61,20 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHod
         this.orders = orders;
     }
 
+    public List<OrderEntity.DataBean> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<OrderEntity.DataBean> orders) {
+        this.orders = orders;
+    }
+
+    public void addOrders(List<OrderEntity.DataBean> orders) {
+        if (orders != null && this.orders != null) {
+            this.orders.addAll(orders);
+        }
+    }
+
     @Override
     public OrderViewHoder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_order, parent, false);
@@ -282,7 +296,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHod
 
     @Override
     public int getItemCount() {
-        return 20;
+        return orders.size();
     }
 
     class OrderViewHoder extends RecyclerView.ViewHolder {
