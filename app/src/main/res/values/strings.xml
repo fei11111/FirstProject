@@ -92,6 +92,9 @@
     <string name="camera_permission_fail">无法获取相机使用权限</string>
     <string name="need_storage_permission">需要访问存储权限</string>
     <string name="need_camera_permission_to_scan">需要打开相机才能扫一扫</string>
+    <string name="payment_declare">实付款：¥</string>
+    <string name="immediately_pay">立即付款</string>
+    <string name="cancel_pay">撤单</string>
 
     <!-- Strings related to Settings -->
 

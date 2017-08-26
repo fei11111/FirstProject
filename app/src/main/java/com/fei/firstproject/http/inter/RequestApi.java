@@ -3,6 +3,7 @@ package com.fei.firstproject.http.inter;
 import com.fei.firstproject.entity.BaseEntity;
 import com.fei.firstproject.entity.MessageEntity;
 import com.fei.firstproject.entity.NcwEntity;
+import com.fei.firstproject.entity.OrderEntity;
 import com.fei.firstproject.entity.RecommendEntity;
 import com.fei.firstproject.entity.UserEntity;
 
@@ -41,4 +42,7 @@ public interface RequestApi {
 
     @GET("App/getUserInFoByToken.shtml")
     Observable<UserEntity> getUserInfo(@QueryMap Map<String, String> map);
+
+    @GET("ordermanage/api/list_dzorderhead_payment.do")
+    Observable<OrderEntity> getOrder(@QueryMap Map<String, String> map);
 }

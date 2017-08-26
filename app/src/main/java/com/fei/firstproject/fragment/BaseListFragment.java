@@ -22,7 +22,7 @@ public abstract class BaseListFragment extends BaseFragment {
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
 
-    private int currentPage = 1;
+    protected int currentPage = 1;
 
     @Override
     public int getContentViewResId() {

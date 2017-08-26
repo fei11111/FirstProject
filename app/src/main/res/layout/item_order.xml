@@ -1,25 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorWhite">
 
-    <RelativeLayout
+    <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground">
+        android:orientation="vertical"
+        app:divider="@drawable/shape_line"
+        app:showDividers="middle">
 
-        <ImageView
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_qq" />
+            android:padding="@dimen/size_16">
 
-        <ImageView
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/tv_service"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/tx_15" />
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:ellipsize="end"
+                android:lines="1"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/tx_15" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/ic_weixin" />
+            android:orientation="horizontal"
+            android:padding="@dimen/size_16">
 
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/iv_order_pic"
+                android:layout_width="@dimen/size_56"
+                android:layout_height="@dimen/size_56"
+                android:background="@drawable/shape_image_rect_border_bg"
+                android:src="@drawable/ic_my_message" />
 
-</LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/size_5"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="left|center_vertical"
+                    android:maxLines="2"
+                    android:text=""
+                    android:textColor="@color/colorText"
+                    android:textSize="@dimen/tx_15" />
+
+                <TextView
+                    android:id="@+id/count"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_5"
+                    android:ellipsize="end"
+                    android:gravity="right"
+                    android:lines="1"
+                    android:textColor="@color/colorTextSub"
+                    android:textSize="@dimen/tx_15" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/size_16">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:text="@string/payment_declare"
+                    android:textColor="@color/colorText"
+                    android:textSize="@dimen/tx_15" />
+
+                <TextView
+                    android:id="@+id/tv_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:textColor="@color/colorText"
+                    android:textSize="@dimen/tx_20" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/size_16">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_pay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/size_36"
+                    android:background="@drawable/shape_btn_bg_normal"
+                    android:gravity="center"
+                    android:text="@string/immediately_pay"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/tx_15" />
+
+                <Button
+                    android:id="@+id/btn_cancle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/size_36"
+                    android:layout_marginLeft="@dimen/size_8"
+                    android:background="@drawable/shape_btn_bg_normal"
+                    android:gravity="center"
+                    android:text="@string/cancel_pay"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/tx_15" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </android.support.v7.widget.LinearLayoutCompat>
+
+</RelativeLayout>
