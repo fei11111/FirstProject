@@ -207,58 +207,58 @@ public class MeFragment extends BaseFragment {
 
     @OnClick(R.id.rl_order)
     void clickMyOrder(View view) {
-//        if (AppConfig.ISLOGIN) {
-        Intent intent = new Intent(activity, MyOrderActivity.class);
-        intent.putExtra(MyOrderActivity.SELECT_POSITION_EXTRA, 0);
-        startActivityWithoutCode(intent);
-//        } else {
-//            activity.showDialogWhenUnLogin();
-//        }
+        if (AppConfig.ISLOGIN) {
+            Intent intent = new Intent(activity, MyOrderActivity.class);
+            intent.putExtra(MyOrderActivity.SELECT_POSITION_EXTRA, 0);
+            startActivityWithoutCode(intent);
+        } else {
+            activity.showDialogWhenUnLogin();
+        }
     }
 
     @OnClick(R.id.ll_wait_obligation)
     void clickWaitObligation(View view) {
-//        if (AppConfig.ISLOGIN) {
-        Intent intent = new Intent(activity, MyOrderActivity.class);
-        intent.putExtra(MyOrderActivity.SELECT_POSITION_EXTRA, 1);
-        startActivityWithoutCode(intent);
-//        } else {
-//            activity.showDialogWhenUnLogin();
-//        }
+        if (AppConfig.ISLOGIN) {
+            Intent intent = new Intent(activity, MyOrderActivity.class);
+            intent.putExtra(MyOrderActivity.SELECT_POSITION_EXTRA, 1);
+            startActivityWithoutCode(intent);
+        } else {
+            activity.showDialogWhenUnLogin();
+        }
     }
 
     @OnClick(R.id.ll_wait_receive)
     void clickWaitReceive(View view) {
-//        if (AppConfig.ISLOGIN) {
-        Intent intent = new Intent(activity, MyOrderActivity.class);
-        intent.putExtra(MyOrderActivity.SELECT_POSITION_EXTRA, 2);
-        startActivityWithoutCode(intent);
-//        } else {
-//            activity.showDialogWhenUnLogin();
-//        }
+        if (AppConfig.ISLOGIN) {
+            Intent intent = new Intent(activity, MyOrderActivity.class);
+            intent.putExtra(MyOrderActivity.SELECT_POSITION_EXTRA, 2);
+            startActivityWithoutCode(intent);
+        } else {
+            activity.showDialogWhenUnLogin();
+        }
     }
 
 
     @OnClick(R.id.ll_wait_post)
     void clickWaitPost(View view) {
-//        if (AppConfig.ISLOGIN) {
-        Intent intent = new Intent(activity, MyOrderActivity.class);
-        intent.putExtra(MyOrderActivity.SELECT_POSITION_EXTRA, 3);
-        startActivityWithoutCode(intent);
-//        } else {
-//            activity.showDialogWhenUnLogin();
-//        }
+        if (AppConfig.ISLOGIN) {
+            Intent intent = new Intent(activity, MyOrderActivity.class);
+            intent.putExtra(MyOrderActivity.SELECT_POSITION_EXTRA, 3);
+            startActivityWithoutCode(intent);
+        } else {
+            activity.showDialogWhenUnLogin();
+        }
     }
 
     @OnClick(R.id.ll_wait_evaluate)
     void clickWaitEvaluate(View view) {
-//        if (AppConfig.ISLOGIN) {
-        Intent intent = new Intent(activity, MyOrderActivity.class);
-        intent.putExtra(MyOrderActivity.SELECT_POSITION_EXTRA, 4);
-        startActivityWithoutCode(intent);
-//        } else {
-//            activity.showDialogWhenUnLogin();
-//        }
+        if (AppConfig.ISLOGIN) {
+            Intent intent = new Intent(activity, MyOrderActivity.class);
+            intent.putExtra(MyOrderActivity.SELECT_POSITION_EXTRA, 4);
+            startActivityWithoutCode(intent);
+        } else {
+            activity.showDialogWhenUnLogin();
+        }
     }
 
     @Override

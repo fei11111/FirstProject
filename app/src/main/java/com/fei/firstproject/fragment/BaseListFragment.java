@@ -53,10 +53,10 @@ public abstract class BaseListFragment extends BaseFragment {
     }
 
     private void initRecyclerView() {
-        setRecycleViewSetting(recyclerView);
+//        setRecycleViewSetting(recyclerView);
     }
 
-    private void setRecycleViewSetting(RecyclerView recycleViewSetting) {
+    public void setRecycleViewSetting(RecyclerView recycleViewSetting) {
         LinearLayoutManager manager = new LinearLayoutManager(activity);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(activity, LinearLayout.VERTICAL);
         recycleViewSetting.setLayoutManager(manager);

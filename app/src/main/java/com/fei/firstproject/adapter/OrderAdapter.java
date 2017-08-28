@@ -29,8 +29,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHod
     private OnPayListener onPayListener;
     private OnSalesReturnListener onSalesReturnListener;
     private OnEvaluateListener onEvaluateListener;
-    private OnRemindDelivery onRemindDelivery;
-    private OnConfirmReceive onConfirmReceive;
+    private OnRemindDeliveryListener onRemindDeliveryListener;
+    private OnConfirmReceiveListener onConfirmReceiveListener;
 
     public void setOnCancelPayListener(OnCancelPayListener onCancelPayListener) {
         this.onCancelPayListener = onCancelPayListener;
@@ -48,12 +48,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHod
         this.onEvaluateListener = onEvaluateListener;
     }
 
-    public void setOnRemindDelivery(OnRemindDelivery onRemindDelivery) {
-        this.onRemindDelivery = onRemindDelivery;
+    public void setOnRemindDeliveryListener(OnRemindDeliveryListener onRemindDeliveryListener) {
+        this.onRemindDeliveryListener = onRemindDeliveryListener;
     }
 
-    public void setOnConfirmReceive(OnConfirmReceive onConfirmReceive) {
-        this.onConfirmReceive = onConfirmReceive;
+    public void setOnConfirmReceiveListener(OnConfirmReceiveListener onConfirmReceiveListener) {
+        this.onConfirmReceiveListener = onConfirmReceiveListener;
     }
 
     public OrderAdapter(Context mContext, List<OrderEntity.DataBean> orders) {
@@ -187,8 +187,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHod
                 holder.btnPay.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View arg0) {
-                        if (onRemindDelivery != null) {
-                            onRemindDelivery.remind(order_head_id);
+                        if (onRemindDeliveryListener != null) {
+                            onRemindDeliveryListener.remind(order_head_id);
                         }
                     }
                 });
@@ -204,8 +204,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHod
                 holder.btnPay.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View arg0) {
-                        if (onConfirmReceive != null) {
-                            onConfirmReceive.confirm(order_head_id);
+                        if (onConfirmReceiveListener != null) {
+                            onConfirmReceiveListener.confirm(order_head_id);
                         }
                     }
                 });
@@ -285,12 +285,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHod
     }
 
     //提醒发货
-    public interface OnRemindDelivery {
+    public interface OnRemindDeliveryListener {
         void remind(String orderHeadId);
     }
 
     //确认收货
-    public interface OnConfirmReceive {
+    public interface OnConfirmReceiveListener {
         void confirm(String orderHeadId);
     }
 
