@@ -1,6 +1,5 @@
 package com.fei.firstproject.fragment;
 
-import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -191,10 +190,10 @@ public class MeFragment extends BaseFragment {
         recycler_other.setAdapter(new MeFragmentAdapter(activity, R.array.list_other_drawable, getResources().getStringArray(R.array.list_other_str)));
     }
 
-    @OnClick(R.id.iv_scan)
-    void clickScan(View view) {
-        checkPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION_CODE_CAMERA);
-    }
+//    @OnClick(R.id.iv_scan)
+//    void clickScan(View view) {
+//        checkPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION_CODE_CAMERA);
+//    }
 
     @OnClick(R.id.ll_me_info)
     void clickMeInfo(View view) {
