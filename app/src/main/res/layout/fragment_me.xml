@@ -97,7 +97,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_marginLeft="@dimen/size_5"
-                                            android:text="帅气值"
+                                            android:text="@string/handsome_value"
                                             android:textColor="@color/colorWhite"
                                             android:textSize="@dimen/tx_12" />
 

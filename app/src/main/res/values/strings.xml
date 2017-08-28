@@ -103,6 +103,7 @@
     <string name="remind_delivery">提醒发货</string>
     <string name="confrim_receive">确认收货</string>
     <string name="close_transaction">交易结束</string>
+    <string name="handsome_value">帅气值</string>
 
     <!-- Strings related to Settings -->
 
