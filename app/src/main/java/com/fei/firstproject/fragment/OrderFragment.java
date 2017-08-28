@@ -127,4 +127,5 @@ public class OrderFragment extends BaseListFragment {
     public void initData() {
         index = getArguments().getInt(INDEX, 0);
     }
+
 }
