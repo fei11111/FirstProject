@@ -136,6 +136,7 @@
                             android:layout_marginTop="@dimen/size_10">
 
                             <LinearLayout
+                                android:id="@+id/ll_collect_goods"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -146,7 +147,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="11"
+                                    android:text="5"
                                     android:textColor="@color/colorText"
                                     android:textSize="@dimen/tx_15" />
 
@@ -154,13 +155,14 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/size_5"
-                                    android:text="收藏店铺"
+                                    android:text="@string/collect_goods"
                                     android:textColor="@color/colorTextSub"
                                     android:textSize="@dimen/tx_13" />
 
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/ll_collect_store"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -171,7 +173,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="11"
+                                    android:text="10"
                                     android:textColor="@color/colorText"
                                     android:textSize="@dimen/tx_15" />
 
@@ -179,13 +181,14 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/size_5"
-                                    android:text="收藏店铺"
+                                    android:text="@string/collect_store"
                                     android:textColor="@color/colorTextSub"
                                     android:textSize="@dimen/tx_13" />
 
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/ll_balance"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -196,7 +199,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="11"
+                                    android:text="0"
                                     android:textColor="@color/colorText"
                                     android:textSize="@dimen/tx_15" />
 
@@ -204,7 +207,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/size_5"
-                                    android:text="收藏店铺"
+                                    android:text="@string/balance"
                                     android:textColor="@color/colorTextSub"
                                     android:textSize="@dimen/tx_13" />
 

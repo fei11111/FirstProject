@@ -240,11 +240,6 @@ public class MeFragment extends BaseFragment {
         recycler_other.setAdapter(new MeFragmentAdapter(activity, R.array.list_other_drawable, getResources().getStringArray(R.array.list_other_str)));
     }
 
-//    @OnClick(R.id.iv_scan)
-//    void clickScan(View view) {
-//        checkPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION_CODE_CAMERA);
-//    }
-
     @OnClick(R.id.ll_me_info)
     void clickMeInfo(View view) {
         if (AppConfig.ISLOGIN) {

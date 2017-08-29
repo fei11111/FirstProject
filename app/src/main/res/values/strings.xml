@@ -104,6 +104,9 @@
     <string name="confrim_receive">确认收货</string>
     <string name="close_transaction">交易结束</string>
     <string name="handsome_value">帅气值</string>
+    <string name="balance">余额</string>
+    <string name="collect_store">收藏店铺</string>
+    <string name="collect_goods">收藏商品</string>
 
     <!-- Strings related to Settings -->
 
