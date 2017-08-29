@@ -1,6 +1,7 @@
 package com.fei.firstproject.http.inter;
 
 import com.fei.firstproject.entity.BaseEntity;
+import com.fei.firstproject.entity.ExpertEntity;
 import com.fei.firstproject.entity.MessageEntity;
 import com.fei.firstproject.entity.NcwEntity;
 import com.fei.firstproject.entity.OrderEntity;
@@ -46,4 +47,6 @@ public interface RequestApi {
     @GET("ordermanage/api/list_dzorderhead_payment.do")
     Observable<OrderEntity> getOrder(@QueryMap Map<String, String> map);
 
+    @GET("app/clinic/myAttention/getAttentionExperts.do")
+    Observable<BaseEntity<List<ExpertEntity>>> getExpert(@QueryMap Map<String, String> map);
 }

@@ -126,6 +126,8 @@ public class MainActivity extends BaseActivity {
             public void onLeft(View view) {
                 if (mainFragment != null && mainFragment.isVisible()) {
                     checkPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION_CODE_CAMERA);
+                } else if (meFragment != null && meFragment.isVisible()) {
+                    Utils.showToast(MainActivity.this, "设置");
                 }
             }
 
@@ -137,6 +139,8 @@ public class MainActivity extends BaseActivity {
                     } else {
                         showDialogWhenUnLogin();
                     }
+                } else if (meFragment != null && meFragment.isVisible()) {
+                    Utils.showToast(MainActivity.this, "分享");
                 }
             }
 

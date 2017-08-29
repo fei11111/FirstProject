@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
+import com.fei.firstproject.inter.OnItemClickListener;
 import com.fei.firstproject.utils.Utils;
 
 import butterknife.BindView;
@@ -22,8 +23,12 @@ public class MeFragmentAdapter extends RecyclerView.Adapter<MeFragmentAdapter.My
 
     private int[] res;//图片
     private String[] desps;//描述
-
     private Context mContext;
+    private OnItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
 
     public MeFragmentAdapter(Context mContext, int ids, String[] desps) {
         this.mContext = mContext;
@@ -49,7 +54,7 @@ public class MeFragmentAdapter extends RecyclerView.Adapter<MeFragmentAdapter.My
     }
 
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.iv_icon)
         ImageView ivIcon;
@@ -59,6 +64,14 @@ public class MeFragmentAdapter extends RecyclerView.Adapter<MeFragmentAdapter.My
         public MyViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(v);
+            }
         }
     }
 

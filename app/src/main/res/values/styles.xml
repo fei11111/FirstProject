@@ -57,10 +57,20 @@
         <item name="android:activityCloseEnterAnimation">@anim/activity_close_in_animation</item>
         <item name="android:activityCloseExitAnimation">@anim/activity_close_out_animation</item>
     </style>
-    
+
     <style name="DialogAnimationStyle" parent="@style/dialogStyle">
         <item name="android:windowEnterAnimation">@anim/dialog_in_animation</item>
         <item name="android:windowExitAnimation">@anim/dialog_out_animation</item>
     </style>
-    
+
+    <style name="ItemAttentionTextViewStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">@dimen/tx_15</item>
+        <item name="android:textColor">@color/colorText</item>
+        <item name="android:lines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
 </resources>

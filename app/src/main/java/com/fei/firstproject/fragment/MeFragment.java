@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.fei.firstproject.R;
 import com.fei.firstproject.activity.CaptureActivity;
 import com.fei.firstproject.activity.LoginActivity;
+import com.fei.firstproject.activity.MyAttentionActivity;
 import com.fei.firstproject.activity.MyOrderActivity;
 import com.fei.firstproject.activity.SettingsActivity;
 import com.fei.firstproject.adapter.MeFragmentAdapter;
@@ -25,6 +26,7 @@ import com.fei.firstproject.event.AllEvent;
 import com.fei.firstproject.event.EventType;
 import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
 import com.fei.firstproject.http.factory.RetrofitFactory;
+import com.fei.firstproject.inter.OnItemClickListener;
 import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.SPUtils;
 import com.fei.firstproject.utils.Utils;
@@ -68,9 +70,6 @@ public class MeFragment extends BaseFragment {
     NoScrollRecyclerView recycler_other;
     @BindView(R.id.tv_name)
     TextView tvName;
-
-    private static final int REQUEST_PERMISSION_CODE_CAMERA = 100;
-    private static final int REQUEST_FRAGMENT_CODE_CAMERA = 200;
     @BindView(R.id.iv_user_head)
     CircleImageView ivUserHead;
     @BindView(R.id.iv_vip)
@@ -81,6 +80,13 @@ public class MeFragment extends BaseFragment {
     RelativeLayout llMeInfo;
     @BindView(R.id.sv_me)
     NestedScrollView svMe;
+
+    private MeFragmentAdapter meAdatper;
+    private MeFragmentAdapter otherAdapter;
+
+
+    private static final int REQUEST_PERMISSION_CODE_CAMERA = 100;
+    private static final int REQUEST_FRAGMENT_CODE_CAMERA = 200;
 
     private boolean isAppHeadTitleChange = false;
 
@@ -229,7 +235,9 @@ public class MeFragment extends BaseFragment {
         RecyclerView.ItemDecoration itemDecoration = new DividerGridItemDecoration(activity);
         recycler_me.setLayoutManager(manager);
         recycler_me.addItemDecoration(itemDecoration);
-        recycler_me.setAdapter(new MeFragmentAdapter(activity, R.array.list_me_drawable, getResources().getStringArray(R.array.list_me_str)));
+        meAdatper = new MeFragmentAdapter(activity, R.array.list_me_drawable, getResources().getStringArray(R.array.list_me_str));
+        meAdatper.setOnItemClickListener(meItemClickListener);
+        recycler_me.setAdapter(meAdatper);
     }
 
     private void initViewOther() {
@@ -237,8 +245,44 @@ public class MeFragment extends BaseFragment {
         RecyclerView.ItemDecoration itemDecoration = new DividerGridItemDecoration(activity);
         recycler_other.setLayoutManager(manager);
         recycler_other.addItemDecoration(itemDecoration);
-        recycler_other.setAdapter(new MeFragmentAdapter(activity, R.array.list_other_drawable, getResources().getStringArray(R.array.list_other_str)));
+        otherAdapter = new MeFragmentAdapter(activity, R.array.list_other_drawable, getResources().getStringArray(R.array.list_other_str));
+        otherAdapter.setOnItemClickListener(otherItemClickListener);
+        recycler_other.setAdapter(otherAdapter);
     }
+
+    private OnItemClickListener meItemClickListener = new OnItemClickListener() {
+        @Override
+        public void onItemClick(View view) {
+            if (meAdatper != null) {
+                if (AppConfig.ISLOGIN) {
+                    int position = recycler_me.getChildAdapterPosition(view);
+                    switch (position) {
+                        case 3:
+                            startActivityWithoutCode(new Intent(activity, MyAttentionActivity.class));
+                            break;
+                    }
+                } else {
+                    activity.showDialogWhenUnLogin();
+                }
+            }
+        }
+    };
+
+    private OnItemClickListener otherItemClickListener = new OnItemClickListener() {
+        @Override
+        public void onItemClick(View view) {
+            if (otherAdapter != null) {
+                if (AppConfig.ISLOGIN) {
+                    int position = recycler_other.getChildAdapterPosition(view);
+                    switch (position) {
+
+                    }
+                } else {
+                    activity.showDialogWhenUnLogin();
+                }
+            }
+        }
+    };
 
     @OnClick(R.id.ll_me_info)
     void clickMeInfo(View view) {

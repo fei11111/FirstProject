@@ -47,6 +47,7 @@
         <activity android:name=".activity.MessageActivity" />
         <activity android:name=".activity.RecommendPlanActivity" />
         <activity android:name=".activity.MyOrderActivity" />
+        <activity android:name=".activity.MyAttentionActivity" />
         <activity android:name=".web.WebActivity" />
     </application>
 

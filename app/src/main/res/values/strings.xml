@@ -107,6 +107,13 @@
     <string name="balance">余额</string>
     <string name="collect_store">收藏店铺</string>
     <string name="collect_goods">收藏商品</string>
+    <string name="already_attention">已关注</string>
+    <string name="attention">关注</string>
+    <string name="service_time">从业时间：</string>
+    <string name="year">年</string>
+    <string name="speciality_crop">专长作物：</string>
+    <string name="speciality_skill">技术专长：</string>
+    <string name="star_level">星级：</string>
 
     <!-- Strings related to Settings -->
 
