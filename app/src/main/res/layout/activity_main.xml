@@ -25,11 +25,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:leftStyle="image"
-                app:leftDrawable="@drawable/selector_ic_scan"
                 app:leftVisible="visible"
                 app:middleSearchHint="@string/recommend_tip"
                 app:middleStyle="search"
-                app:rightDrawable="@drawable/selector_ic_main_message"
                 app:rightStyle="image"
                 app:rightVisible="visible"></com.fei.firstproject.widget.AppHeadView>
         </android.support.v7.widget.Toolbar>

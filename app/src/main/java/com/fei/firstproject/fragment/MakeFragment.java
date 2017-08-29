@@ -27,18 +27,30 @@ public class MakeFragment extends BaseFragment {
     private Animation inAnimation;
     private Animation outAnimation;
 
-    private Handler mHandler = new Handler(){
+    private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            if(isShow) {
+            if (isShow) {
                 fabShoppingCar.startAnimation(outAnimation);
-            }else {
+            } else {
                 fabShoppingCar.startAnimation(inAnimation);
-                mHandler.sendEmptyMessageDelayed(1,4000);
+                mHandler.sendEmptyMessageDelayed(1, 4000);
             }
             isShow = !isShow;
         }
     };
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {
+            mHandler.removeMessages(1);
+        } else {
+            if (isShow) {
+                mHandler.sendEmptyMessageDelayed(1, 2000);
+            }
+        }
+    }
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
@@ -69,7 +81,6 @@ public class MakeFragment extends BaseFragment {
     private void initAnimation() {
         inAnimation = AnimationUtils.loadAnimation(activity, R.anim.actionbutton_in_animation);
         outAnimation = AnimationUtils.loadAnimation(activity, R.anim.actionbutton_out_animation);
-        mHandler.sendEmptyMessageDelayed(1,2000);
     }
 
     @Override
@@ -79,11 +90,11 @@ public class MakeFragment extends BaseFragment {
 
     @OnClick(R.id.fab_shopping_car)
     void clickShoppingCar(View view) {
-        if(isShow) {
+        if (isShow) {
             //点击
             mHandler.removeMessages(1);
-            mHandler.sendEmptyMessageDelayed(1,2000);
-        }else {
+            mHandler.sendEmptyMessageDelayed(1, 2000);
+        } else {
             mHandler.sendEmptyMessage(1);
         }
     }
@@ -105,7 +116,7 @@ public class MakeFragment extends BaseFragment {
     }
 
     @OnClick(R.id.ll_plan_search)
-    void clickPlanSearch(View view){
+    void clickPlanSearch(View view) {
         //方案查询
     }
 

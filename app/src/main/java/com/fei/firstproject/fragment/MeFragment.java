@@ -2,11 +2,14 @@ package com.fei.firstproject.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
@@ -38,6 +41,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.Observable;
 
 import static android.app.Activity.RESULT_OK;
@@ -67,6 +71,34 @@ public class MeFragment extends BaseFragment {
 
     private static final int REQUEST_PERMISSION_CODE_CAMERA = 100;
     private static final int REQUEST_FRAGMENT_CODE_CAMERA = 200;
+    @BindView(R.id.iv_user_head)
+    CircleImageView ivUserHead;
+    @BindView(R.id.iv_vip)
+    ImageView ivVip;
+    @BindView(R.id.rl_value)
+    RelativeLayout rlValue;
+    @BindView(R.id.ll_me_info)
+    RelativeLayout llMeInfo;
+    @BindView(R.id.sv_me)
+    NestedScrollView svMe;
+
+    private boolean isAppHeadTitleChange = false;
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            if (isAppHeadTitleChange) {
+                if (AppConfig.ISLOGIN) {
+                    activity.getAppHeadView().setMiddleText(AppConfig.user.getUserName());
+                } else {
+                    activity.getAppHeadView().setMiddleText(getString(R.string.me));
+                }
+            } else {
+                activity.getAppHeadView().setMiddleText(getString(R.string.me));
+            }
+        }
+    }
 
     @Override
     public void onDestroyView() {
@@ -108,6 +140,24 @@ public class MeFragment extends BaseFragment {
         EventBus.getDefault().register(this);
         initInfo();
         initRecyclerView();
+        initListener();
+    }
+
+    private void initListener() {
+        svMe.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (AppConfig.ISLOGIN) {
+                    if (scrollY >= tvName.getY() + Utils.dip2px(activity, 16)) {
+                        activity.getAppHeadView().setMiddleText(AppConfig.user.getUserName());
+                        isAppHeadTitleChange = true;
+                    } else {
+                        activity.getAppHeadView().setMiddleText(getString(R.string.me));
+                        isAppHeadTitleChange = false;
+                    }
+                }
+            }
+        });
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -281,4 +331,5 @@ public class MeFragment extends BaseFragment {
             }
         }
     }
+
 }

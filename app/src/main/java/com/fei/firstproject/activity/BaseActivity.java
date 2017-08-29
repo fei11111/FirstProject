@@ -31,6 +31,7 @@ import com.fei.firstproject.http.RxSchedulers;
 import com.fei.firstproject.inter.BaseInterface;
 import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.SPUtils;
+import com.fei.firstproject.widget.AppHeadView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
@@ -70,6 +71,9 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseIn
     @Nullable
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
+    @Nullable
+    @BindView(R.id.appHeadView)
+    AppHeadView appHeadView;
 
     private Unbinder unbinder;
     protected CustomeProgressDialog progressDialog;
@@ -345,6 +349,11 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseIn
 //            scrolling = true;
 //        }
 //    }
+
+    @Nullable
+    public AppHeadView getAppHeadView() {
+        return appHeadView;
+    }
 
     @Override
     public void startActivityWithCodeAndPair(Intent intent, int requestCode, Pair<View, String>... sharedElements) {

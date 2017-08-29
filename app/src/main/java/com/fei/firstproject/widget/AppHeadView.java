@@ -294,6 +294,14 @@ public class AppHeadView extends RelativeLayout {
         }
     }
 
+    public void setLeftDrawable(int drawable) {
+        ivHeadLeft.setImageResource(drawable);
+    }
+
+    public void setRightDrawable(int drawable) {
+        ivHeadRight.setImageResource(drawable);
+    }
+
     public interface onAppHeadViewListener {
         public void onLeft(View view);
 

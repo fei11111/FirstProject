@@ -22,411 +22,405 @@
         android:layout_height="match_parent"
         android:background="@color/colorBackground">
 
-        <LinearLayout
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/sv_me"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
-            <android.support.v4.widget.NestedScrollView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_30"
+                        android:background="@color/colorPrimary"></LinearLayout>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/size_30"
-                            android:background="@color/colorPrimary"></LinearLayout>
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/size_16"
+                        android:layout_marginRight="@dimen/size_16"
+                        android:background="@drawable/shape_container_rect_border_bg"
+                        android:paddingBottom="@dimen/size_16"
+                        android:paddingLeft="@dimen/size_16"
+                        android:paddingTop="@dimen/size_16">
 
                         <RelativeLayout
+                            android:id="@+id/ll_me_info"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/size_16"
-                            android:layout_marginRight="@dimen/size_16"
-                            android:background="@drawable/shape_container_rect_border_bg"
-                            android:paddingBottom="@dimen/size_16"
-                            android:paddingLeft="@dimen/size_16"
-                            android:paddingTop="@dimen/size_16">
+                            android:layout_height="wrap_content">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/iv_user_head"
+                                android:layout_width="@dimen/size_65"
+                                android:layout_height="@dimen/size_65"
+                                android:layout_centerVertical="true"
+                                android:src="@drawable/ic_app"
+                                app:civ_border_color="@color/colorPrimary"
+                                app:civ_border_overlay="false"
+                                app:civ_border_width="@dimen/size_1"
+                                app:civ_fill_color="@color/colorWhite" />
 
                             <RelativeLayout
-                                android:id="@+id/ll_me_info"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
+                                android:id="@+id/rl_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:background="@drawable/shape_rect_and_oval_bg">
 
-                                <de.hdodenhof.circleimageview.CircleImageView
-                                    android:id="@+id/iv_user_head"
-                                    android:layout_width="@dimen/size_65"
-                                    android:layout_height="@dimen/size_65"
-                                    android:layout_centerVertical="true"
-                                    android:src="@drawable/ic_app"
-                                    app:civ_border_color="@color/colorPrimary"
-                                    app:civ_border_overlay="false"
-                                    app:civ_border_width="@dimen/size_1"
-                                    app:civ_fill_color="@color/colorWhite" />
-
-                                <RelativeLayout
-                                    android:id="@+id/rl_value"
+                                <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_centerVertical="true"
-                                    android:background="@drawable/shape_rect_and_oval_bg">
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
 
-                                    <LinearLayout
+                                    <ImageView
+                                        android:id="@+id/iv_vip"
+                                        android:layout_width="@dimen/size_16"
+                                        android:layout_height="@dimen/size_16"
+                                        android:layout_marginLeft="@dimen/size_5"
+                                        android:background="@drawable/shape_image_circle_vip_bg"
+                                        android:src="@drawable/ic_vip" />
+
+                                    <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:gravity="center_vertical"
-                                        android:orientation="horizontal">
+                                        android:layout_marginLeft="@dimen/size_5"
+                                        android:text="@string/handsome_value"
+                                        android:textColor="@color/colorWhite"
+                                        android:textSize="@dimen/tx_12" />
 
-                                        <ImageView
-                                            android:id="@+id/iv_vip"
-                                            android:layout_width="@dimen/size_16"
-                                            android:layout_height="@dimen/size_16"
-                                            android:layout_marginLeft="@dimen/size_5"
-                                            android:background="@drawable/shape_image_circle_vip_bg"
-                                            android:src="@drawable/ic_vip" />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="100"
+                                        android:textColor="@color/colorWhite"
+                                        android:textSize="@dimen/tx_12"
+                                        android:textStyle="bold" />
 
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginLeft="@dimen/size_5"
-                                            android:text="@string/handsome_value"
-                                            android:textColor="@color/colorWhite"
-                                            android:textSize="@dimen/tx_12" />
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="100"
-                                            android:textColor="@color/colorWhite"
-                                            android:textSize="@dimen/tx_12"
-                                            android:textStyle="bold" />
-
-                                        <ImageView
-                                            android:layout_width="@dimen/size_15"
-                                            android:layout_height="@dimen/size_15"
-                                            android:layout_marginLeft="@dimen/size_10"
-                                            android:src="@drawable/ic_right_arrow_white" />
-                                    </LinearLayout>
-
-                                </RelativeLayout>
-
-                                <TextView
-                                    android:id="@+id/tv_name"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginLeft="@dimen/size_5"
-                                    android:layout_marginRight="@dimen/size_5"
-                                    android:layout_toLeftOf="@id/rl_value"
-                                    android:layout_toRightOf="@id/iv_user_head"
-                                    android:text="@string/nologin"
-                                    android:textColor="@color/colorText"
-                                    android:textSize="@dimen/tx_15" />
+                                    <ImageView
+                                        android:layout_width="@dimen/size_15"
+                                        android:layout_height="@dimen/size_15"
+                                        android:layout_marginLeft="@dimen/size_10"
+                                        android:src="@drawable/ic_right_arrow_white" />
+                                </LinearLayout>
 
                             </RelativeLayout>
 
-                            <LinearLayout
+                            <TextView
+                                android:id="@+id/tv_name"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@id/ll_me_info"
-                                android:layout_marginTop="@dimen/size_10">
-
-                                <LinearLayout
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:background="?attr/selectableItemBackground"
-                                    android:gravity="center_horizontal"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="11"
-                                        android:textColor="@color/colorText"
-                                        android:textSize="@dimen/tx_15" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="@dimen/size_5"
-                                        android:text="收藏店铺"
-                                        android:textColor="@color/colorTextSub"
-                                        android:textSize="@dimen/tx_13" />
-
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:background="?attr/selectableItemBackground"
-                                    android:gravity="center_horizontal"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="11"
-                                        android:textColor="@color/colorText"
-                                        android:textSize="@dimen/tx_15" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="@dimen/size_5"
-                                        android:text="收藏店铺"
-                                        android:textColor="@color/colorTextSub"
-                                        android:textSize="@dimen/tx_13" />
-
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:background="?attr/selectableItemBackground"
-                                    android:gravity="center_horizontal"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="11"
-                                        android:textColor="@color/colorText"
-                                        android:textSize="@dimen/tx_15" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="@dimen/size_5"
-                                        android:text="收藏店铺"
-                                        android:textColor="@color/colorTextSub"
-                                        android:textSize="@dimen/tx_13" />
-
-                                </LinearLayout>
-
-                            </LinearLayout>
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="@dimen/size_5"
+                                android:layout_marginRight="@dimen/size_5"
+                                android:layout_toLeftOf="@id/rl_value"
+                                android:layout_toRightOf="@id/iv_user_head"
+                                android:text="@string/nologin"
+                                android:textColor="@color/colorText"
+                                android:textSize="@dimen/tx_15" />
 
                         </RelativeLayout>
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/ll_me_info"
+                            android:layout_marginTop="@dimen/size_10">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="?attr/selectableItemBackground"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="11"
+                                    android:textColor="@color/colorText"
+                                    android:textSize="@dimen/tx_15" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/size_5"
+                                    android:text="收藏店铺"
+                                    android:textColor="@color/colorTextSub"
+                                    android:textSize="@dimen/tx_13" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="?attr/selectableItemBackground"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="11"
+                                    android:textColor="@color/colorText"
+                                    android:textSize="@dimen/tx_15" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/size_5"
+                                    android:text="收藏店铺"
+                                    android:textColor="@color/colorTextSub"
+                                    android:textSize="@dimen/tx_13" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="?attr/selectableItemBackground"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="11"
+                                    android:textColor="@color/colorText"
+                                    android:textSize="@dimen/tx_15" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/size_5"
+                                    android:text="收藏店铺"
+                                    android:textColor="@color/colorTextSub"
+                                    android:textSize="@dimen/tx_13" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
                     </RelativeLayout>
 
-                    <android.support.v7.widget.LinearLayoutCompat
+                </RelativeLayout>
+
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:orientation="vertical"
+                    app:divider="@drawable/shape_line"
+                    app:showDividers="middle">
+
+                    <com.fei.firstproject.widget.SettingView
+                        android:id="@+id/rl_order"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/size_10"
-                        android:orientation="vertical"
-                        app:divider="@drawable/shape_line"
-                        app:showDividers="middle">
+                        app:desc="@string/all_order"
+                        app:title="@string/my_order" />
 
-                        <com.fei.firstproject.widget.SettingView
-                            android:id="@+id/rl_order"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:desc="@string/all_order"
-                            app:title="@string/my_order" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/colorWhite"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:id="@+id/ll_wait_obligation"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="?attr/selectableItemBackground"
-                                android:clickable="true"
-                                android:gravity="center_horizontal"
-                                android:orientation="vertical"
-                                android:padding="@dimen/size_10">
-
-                                <ImageView
-                                    android:layout_width="@dimen/size_30"
-                                    android:layout_height="@dimen/size_30"
-                                    android:src="@drawable/ic_wait_obligation" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/size_5"
-                                    android:gravity="center"
-                                    android:text="@string/wait_obligation"
-                                    android:textColor="@color/colorText" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/ll_wait_receive"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="?attr/selectableItemBackground"
-                                android:clickable="true"
-                                android:gravity="center_horizontal"
-                                android:orientation="vertical"
-                                android:padding="@dimen/size_10">
-
-                                <ImageView
-                                    android:layout_width="@dimen/size_30"
-                                    android:layout_height="@dimen/size_30"
-                                    android:src="@drawable/ic_wait_receive" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/size_5"
-                                    android:gravity="center"
-                                    android:text="@string/wait_receive"
-                                    android:textColor="@color/colorText" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/ll_wait_post"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="?attr/selectableItemBackground"
-                                android:clickable="true"
-                                android:gravity="center_horizontal"
-                                android:orientation="vertical"
-                                android:padding="@dimen/size_10">
-
-                                <ImageView
-                                    android:layout_width="@dimen/size_30"
-                                    android:layout_height="@dimen/size_30"
-                                    android:src="@drawable/ic_wait_post" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/size_5"
-                                    android:gravity="center"
-                                    android:text="@string/wait_post"
-                                    android:textColor="@color/colorText" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/ll_wait_evaluate"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="?attr/selectableItemBackground"
-                                android:clickable="true"
-                                android:gravity="center_horizontal"
-                                android:orientation="vertical"
-                                android:padding="@dimen/size_10">
-
-                                <ImageView
-                                    android:layout_width="@dimen/size_30"
-                                    android:layout_height="@dimen/size_30"
-                                    android:src="@drawable/ic_wait_evaluate" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/size_5"
-                                    android:gravity="center"
-                                    android:text="@string/wait_evaluate"
-                                    android:textColor="@color/colorText" />
-                            </LinearLayout>
-                        </LinearLayout>
-                    </android.support.v7.widget.LinearLayoutCompat>
-
-                    <android.support.v7.widget.LinearLayoutCompat
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/size_10"
-                        android:orientation="vertical"
-                        app:divider="@drawable/shape_line"
-                        app:showDividers="middle">
+                        android:background="@color/colorWhite"
+                        android:orientation="horizontal">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:id="@+id/ll_wait_obligation"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:background="@color/colorWhite"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:padding="@dimen/size_5">
+                            android:layout_weight="1"
+                            android:background="?attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical"
+                            android:padding="@dimen/size_10">
 
                             <ImageView
-                                android:layout_width="@dimen/size_25"
-                                android:layout_height="@dimen/size_25"
-                                android:src="@drawable/ic_me" />
+                                android:layout_width="@dimen/size_30"
+                                android:layout_height="@dimen/size_30"
+                                android:src="@drawable/ic_wait_obligation" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/size_10"
+                                android:layout_marginTop="@dimen/size_5"
                                 android:gravity="center"
-                                android:text="@string/me"
-                                android:textSize="@dimen/tx_15" />
-
+                                android:text="@string/wait_obligation"
+                                android:textColor="@color/colorText" />
                         </LinearLayout>
 
-                        <com.fei.firstproject.widget.NoScrollRecyclerView
-                            android:id="@+id/recycler_me"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/colorWhite"></com.fei.firstproject.widget.NoScrollRecyclerView>
-
-                    </android.support.v7.widget.LinearLayoutCompat>
-
-                    <android.support.v7.widget.LinearLayoutCompat
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/size_10"
-                        android:orientation="vertical"
-                        app:divider="@drawable/shape_line"
-                        app:showDividers="middle">
-
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:id="@+id/ll_wait_receive"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:background="@color/colorWhite"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:padding="@dimen/size_5">
+                            android:layout_weight="1"
+                            android:background="?attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical"
+                            android:padding="@dimen/size_10">
 
                             <ImageView
-                                android:layout_width="@dimen/size_25"
-                                android:layout_height="@dimen/size_25"
-                                android:src="@drawable/ic_other" />
+                                android:layout_width="@dimen/size_30"
+                                android:layout_height="@dimen/size_30"
+                                android:src="@drawable/ic_wait_receive" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/size_10"
+                                android:layout_marginTop="@dimen/size_5"
                                 android:gravity="center"
-                                android:text="@string/other"
-                                android:textSize="@dimen/tx_15" />
-
+                                android:text="@string/wait_receive"
+                                android:textColor="@color/colorText" />
                         </LinearLayout>
 
-                        <com.fei.firstproject.widget.NoScrollRecyclerView
-                            android:id="@+id/recycler_other"
-                            android:layout_width="match_parent"
+                        <LinearLayout
+                            android:id="@+id/ll_wait_post"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:background="@color/colorWhite"></com.fei.firstproject.widget.NoScrollRecyclerView>
-                    </android.support.v7.widget.LinearLayoutCompat>
+                            android:layout_weight="1"
+                            android:background="?attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical"
+                            android:padding="@dimen/size_10">
 
-                    <include layout="@layout/app_bottom_signature" />
+                            <ImageView
+                                android:layout_width="@dimen/size_30"
+                                android:layout_height="@dimen/size_30"
+                                android:src="@drawable/ic_wait_post" />
 
-                </LinearLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/size_5"
+                                android:gravity="center"
+                                android:text="@string/wait_post"
+                                android:textColor="@color/colorText" />
+                        </LinearLayout>
 
-            </android.support.v4.widget.NestedScrollView>
+                        <LinearLayout
+                            android:id="@+id/ll_wait_evaluate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="?attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical"
+                            android:padding="@dimen/size_10">
 
-        </LinearLayout>
+                            <ImageView
+                                android:layout_width="@dimen/size_30"
+                                android:layout_height="@dimen/size_30"
+                                android:src="@drawable/ic_wait_evaluate" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/size_5"
+                                android:gravity="center"
+                                android:text="@string/wait_evaluate"
+                                android:textColor="@color/colorText" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </android.support.v7.widget.LinearLayoutCompat>
+
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:orientation="vertical"
+                    app:divider="@drawable/shape_line"
+                    app:showDividers="middle">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorWhite"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/size_5">
+
+                        <ImageView
+                            android:layout_width="@dimen/size_25"
+                            android:layout_height="@dimen/size_25"
+                            android:src="@drawable/ic_me" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/size_10"
+                            android:gravity="center"
+                            android:text="@string/me"
+                            android:textSize="@dimen/tx_15" />
+
+                    </LinearLayout>
+
+                    <com.fei.firstproject.widget.NoScrollRecyclerView
+                        android:id="@+id/recycler_me"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorWhite"></com.fei.firstproject.widget.NoScrollRecyclerView>
+
+                </android.support.v7.widget.LinearLayoutCompat>
+
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:orientation="vertical"
+                    app:divider="@drawable/shape_line"
+                    app:showDividers="middle">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorWhite"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/size_5">
+
+                        <ImageView
+                            android:layout_width="@dimen/size_25"
+                            android:layout_height="@dimen/size_25"
+                            android:src="@drawable/ic_other" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/size_10"
+                            android:gravity="center"
+                            android:text="@string/other"
+                            android:textSize="@dimen/tx_15" />
+
+                    </LinearLayout>
+
+                    <com.fei.firstproject.widget.NoScrollRecyclerView
+                        android:id="@+id/recycler_other"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorWhite"></com.fei.firstproject.widget.NoScrollRecyclerView>
+                </android.support.v7.widget.LinearLayoutCompat>
+
+                <include layout="@layout/app_bottom_signature" />
+
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
 
     </RelativeLayout>
 

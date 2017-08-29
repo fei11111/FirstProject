@@ -19,7 +19,6 @@ import android.widget.TextView;
 
 import com.fei.banner.Banner;
 import com.fei.firstproject.R;
-import com.fei.firstproject.activity.MainActivity;
 import com.fei.firstproject.activity.RecommendPlanActivity;
 import com.fei.firstproject.adapter.NcwAdapter;
 import com.fei.firstproject.adapter.RecommendPlanAdapter;
@@ -157,7 +156,7 @@ public class MainFragment extends BaseFragment {
 
     public void getRecommendPlan() {
         //province=&county=&city=&
-        String searchWord = ((MainActivity) activity).getAppHeadView().getEtSearchText();
+        String searchWord = activity.getAppHeadView().getEtSearchText();
         Map<String, String> map = new HashMap<>();
         map.put("searchWord", searchWord);
         map.put("pageSize", "3");

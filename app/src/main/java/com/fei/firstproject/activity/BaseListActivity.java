@@ -26,8 +26,6 @@ import butterknife.BindView;
 
 public abstract class BaseListActivity extends BaseActivity {
 
-    @BindView(R.id.appHeadView)
-    AppHeadView appHeadView;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.app_bar_layout)

@@ -124,15 +124,19 @@ public class MainActivity extends BaseActivity {
         appHeadView.setOnLeftRightClickListener(new AppHeadView.onAppHeadViewListener() {
             @Override
             public void onLeft(View view) {
-                checkPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION_CODE_CAMERA);
+                if (mainFragment != null && mainFragment.isVisible()) {
+                    checkPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION_CODE_CAMERA);
+                }
             }
 
             @Override
             public void onRight(View view) {
-                if (AppConfig.ISLOGIN) {
-                    startActivityWithoutCode(new Intent(MainActivity.this, MessageActivity.class));
-                } else {
-                    showDialogWhenUnLogin();
+                if (mainFragment != null && mainFragment.isVisible()) {
+                    if (AppConfig.ISLOGIN) {
+                        startActivityWithoutCode(new Intent(MainActivity.this, MessageActivity.class));
+                    } else {
+                        showDialogWhenUnLogin();
+                    }
                 }
             }
 
@@ -163,8 +167,7 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.ll_bottom_make:
                 llBottomMake.setSelected(true);
-                setAppHeadViewTitleMode(getResources().getString(R.string.make));
-
+                setAppHeadViewTitleMode();
                 if (makeFragment == null) {
                     makeFragment = (MakeFragment) FragmentInstanceManager.getInstance().getFragmet(MakeFragment.class);
                     switchFragment(makeFragment, true);
@@ -174,7 +177,7 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.ll_bottom_me:
                 llBottomMe.setSelected(true);
-                setAppHeadViewTitleMode(getResources().getString(R.string.me));
+                setAppHeadViewTitleImageMode();
                 if (meFragment == null) {
                     meFragment = (MeFragment) FragmentInstanceManager.getInstance().getFragmet(MeFragment.class);
                     switchFragment(meFragment, true);
@@ -190,16 +193,29 @@ public class MainActivity extends BaseActivity {
         appHeadView.setFlHeadLeftVisible(View.VISIBLE);
         appHeadView.setFlHeadRightVisible(View.VISIBLE);
         appHeadView.setMiddleSearchVisible(View.VISIBLE);
+        appHeadView.setLeftDrawable(R.drawable.selector_ic_scan);
+        appHeadView.setRightDrawable(R.drawable.selector_ic_main_message);
         appHeadView.setTvTitleVisible(View.GONE);
     }
 
     //设置头部是文本模式
-    private void setAppHeadViewTitleMode(String title) {
+    private void setAppHeadViewTitleMode() {
         appHeadView.setFlHeadLeftVisible(View.INVISIBLE);
         appHeadView.setFlHeadRightVisible(View.INVISIBLE);
         appHeadView.setMiddleSearchVisible(View.GONE);
         appHeadView.setTvTitleVisible(View.VISIBLE);
-        appHeadView.setMiddleText(title);
+        appHeadView.setMiddleText(getString(R.string.make));
+    }
+
+    //设置头部是中间文本，左右图片
+    private void setAppHeadViewTitleImageMode() {
+        appHeadView.setFlHeadLeftVisible(View.VISIBLE);
+        appHeadView.setFlHeadRightVisible(View.VISIBLE);
+        appHeadView.setMiddleSearchVisible(View.GONE);
+        appHeadView.setTvTitleVisible(View.VISIBLE);
+        appHeadView.setMiddleText("");
+        appHeadView.setLeftDrawable(R.drawable.ic_setting);
+        appHeadView.setRightDrawable(R.drawable.ic_share);
     }
 
     private void resetAllState() {
@@ -239,7 +255,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        LogUtils.i("tag","activity - onActivityResult");
+        LogUtils.i("tag", "activity - onActivityResult");
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_ACTIVITY_CODE_CAMERA) {
                 if (data != null) {
@@ -257,10 +273,6 @@ public class MainActivity extends BaseActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    public AppHeadView getAppHeadView() {
-        return appHeadView;
     }
 
 }
