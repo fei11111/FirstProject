@@ -73,4 +73,10 @@
         <item name="android:ellipsize">end</item>
     </style>
 
+    <style name="roomRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/layer_rating_bar</item>
+        <item name="android:minHeight">@dimen/size_20</item>
+        <item name="android:maxHeight">@dimen/size_20</item>
+    </style>
+
 </resources>

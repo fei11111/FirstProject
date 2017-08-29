@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:gravity="center_horizontal"
+            android:layout_centerVertical="true"
             android:orientation="vertical">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -68,7 +68,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@id/btn_attention"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_centerVertical="true">
 
 
                     <TextView
@@ -105,9 +106,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_5"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/size_5">
+                android:orientation="horizontal">
 
                 <TextView
                     style="@style/ItemAttentionTextViewStyle"
@@ -122,23 +123,21 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_5"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:text="@string/star_level"
-                    style="@style/ItemAttentionTextViewStyle" />
+                    style="@style/ItemAttentionTextViewStyle"
+                    android:text="@string/star_level" />
 
                 <RatingBar
                     android:id="@+id/rb_star"
+                    style="@style/roomRatingBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:isIndicator="true"
                     android:numStars="5"
-                    android:rating="0"
-                    android:maxHeight="@dimen/size_30"
-                    android:mirrorForRtl="true"
-                    ></RatingBar>
+                    android:rating="1"></RatingBar>
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

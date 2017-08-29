@@ -66,7 +66,8 @@ public class MyAttentionActivity extends BaseListActivity {
                         refreshLayout.finishRefresh();
                         refreshLayout.finishLoadmore();
                         if (expertEntities != null && expertEntities.size() > 0) {
-                            recyclerView.setVisibility(View.VISIBLE);
+                            refreshLayout.setVisibility(View.VISIBLE);
+                            recyclerView.setAdapter(new MyAttentionAdapter(MyAttentionActivity.this, null));
                         }
                     }
 
