@@ -1,6 +1,7 @@
 package com.fei.firstproject.widget;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -30,16 +31,18 @@ public class VerifyCodeView extends View {
     private String code;
     private int codeLength = 4;
     //padding值
-    private static final int BASE_PADDING_LEFT = 10, RANGE_PADDING_LEFT = 15, BASE_PADDING_TOP = 20, RANGE_PADDING_TOP = 10;
     private int base_padding_left = 0,
-            range_padding_left = RANGE_PADDING_LEFT,
+            range_padding_left = 0,
             base_padding_top = 0,
-            range_padding_top = RANGE_PADDING_TOP;
+            range_padding_top = 0;
     private int padding_left, padding_top;
     private int fontSize;
     //验证码的默认宽高
     private Paint mPaint;
     private Random random = new Random();
+    private Bitmap bitmap;
+    private int viewWidth;
+    private int viewHeight;
 
     public VerifyCodeView(Context context) throws Exception {
         super(context);
@@ -55,8 +58,10 @@ public class VerifyCodeView extends View {
         initPaint();
         initCode();
         float density = getResources().getDisplayMetrics().density;
-        base_padding_left = (int) (BASE_PADDING_LEFT * density + 0.5f);
-        base_padding_top = (int) (BASE_PADDING_TOP * density + 0.5f);
+        base_padding_left = (int) (10 * density + 0.5f);
+        base_padding_top = (int) (20 * density + 0.5f);
+        range_padding_left = (int) (15 * density + 0.5f);
+        range_padding_top = (int) (15 * density + 0.5f);
     }
 
     @Override
@@ -67,6 +72,10 @@ public class VerifyCodeView extends View {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
+        if (viewWidth == 0) {
+            viewWidth = getMeasuredWidth();
+            viewHeight = getMeasuredHeight();
+        }
     }
 
     private void initCode() {
@@ -113,11 +122,16 @@ public class VerifyCodeView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        drawCode(canvas);
+        if (bitmap == null) {
+            drawCode();
+        }
+        canvas.drawBitmap(bitmap, 0, 0, mPaint);
         super.onDraw(canvas);
     }
 
-    private void drawCode(Canvas canvas) {
+    private void drawCode() {
+        bitmap = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
         for (int i = 0; i < codeLength; i++) {
             randomTextStyle(mPaint);
             randomPadding();
@@ -138,6 +152,7 @@ public class VerifyCodeView extends View {
     }
 
     public void refreshCode() {
+        bitmap = null;
         code = randomCode();
         padding_left = 0;
         padding_top = 0;
