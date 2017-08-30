@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.fei.firstproject.R;
 import com.fei.firstproject.entity.ExpertEntity;
 import com.fei.firstproject.inter.OnItemClickListener;
@@ -29,6 +30,7 @@ public class MyAttentionAdapter extends RecyclerView.Adapter<MyAttentionAdapter.
     private Context mContext;
     private List<ExpertEntity> expertEntities;
     private OnItemClickListener onItemClickListener;
+    private OnCancelAttentionListener onCancelAttentionListener;
 
     public MyAttentionAdapter(Context mContext, List<ExpertEntity> expertEntities) {
         this.mContext = mContext;
@@ -39,6 +41,24 @@ public class MyAttentionAdapter extends RecyclerView.Adapter<MyAttentionAdapter.
         this.onItemClickListener = onItemClickListener;
     }
 
+    public void setOnCancelAttentionListener(OnCancelAttentionListener onCancelAttentionListener) {
+        this.onCancelAttentionListener = onCancelAttentionListener;
+    }
+
+    public void setExpertEntities(List<ExpertEntity> expertEntities) {
+        this.expertEntities = expertEntities;
+    }
+
+    public void addExpertEntities(List<ExpertEntity> expertEntities) {
+        if (expertEntities != null && this.expertEntities != null) {
+            this.expertEntities.addAll(expertEntities);
+        }
+    }
+
+    public List<ExpertEntity> getExpertEntities() {
+        return expertEntities;
+    }
+
     @Override
     public MyAttentionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_my_attention, parent, false);
@@ -47,12 +67,31 @@ public class MyAttentionAdapter extends RecyclerView.Adapter<MyAttentionAdapter.
 
     @Override
     public void onBindViewHolder(MyAttentionViewHolder holder, int position) {
-
+        final ExpertEntity expertEntity = expertEntities.get(position);
+        holder.tvName.setText(expertEntity.getExpertName());
+        holder.tvServiceDuration.setText(expertEntity.getServiceTime());
+        holder.tvSpecCrop.setText(expertEntity.getPlantNames());
+        holder.tvSpecSkill.setText(expertEntity.getExpertise());
+        holder.rbStar.setRating(expertEntity.getLevel_start());
+        holder.btnAttention.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onCancelAttentionListener != null) {
+                    onCancelAttentionListener.cancle(expertEntity);
+                }
+            }
+        });
+        Glide.with(mContext)
+                .load("http://218.18.114.97:3392/btFile" + expertEntity.getImgPath())
+                .placeholder(R.drawable.ic_app)
+                .crossFade()
+                .error(R.drawable.ic_pic_error)
+                .into(holder.ivIcon);
     }
 
     @Override
     public int getItemCount() {
-        return 20;
+        return expertEntities.size();
     }
 
     class MyAttentionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -88,4 +127,7 @@ public class MyAttentionAdapter extends RecyclerView.Adapter<MyAttentionAdapter.
         }
     }
 
+    public interface OnCancelAttentionListener {
+        void cancle(ExpertEntity expertEntity);
+    }
 }

@@ -49,4 +49,8 @@ public interface RequestApi {
 
     @GET("app/clinic/myAttention/getAttentionExperts.do")
     Observable<BaseEntity<List<ExpertEntity>>> getExpert(@QueryMap Map<String, String> map);
+
+    @GET("app/clinic/myAttention/delAttention.do")
+    Observable<BaseEntity> cancleAttention(@QueryMap Map<String, String> map);
+
 }

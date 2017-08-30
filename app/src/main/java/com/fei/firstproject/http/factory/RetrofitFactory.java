@@ -35,6 +35,7 @@ public class RetrofitFactory {
             .readTimeout(20, TimeUnit.SECONDS)
             .writeTimeout(20, TimeUnit.SECONDS)
             .addNetworkInterceptor(new RspNetInterceptor())
+            .addInterceptor(new RspNetInterceptor())
             .addInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
                 @Override
                 public void log(String message) {
