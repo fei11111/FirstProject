@@ -37,18 +37,14 @@
         <activity
             android:name=".activity.LoginActivity"
             android:theme="@style/ActivityAnimationStyle" />
-        <activity
-            android:name=".activity.RegisterActivity"
-            android:label="@string/title_activity_register" />
-        <activity
-            android:name=".activity.SettingsActivity"
-            android:label="@string/title_activity_settings" />
         <activity android:name=".activity.CaptureActivity" />
         <activity android:name=".activity.MessageActivity" />
         <activity android:name=".activity.RecommendPlanActivity" />
         <activity android:name=".activity.MyOrderActivity" />
         <activity android:name=".activity.MyAttentionActivity" />
         <activity android:name=".web.WebActivity" />
+        <activity android:name=".activity.RegisterActivity" />
+        <activity android:name=".activity.SettingActivity" />
     </application>
 
 </manifest>

@@ -229,7 +229,7 @@
                     app:divider="@drawable/shape_line"
                     app:showDividers="middle">
 
-                    <com.fei.firstproject.widget.SettingView
+                    <com.fei.firstproject.widget.PartHeadView
                         android:id="@+id/rl_order"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

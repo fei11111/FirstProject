@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    tools:context="com.fei.firstproject.activity.SettingActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="0dp">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <com.fei.firstproject.widget.AppHeadView
+                android:id="@+id/appHeadView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:leftDrawable="@drawable/selector_head_left_arrow"
+                app:leftPadding="@dimen/size_10"
+                app:leftStyle="image"
+                app:leftVisible="visible"
+                app:middleStyle="text"
+                app:middleText="@string/setting"
+                app:rightVisible="invisible"></com.fei.firstproject.widget.AppHeadView>
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/selector_rect_btn_bg"
+        android:gravity="center"
+        android:text="@string/log_out"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/tx_15" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/btn_logout"
+        android:layout_below="@id/app_bar_layout"></ScrollView>
+
+</RelativeLayout>

@@ -127,7 +127,9 @@ public class MainActivity extends BaseActivity {
                 if (mainFragment != null && mainFragment.isVisible()) {
                     checkPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION_CODE_CAMERA);
                 } else if (meFragment != null && meFragment.isVisible()) {
-                    Utils.showToast(MainActivity.this, "设置");
+                    if (AppConfig.ISLOGIN) {
+
+                    }
                 }
             }
 

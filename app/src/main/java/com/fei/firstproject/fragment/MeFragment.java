@@ -17,7 +17,6 @@ import com.fei.firstproject.activity.CaptureActivity;
 import com.fei.firstproject.activity.LoginActivity;
 import com.fei.firstproject.activity.MyAttentionActivity;
 import com.fei.firstproject.activity.MyOrderActivity;
-import com.fei.firstproject.activity.SettingsActivity;
 import com.fei.firstproject.adapter.MeFragmentAdapter;
 import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.decoration.DividerGridItemDecoration;
@@ -32,7 +31,7 @@ import com.fei.firstproject.utils.SPUtils;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.web.WebActivity;
 import com.fei.firstproject.widget.NoScrollRecyclerView;
-import com.fei.firstproject.widget.SettingView;
+import com.fei.firstproject.widget.PartHeadView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -55,7 +54,7 @@ import static android.app.Activity.RESULT_OK;
 public class MeFragment extends BaseFragment {
 
     @BindView(R.id.rl_order)
-    SettingView rlOrder;
+    PartHeadView rlOrder;
     @BindView(R.id.ll_wait_obligation)
     LinearLayout llWaitObligation;
     @BindView(R.id.ll_wait_post)
@@ -301,7 +300,7 @@ public class MeFragment extends BaseFragment {
     @OnClick(R.id.ll_me_info)
     void clickMeInfo(View view) {
         if (AppConfig.ISLOGIN) {
-            startActivityWithoutCode(new Intent(activity, SettingsActivity.class));
+//            startActivityWithoutCode(new Intent(activity, SettingsActivity.class));
         } else {
             startActivity(new Intent(activity, LoginActivity.class));
         }

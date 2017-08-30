@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="SettingView">
+    <declare-styleable name="PartHeadView">
         <attr name="title" format="string"></attr>
         <attr name="desc" format="string"></attr>
+        <attr name="leftIcon" format="reference"></attr>
     </declare-styleable>
 
     <declare-styleable name="AppHeadView">

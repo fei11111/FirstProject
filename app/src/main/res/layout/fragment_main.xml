@@ -91,12 +91,12 @@
                     app:divider="@drawable/shape_line"
                     app:showDividers="middle">
 
-                    <com.fei.firstproject.widget.SettingView
+                    <com.fei.firstproject.widget.PartHeadView
                         android:id="@+id/sv_ncw"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         app:desc="@string/more"
-                        app:title="@string/ncw"></com.fei.firstproject.widget.SettingView>
+                        app:title="@string/ncw"></com.fei.firstproject.widget.PartHeadView>
 
                     <com.fei.firstproject.widget.NoScrollRecyclerView
                         android:id="@+id/rv_ncw"
@@ -115,12 +115,12 @@
                     app:divider="@drawable/shape_line"
                     app:showDividers="middle">
 
-                    <com.fei.firstproject.widget.SettingView
+                    <com.fei.firstproject.widget.PartHeadView
                         android:id="@+id/sv_recommend_plan"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         app:desc="@string/more"
-                        app:title="@string/recommend_plan"></com.fei.firstproject.widget.SettingView>
+                        app:title="@string/recommend_plan"></com.fei.firstproject.widget.PartHeadView>
 
                     <com.fei.firstproject.widget.NoScrollRecyclerView
                         android:id="@+id/rv_recommend_plan"

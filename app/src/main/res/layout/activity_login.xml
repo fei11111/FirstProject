@@ -131,7 +131,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size_45"
                 android:layout_marginTop="@dimen/size_16"
-                android:background="@drawable/selector_login_btn_bg"
+                android:background="@drawable/selector_login_corner_btn_bg"
                 android:enabled="false"
                 android:gravity="center"
                 android:text="@string/title_activity_login"

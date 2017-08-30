@@ -131,7 +131,7 @@
                     android:id="@+id/btn_pay"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/size_36"
-                    android:background="@drawable/selector_pay_btn_bg"
+                    android:background="@drawable/selector_pay_corner_btn_bg"
                     android:gravity="center"
                     android:textColor="@color/selector_color_white_to_black"
                     android:textSize="@dimen/tx_15" />
@@ -141,7 +141,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/size_36"
                     android:layout_marginLeft="@dimen/size_8"
-                    android:background="@drawable/selector_pay_btn_bg"
+                    android:background="@drawable/selector_pay_corner_btn_bg"
                     android:gravity="center"
                     android:textColor="@color/selector_color_white_to_black"
                     android:textSize="@dimen/tx_15" />

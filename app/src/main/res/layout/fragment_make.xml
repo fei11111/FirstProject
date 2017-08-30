@@ -148,7 +148,7 @@
             android:layout_alignParentRight="true"
             android:layout_below="@id/ll_top_make"
             android:layout_marginTop="@dimen/size_30"
-            android:background="@drawable/selector_btn_bg"/>
+            android:background="@drawable/selector_corner_btn_bg"/>
 
     <include layout="@layout/app_bottom_signature"
         />

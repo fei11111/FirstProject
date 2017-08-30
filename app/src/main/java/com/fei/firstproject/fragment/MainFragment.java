@@ -35,7 +35,7 @@ import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.web.WebActivity;
 import com.fei.firstproject.widget.NoScrollRecyclerView;
-import com.fei.firstproject.widget.SettingView;
+import com.fei.firstproject.widget.PartHeadView;
 import com.fei.firstproject.widget.TextSwitchView;
 
 import java.util.ArrayList;
@@ -73,9 +73,9 @@ public class MainFragment extends BaseFragment {
     @BindView(R.id.ll_recommend_plan)
     LinearLayoutCompat llRecommendPlan;
     @BindView(R.id.sv_ncw)
-    SettingView svNcw;
+    PartHeadView svNcw;
     @BindView(R.id.sv_recommend_plan)
-    SettingView svRecommendPlan;
+    PartHeadView svRecommendPlan;
 
     private List<String> imageUrls = new ArrayList<>();
     private SensorManager mSensorManager;

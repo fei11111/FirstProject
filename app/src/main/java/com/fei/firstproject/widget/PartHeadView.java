@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,7 +19,7 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2017/8/3.
  */
 
-public class SettingView extends RelativeLayout {
+public class PartHeadView extends RelativeLayout {
 
     @BindView(R.id.tv_title)
     TextView tvTitle;
@@ -26,24 +27,27 @@ public class SettingView extends RelativeLayout {
     ImageView ivArrow;
     @BindView(R.id.tv_desc)
     TextView tvDesc;
+    @BindView(R.id.iv_left_view)
+    ImageView ivLeftView;
     private Context mContext;
     private String title;
     private String desc;
+    private int leftIcon = -1;
 
-    public SettingView(Context context) {
+    public PartHeadView(Context context) {
         super(context);
         mContext = context;
         initView();
     }
 
-    public SettingView(Context context, @Nullable AttributeSet attrs) {
+    public PartHeadView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
         initAttribute(attrs);
         initView();
     }
 
-    public SettingView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public PartHeadView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mContext = context;
         initAttribute(attrs);
@@ -51,15 +55,16 @@ public class SettingView extends RelativeLayout {
     }
 
     private void initAttribute(AttributeSet attrs) {
-        TypedArray typedArray = mContext.obtainStyledAttributes(attrs, R.styleable.SettingView);
-        title = typedArray.getString(R.styleable.SettingView_title);
-        desc = typedArray.getString(R.styleable.SettingView_desc);
+        TypedArray typedArray = mContext.obtainStyledAttributes(attrs, R.styleable.PartHeadView);
+        title = typedArray.getString(R.styleable.PartHeadView_title);
+        desc = typedArray.getString(R.styleable.PartHeadView_desc);
+        leftIcon = typedArray.getResourceId(R.styleable.PartHeadView_leftIcon, -1);
         typedArray.recycle();
     }
 
     private void initView() {
         setClickable(true);
-        LayoutInflater.from(mContext).inflate(R.layout.view_setting, this);
+        LayoutInflater.from(mContext).inflate(R.layout.view_part_head, this);
         ButterKnife.bind(this);
         initContent();
     }
@@ -67,6 +72,12 @@ public class SettingView extends RelativeLayout {
     private void initContent() {
         tvTitle.setText(title);
         tvDesc.setText(desc);
+        if (leftIcon != -1) {
+            ivLeftView.setVisibility(View.VISIBLE);
+            ivLeftView.setImageResource(leftIcon);
+        } else {
+            ivLeftView.setVisibility(View.GONE);
+        }
     }
 
 }

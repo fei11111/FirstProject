@@ -185,7 +185,6 @@ public class OrderFragment extends BaseListFragment {
         if (tipDialog == null) {
             tipDialog = new TipDialog(activity);
             tipDialog.setCanceledOnTouchOutside(false);
-            tipDialog.setContentText(tip);
             tipDialog.setConfirmButtonText(getResources().getString(R.string.confirm));
             tipDialog.setOnConfirmListener(new TipDialog.OnConfirmListener() {
                 @Override
@@ -194,6 +193,7 @@ public class OrderFragment extends BaseListFragment {
                 }
             });
         }
+        tipDialog.setContentText(tip);
         tipDialog.show();
     }
 
