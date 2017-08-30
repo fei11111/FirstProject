@@ -73,6 +73,7 @@ public class MyAttentionAdapter extends RecyclerView.Adapter<MyAttentionAdapter.
         holder.tvSpecCrop.setText(expertEntity.getPlantNames());
         holder.tvSpecSkill.setText(expertEntity.getExpertise());
         holder.rbStar.setRating(expertEntity.getLevel_start());
+        holder.btnAttention.setText(mContext.getString(R.string.already_attention));
         holder.btnAttention.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
