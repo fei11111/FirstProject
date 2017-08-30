@@ -80,6 +80,16 @@ public class MeFragment extends BaseFragment {
     RelativeLayout llMeInfo;
     @BindView(R.id.sv_me)
     NestedScrollView svMe;
+    @BindView(R.id.tv_collect_goods)
+    TextView tvCollectGoods;
+    @BindView(R.id.ll_collect_goods)
+    LinearLayout llCollectGoods;
+    @BindView(R.id.tv_collect_store)
+    TextView tvCollectStore;
+    @BindView(R.id.ll_collect_store)
+    LinearLayout llCollectStore;
+    @BindView(R.id.ll_balance)
+    LinearLayout llBalance;
 
     private MeFragmentAdapter meAdatper;
     private MeFragmentAdapter otherAdapter;
@@ -89,6 +99,12 @@ public class MeFragment extends BaseFragment {
     private static final int REQUEST_FRAGMENT_CODE_CAMERA = 200;
 
     private boolean isAppHeadTitleChange = false;
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+    }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -104,12 +120,6 @@ public class MeFragment extends BaseFragment {
                 activity.getAppHeadView().setMiddleText(getString(R.string.me));
             }
         }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -170,10 +180,14 @@ public class MeFragment extends BaseFragment {
     void dealEvent(AllEvent allEvent) {
         if (allEvent.getEventType() == EventType.APP_LOGIN) {
             tvName.setText(AppConfig.user.getUserName());
+            tvCollectGoods.setText("5");
+            tvCollectStore.setText("10");
             refreshLayout.setEnableRefresh(true);
         } else if (allEvent.getEventType() == EventType.APP_LOGOUT) {
             tvName.setText(getResources().getString(R.string.nologin));
             refreshLayout.setEnableRefresh(false);
+            tvCollectGoods.setText("0");
+            tvCollectStore.setText("0");
         }
     }
 
