@@ -11,6 +11,7 @@
     <string name="person_info">个人信息 ></string>
     <string name="login_tip">亲，您还未登录</string>
     <string name="go_to_login">去登录</string>
+    <string name="vertify_code_error">验证码错误</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

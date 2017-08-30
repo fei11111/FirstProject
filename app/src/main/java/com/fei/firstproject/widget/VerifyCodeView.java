@@ -59,6 +59,16 @@ public class VerifyCodeView extends View {
         base_padding_top = (int) (BASE_PADDING_TOP * density + 0.5f);
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+    }
+
     private void initCode() {
         code = randomCode();
     }
@@ -68,11 +78,6 @@ public class VerifyCodeView extends View {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setStrokeWidth(1);
         mPaint.setTextSize(fontSize);
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     private int randomColor() {
@@ -126,13 +131,17 @@ public class VerifyCodeView extends View {
             case MotionEvent.ACTION_DOWN:
                 return true;
             case MotionEvent.ACTION_UP:
-                code = randomCode();
-                padding_left = 0;
-                padding_top = 0;
-                invalidate();
+                refreshCode();
                 return false;
         }
         return super.onTouchEvent(event);
+    }
+
+    public void refreshCode() {
+        code = randomCode();
+        padding_left = 0;
+        padding_top = 0;
+        invalidate();
     }
 
     public String getCode() {

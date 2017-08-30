@@ -23,6 +23,7 @@ import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.utils.SPUtils;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.AppHeadView;
+import com.fei.firstproject.widget.VerifyCodeView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -60,6 +61,10 @@ public class LoginActivity extends BaseActivity {
     LinearLayout llweixin;
     @BindView(R.id.ll_qq)
     LinearLayout llQq;
+    @BindView(R.id.et_vertify_code)
+    EditText etVertifyCode;
+    @BindView(R.id.tv_code)
+    VerifyCodeView tvCode;
 
     private static final int REQUEST_CODE_1 = 100;
 
@@ -117,11 +122,12 @@ public class LoginActivity extends BaseActivity {
 
     }
 
-    @OnTextChanged(value = {R.id.et_password, R.id.et_username}, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    @OnTextChanged(value = {R.id.et_password, R.id.et_username, R.id.et_vertify_code}, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     void textChanged() {
         String userNameText = etUsername.getText().toString();
         String passwordText = etPassword.getText().toString();
-        if (!TextUtils.isEmpty(userNameText) && !TextUtils.isEmpty(passwordText)) {
+        String code = etVertifyCode.getText().toString();
+        if (!TextUtils.isEmpty(userNameText) && !TextUtils.isEmpty(passwordText) && !TextUtils.isEmpty(code)) {
             rvSignIn.setEnabled(true);
         } else {
             rvSignIn.setEnabled(false);
@@ -130,7 +136,14 @@ public class LoginActivity extends BaseActivity {
 
     @OnClick(R.id.btn_login)
     void clickSignIn(View view) {
-        checkPermissions(new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_CODE_1);
+        String code = tvCode.getCode().toLowerCase();
+        String inputCode = etVertifyCode.getText().toString().toLowerCase();
+        if (code.equals(inputCode)) {
+            checkPermissions(new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_CODE_1);
+        } else {
+            etVertifyCode.setError(getString(R.string.vertify_code_error));
+            tvCode.refreshCode();
+        }
     }
 
     @OnClick(R.id.tv_register)
