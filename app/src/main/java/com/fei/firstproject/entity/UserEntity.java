@@ -201,7 +201,7 @@ public class UserEntity implements Serializable {
          */
 
         private String name;
-        private List<RoleEntity> list;
+        private List<RoleMenuEntity> list;
 
         public String getName() {
             return name;
@@ -211,11 +211,11 @@ public class UserEntity implements Serializable {
             this.name = name;
         }
 
-        public List<RoleEntity> getList() {
+        public List<RoleMenuEntity> getList() {
             return list;
         }
 
-        public void setList(List<RoleEntity> list) {
+        public void setList(List<RoleMenuEntity> list) {
             this.list = list;
         }
 

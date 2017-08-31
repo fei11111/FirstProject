@@ -6,6 +6,7 @@ import com.fei.firstproject.entity.MessageEntity;
 import com.fei.firstproject.entity.NcwEntity;
 import com.fei.firstproject.entity.OrderEntity;
 import com.fei.firstproject.entity.RecommendEntity;
+import com.fei.firstproject.entity.SelfInfoEntity;
 import com.fei.firstproject.entity.UserEntity;
 
 import java.util.List;
@@ -55,5 +56,7 @@ public interface RequestApi {
     @GET("App/appLogout.do")
     Observable<ResponseBody> logout(@QueryMap Map<String, String> map);
 
+    @GET("app/myAccount/getExpertByUserId")
+    Observable<BaseEntity<SelfInfoEntity>> getSelfInfo(@QueryMap Map<String, String> map);
 
 }

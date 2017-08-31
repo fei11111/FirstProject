@@ -96,7 +96,7 @@
 
                 <TextView
                     style="@style/ItemAttentionTextViewStyle"
-                    android:text="@string/speciality_crop" />
+                    android:text="@string/speciality_crop_" />
 
                 <TextView
                     android:id="@+id/tv_spec_crop"
@@ -112,7 +112,7 @@
 
                 <TextView
                     style="@style/ItemAttentionTextViewStyle"
-                    android:text="@string/speciality_skill" />
+                    android:text="@string/speciality_skill_" />
 
                 <TextView
                     android:id="@+id/tv_spec_skill"

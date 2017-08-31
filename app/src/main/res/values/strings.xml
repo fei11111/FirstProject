@@ -113,8 +113,8 @@
     <string name="attention">关注</string>
     <string name="service_time">从业时间：</string>
     <string name="year">年</string>
-    <string name="speciality_crop">专长作物：</string>
-    <string name="speciality_skill">技术专长：</string>
+    <string name="speciality_crop_">专长作物：</string>
+    <string name="speciality_skill_">技术专长：</string>
     <string name="star_level">星级：</string>
     <string name="setting">设置</string>
     <string name="self_info">个人信息</string>
@@ -133,6 +133,18 @@
     <string name="location">所在地区</string>
     <string name="detail_address">详细地址</string>
     <string name="service_station">服务站</string>
+    <string name="service_station_name">服务站站名</string>
+    <string name="legal_representative">法人代表</string>
+    <string name="expertise">专家</string>
+    <string name="expertise_icon">专家头像</string>
+    <string name="expertise_name">专家姓名</string>
+    <string name="speciality_crop">专长作物</string>
+    <string name="speciality_skill">技术专长</string>
+    <string name="expertise_level">专家级别</string>
+    <string name="working_time">从业时间(年)</string>
+    <string name="consultation_way">咨询方式</string>
+    <string name="online_setting">在线设置</string>
+    <string name="edit">编辑</string>
 
     <!-- Strings related to Settings -->
 
