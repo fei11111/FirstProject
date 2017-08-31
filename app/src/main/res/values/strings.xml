@@ -128,6 +128,11 @@
     <string name="current_role">当前角色</string>
     <string name="change_role">切换角色</string>
     <string name="account_create_time">账户创建时间</string>
+    <string name="farmer">种植户</string>
+    <string name="name">姓名</string>
+    <string name="location">所在地区</string>
+    <string name="detail_address">详细地址</string>
+    <string name="service_station">服务站</string>
 
     <!-- Strings related to Settings -->
 
