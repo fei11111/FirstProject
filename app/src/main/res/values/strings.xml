@@ -121,6 +121,13 @@
     <string name="account_security">账户与安全</string>
     <string name="my_address">我的收获地址</string>
     <string name="logout_tip">确认退出登录?</string>
+    <string name="save">保存</string>
+    <string name="base_info">基本信息</string>
+    <string name="account">账号</string>
+    <string name="user_name">用户名</string>
+    <string name="current_role">当前角色</string>
+    <string name="change_role">切换角色</string>
+    <string name="account_create_time">账户创建时间</string>
 
     <!-- Strings related to Settings -->
 

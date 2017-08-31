@@ -17,6 +17,7 @@ import com.fei.firstproject.activity.CaptureActivity;
 import com.fei.firstproject.activity.LoginActivity;
 import com.fei.firstproject.activity.MyAttentionActivity;
 import com.fei.firstproject.activity.MyOrderActivity;
+import com.fei.firstproject.activity.SelfInfoActivity;
 import com.fei.firstproject.adapter.MeFragmentAdapter;
 import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.decoration.DividerGridItemDecoration;
@@ -300,7 +301,7 @@ public class MeFragment extends BaseFragment {
     @OnClick(R.id.ll_me_info)
     void clickMeInfo(View view) {
         if (AppConfig.ISLOGIN) {
-//            startActivityWithoutCode(new Intent(activity, SettingsActivity.class));
+            startActivityWithoutCode(new Intent(activity, SelfInfoActivity.class));
         } else {
             startActivity(new Intent(activity, LoginActivity.class));
         }

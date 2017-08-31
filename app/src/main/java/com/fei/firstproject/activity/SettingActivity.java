@@ -2,6 +2,7 @@ package com.fei.firstproject.activity;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
@@ -10,9 +11,11 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
+import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.dialog.TipDialog;
 import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
 import com.fei.firstproject.http.factory.RetrofitFactory;
@@ -25,7 +28,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 
@@ -48,6 +53,12 @@ public class SettingActivity extends BaseActivity {
     PartHeadView phvMyAddress;
     @BindView(R.id.phv_about_us)
     PartHeadView phvAboutUs;
+    @BindView(R.id.iv_user_head)
+    CircleImageView ivUserHead;
+    @BindView(R.id.tv_name)
+    TextView tvName;
+    @BindView(R.id.iv_vip)
+    ImageView ivVip;
 
     private TipDialog tipDialog;
     private static final int REQUEST_PERMISSION_TELEPHONE = 100;
@@ -78,7 +89,12 @@ public class SettingActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
+        initInfo();
         initListener();
+    }
+
+    private void initInfo() {
+        tvName.setText(AppConfig.user.getUserName());
     }
 
     @Override
@@ -103,6 +119,12 @@ public class SettingActivity extends BaseActivity {
 
             }
         });
+    }
+
+    //个人信息
+    @OnClick(R.id.phv_self_info)
+    void clickSelfInfo(View view) {
+        startActivityWithoutCode(new Intent(this, SelfInfoActivity.class));
     }
 
     @OnClick(R.id.btn_logout)
@@ -157,4 +179,10 @@ public class SettingActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }
