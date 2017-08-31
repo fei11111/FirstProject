@@ -15,7 +15,6 @@ import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.POST;
 import retrofit2.http.QueryMap;
 
 /**
@@ -38,7 +37,7 @@ public interface RequestApi {
     @GET("app/field/getRecommendPlansMore.do")
     Observable<BaseEntity<List<RecommendEntity>>> getRecommendPlan(@QueryMap Map<String, String> map);
 
-    @POST("app/notice/listNotices.do")
+    @GET("app/notice/listNotices.do")
     Observable<BaseEntity<List<MessageEntity>>> getMessage(@QueryMap Map<String, String> map);
 
     @GET("App/getUserInFoByToken.shtml")
@@ -52,5 +51,9 @@ public interface RequestApi {
 
     @GET("app/clinic/myAttention/delAttention.do")
     Observable<BaseEntity> cancleAttention(@QueryMap Map<String, String> map);
+
+    @GET("App/appLogout.do")
+    Observable<ResponseBody> logout(@QueryMap Map<String, String> map);
+
 
 }

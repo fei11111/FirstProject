@@ -128,7 +128,9 @@ public class MainActivity extends BaseActivity {
                     checkPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION_CODE_CAMERA);
                 } else if (meFragment != null && meFragment.isVisible()) {
                     if (AppConfig.ISLOGIN) {
-
+                        startActivityWithoutCode(new Intent(MainActivity.this, SettingActivity.class));
+                    } else {
+                        showDialogWhenUnLogin();
                     }
                 }
             }

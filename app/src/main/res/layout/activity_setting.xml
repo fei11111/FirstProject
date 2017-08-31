@@ -49,7 +49,50 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/btn_logout"
-        android:layout_below="@id/app_bar_layout"></ScrollView>
+        android:layout_above="@+id/btn_logout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/app_bar_layout">
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_10"
+            android:background="@color/colorWhite"
+            android:orientation="vertical"
+            app:divider="@drawable/shape_line"
+            app:showDividers="middle">
+
+            <com.fei.firstproject.widget.PartHeadView
+                android:id="@+id/phv_self_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:leftIcon="@drawable/ic_self_info"
+                app:title="@string/self_info"></com.fei.firstproject.widget.PartHeadView>
+
+            <com.fei.firstproject.widget.PartHeadView
+                android:id="@+id/phv_account_security"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:leftIcon="@drawable/ic_account_security"
+                app:title="@string/account_security"></com.fei.firstproject.widget.PartHeadView>
+
+            <com.fei.firstproject.widget.PartHeadView
+                android:id="@+id/phv_my_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:leftIcon="@drawable/ic_address"
+                app:title="@string/my_address"></com.fei.firstproject.widget.PartHeadView>
+
+            <com.fei.firstproject.widget.PartHeadView
+                android:id="@+id/phv_about_us"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:leftIcon="@drawable/ic_about_us"
+                app:title="@string/about_us"></com.fei.firstproject.widget.PartHeadView>
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+    </ScrollView>
 
 </RelativeLayout>

@@ -66,7 +66,7 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.tv_code)
     VerifyCodeView tvCode;
 
-    private static final int REQUEST_CODE_1 = 100;
+    private static final int REQUEST_PERMISSION_TELEPHONE = 100;
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
@@ -75,7 +75,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void permissionsGrantCallBack(int requestCode) {
-        if (requestCode == REQUEST_CODE_1) {
+        if (requestCode == REQUEST_PERMISSION_TELEPHONE) {
             attemptLogin();
         }
     }
@@ -83,7 +83,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void permissionDialogDismiss(int requestCode) {
-        if (requestCode == REQUEST_CODE_1) {
+        if (requestCode == REQUEST_PERMISSION_TELEPHONE) {
             Utils.showToast(this, "授权不成功，将无法登陆/注册");
         }
     }
@@ -139,7 +139,7 @@ public class LoginActivity extends BaseActivity {
         String code = tvCode.getCode().toLowerCase();
         String inputCode = etVertifyCode.getText().toString().toLowerCase();
         if (code.equals(inputCode)) {
-            checkPermissions(new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_CODE_1);
+            checkPermissions(new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_PERMISSION_TELEPHONE);
         } else {
             etVertifyCode.setError(getString(R.string.vertify_code_error));
             tvCode.refreshCode();

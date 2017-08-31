@@ -45,6 +45,7 @@
         <activity android:name=".web.WebActivity" />
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.SettingActivity" />
+        <activity android:name=".activity.SelfInfoActivity" />
     </application>
 
 </manifest>

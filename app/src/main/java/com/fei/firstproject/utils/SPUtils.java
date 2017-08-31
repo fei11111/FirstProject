@@ -14,9 +14,16 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+/**
+ * tokenId
+ * deviceId
+ * user
+ * */
+
 public class SPUtils {
     /**
      * 保存在手机里面的文件名
+     *
      */
     public static final String FILE_NAME = "fei_share_data";
 
