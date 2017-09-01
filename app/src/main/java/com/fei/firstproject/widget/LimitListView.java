@@ -5,55 +5,43 @@ import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.widget.FrameLayout;
-
-import com.fei.firstproject.R;
+import android.widget.ListView;
 
 /**
  * Created by Administrator on 2017/9/1.
  */
 
-public class LimitLayout extends FrameLayout {
+public class LimitListView extends ListView {
 
-    private int maxWidth;
     private int maxHeight;
 
-    public LimitLayout(@NonNull Context context) {
+    public LimitListView(@NonNull Context context) {
         super(context);
         init();
     }
 
-    public LimitLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public LimitListView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public LimitLayout(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
+    public LimitListView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     private void init() {
-        maxWidth = getResources().getDimensionPixelSize(R.dimen.size_320);
         maxHeight = getResources().getDisplayMetrics().heightPixels / 2;
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
-        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-
-        widthSize = widthSize <= maxWidth ? widthSize
-                : (int) maxWidth;
         heightSize = heightSize <= maxHeight ? heightSize
-                : (int) maxHeight;
+                : maxHeight;
         int maxHeightMeasureSpec = MeasureSpec.makeMeasureSpec(heightSize,
                 heightMode);
-        int maxWidthMeasureSpec = MeasureSpec.makeMeasureSpec(widthSize,
-                widthMode);
-        super.onMeasure(maxWidthMeasureSpec, maxHeightMeasureSpec);
+        super.onMeasure(widthMeasureSpec, maxHeightMeasureSpec);
     }
 
 }
