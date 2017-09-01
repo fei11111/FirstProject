@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.fei.firstproject.widget.LimitLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ListView
+        android:id="@+id/lv_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:cacheColorHint="#0000"
+        android:divider="@drawable/shape_line"
+        android:dividerHeight="@dimen/size_1"
+        android:fadingEdge="none"
+        android:listSelector="@android:color/transparent" />
+
+</com.fei.firstproject.widget.LimitLayout>

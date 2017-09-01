@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.Observable;
 
@@ -56,8 +57,8 @@ public class SelfInfoActivity extends BaseActivity {
     TextView tvAccountCreateTime;
     @BindView(R.id.tv_farmer_name)
     TextView tvFarmerName;
-    @BindView(R.id.tv_farmer_location)
-    TextView tvFarmerLocation;
+    @BindView(R.id.phv_farmer_location)
+    PartHeadView phvFarmerLocation;
     @BindView(R.id.et_farmer_detail_address)
     EditText etFarmerDetailAddress;
     @BindView(R.id.ll_farmer)
@@ -66,8 +67,8 @@ public class SelfInfoActivity extends BaseActivity {
     TextView tvServiceStationName;
     @BindView(R.id.tv_service_station_legal_representative)
     TextView tvServiceStationLegalRepresentative;
-    @BindView(R.id.tv_service_station_location)
-    TextView tvServiceStationLocation;
+    @BindView(R.id.phv_service_station_location)
+    PartHeadView phvServiceStationLocation;
     @BindView(R.id.et_service_station_detail_address)
     EditText etServiceStationDetailAddress;
     @BindView(R.id.ll_service_station)
@@ -86,10 +87,10 @@ public class SelfInfoActivity extends BaseActivity {
     TextView tvExpertiseLevel;
     @BindView(R.id.tv_expertise_working_time)
     TextView tvExpertiseWorkingTime;
-    @BindView(R.id.tv_expertise_location)
-    TextView tvExpertiseLocation;
-    @BindView(R.id.tv_expertise_detail_address)
-    TextView tvExpertiseDetailAddress;
+    @BindView(R.id.phv_expertise_location)
+    PartHeadView phvExpertiseLocation;
+    @BindView(R.id.et_expertise_detail_address)
+    EditText etExpertiseDetailAddress;
     @BindView(R.id.phv_consultation_way)
     PartHeadView phvConsultationWay;
     @BindView(R.id.phv_online_setting)
@@ -98,6 +99,8 @@ public class SelfInfoActivity extends BaseActivity {
     LinearLayoutCompat llExpertise;
     @BindView(R.id.rl_content)
     RelativeLayout rlContent;
+
+    private boolean isEdit = true;
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
@@ -189,13 +192,13 @@ public class SelfInfoActivity extends BaseActivity {
         if (roleId.equals("20")) {
             llFarmer.setVisibility(View.VISIBLE);
             tvFarmerName.setText(role.getGrownName());
-            tvFarmerLocation.setText(role.getAddress());
+            phvFarmerLocation.setDesc(role.getAddress());
             etFarmerDetailAddress.setText(role.getAddr());
         } else if (roleId.equals("30")) {
             llServiceStation.setVisibility(View.VISIBLE);
             tvServiceStationName.setText(role.getServiceName());
             tvServiceStationLegalRepresentative.setText(role.getLegalRepresentative());
-            tvServiceStationLocation.setText(role.getAddress());
+            phvServiceStationLocation.setDesc(role.getAddress());
             etServiceStationDetailAddress.setText(role.getAddr());
         } else if (roleId.equals("40")) {
             llExpertise.setVisibility(View.VISIBLE);
@@ -213,8 +216,8 @@ public class SelfInfoActivity extends BaseActivity {
             tvExpertiseLevel.setText(role.getExpertLevelDesc());
             tvExpertiseSpecialityCrop.setText(role.getPlantCrop());
             tvExpertiseWorkingTime.setText(role.getServiceTime());
-            tvExpertiseLocation.setText(role.getAddress());
-            tvExpertiseDetailAddress.setText(role.getAddr());
+            phvExpertiseLocation.setDesc(role.getAddress());
+            etExpertiseDetailAddress.setText(role.getAddr());
             phvConsultationWay.setDesc(role.getReserve1());
             if (role.isonline()) {
                 phvOnlineSetting.setDesc("在线");
@@ -222,5 +225,25 @@ public class SelfInfoActivity extends BaseActivity {
                 phvOnlineSetting.setDesc("离线");
             }
         }
+    }
+
+    @OnClick(R.id.btn_save)
+    void clickSave(View view) {
+        if (isEdit) {
+            //编辑
+            btnSave.setText(getString(R.string.save));
+            etExpertiseDetailAddress.setEnabled(true);
+            etFarmerDetailAddress.setEnabled(true);
+            etServiceStationDetailAddress.setEnabled(true);
+            phvChangeRole.setClickable(true);
+            phvConsultationWay.setClickable(true);
+            phvExpertiseLocation.setClickable(true);
+            phvFarmerLocation.setClickable(true);
+            phvOnlineSetting.setClickable(true);
+            phvServiceStationLocation.setClickable(true);
+        } else {
+            //保存
+        }
+        isEdit = !isEdit;
     }
 }

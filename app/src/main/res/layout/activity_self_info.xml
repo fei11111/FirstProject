@@ -204,6 +204,7 @@
                             android:id="@+id/phv_change_role"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:clickable="false"
                             app:title="@string/change_role"></com.fei.firstproject.widget.PartHeadView>
 
                         <LinearLayout
@@ -292,36 +293,12 @@
                                 android:textSize="@dimen/tx_15" />
                         </LinearLayout>
 
-                        <LinearLayout
+                        <com.fei.firstproject.widget.PartHeadView
+                            android:id="@+id/phv_farmer_location"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="?attr/selectableItemBackground"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:paddingBottom="@dimen/size_10"
-                            android:paddingLeft="@dimen/size_16"
-                            android:paddingRight="@dimen/size_16"
-                            android:paddingTop="@dimen/size_10">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="left"
-                                android:text="@string/location"
-                                android:textColor="@color/colorText"
-                                android:textSize="@dimen/tx_15" />
-
-                            <TextView
-                                android:id="@+id/tv_farmer_location"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/size_16"
-                                android:ellipsize="end"
-                                android:gravity="right"
-                                android:lines="1"
-                                android:textColor="@color/colorTextSub"
-                                android:textSize="@dimen/tx_15" />
-                        </LinearLayout>
+                            android:clickable="false"
+                            app:title="@string/location" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -349,6 +326,7 @@
                                 android:layout_marginLeft="@dimen/size_16"
                                 android:background="@null"
                                 android:ellipsize="end"
+                                android:enabled="false"
                                 android:gravity="right"
                                 android:lines="1"
                                 android:textColor="@color/colorTextSub"
@@ -442,36 +420,12 @@
                                 android:textSize="@dimen/tx_15" />
                         </LinearLayout>
 
-                        <LinearLayout
+                        <com.fei.firstproject.widget.PartHeadView
+                            android:id="@+id/phv_service_station_location"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="?attr/selectableItemBackground"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:paddingBottom="@dimen/size_10"
-                            android:paddingLeft="@dimen/size_16"
-                            android:paddingRight="@dimen/size_16"
-                            android:paddingTop="@dimen/size_10">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="left"
-                                android:text="@string/location"
-                                android:textColor="@color/colorText"
-                                android:textSize="@dimen/tx_15" />
-
-                            <TextView
-                                android:id="@+id/tv_service_station_location"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/size_16"
-                                android:ellipsize="end"
-                                android:gravity="right"
-                                android:lines="1"
-                                android:textColor="@color/colorTextSub"
-                                android:textSize="@dimen/tx_15" />
-                        </LinearLayout>
+                            android:clickable="false"
+                            app:title="@string/location" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -499,6 +453,7 @@
                                 android:layout_marginLeft="@dimen/size_16"
                                 android:background="@null"
                                 android:ellipsize="end"
+                                android:enabled="false"
                                 android:gravity="right"
                                 android:lines="1"
                                 android:textColor="@color/colorTextSub"
@@ -561,6 +516,7 @@
                                 android:layout_height="@dimen/size_40"
                                 android:layout_marginRight="@dimen/size_10"
                                 android:layout_toLeftOf="@id/iv_arrow"
+                                android:clickable="false"
                                 android:src="@drawable/ic_app"
                                 app:civ_border_color="@color/colorPrimary"
                                 app:civ_border_width="@dimen/size_1" />
@@ -721,36 +677,12 @@
                                 android:textSize="@dimen/tx_15" />
                         </LinearLayout>
 
-                        <LinearLayout
+                        <com.fei.firstproject.widget.PartHeadView
+                            android:id="@+id/phv_expertise_location"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="?attr/selectableItemBackground"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:paddingBottom="@dimen/size_10"
-                            android:paddingLeft="@dimen/size_16"
-                            android:paddingRight="@dimen/size_16"
-                            android:paddingTop="@dimen/size_10">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="left"
-                                android:text="@string/location"
-                                android:textColor="@color/colorText"
-                                android:textSize="@dimen/tx_15" />
-
-                            <TextView
-                                android:id="@+id/tv_expertise_location"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/size_16"
-                                android:ellipsize="end"
-                                android:gravity="right"
-                                android:lines="1"
-                                android:textColor="@color/colorTextSub"
-                                android:textSize="@dimen/tx_15" />
-                        </LinearLayout>
+                            android:clickable="false"
+                            app:title="@string/location" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -771,12 +703,14 @@
                                 android:textColor="@color/colorText"
                                 android:textSize="@dimen/tx_15" />
 
-                            <TextView
-                                android:id="@+id/tv_expertise_detail_address"
+                            <EditText
+                                android:id="@+id/et_expertise_detail_address"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/size_16"
+                                android:background="@null"
                                 android:ellipsize="end"
+                                android:enabled="false"
                                 android:gravity="right"
                                 android:lines="1"
                                 android:textColor="@color/colorTextSub"
@@ -787,12 +721,14 @@
                             android:id="@+id/phv_consultation_way"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:clickable="false"
                             app:title="@string/consultation_way"></com.fei.firstproject.widget.PartHeadView>
 
                         <com.fei.firstproject.widget.PartHeadView
                             android:id="@+id/phv_online_setting"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:clickable="false"
                             app:title="@string/online_setting"></com.fei.firstproject.widget.PartHeadView>
 
                     </android.support.v7.widget.LinearLayoutCompat>
