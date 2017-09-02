@@ -37,7 +37,7 @@
         </activity>
         <activity
             android:name=".activity.LoginActivity"
-            android:theme="@style/ActivityAnimationStyle" />
+            android:theme="@style/ActivityBottomStyle" />
         <activity android:name=".activity.CaptureActivity" />
         <activity android:name=".activity.MessageActivity" />
         <activity android:name=".activity.RecommendPlanActivity" />

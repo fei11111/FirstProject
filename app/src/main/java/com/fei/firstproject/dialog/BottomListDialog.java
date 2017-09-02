@@ -1,15 +1,18 @@
 package com.fei.firstproject.dialog;
 
-import android.app.Dialog;
 import android.content.Context;
+import android.os.Bundle;
+import android.support.design.widget.BottomSheetDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.fei.firstproject.R;
-import com.fei.firstproject.widget.LimitListView;
+import com.fei.firstproject.utils.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,16 +23,21 @@ import butterknife.OnItemClick;
  * Created by Administrator on 2017/8/3.
  */
 
-public class ListViewDialog extends Dialog {
+public class BottomListDialog extends BottomSheetDialog {
 
+    @BindView(R.id.tv_dialog_confirm)
+    TextView tvDialogConfirm;
+    @BindView(R.id.tv_dialog_cancle)
+    TextView tvDialogCancle;
+    @BindView(R.id.tv_dialog_title)
+    TextView tvDialogTitle;
     @BindView(R.id.lv_dialog)
-    LimitListView lvDialog;
-    @BindView(R.id.btn_dialog_cancle)
-    Button btnDialogCancle;
+    ListView lvDialog;
 
     private Context mContext;
     private OnCancleListener onCancleListener;
     private OnItemClickListener onItemClickListener;
+    private OnConfirmListener onConfirmListener;
 
     public void setOnCancleListener(OnCancleListener onCancleListener) {
         this.onCancleListener = onCancleListener;
@@ -37,24 +45,20 @@ public class ListViewDialog extends Dialog {
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
+        tvDialogConfirm.setVisibility(View.VISIBLE);
     }
 
-    public ListViewDialog(Context context) {
-        super(context, R.style.DialogAnimationStyle);
+    public BottomListDialog(Context context) {
+        super(context);
         mContext = context;
         init();
     }
 
-    public void setAdapter(ListAdapter adapter) {
-        lvDialog.setAdapter(adapter);
-    }
-
-    public ListViewDialog(Context context, int theme) {
+    public BottomListDialog(Context context, int theme) {
         super(context, theme);
         mContext = context;
         init();
     }
-
 
     private void init() {
         View view = LayoutInflater.from(mContext).inflate(R.layout.view_list_dialog, null);
@@ -62,10 +66,37 @@ public class ListViewDialog extends Dialog {
         ButterKnife.bind(this, view);
     }
 
-    @OnClick(R.id.btn_dialog_cancle)
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        int screenHeight = mContext.getResources().getDisplayMetrics().heightPixels;
+        int statusBarHeight = Utils.getStatusBarHeight(mContext);
+        int height = screenHeight - statusBarHeight;
+        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, height == 0 ? ViewGroup.LayoutParams.MATCH_PARENT : height);
+    }
+
+    public BottomListDialog setTitle(String title) {
+        tvDialogTitle.setText(title);
+        return this;
+    }
+
+    public BottomListDialog setAdapter(ListAdapter adapter) {
+        lvDialog.setAdapter(adapter);
+        return this;
+    }
+
+    @OnClick(R.id.tv_dialog_cancle)
     void clickCancle(View view) {
         if (onCancleListener != null) {
             onCancleListener.onClick(view);
+        }
+        this.dismiss();
+    }
+
+    @OnClick(R.id.tv_dialog_confirm)
+    void clickConfirm(View view) {
+        if (onConfirmListener != null) {
+            onConfirmListener.onClick(view);
         }
         this.dismiss();
     }
@@ -84,6 +115,10 @@ public class ListViewDialog extends Dialog {
     }
 
     public interface OnCancleListener {
+        void onClick(View view);
+    }
+
+    public interface OnConfirmListener {
         void onClick(View view);
     }
 

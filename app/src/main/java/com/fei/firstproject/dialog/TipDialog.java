@@ -30,41 +30,20 @@ public class TipDialog extends Dialog {
 
     private Context mContext;
     private OnConfirmListener onConfirmListener;
-    private OnCancleListener onCancleListener;
 
     public void setOnConfirmListener(OnConfirmListener onConfirmListener) {
         this.onConfirmListener = onConfirmListener;
     }
 
-    public void setOnCancleListener(OnCancleListener onCancleListener) {
-        this.onCancleListener = onCancleListener;
-    }
-
     public TipDialog(Context context) {
-        super(context, R.style.DialogAnimationStyle);
+        super(context, R.style.DialogCenterStyle);
         mContext = context;
-        init();
-    }
-
-    public TipDialog(Context context, OnConfirmListener onConfirmListener, OnCancleListener onCancleListener) {
-        super(context, R.style.DialogAnimationStyle);
-        mContext = context;
-        this.onConfirmListener = onConfirmListener;
-        this.onCancleListener = onCancleListener;
         init();
     }
 
     public TipDialog(Context context, int theme) {
         super(context, theme);
         mContext = context;
-        init();
-    }
-
-    public TipDialog(Context context, int theme, OnConfirmListener onConfirmListener, OnCancleListener onCancleListener) {
-        super(context, theme);
-        mContext = context;
-        this.onConfirmListener = onConfirmListener;
-        this.onCancleListener = onCancleListener;
         init();
     }
 
@@ -88,9 +67,6 @@ public class TipDialog extends Dialog {
 
     @OnClick(R.id.iv_dialog_cancle)
     void clickCancle(View view) {
-        if (onCancleListener != null) {
-            onCancleListener.onClick(view);
-        }
         this.dismiss();
     }
 
@@ -111,7 +87,4 @@ public class TipDialog extends Dialog {
         void onClick(View view);
     }
 
-    public interface OnCancleListener {
-        void onClick(View view);
-    }
 }

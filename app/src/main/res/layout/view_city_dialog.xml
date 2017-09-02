@@ -20,8 +20,7 @@
             android:paddingTop="@dimen/size_10"
             android:text="@string/confirm"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/tx_15"
-            android:visibility="gone" />
+            android:textSize="@dimen/tx_15" />
 
         <TextView
             android:id="@+id/tv_dialog_cancle"
@@ -53,14 +52,10 @@
         android:layout_centerInParent="true"
         android:background="@color/colorWhite">
 
-        <ListView
-            android:id="@+id/lv_dialog"
+        <com.fei.firstproject.widget.CityPickerLayout
+            android:id="@+id/cityPicker"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="@drawable/shape_line"
-            android:dividerHeight="@dimen/size_1"
-            android:fadingEdge="none"
-            android:listSelector="?attr/selectableItemBackground" />
+            android:layout_height="wrap_content"></com.fei.firstproject.widget.CityPickerLayout>
     </FrameLayout>
 
 </LinearLayout>

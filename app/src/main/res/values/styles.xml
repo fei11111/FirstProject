@@ -24,7 +24,7 @@
         <item name="android:minHeight">0dp</item>
     </style>
 
-    <style name="dialogStyle" parent="@android:style/Theme.Dialog">
+    <style name="DialogStyle" parent="@android:style/Theme.Dialog">
         //Dialog的windowFrame框为无
         <item name="android:windowFrame">@null</item>
         //是否浮现在activity之上
@@ -43,24 +43,37 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
-    <style name="CustomerDialog" parent="dialogStyle">
+    <style name="DialogBottomStyle" parent="@style/DialogStyle">
+        <item name="android:windowAnimationStyle">@style/DialogBottomAnimation</item>
+    </style>
+
+    <style name="DialogCenterStyle" parent="@style/DialogStyle">
+        <item name="android:windowAnimationStyle">@style/DialogCenterAnimation</item>
+    </style>
+
+    <style name="ActivityBottomStyle" parent="@style/AppTheme">
+        <item name="android:windowAnimationStyle">@style/ActivityBottomAnimation</item>
+    </style>
+
+    <style name="DialogBottomAnimation" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/dialog_bottom_in_animation</item>
+        <item name="android:windowExitAnimation">@anim/dialog_bottom_out_animation</item>
+    </style>
+
+    <style name="DialogCenterAnimation" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/dialog_center_in_animation</item>
+        <item name="android:windowExitAnimation">@anim/dialog_center_out_animation</item>
+    </style>
+
+    <style name="CustomerDialog" parent="@style/DialogStyle">
         <item name="background">@drawable/shape_loading_bg</item>
     </style>
 
-    <style name="ActivityAnimationStyle" parent="@style/AppTheme">
-        <item name="android:windowAnimationStyle">@style/AnimationStyle</item>
-    </style>
-
-    <style name="AnimationStyle" parent="@android:style/Animation.Activity">
+    <style name="ActivityBottomAnimation" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/activity_open_in_animation</item>
         <item name="android:activityOpenExitAnimation">@anim/activity_open_out_animation</item>
         <item name="android:activityCloseEnterAnimation">@anim/activity_close_in_animation</item>
         <item name="android:activityCloseExitAnimation">@anim/activity_close_out_animation</item>
-    </style>
-
-    <style name="DialogAnimationStyle" parent="@style/dialogStyle">
-        <item name="android:windowEnterAnimation">@anim/dialog_in_animation</item>
-        <item name="android:windowExitAnimation">@anim/dialog_out_animation</item>
     </style>
 
     <style name="ItemAttentionTextViewStyle">
@@ -73,7 +86,7 @@
         <item name="android:ellipsize">end</item>
     </style>
 
-    <style name="roomRatingBar" parent="@android:style/Widget.RatingBar">
+    <style name="RoomRatingBar" parent="@android:style/Widget.RatingBar">
         <item name="android:progressDrawable">@drawable/layer_rating_bar</item>
         <item name="android:minHeight">@dimen/size_20</item>
         <item name="android:maxHeight">@dimen/size_20</item>
