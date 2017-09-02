@@ -246,4 +246,8 @@ public class SelfInfoActivity extends BaseActivity {
         }
         isEdit = !isEdit;
     }
+
+    @OnClick({R.id.phv_expertise_location, R.id.phv_farmer_location, R.id.phv_service_station_location})
+    void clickLocation(View view) {
+    }
 }

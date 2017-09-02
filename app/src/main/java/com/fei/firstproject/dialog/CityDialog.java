@@ -61,6 +61,7 @@ public class CityDialog extends Dialog {
         lp.x = 0;
         lp.y = 0;
         dialogWindow.setAttributes(lp);
+        setCanceledOnTouchOutside(true);
     }
 
     @OnClick(R.id.tv_dialog_cancle)

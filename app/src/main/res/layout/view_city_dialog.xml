@@ -10,29 +10,24 @@
         android:background="@color/colorPrimary">
 
         <TextView
-            android:id="@+id/tv_dialog_confirm"
+            android:id="@+id/tv_dialog_cancle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:layout_centerVertical="true"
-            android:paddingBottom="@dimen/size_10"
-            android:paddingLeft="@dimen/size_16"
-            android:paddingRight="@dimen/size_16"
-            android:paddingTop="@dimen/size_10"
-            android:text="@string/confirm"
+            android:padding="@dimen/size_16"
+            android:text="@string/cancel"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/tx_15" />
 
         <TextView
-            android:id="@+id/tv_dialog_cancle"
+            android:id="@+id/tv_dialog_confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:paddingBottom="@dimen/size_10"
-            android:paddingLeft="@dimen/size_16"
-            android:paddingRight="@dimen/size_16"
-            android:paddingTop="@dimen/size_10"
-            android:text="@string/cancel"
+            android:padding="@dimen/size_16"
+            android:text="@string/confirm"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/tx_15" />
 
@@ -41,6 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:text="@string/choose_city"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/tx_15" />
 

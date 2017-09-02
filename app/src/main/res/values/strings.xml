@@ -145,6 +145,8 @@
     <string name="consultation_way">咨询方式</string>
     <string name="online_setting">在线设置</string>
     <string name="edit">编辑</string>
+    <string name="choose_city">选择城市</string>
+    <string name="choose_time">选择时间</string>
 
     <!-- Strings related to Settings -->
 
