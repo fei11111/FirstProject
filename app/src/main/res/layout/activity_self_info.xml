@@ -204,7 +204,6 @@
                             android:id="@+id/phv_change_role"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:clickable="false"
                             app:title="@string/change_role"></com.fei.firstproject.widget.PartHeadView>
 
                         <LinearLayout
@@ -297,7 +296,6 @@
                             android:id="@+id/phv_farmer_location"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:clickable="false"
                             app:title="@string/location" />
 
                         <LinearLayout
@@ -424,7 +422,6 @@
                             android:id="@+id/phv_service_station_location"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:clickable="false"
                             app:title="@string/location" />
 
                         <LinearLayout
@@ -681,7 +678,6 @@
                             android:id="@+id/phv_expertise_location"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:clickable="false"
                             app:title="@string/location" />
 
                         <LinearLayout
@@ -721,14 +717,12 @@
                             android:id="@+id/phv_consultation_way"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:clickable="false"
                             app:title="@string/consultation_way"></com.fei.firstproject.widget.PartHeadView>
 
                         <com.fei.firstproject.widget.PartHeadView
                             android:id="@+id/phv_online_setting"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:clickable="false"
                             app:title="@string/online_setting"></com.fei.firstproject.widget.PartHeadView>
 
                     </android.support.v7.widget.LinearLayoutCompat>

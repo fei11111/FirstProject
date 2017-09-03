@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.fei.firstproject.R;
 import com.fei.firstproject.config.AppConfig;
+import com.fei.firstproject.dialog.CityDialog;
+import com.fei.firstproject.dialog.TipDialog;
 import com.fei.firstproject.entity.BaseEntity;
 import com.fei.firstproject.entity.RoleEntity;
 import com.fei.firstproject.entity.SelfInfoEntity;
@@ -101,6 +103,8 @@ public class SelfInfoActivity extends BaseActivity {
     RelativeLayout rlContent;
 
     private boolean isEdit = true;
+    private CityDialog cityDialog;
+    private TipDialog tipDialog;
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
@@ -243,11 +247,51 @@ public class SelfInfoActivity extends BaseActivity {
             phvServiceStationLocation.setClickable(true);
         } else {
             //保存
+            showSaveTipDialog();
         }
         isEdit = !isEdit;
     }
 
+    private void showSaveTipDialog() {
+        if (tipDialog == null) {
+            tipDialog.setTitle("确定保存？");
+            tipDialog.setOnConfirmListener(new TipDialog.OnConfirmListener() {
+                @Override
+                public void onClick(View view) {
+                    save();
+                }
+            });
+        }
+        tipDialog.show();
+    }
+
+    private void save() {
+
+    }
+
     @OnClick({R.id.phv_expertise_location, R.id.phv_farmer_location, R.id.phv_service_station_location})
-    void clickLocation(View view) {
+    void clickLocation(final View view) {
+        if (isEdit) return;
+        if (cityDialog == null) {
+            cityDialog = new CityDialog(SelfInfoActivity.this);
+            cityDialog.setOnConfirmListener(new CityDialog.OnConfirmListener() {
+                @Override
+                public void onClick(String province, String city, String couny) {
+                    String address = province + city + couny;
+                    switch (view.getId()) {
+                        case R.id.phv_expertise_location:
+                            phvExpertiseLocation.setDesc(address);
+                            break;
+                        case R.id.phv_farmer_location:
+                            phvFarmerLocation.setDesc(address);
+                            break;
+                        case R.id.phv_service_station_location:
+                            phvServiceStationLocation.setDesc(address);
+                            break;
+                    }
+                }
+            });
+        }
+        cityDialog.show();
     }
 }
