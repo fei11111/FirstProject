@@ -1,6 +1,7 @@
 package com.fei.firstproject.http.inter;
 
 import com.fei.firstproject.entity.BaseEntity;
+import com.fei.firstproject.entity.ChangeRoleEntity;
 import com.fei.firstproject.entity.ExpertEntity;
 import com.fei.firstproject.entity.MessageEntity;
 import com.fei.firstproject.entity.NcwEntity;
@@ -16,6 +17,7 @@ import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
 /**
@@ -58,5 +60,8 @@ public interface RequestApi {
 
     @GET("app/myAccount/getExpertByUserId")
     Observable<BaseEntity<SelfInfoEntity>> getSelfInfo(@QueryMap Map<String, String> map);
+
+    @GET("/bt-web/app/getRole")
+    Observable<List<ChangeRoleEntity>> changeRole(@Query("userId") String userId);
 
 }

@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -15,19 +16,27 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.fei.firstproject.R;
+import com.fei.firstproject.adapter.MultiTextAdapter;
+import com.fei.firstproject.adapter.SingleTextAdapter;
 import com.fei.firstproject.config.AppConfig;
+import com.fei.firstproject.dialog.BottomListDialog;
 import com.fei.firstproject.dialog.CityDialog;
 import com.fei.firstproject.dialog.TipDialog;
 import com.fei.firstproject.entity.BaseEntity;
+import com.fei.firstproject.entity.ChangeRoleEntity;
 import com.fei.firstproject.entity.RoleEntity;
 import com.fei.firstproject.entity.SelfInfoEntity;
 import com.fei.firstproject.entity.UserEntity;
 import com.fei.firstproject.http.BaseObserver;
+import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
 import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.widget.AppHeadView;
 import com.fei.firstproject.widget.PartHeadView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -105,6 +114,10 @@ public class SelfInfoActivity extends BaseActivity {
     private boolean isEdit = true;
     private CityDialog cityDialog;
     private TipDialog tipDialog;
+    private BottomListDialog listDialog;
+    private SingleTextAdapter singleTextAdapter;
+    private BottomListDialog consultationWayDialog;
+    private MultiTextAdapter multiTextAdapter;
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
@@ -254,6 +267,7 @@ public class SelfInfoActivity extends BaseActivity {
 
     private void showSaveTipDialog() {
         if (tipDialog == null) {
+            tipDialog = new TipDialog(this);
             tipDialog.setTitle("确定保存？");
             tipDialog.setOnConfirmListener(new TipDialog.OnConfirmListener() {
                 @Override
@@ -293,5 +307,96 @@ public class SelfInfoActivity extends BaseActivity {
             });
         }
         cityDialog.show();
+    }
+
+    @OnClick(R.id.phv_change_role)
+    void clickChangeRole(View view) {
+        if (isEdit) return;
+        Observable<List<ChangeRoleEntity>> role = RetrofitFactory.getBtWeb().changeRole(AppConfig.user.getId());
+        role.compose(this.<List<ChangeRoleEntity>>createTransformer(false))
+                .subscribe(new BaseWithoutBaseEntityObserver<List<ChangeRoleEntity>>(this) {
+                    @Override
+                    protected void onHandleSuccess(List<ChangeRoleEntity> changeRoleEntities) {
+                        List<String> names = new ArrayList<String>();
+                        for (ChangeRoleEntity entity :
+                                changeRoleEntities) {
+                            names.add(entity.getROLE_NAME());
+                        }
+                        showListDialog(getString(R.string.change_role), names, phvChangeRole);
+                    }
+                });
+    }
+
+    @OnClick(R.id.phv_online_setting)
+    void clickOnlineSetting(View view) {
+        if (isEdit) return;
+        List<String> names = new ArrayList<>();
+        names.add("在线");
+        names.add("离线");
+        showListDialog(getString(R.string.online_setting), names, phvOnlineSetting);
+    }
+
+    @OnClick(R.id.phv_consultation_way)
+    void clickConsultationWay(View view) {
+        if (isEdit) return;
+        List<String> names = new ArrayList<String>();
+        List<String> checkNames = new ArrayList<String>();
+        names.add("在线咨询");
+        names.add("电话咨询");
+        names.add("视频咨询");
+        String desc = phvConsultationWay.getDesc();
+        if (!TextUtils.isEmpty(desc)) {
+            String[] split = desc.split("/");
+            List<String> list = Arrays.asList(split);
+            checkNames.addAll(list);
+        }
+        showConsultationWayDialog(names, checkNames);
+    }
+
+    private void showConsultationWayDialog(List<String> names, List<String> checkNames) {
+        if (consultationWayDialog == null) {
+            consultationWayDialog = new BottomListDialog(this);
+            consultationWayDialog.setTitle(getString(R.string.consultation_way));
+            multiTextAdapter = new MultiTextAdapter(this, names, checkNames);
+            consultationWayDialog.setAdapter(multiTextAdapter);
+            consultationWayDialog.setOnConfirmListener(new BottomListDialog.OnConfirmListener() {
+                @Override
+                public void onClick(View view) {
+                    List<String> checkList = multiTextAdapter.getCheckList();
+                    String str = "";
+                    for (String text :
+                            checkList) {
+                        str += text + "/";
+                    }
+                    if (!TextUtils.isEmpty(str)) {
+                        str = str.substring(0, str.length() - 1);
+                    }
+                    phvConsultationWay.setDesc(str);
+                }
+            });
+        } else {
+            multiTextAdapter.setNames(names);
+            multiTextAdapter.notifyDataSetChanged();
+        }
+        consultationWayDialog.show();
+    }
+
+    private void showListDialog(String title, List<String> names, final PartHeadView partHeadView) {
+        if (listDialog == null) {
+            listDialog = new BottomListDialog(this);
+            singleTextAdapter = new SingleTextAdapter(this, names);
+            listDialog.setAdapter(singleTextAdapter);
+            listDialog.setOnItemClickListener(new BottomListDialog.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    partHeadView.setDesc((String) singleTextAdapter.getItem(position));
+                }
+            });
+        } else {
+            singleTextAdapter.setNames(names);
+            singleTextAdapter.notifyDataSetChanged();
+        }
+        listDialog.setTitle(title);
+        listDialog.show();
     }
 }

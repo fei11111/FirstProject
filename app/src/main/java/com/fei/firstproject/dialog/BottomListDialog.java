@@ -43,9 +43,13 @@ public class BottomListDialog extends BottomSheetDialog {
         this.onCancleListener = onCancleListener;
     }
 
+    public void setOnConfirmListener(OnConfirmListener onConfirmListener) {
+        this.onConfirmListener = onConfirmListener;
+        tvDialogConfirm.setVisibility(View.VISIBLE);
+    }
+
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
-        tvDialogConfirm.setVisibility(View.VISIBLE);
     }
 
     public BottomListDialog(Context context) {
@@ -105,8 +109,8 @@ public class BottomListDialog extends BottomSheetDialog {
     void clickItem(AdapterView<?> parent, View view, int position, long id) {
         if (onItemClickListener != null) {
             onItemClickListener.onItemClick(parent, view, position, id);
+            this.dismiss();
         }
-        this.dismiss();
     }
 
     @Override
@@ -125,4 +129,5 @@ public class BottomListDialog extends BottomSheetDialog {
     public interface OnItemClickListener {
         void onItemClick(AdapterView<?> parent, View view, int position, long id);
     }
+
 }

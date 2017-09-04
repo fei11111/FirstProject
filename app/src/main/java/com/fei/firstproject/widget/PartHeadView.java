@@ -3,7 +3,6 @@ package com.fei.firstproject.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,8 +81,11 @@ public class PartHeadView extends RelativeLayout {
     }
 
     public void setDesc(String desc) {
-        if (!TextUtils.isEmpty(desc)) {
-            tvDesc.setText(desc);
-        }
+        this.desc = desc;
+        tvDesc.setText(desc);
+    }
+
+    public String getDesc() {
+        return desc;
     }
 }

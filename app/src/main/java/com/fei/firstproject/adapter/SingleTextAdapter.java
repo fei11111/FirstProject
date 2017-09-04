@@ -25,6 +25,10 @@ public class SingleTextAdapter extends BaseAdapter {
         this.names = names;
     }
 
+    public void setNames(List<String> names) {
+        this.names = names;
+    }
+
     @Override
     public int getCount() {
         return names.size();
