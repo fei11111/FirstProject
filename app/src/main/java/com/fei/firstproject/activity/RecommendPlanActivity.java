@@ -50,7 +50,7 @@ public class RecommendPlanActivity extends BaseListActivity {
     }
 
     @Override
-    public void initAppHeadView() {
+    public void initView() {
         appHeadView.setRightStyle(AppHeadView.TEXT);
         appHeadView.setRightText(getResources().getString(R.string.search));
         appHeadView.setMiddleStyle(AppHeadView.SEARCH);

@@ -53,11 +53,31 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_40" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <RelativeLayout
+            android:id="@+id/rl_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorWhite"></android.support.v7.widget.RecyclerView>
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/btn_base_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/selector_rect_btn_bg"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/colorWhite"
+                android:visibility="gone" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@id/btn_base_list"
+                android:background="@color/colorWhite"></android.support.v7.widget.RecyclerView>
+
+        </RelativeLayout>
+
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </android.support.design.widget.CoordinatorLayout>

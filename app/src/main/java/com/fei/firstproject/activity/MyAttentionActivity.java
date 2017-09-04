@@ -48,7 +48,7 @@ public class MyAttentionActivity extends BaseListActivity {
     }
 
     @Override
-    public void initAppHeadView() {
+    public void initView() {
         appHeadView.setFlHeadRightVisible(View.INVISIBLE);
         appHeadView.setMiddleStyle(AppHeadView.TEXT);
         appHeadView.setMiddleText(getString(R.string.my_attention));

@@ -132,6 +132,11 @@ public class SettingActivity extends BaseActivity {
         checkPermissions(new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_PERMISSION_TELEPHONE);
     }
 
+    @OnClick(R.id.phv_my_address)
+    void clickMyAddress(View view) {
+        startActivityWithoutCode(new Intent(this, MyAddressActivity.class));
+    }
+
     private void showTipDialog() {
         if (tipDialog == null) {
             tipDialog = new TipDialog(this);

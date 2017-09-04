@@ -12,6 +12,11 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -25,6 +30,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="2XN00SaltNPqNMi6fDuzvwTRhGX6Vhkx" />
+
         <activity
             android:name=".activity.MainActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
@@ -47,6 +57,8 @@
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.SelfInfoActivity" />
+        <activity android:name=".activity.AddAddressActivity" />
+        <activity android:name=".activity.MyAddressActivity" />
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true" />

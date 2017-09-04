@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="0dp">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <com.fei.firstproject.widget.AppHeadView
+                android:id="@+id/appHeadView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:leftDrawable="@drawable/selector_head_left_arrow"
+                app:leftPadding="@dimen/size_10"
+                app:leftStyle="image"
+                app:leftVisible="visible"
+                app:middleStyle="text"
+                app:middleText="@string/self_info"
+                app:rightVisible="invisible"></com.fei.firstproject.widget.AppHeadView>
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/size_10"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <Button
+            android:id="@+id/btn_add_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/selector_rect_btn_bg"
+            android:text="@string/confirm"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/tx_15" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/btn_add_address">
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:orientation="vertical"
+                app:divider="@drawable/shape_line"
+                app:showDividers="middle">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/size_10"
+                    android:paddingLeft="@dimen/size_16"
+                    android:paddingRight="@dimen/size_16"
+                    android:paddingTop="@dimen/size_10">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/contacts"
+                        android:textColor="@color/colorText"
+                        android:textSize="@dimen/tx_15" />
+
+                    <android.support.v7.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/size_10"
+                        android:orientation="vertical"
+                        app:divider="@drawable/shape_line"
+                        app:showDividers="middle">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <EditText
+                                android:id="@+id/et_contacts"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@null"
+                                android:ellipsize="end"
+                                android:gravity="center_vertical"
+                                android:imeOptions="actionNext"
+                                android:inputType="text"
+                                android:lines="1"
+                                android:paddingRight="@dimen/size_30"
+                                android:textColor="@color/colorText"
+                                android:textColorHint="@color/colorTextSub"
+                                android:textSize="@dimen/tx_12" />
+
+                            <ImageView
+                                android:layout_width="@dimen/size_15"
+                                android:layout_height="@dimen/size_15"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginRight="@dimen/size_10"
+                                android:src="@drawable/ic_delete"
+                                android:visibility="gone" />
+                        </RelativeLayout>
+
+                        <RadioGroup
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/size_10"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/selector_corner_radiobtn_bg"
+                                android:button="@null"
+                                android:text="@string/male"
+                                android:textColor="@color/selector_color_gray_to_green" />
+
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/size_10"
+                                android:background="@drawable/selector_corner_radiobtn_bg"
+                                android:button="@null"
+                                android:text="@string/female"
+                                android:textColor="@color/selector_color_gray_to_green" />
+
+                        </RadioGroup>
+
+                    </android.support.v7.widget.LinearLayoutCompat>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/size_10"
+                    android:paddingLeft="@dimen/size_16"
+                    android:paddingRight="@dimen/size_16"
+                    android:paddingTop="@dimen/size_10">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/phone"
+                        android:textColor="@color/colorText"
+                        android:textSize="@dimen/tx_15" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/size_10">
+
+                        <EditText
+                            android:id="@+id/et_phone"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@null"
+                            android:ellipsize="end"
+                            android:gravity="center_vertical"
+                            android:imeOptions="actionNext"
+                            android:inputType="phone"
+                            android:lines="1"
+                            android:paddingRight="@dimen/size_30"
+                            android:textColor="@color/colorText"
+                            android:textColorHint="@color/colorTextSub"
+                            android:textSize="@dimen/tx_12" />
+
+                        <ImageView
+                            android:layout_width="@dimen/size_15"
+                            android:layout_height="@dimen/size_15"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="@dimen/size_10"
+                            android:src="@drawable/ic_delete"
+                            android:visibility="gone" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <com.fei.firstproject.widget.PartHeadView
+                    android:id="@+id/phv_my_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:title="@string/address"></com.fei.firstproject.widget.PartHeadView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/size_10"
+                    android:paddingLeft="@dimen/size_16"
+                    android:paddingRight="@dimen/size_16"
+                    android:paddingTop="@dimen/size_10">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/detail_address"
+                        android:textColor="@color/colorText"
+                        android:textSize="@dimen/tx_15" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/size_10">
+
+                        <EditText
+                            android:id="@+id/et_detail_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@null"
+                            android:ellipsize="end"
+                            android:gravity="center_vertical"
+                            android:imeOptions="actionNext"
+                            android:inputType="phone"
+                            android:lines="1"
+                            android:paddingRight="@dimen/size_30"
+                            android:textColor="@color/colorText"
+                            android:textColorHint="@color/colorTextSub"
+                            android:textSize="@dimen/tx_12" />
+
+                        <ImageView
+                            android:layout_width="@dimen/size_15"
+                            android:layout_height="@dimen/size_15"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="@dimen/size_10"
+                            android:src="@drawable/ic_delete"
+                            android:visibility="gone" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
+        </ScrollView>
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

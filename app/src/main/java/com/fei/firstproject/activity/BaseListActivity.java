@@ -1,6 +1,7 @@
 package com.fei.firstproject.activity;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -32,6 +34,9 @@ public abstract class BaseListActivity extends BaseActivity {
     AppBarLayout appBarLayout;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+    @Nullable
+    @BindView(R.id.btn_base_list)
+    Button btn_base_list;
 
     protected int currentPage = 1;
 
@@ -43,7 +48,7 @@ public abstract class BaseListActivity extends BaseActivity {
     @Override
     public void init(Bundle savedInstanceState) {
         initListener();
-        initAppHeadView();
+        initView();
         initRecyclerView();
     }
 
@@ -96,6 +101,6 @@ public abstract class BaseListActivity extends BaseActivity {
     }
 
     //设置头部
-    public abstract void initAppHeadView();
+    public abstract void initView();
 
 }

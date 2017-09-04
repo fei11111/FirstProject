@@ -46,7 +46,7 @@ public class MessageActivity extends BaseListActivity {
     }
 
     @Override
-    public void initAppHeadView() {
+    public void initView() {
         appHeadView.setFlHeadRightVisible(View.INVISIBLE);
         appHeadView.setMiddleStyle(AppHeadView.TEXT);
         appHeadView.setMiddleText(getResources().getString(R.string.my_message));
