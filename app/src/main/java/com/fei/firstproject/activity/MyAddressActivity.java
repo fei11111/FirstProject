@@ -33,7 +33,8 @@ public class MyAddressActivity extends BaseListActivity {
 
     @Override
     public void initRequest() {
-
+        dismissLoading();
+        refreshLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -55,7 +56,7 @@ public class MyAddressActivity extends BaseListActivity {
 
     @OnClick(R.id.btn_base_list)
     void clickAddAddress(View view) {
-        startActivityWithCode(new Intent(this, AddAddressActivity.class), REQUEST_ACTIVITY_CODE_ADD);
+        startActivityWithCode(new Intent(this, AddAddressOrUpdateActivity.class), REQUEST_ACTIVITY_CODE_ADD);
     }
 
 

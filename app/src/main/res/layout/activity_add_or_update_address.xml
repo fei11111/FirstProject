@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground">
+    android:background="@color/colorBackground"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"
@@ -27,7 +30,7 @@
                 app:leftStyle="image"
                 app:leftVisible="visible"
                 app:middleStyle="text"
-                app:middleText="@string/self_info"
+                app:middleText="@string/add_address"
                 app:rightVisible="invisible"></com.fei.firstproject.widget.AppHeadView>
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
@@ -35,8 +38,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/size_10"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_marginTop="@dimen/size_10">
 
         <Button
             android:id="@+id/btn_add_address"
@@ -48,7 +50,7 @@
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/tx_15" />
 
-        <ScrollView
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/btn_add_address">
@@ -73,6 +75,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:ems="4"
                         android:text="@string/contacts"
                         android:textColor="@color/colorText"
                         android:textSize="@dimen/tx_15" />
@@ -87,7 +90,8 @@
 
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:paddingBottom="@dimen/size_5">
 
                             <EditText
                                 android:id="@+id/et_contacts"
@@ -117,8 +121,8 @@
                         <RadioGroup
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/size_10"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:paddingTop="@dimen/size_5">
 
                             <RadioButton
                                 android:layout_width="wrap_content"
@@ -155,6 +159,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:ems="4"
                         android:text="@string/phone"
                         android:textColor="@color/colorText"
                         android:textSize="@dimen/tx_15" />
@@ -190,11 +195,46 @@
                     </RelativeLayout>
                 </LinearLayout>
 
-                <com.fei.firstproject.widget.PartHeadView
-                    android:id="@+id/phv_my_address"
+                <RelativeLayout
+                    android:id="@+id/rl_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:title="@string/address"></com.fei.firstproject.widget.PartHeadView>
+                    android:background="?attr/selectableItemBackground"
+                    android:paddingBottom="@dimen/size_10"
+                    android:paddingLeft="@dimen/size_16"
+                    android:paddingRight="@dimen/size_16"
+                    android:paddingTop="@dimen/size_10">
+
+                    <TextView
+                        android:id="@+id/tv_address_left"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:ems="4"
+                        android:text="@string/address"
+                        android:textColor="@color/colorText"
+                        android:textSize="@dimen/tx_16" />
+
+                    <ImageView
+                        android:id="@+id/iv_arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_right_arrow" />
+
+                    <TextView
+                        android:id="@+id/tv_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/size_10"
+                        android:layout_marginRight="@dimen/size_10"
+                        android:layout_toLeftOf="@id/iv_arrow"
+                        android:layout_toRightOf="@id/tv_address_left"
+                        android:textColor="@color/colorTextSub"
+                        android:textSize="@dimen/tx_14" />
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -208,6 +248,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:ems="4"
                         android:text="@string/detail_address"
                         android:textColor="@color/colorText"
                         android:textSize="@dimen/tx_15" />
@@ -245,6 +286,6 @@
 
             </android.support.v7.widget.LinearLayoutCompat>
 
-        </ScrollView>
+        </android.support.v4.widget.NestedScrollView>
     </RelativeLayout>
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>

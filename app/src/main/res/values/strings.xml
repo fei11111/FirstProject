@@ -153,6 +153,7 @@
     <string name="phone">电话</string>
     <string name="address">地址</string>
     <string name="add_address">添加收货地址</string>
+    <string name="confirm_address">确认收货地址</string>
 
     <!-- Strings related to Settings -->
 

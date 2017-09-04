@@ -17,6 +17,12 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <!-- 这个权限用于进行网络定位-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
+    <!-- 这个权限用于访问GPS定位-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
+    <!-- SD卡读取权限，用户写入离线定位数据-->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"></uses-permission>
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -57,11 +63,17 @@
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.SelfInfoActivity" />
-        <activity android:name=".activity.AddAddressActivity" />
+        <activity android:name=".activity.AddAddressOrUpdateActivity" />
         <activity android:name=".activity.MyAddressActivity" />
+        <activity android:name=".activity.MapActivity" />
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true" />
+
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote"></service>
     </application>
 
 </manifest>
