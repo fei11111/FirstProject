@@ -24,7 +24,7 @@ public class AddAddressOrUpdateActivity extends BaseActivity {
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
-        showMissingPermissionDialog("需要获取定位权限才能添加准确地址", REQUEST_PERMISSION_CODE_MAP);
+        showMissingPermissionDialog("需要获取定位功能才能添加准确地址", REQUEST_PERMISSION_CODE_MAP);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class AddAddressOrUpdateActivity extends BaseActivity {
 
     @Override
     public void permissionDialogDismiss(int requestCode) {
-        Utils.showToast(this, "获取定位权限失败，无法添加地址");
+        Utils.showToast(this, "获取定位功能失败，无法添加地址");
     }
 
     @Override
@@ -80,6 +80,9 @@ public class AddAddressOrUpdateActivity extends BaseActivity {
 
     @OnClick(R.id.rl_address)
     void clickAddress(View view) {
-        checkPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_PERMISSION_CODE_MAP);
+        checkPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.READ_PHONE_STATE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE},
+                REQUEST_PERMISSION_CODE_MAP);
     }
 }

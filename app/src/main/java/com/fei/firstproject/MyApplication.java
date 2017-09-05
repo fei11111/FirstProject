@@ -2,7 +2,6 @@ package com.fei.firstproject;
 
 import android.app.Application;
 
-import com.baidu.mapapi.SDKInitializer;
 import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.entity.UserEntity;
 import com.fei.firstproject.utils.SPUtils;
@@ -25,11 +24,6 @@ public class MyApplication extends Application {
     private void init() {
         initUserInfo();
         initCrashHandler();
-        initMapSdk();
-    }
-
-    private void initMapSdk() {
-        SDKInitializer.initialize(this);
     }
 
     private void initCrashHandler() {

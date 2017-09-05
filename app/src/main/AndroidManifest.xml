@@ -38,8 +38,8 @@
         android:theme="@style/AppTheme">
 
         <meta-data
-            android:name="com.baidu.lbsapi.API_KEY"
-            android:value="2XN00SaltNPqNMi6fDuzvwTRhGX6Vhkx" />
+            android:name="com.amap.api.v2.apikey"
+            android:value="f8a6721ab93f1ea945ba60b33fde61b5"/>
 
         <activity
             android:name=".activity.MainActivity"
@@ -69,11 +69,6 @@
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true" />
-
-        <service
-            android:name="com.baidu.location.f"
-            android:enabled="true"
-            android:process=":remote"></service>
     </application>
 
 </manifest>
