@@ -14,6 +14,8 @@ import com.fei.firstproject.toast.ToastCompat;
 
 import java.lang.reflect.Field;
 import java.net.URLEncoder;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Administrator on 2017/7/28.
@@ -123,6 +125,49 @@ public class Utils {
             statusBarHeight = res.getDimensionPixelSize(resourceId);
         }
         return statusBarHeight;
+    }
+
+    // 匹配输入数据类型
+    public static boolean matchCheck(String ins, int type) {
+        String pat = "";
+        switch (type) {
+            case 0: // /手机
+                pat = "^1[3-8][0-9]{9}$";
+                break;
+            case 1:// /邮箱
+                pat = "^[a-zA-Z0-9][\\w\\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\\w\\.-]*[a-zA-Z0-9]\\.[a-zA-Z][a-zA-Z\\.]*[a-zA-Z]$";
+                break;
+            case 2: // /用户
+                pat = "^[0-9a-zA-Z]{4,12}$";
+                break;
+            case 3: // /密码
+                pat = "^[\\s\\S]{3,32}$";
+                break;
+            case 4: // /中文
+                pat = "^[0-9a-z\u4e00-\u9fa5|admin]{2,15}$";
+                break;
+            case 5: // /非零正整
+                pat = "^\\+?[1-9][0-9]*$";
+                break;
+            case 6: // /数字和字
+                pat = "^[A-Za-z0-9]+$";
+                break;
+            case 7: // /1-9的数
+                pat = "^[1-9]";
+                break;
+            case 8: // /身份
+                pat = "^(\\d{15}$|^\\d{18}$|^\\d{17}(\\d|X|x))$";
+                break;
+            case 9: // /名字
+                pat = "^([A-Za-z]|[\u4E00-\u9FA5])+$";
+                break;
+            case 10: // /时间 时：分：
+                pat = "^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$";
+                break;
+        }
+        Pattern p = Pattern.compile(pat);
+        Matcher m = p.matcher(ins);
+        return m.matches();
     }
 
 }

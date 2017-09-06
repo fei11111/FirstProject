@@ -154,6 +154,8 @@
     <string name="address">地址</string>
     <string name="add_address">添加收货地址</string>
     <string name="confirm_address">确认收货地址</string>
+    <string name="default_address">默认地址</string>
+    <string name="delete">删除</string>
 
     <!-- Strings related to Settings -->
 

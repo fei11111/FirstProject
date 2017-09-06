@@ -2,6 +2,7 @@
 <resources>
     <color name="colorWhite">#fff</color>
     <color name="colorPrimary">#4CAF50</color>
+    <color name="colorAccent">#4CAF50</color>
     <color name="colorPrimaryDark">#2E7D32</color>
     <color name="colorRipple">#58FAAC</color>
     <color name="colorAlphaGreen">#a02E7D32</color>

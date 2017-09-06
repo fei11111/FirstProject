@@ -125,14 +125,17 @@
                             android:paddingTop="@dimen/size_5">
 
                             <RadioButton
+                                android:id="@+id/rb_male"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/selector_corner_radiobtn_bg"
                                 android:button="@null"
+                                android:checked="true"
                                 android:text="@string/male"
                                 android:textColor="@color/selector_color_gray_to_green" />
 
                             <RadioButton
+                                android:id="@+id/rb_female"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/size_10"
@@ -266,7 +269,7 @@
                             android:ellipsize="end"
                             android:gravity="center_vertical"
                             android:imeOptions="actionNext"
-                            android:inputType="phone"
+                            android:inputType="text"
                             android:lines="1"
                             android:paddingRight="@dimen/size_30"
                             android:textColor="@color/colorText"

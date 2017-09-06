@@ -70,10 +70,7 @@ dependencies {
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.8'
     compile files('libs/zxing.jar')
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
-    //3D地图so及jar
-    compile 'com.amap.api:3dmap:latest.integration'
-    //定位功能
-    compile 'com.amap.api:location:latest.integration'
-    //搜索功能
-    compile 'com.amap.api:search:latest.integration'
+    compile 'com.amap.api:3dmap:5.3.0'
+    compile 'com.amap.api:location:3.5.0'
+    compile 'com.amap.api:search:5.3.1'
 }

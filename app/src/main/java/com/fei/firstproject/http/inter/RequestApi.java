@@ -16,7 +16,10 @@ import java.util.Map;
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.FieldMap;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
@@ -63,5 +66,21 @@ public interface RequestApi {
 
     @GET("/bt-web/app/getRole")
     Observable<List<ChangeRoleEntity>> changeRole(@Query("userId") String userId);
+
+    @FormUrlEncoded
+    @POST("App/addReceiptAddress.do")
+    Observable<ResponseBody> addAddress(@FieldMap Map<String, String> map);
+
+    @GET("App/updReceiptAddress.do")
+    Observable<ResponseBody> editAddress(@QueryMap Map<String, String> map);
+
+    @GET("App/getReceiptAddress.do")
+    Observable<ResponseBody> getAddress(@Query("userId") String userId);
+
+    @GET("App/setDefaultReceiptAddress.do")
+    Observable<ResponseBody> setDefaultAddress(@QueryMap Map<String, String> map);
+
+    @GET("App/delReceiptAddress.do")
+    Observable<ResponseBody> delAddress(@QueryMap Map<String, String> map);
 
 }
