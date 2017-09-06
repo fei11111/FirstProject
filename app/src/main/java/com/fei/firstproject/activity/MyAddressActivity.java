@@ -158,8 +158,36 @@ public class MyAddressActivity extends BaseListActivity {
         }
     };
 
-    private void delAddress(AddressEntity addressEntity) {
-
+    private void delAddress(final AddressEntity addressEntity) {
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", AppConfig.user.getId());
+        map.put("receiptAddrId", addressEntity.getReceiptAddrId());
+        Observable<ResponseBody> delAddress = RetrofitFactory.getBigDb().delAddress(map);
+        delAddress.compose(this.<ResponseBody>createTransformer(false))
+                .subscribe(new BaseWithoutBaseEntityObserver<ResponseBody>(this) {
+                    @Override
+                    protected void onHandleSuccess(ResponseBody responseBody) {
+                        try {
+                            String string = responseBody.string();
+                            if (!TextUtils.isEmpty(string)) {
+                                JSONObject json = new JSONObject(string);
+                                if (json.getString("status").equals("1")) {
+                                    myAddressAdapter.getAddressEntities().remove(addressEntity);
+                                    myAddressAdapter.notifyDataSetChanged();
+                                    Utils.showToast(MyAddressActivity.this, "删除成功");
+                                } else {
+                                    Utils.showToast(MyAddressActivity.this, "删除失败");
+                                }
+                            } else {
+                                Utils.showToast(MyAddressActivity.this, "删除失败");
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
     private void setDefaultAddress(String receiptAddrId, final MyAddressAdapter.OnCallBack onCallBack) {
