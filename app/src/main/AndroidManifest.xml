@@ -39,7 +39,7 @@
 
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="f8a6721ab93f1ea945ba60b33fde61b5"/>
+            android:value="f8a6721ab93f1ea945ba60b33fde61b5" />
 
         <activity
             android:name=".activity.MainActivity"
@@ -66,9 +66,11 @@
         <activity android:name=".activity.AddAddressOrUpdateActivity" />
         <activity android:name=".activity.MyAddressActivity" />
         <activity android:name=".activity.MapActivity" />
+        <activity android:name=".activity.AboutUsActivity" />
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true" />
+        <activity android:name=".activity.AccountSecurityActivity" />
     </application>
 
 </manifest>

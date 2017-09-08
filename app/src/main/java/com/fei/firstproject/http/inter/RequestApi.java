@@ -71,8 +71,9 @@ public interface RequestApi {
     @POST("App/addReceiptAddress.do")
     Observable<ResponseBody> addAddress(@FieldMap Map<String, String> map);
 
-    @GET("App/updReceiptAddress.do")
-    Observable<ResponseBody> editAddress(@QueryMap Map<String, String> map);
+    @FormUrlEncoded
+    @POST("App/updReceiptAddress.do")
+    Observable<ResponseBody> editAddress(@FieldMap Map<String, String> map);
 
     @GET("App/getReceiptAddress.do")
     Observable<ResponseBody> getAddress(@Query("userId") String userId);

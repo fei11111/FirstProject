@@ -1,10 +1,12 @@
 package com.fei.firstproject.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2017/9/6.
  */
 
-public class AddressEntity {
+public class AddressEntity implements Serializable{
 
     private String receiptUserName;
     private String receiptTel;

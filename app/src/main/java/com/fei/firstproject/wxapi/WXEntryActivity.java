@@ -1,6 +1,7 @@
 package com.fei.firstproject.wxapi;
 
 import android.app.Activity;
+import android.content.Intent;
 
 import com.fei.firstproject.utils.LogUtils;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
@@ -12,6 +13,11 @@ import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
  */
 
 public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+    }
 
     @Override
     public void onReq(BaseReq baseReq) {

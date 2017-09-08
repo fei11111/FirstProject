@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="0dp">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <com.fei.firstproject.widget.AppHeadView
+                android:id="@+id/appHeadView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:leftDrawable="@drawable/selector_head_left_arrow"
+                app:leftPadding="@dimen/size_10"
+                app:leftStyle="image"
+                app:leftVisible="visible"
+                app:middleStyle="text"
+                app:middleText="@string/account_security"
+                app:rightVisible="invisible"></com.fei.firstproject.widget.AppHeadView>
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10"
+        android:background="@color/colorWhite"
+        android:orientation="vertical"
+        app:divider="@drawable/shape_line"
+        app:showDividers="middle">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:paddingBottom="@dimen/size_10"
+            android:paddingLeft="@dimen/size_16"
+            android:paddingRight="@dimen/size_16"
+            android:paddingTop="@dimen/size_10">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/user_name"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/tx_15" />
+
+            <TextView
+                android:id="@+id/tv_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:textColor="@color/colorTextSub"
+                android:textSize="@dimen/tx_15" />
+
+        </RelativeLayout>
+
+        <com.fei.firstproject.widget.PartHeadView
+            android:id="@+id/phv_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/binding_phone"></com.fei.firstproject.widget.PartHeadView>
+
+        <com.fei.firstproject.widget.PartHeadView
+            android:id="@+id/phv_update_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/update_password"></com.fei.firstproject.widget.PartHeadView>
+    </android.support.v7.widget.LinearLayoutCompat>
+</LinearLayout>

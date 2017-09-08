@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.fei.firstproject.R;
 import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.dialog.CityDialog;
+import com.fei.firstproject.entity.AddressEntity;
 import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
 import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.utils.Utils;
@@ -68,7 +69,7 @@ public class AddAddressOrUpdateActivity extends BaseActivity {
     RadioButton rbFemale;
 
     private CityDialog cityDialog;
-    private boolean isEdit;//是否是编辑
+    private AddressEntity addressEntity;
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
@@ -99,7 +100,25 @@ public class AddAddressOrUpdateActivity extends BaseActivity {
     }
 
     private void initTitle() {
+        addressEntity = (AddressEntity) getIntent().getSerializableExtra("addressEntity");
+        if (addressEntity == null) {
+            //新增
+            appHeadView.setMiddleText(getString(R.string.add_address));
+        } else {
+            //编辑
+            appHeadView.setMiddleText(getString(R.string.edit_address));
+            initData(addressEntity);
+        }
+    }
 
+    private void initData(AddressEntity addressEntity) {
+        etContacts.setText(addressEntity.getReceiptUserName());
+        etPhone.setText(addressEntity.getReceiptTel());
+        String[] split = addressEntity.getReceiptAddr().split(" ");
+        tvAddress.setText(split[0]);
+        if (split.length == 2) {
+            etDetailAddress.setText(split[1]);
+        }
     }
 
     private void initListener() {
@@ -184,10 +203,13 @@ public class AddAddressOrUpdateActivity extends BaseActivity {
         map.put("receiptAddr", address + detail_address);
         map.put("receiptTel", phone);
 
-        if (isEdit) {
-
-        } else {
+        if (addressEntity == null) {
             save(map);
+        } else {
+            addressEntity.setReceiptAddr(address + detail_address);
+            addressEntity.setReceiptUserName(contrats);
+            addressEntity.setReceiptTel(phone);
+            edit(addressEntity);
         }
 
     }
@@ -208,6 +230,38 @@ public class AddAddressOrUpdateActivity extends BaseActivity {
                                 finish();
                             } else {
                                 Utils.showToast(AddAddressOrUpdateActivity.this, "添加失败!");
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+    }
+
+    private void edit(AddressEntity addressEntity) {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("userId", AppConfig.user.getId());
+        map.put("receiptUserName", addressEntity.getReceiptUserName());
+        map.put("receiptAddr", addressEntity.getReceiptAddr());
+        map.put("receiptTel", addressEntity.getReceiptTel());
+        map.put("receiptAddrId", addressEntity.getReceiptAddrId());
+        Observable<ResponseBody> editAddress = RetrofitFactory.getBigDb().editAddress(map);
+        editAddress.compose(this.<ResponseBody>createTransformer(false))
+                .subscribe(new BaseWithoutBaseEntityObserver<ResponseBody>(this) {
+                    @Override
+                    protected void onHandleSuccess(ResponseBody responseBody) {
+                        try {
+                            String string = responseBody.string();
+                            JSONObject result = new JSONObject(string);
+                            String status = result.getString("status");
+                            if (status.equals("1")) {
+                                Utils.showToast(AddAddressOrUpdateActivity.this, "修改成功!");
+                                setResult(RESULT_OK);
+                                finish();
+                            } else {
+                                Utils.showToast(AddAddressOrUpdateActivity.this, "修改成功!");
                             }
                         } catch (IOException e) {
                             e.printStackTrace();

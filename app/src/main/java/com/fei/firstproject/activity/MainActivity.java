@@ -121,7 +121,7 @@ public class MainActivity extends BaseActivity {
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.transaction = "test";
         req.message = msg;
-        req.scene = SendMessageToWX.Req.WXSceneTimeline;
+        req.scene = SendMessageToWX.Req.WXSceneTimeline;//WXSceneSession会话 WXSceneTimeline朋友圈
         api.sendReq(req);
     }
 

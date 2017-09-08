@@ -30,7 +30,6 @@
                 app:leftStyle="image"
                 app:leftVisible="visible"
                 app:middleStyle="text"
-                app:middleText="@string/add_address"
                 app:rightVisible="invisible"></com.fei.firstproject.widget.AppHeadView>
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>

@@ -333,23 +333,6 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BaseIn
         tipDialog.show();
     }
 
-//    private void baseLayout(){
-//        public void offset(View child,int dy){
-//            int old = offsetTotal;
-//            int top = offsetTotal - dy;
-//            top = Math.max(top, -child.getHeight());
-//            top = Math.min(top, 0);
-//            offsetTotal = top;
-//            if (old == offsetTotal){
-//                scrolling = false;
-//                return;
-//            }
-//            int delta = offsetTotal-old;
-//            child.offsetTopAndBottom(delta);
-//            scrolling = true;
-//        }
-//    }
-
     @Nullable
     public AppHeadView getAppHeadView() {
         return appHeadView;

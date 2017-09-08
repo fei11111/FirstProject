@@ -153,9 +153,14 @@
     <string name="phone">电话</string>
     <string name="address">地址</string>
     <string name="add_address">添加收货地址</string>
+    <string name="edit_address">编辑收货地址</string>
     <string name="confirm_address">确认收货地址</string>
     <string name="default_address">默认地址</string>
     <string name="delete">删除</string>
+    <string name="version">版本</string>
+    <string name="binding_phone">绑定电话</string>
+    <string name="update_password">修改密码</string>
+    <string name="product_lib">产品库</string>
 
     <!-- Strings related to Settings -->
 

@@ -32,7 +32,7 @@ import okhttp3.ResponseBody;
 
 public class MyAddressActivity extends BaseListActivity {
 
-    private static final int REQUEST_ACTIVITY_CODE_ADD = 200;
+    private static final int REQUEST_ACTIVITY_CODE_ADD_OR_UPDATE = 200;
     private MyAddressAdapter myAddressAdapter;
 
     @Override
@@ -74,15 +74,15 @@ public class MyAddressActivity extends BaseListActivity {
 
     @OnClick(R.id.btn_base_list)
     void clickAddAddress(View view) {
-        startActivityWithCode(new Intent(this, AddAddressOrUpdateActivity.class), REQUEST_ACTIVITY_CODE_ADD);
+        startActivityWithCode(new Intent(this, AddAddressOrUpdateActivity.class), REQUEST_ACTIVITY_CODE_ADD_OR_UPDATE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_ACTIVITY_CODE_ADD) {
+        if (requestCode == REQUEST_ACTIVITY_CODE_ADD_OR_UPDATE) {
             if (resultCode == RESULT_OK) {
-                initRequest();
+                getAddress();
             }
         }
     }
@@ -144,7 +144,9 @@ public class MyAddressActivity extends BaseListActivity {
     private MyAddressAdapter.OnItemContentClickLstener onItemContentClickLstener = new MyAddressAdapter.OnItemContentClickLstener() {
         @Override
         public void onEditAddress(AddressEntity addressEntity) {
-
+            Intent intent = new Intent(MyAddressActivity.this, AddAddressOrUpdateActivity.class);
+            intent.putExtra("addressEntity", addressEntity);
+            startActivityWithCode(intent, REQUEST_ACTIVITY_CODE_ADD_OR_UPDATE);
         }
 
         @Override

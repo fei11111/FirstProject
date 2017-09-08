@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.Observable;
@@ -132,9 +131,19 @@ public class SettingActivity extends BaseActivity {
         checkPermissions(new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_PERMISSION_TELEPHONE);
     }
 
+    @OnClick(R.id.phv_account_security)
+    void clickAccountSecurity(View view) {
+        startActivityWithoutCode(new Intent(this, AccountSecurityActivity.class));
+    }
+
     @OnClick(R.id.phv_my_address)
     void clickMyAddress(View view) {
         startActivityWithoutCode(new Intent(this, MyAddressActivity.class));
+    }
+
+    @OnClick(R.id.phv_about_us)
+    void clickAboutUs(View view) {
+        startActivityWithoutCode(new Intent(this, AboutUsActivity.class));
     }
 
     private void showTipDialog() {
@@ -184,10 +193,4 @@ public class SettingActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }
