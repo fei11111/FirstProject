@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.fei.banner.Banner;
 import com.fei.firstproject.R;
+import com.fei.firstproject.activity.ProductLibActivity;
 import com.fei.firstproject.activity.RecommendPlanActivity;
 import com.fei.firstproject.adapter.NcwAdapter;
 import com.fei.firstproject.adapter.RecommendPlanAdapter;
@@ -268,7 +269,7 @@ public class MainFragment extends BaseFragment {
         }
     }
 
-    private View createItemView(int tabWidth, String menuName, int drawable) {
+    private View createItemView(int tabWidth, final String menuName, int drawable) {
         View itemView = LayoutInflater.from(activity).inflate(R.layout.item_head_menu, null);
         ImageView iv_head_menu = ButterKnife.findById(itemView, R.id.iv_head_menu);
         TextView tv_head_menu = ButterKnife.findById(itemView, R.id.tv_head_menu);
@@ -277,7 +278,21 @@ public class MainFragment extends BaseFragment {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (menuName.equals(getResources().getString(R.string.tjgl))) {
 
+                } else if (menuName.equals(getResources().getString(R.string.zjzs))) {
+
+                } else if (menuName.equals(getResources().getString(R.string.ncsc))) {
+
+                } else if (menuName.equals(getResources().getString(R.string.nydz))) {
+
+                } else if (menuName.equals(getResources().getString(R.string.cpk))) {
+                    startActivityWithoutCode(new Intent(activity, ProductLibActivity.class));
+                } else if (menuName.equals(getResources().getString(R.string.schq))) {
+
+                } else if (menuName.equals(getResources().getString(R.string.cl))) {
+
+                }
             }
         });
         iv_head_menu.setImageResource(drawable);

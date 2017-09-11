@@ -4,6 +4,7 @@ import android.view.View;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.MyMessageAdapter;
+import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.entity.BaseEntity;
 import com.fei.firstproject.entity.MessageEntity;
 import com.fei.firstproject.http.BaseObserver;
@@ -57,7 +58,7 @@ public class MessageActivity extends BaseListActivity {
         Map<String, String> map = new HashMap<>();
         map.put("currentPage", currentPage + "");
         map.put("pageSize", "10");
-        map.put("userId", "1119200");//AppConfig.user.getId()
+        map.put("userId", AppConfig.user.getId());
         final Observable<BaseEntity<List<MessageEntity>>> message = RetrofitFactory.getBtWeb().getMessage(map);
         message.compose(this.<BaseEntity<List<MessageEntity>>>createTransformer(true))
                 .subscribe(new BaseObserver<List<MessageEntity>>(this) {

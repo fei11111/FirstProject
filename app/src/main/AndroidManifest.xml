@@ -71,6 +71,8 @@
             android:name=".wxapi.WXEntryActivity"
             android:exported="true" />
         <activity android:name=".activity.AccountSecurityActivity" />
+        <activity android:name=".activity.ProductLibActivity" />
+        <activity android:name=".activity.ProductDetailActivity" />
     </application>
 
 </manifest>

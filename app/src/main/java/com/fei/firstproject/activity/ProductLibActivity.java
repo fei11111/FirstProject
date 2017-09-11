@@ -1,14 +1,80 @@
 package com.fei.firstproject.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.fei.firstproject.R;
+import com.fei.firstproject.adapter.ProductLibAdapter;
+import com.fei.firstproject.adapter.SingleTextAdapter;
+import com.fei.firstproject.dialog.BottomListDialog;
+import com.fei.firstproject.entity.ProductAssitEntity;
+import com.fei.firstproject.entity.ProductLibEntity;
+import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
+import com.fei.firstproject.http.factory.RetrofitFactory;
+import com.fei.firstproject.inter.OnItemClickListener;
+import com.fei.firstproject.utils.Utils;
+import com.fei.firstproject.widget.AppHeadView;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import butterknife.BindView;
+import butterknife.OnClick;
+import io.reactivex.Observable;
+import okhttp3.ResponseBody;
+
+import static com.fei.firstproject.R.id.tv_craft;
+import static com.fei.firstproject.R.id.tv_series;
+import static com.fei.firstproject.R.id.tv_type;
 
 /**
  * Created by Administrator on 2017/9/8.
  */
 
 public class ProductLibActivity extends BaseActivity {
+
+    @BindView(R.id.app_bar_layout)
+    AppBarLayout appBarLayout;
+    @BindView(tv_series)
+    TextView tvSeries;
+    @BindView(R.id.rl_series)
+    RelativeLayout rlSeries;
+    @BindView(tv_craft)
+    TextView tvCraft;
+    @BindView(R.id.rl_craft)
+    RelativeLayout rlCraft;
+    @BindView(tv_type)
+    TextView tvType;
+    @BindView(R.id.rl_type)
+    RelativeLayout rlType;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
+
+    private int currentPage = 1;
+    private BottomListDialog bottomListDialog;
+    private ProductLibAdapter productLibAdapter;
+    private SingleTextAdapter singleTextAdapter;
+
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
 
@@ -31,11 +97,263 @@ public class ProductLibActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
+        initListener();
+        initRecyclerView();
+    }
 
+    private void initRecyclerView() {
+        setRecycleViewSetting(recyclerView);
+    }
+
+    private void initListener() {
+        appHeadView.setOnLeftRightClickListener(new AppHeadView.onAppHeadViewListener() {
+            @Override
+            public void onLeft(View view) {
+                onBackPressed();
+            }
+
+            @Override
+            public void onRight(View view) {
+                currentPage = 1;
+                Utils.hideKeyBoard(ProductLibActivity.this);
+                initRequest();
+            }
+
+            @Override
+            public void onEdit(TextView v, int actionId, KeyEvent event) {
+                currentPage = 1;
+                Utils.hideKeyBoard(ProductLibActivity.this);
+                initRequest();
+            }
+        });
+
+        refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                currentPage++;
+                initRequest();
+            }
+
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                currentPage = 1;
+                initRequest();
+            }
+        });
+    }
+
+    private void setRecycleViewSetting(RecyclerView recycleViewSetting) {
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, LinearLayout.VERTICAL);
+        recycleViewSetting.setLayoutManager(manager);
+        recycleViewSetting.addItemDecoration(dividerItemDecoration);
     }
 
     @Override
     public void initRequest() {
-
+        getProductLib();
     }
+
+    public void getProductLib() {
+        if (currentPage < 1) currentPage = 1;
+        String series = "";
+        String technology = "";
+        String type = "";
+        if (tvSeries.getTag() != null) {
+            series = (String) tvSeries.getTag();
+        }
+        if (tvCraft.getTag() != null) {
+            technology = (String) tvCraft.getTag();
+        }
+        if (tvType.getTag() != null) {
+            type = (String) tvType.getTag();
+        }
+        Map<String, String> map = new HashMap<>();
+        map.put("searchWord", appHeadView.getEtSearchText());
+        map.put("pageSize", "10");
+        map.put("currentPage", currentPage + "");
+        map.put("series", series);
+        map.put("technology", technology);
+        map.put("type", type);
+        Observable<ResponseBody> productLib = RetrofitFactory.getBtPlantWeb().getProductLib(map);
+        productLib.compose(this.<ResponseBody>createTransformer(true))
+                .subscribe(new BaseWithoutBaseEntityObserver<ResponseBody>(this) {
+                    @Override
+                    protected void onHandleSuccess(ResponseBody responseBody) {
+                        dismissLoading();
+                        refreshLayout.finishRefresh();
+                        refreshLayout.finishLoadmore();
+                        try {
+                            String string = responseBody.string();
+                            JSONObject json = new JSONObject(string);
+                            String imgHost = json.getString("imgHost");
+                            if (TextUtils.isEmpty(imgHost)) {
+                                imgHost = "";
+                            }
+                            String infos = json.getString("infos");
+                            if (TextUtils.isEmpty(infos)) {
+                                showNoDataView();
+                            } else {
+                                final JSONObject info = new JSONObject(infos);
+                                String data = info.getString("data");
+                                final List<ProductLibEntity> productLibEntities = JSON.parseArray(data, ProductLibEntity.class);
+                                if (productLibEntities != null && productLibEntities.size() > 0) {
+                                    refreshLayout.setVisibility(View.VISIBLE);
+                                    if (productLibAdapter == null) {
+                                        productLibAdapter = new ProductLibAdapter(ProductLibActivity.this, productLibEntities, imgHost);
+                                        productLibAdapter.setOnItemClickListener(new OnItemClickListener() {
+                                            @Override
+                                            public void onItemClick(View view) {
+                                                int position = recyclerView.getChildAdapterPosition(view);
+                                                ProductLibEntity productLibEntity = productLibAdapter.getProductLibEntities().get(position);
+                                                Intent intent = new Intent(ProductLibActivity.this, ProductDetailActivity.class);
+                                                intent.putExtra("matieralId", productLibEntity.getMatieralId());
+                                                startActivityWithoutCode(intent);
+                                            }
+                                        });
+                                        recyclerView.setAdapter(productLibAdapter);
+                                    } else {
+                                        if (currentPage == 1) {
+                                            productLibAdapter.setProductLibEntities(productLibEntities);
+                                        } else if (currentPage > 1) {
+                                            productLibAdapter.addProductLibEntities(productLibEntities);
+                                        }
+                                        productLibAdapter.notifyDataSetChanged();
+                                    }
+                                } else {
+                                    if (currentPage == 1) {
+                                        showNoDataView();
+                                    } else if (currentPage > 1) {
+                                        currentPage--;
+                                        Utils.showToast(ProductLibActivity.this, "没有更多数据");
+                                    }
+                                }
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    protected void onHandleError(String msg) {
+                        super.onHandleError(msg);
+                        currentPage--;
+                        refreshLayout.finishRefresh();
+                        refreshLayout.finishLoadmore();
+                        showRequestErrorView();
+                    }
+                });
+    }
+
+    @OnClick({R.id.rl_series, R.id.rl_craft, R.id.rl_type})
+    void clickCondition(View view) {
+        String url = "";
+        TextView tv = null;
+        switch (view.getId()) {
+            case R.id.rl_series:
+                url = RetrofitFactory.BT_PLANT_WEB_URL + "productKnowledge/app/findSeriesList";
+                tv = tvSeries;
+                break;
+            case R.id.rl_craft:
+                url = RetrofitFactory.BT_PLANT_WEB_URL + "productKnowledge/app/findTechnologyList";
+                tv = tvCraft;
+                break;
+            case R.id.rl_type:
+                url = RetrofitFactory.BT_PLANT_WEB_URL + "productKnowledge/app/findTypeList";
+                tv = tvType;
+                break;
+        }
+        getCondition(tv, url);
+    }
+
+    private void getCondition(final TextView tv, String url) {
+        proShow();
+        Observable<ResponseBody> condition = RetrofitFactory.getBtPlantWeb().getCondition(url);
+        condition.compose(this.<ResponseBody>createTransformer(false))
+                .subscribe(new BaseWithoutBaseEntityObserver<ResponseBody>(this) {
+                    @Override
+                    protected void onHandleSuccess(ResponseBody responseBody) {
+                        proDisimis();
+                        try {
+                            String response = responseBody.string();
+                            JSONObject json = new JSONObject(response);
+                            if (json.has("infos")) {
+                                String infos = json.getString("infos");
+                                if (TextUtils.isEmpty(infos)) {
+                                    showNoDataView();
+                                    Utils.showToast(ProductLibActivity.this, "没有数据");
+                                } else {
+                                    List<ProductAssitEntity> beans = JSON.parseArray(infos, ProductAssitEntity.class);
+                                    if (beans != null && beans.size() > 0) {
+                                        List<String> list = new ArrayList<>();
+                                        list.add(0, "全部");
+                                        for (ProductAssitEntity bean : beans
+                                                ) {
+                                            list.add(bean.getBNAME());
+                                        }
+                                        showConditionDialog(list, tv);
+                                    } else {
+                                        Utils.showToast(ProductLibActivity.this, "没有数据");
+                                        showNoDataView();
+                                    }
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    protected void onHandleError(String msg) {
+                        super.onHandleError(msg);
+                        proDisimis();
+                    }
+                });
+    }
+
+    private void showConditionDialog(final List<String> name, final TextView tv) {
+        String title = "";
+        switch (tv.getId()) {
+            case R.id.tv_series:
+                title = "系列";
+                break;
+            case R.id.tv_craft:
+                title = "工艺";
+                break;
+            case R.id.tv_type:
+                title = "类型";
+                break;
+        }
+        if (bottomListDialog == null) {
+            bottomListDialog = new BottomListDialog(this);
+            singleTextAdapter = new SingleTextAdapter(this, name);
+            bottomListDialog.setAdapter(singleTextAdapter);
+        } else {
+            singleTextAdapter.setNames(name);
+            singleTextAdapter.notifyDataSetChanged();
+        }
+        final String str = title;
+        bottomListDialog.setOnItemClickListener(new BottomListDialog.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String text = name.get(position);
+                if (text.equals("全部")) {
+                    tv.setText(str);
+                    text = "";
+                } else {
+                    tv.setText(str + "\n" + text);
+                }
+                tv.setTag(text);
+                currentPage = 1;
+                getProductLib();
+            }
+        });
+        bottomListDialog.setTitle(title);
+        bottomListDialog.show();
+    }
+
 }

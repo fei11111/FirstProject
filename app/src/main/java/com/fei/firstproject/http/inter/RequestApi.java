@@ -6,6 +6,7 @@ import com.fei.firstproject.entity.ExpertEntity;
 import com.fei.firstproject.entity.MessageEntity;
 import com.fei.firstproject.entity.NcwEntity;
 import com.fei.firstproject.entity.OrderEntity;
+import com.fei.firstproject.entity.ProductCaseEntity;
 import com.fei.firstproject.entity.RecommendEntity;
 import com.fei.firstproject.entity.SelfInfoEntity;
 import com.fei.firstproject.entity.UserEntity;
@@ -22,6 +23,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
+import retrofit2.http.Url;
 
 /**
  * Created by Administrator on 2017/7/27.
@@ -83,5 +85,18 @@ public interface RequestApi {
 
     @GET("App/delReceiptAddress.do")
     Observable<ResponseBody> delAddress(@QueryMap Map<String, String> map);
+
+    @FormUrlEncoded
+    @POST("productKnowledge/app/productKnowledgeList")
+    Observable<ResponseBody> getProductLib(@FieldMap Map<String, String> map);
+
+    @GET
+    Observable<ResponseBody> getCondition(@Url String url);
+
+    @GET("productKnowledge/app/findProductById")
+    Observable<ResponseBody> getProductDetail(@Query("matieralId") String matieralId);
+
+    @GET("plantApFrom/app/queryCheckModelLand")
+    Observable<BaseEntity<List<ProductCaseEntity>>> getProductCase(@QueryMap Map<String, String> map);
 
 }
