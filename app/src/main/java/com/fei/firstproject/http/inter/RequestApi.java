@@ -99,4 +99,11 @@ public interface RequestApi {
     @GET("plantApFrom/app/queryCheckModelLand")
     Observable<BaseEntity<List<ProductCaseEntity>>> getProductCase(@QueryMap Map<String, String> map);
 
+    @GET("productKnowledge/app/getRetailstoresByAddress")
+    Observable<ResponseBody> getRetailStores(@QueryMap Map<String, String> map);
+
+    @GET("productKnowledge/app/getLatAndLngByAddress")
+    Observable<ResponseBody> getLocation(@Query("address") String address);
+
+
 }

@@ -73,6 +73,7 @@
         <activity android:name=".activity.AccountSecurityActivity" />
         <activity android:name=".activity.ProductLibActivity" />
         <activity android:name=".activity.ProductDetailActivity" />
+        <activity android:name=".activity.RetailersInfoActivity" />
     </application>
 
 </manifest>

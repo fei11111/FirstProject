@@ -1,5 +1,6 @@
 package com.fei.firstproject.activity;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutCompat;
@@ -55,6 +56,7 @@ public class ProductDetailActivity extends BaseActivity {
     LinearLayoutCompat llProductCase;
 
     private String matieralId;
+    private static final int REQUEST_PERMISSION_CODE_LOCATION = 100;
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
@@ -91,7 +93,10 @@ public class ProductDetailActivity extends BaseActivity {
 
             @Override
             public void onRight(View view) {
-
+                checkPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.READ_PHONE_STATE,
+                                Manifest.permission.READ_EXTERNAL_STORAGE},
+                        REQUEST_PERMISSION_CODE_LOCATION);
             }
 
             @Override
@@ -174,5 +179,4 @@ public class ProductDetailActivity extends BaseActivity {
                     }
                 });
     }
-
 }

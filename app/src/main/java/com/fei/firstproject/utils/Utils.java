@@ -2,8 +2,12 @@ package com.fei.firstproject.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.net.Uri;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.DisplayMetrics;
@@ -13,7 +17,10 @@ import android.widget.Toast;
 import com.fei.firstproject.toast.ToastCompat;
 
 import java.lang.reflect.Field;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -179,7 +186,7 @@ public class Utils {
     public static String userNameReplaceWithStar(String userName) {
         String userNameAfterReplaced = "";
 
-        if (userName == null){
+        if (userName == null) {
             userName = "";
         }
 
@@ -220,7 +227,7 @@ public class Utils {
 
     /**
      * 身份证号替换，保留前四位和后四位
-     *
+     * <p>
      * 如果身份证号为空 或者 null ,返回null ；否则，返回替换后的字符串；
      *
      * @param idCard 身份证号
@@ -237,7 +244,7 @@ public class Utils {
 
     /**
      * 银行卡替换，保留后四位
-     *
+     * <p>
      * 如果银行卡号为空 或者 null ,返回null ；否则，返回替换后的字符串；
      *
      * @param bankCard 银行卡号
@@ -249,6 +256,65 @@ public class Utils {
             return null;
         } else {
             return replaceAction(bankCard, "(?<=\\d{0})\\d(?=\\d{4})");
+        }
+    }
+
+    public static boolean isAvilible(Context context, String packageName) {
+        //获取packagemanager
+        final PackageManager packageManager = context.getPackageManager();
+        //获取所有已安装程序的包信息
+        List<PackageInfo> packageInfos = packageManager.getInstalledPackages(0);
+        //用于存储所有已安装程序的包名
+        List<String> packageNames = new ArrayList<String>();
+        //从pinfo中将包名字逐一取出，压入pName list中
+        if (packageInfos != null) {
+            for (int i = 0; i < packageInfos.size(); i++) {
+                String packName = packageInfos.get(i).packageName;
+                packageNames.add(packName);
+            }
+        }
+        //判断packageNames中是否有目标程序的包名，有TRUE，没有FALSE
+        return packageNames.contains(packageName);
+    }
+
+    public static void toBaiduMap(Context mContext, int[] location) {
+        Intent intent = null;
+        if (Utils.isAvilible(mContext, "com.baidu.BaiduMap")) {//传入指定应用包名
+            try {
+                intent = Intent.getIntent("intent://map/direction?" +
+                        //"origin=latlng:"+"34.264642646862,108.95108518068&" +   //起点  此处不传值默认选择当前位置
+                        "destination=latlng:" + location[0] + "," + location[1] + "|name:我的目的地" +        //终点
+                        "&mode=driving&" +          //导航路线方式
+                        "region=北京" +           //
+                        "&src=慧医#Intent;scheme=bdapp;package=com.baidu.BaiduMap;end");
+                mContext.startActivity(intent); //启动调用
+            } catch (URISyntaxException e) {
+                LogUtils.e("intent", e.getMessage());
+            }
+        } else {//未安装
+            //market为路径，id为包名
+            //显示手机上所有的market商店
+            Utils.showToast(mContext, "您尚未安装百度地图");
+            Uri uri = Uri.parse("market://details?id=com.baidu.BaiduMap");
+            intent = new Intent(Intent.ACTION_VIEW, uri);
+            mContext.startActivity(intent);
+        }
+    }
+
+    public static void toGaodeMap(Context mContext, int[] location) {
+        Intent intent = null;
+        if (Utils.isAvilible(mContext, "com.autonavi.minimap")) {
+            try {
+                intent = Intent.getIntent("androidamap://navi?sourceApplication=慧医&poiname=我的目的地&lat=" + location[0] + "&lon=" + location[1] + "&dev=0");
+                mContext.startActivity(intent);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Utils.showToast(mContext, "您尚未安装高德地图");
+            Uri uri = Uri.parse("market://details?id=com.autonavi.minimap");
+            intent = new Intent(Intent.ACTION_VIEW, uri);
+            mContext.startActivity(intent);
         }
     }
 

@@ -168,6 +168,8 @@
     <string name="purchase_product">购买产品</string>
     <string name="product_detail">产品详情</string>
     <string name="product_case">产品使用案例</string>
+    <string name="retailers_info">零售商信息</string>
+    <string name="to_here">去这里</string>
 
     <!-- Strings related to Settings -->
 
