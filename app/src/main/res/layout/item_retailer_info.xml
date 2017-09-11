@@ -9,6 +9,7 @@
     android:paddingTop="@dimen/size_10">
 
     <Button
+        android:id="@+id/btn_to_here"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -19,7 +20,44 @@
         android:textSize="@dimen/tx_15" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></LinearLayout>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/size_10"
+        android:layout_toLeftOf="@id/btn_to_here"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_shop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_5"
+            android:textSize="@dimen/tx_15"
+            android:textColor="@color/colorText"/>
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_5"
+            android:textSize="@dimen/tx_15"
+            android:textColor="@color/colorText"/>
+
+        <TextView
+            android:id="@+id/tv_tel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_5"
+            android:textSize="@dimen/tx_15"
+            android:textColor="@color/colorText"/>
+
+        <TextView
+            android:id="@+id/tv_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_5"
+            android:textSize="@dimen/tx_15"
+            android:textColor="@color/colorText" />
+
+    </LinearLayout>
 
 </RelativeLayout>
