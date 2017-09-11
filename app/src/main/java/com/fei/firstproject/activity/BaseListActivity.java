@@ -56,7 +56,7 @@ public abstract class BaseListActivity extends BaseActivity {
         setRecycleViewSetting(recyclerView);
     }
 
-    private void initListener() {
+    void initListener() {
         appHeadView.setOnLeftRightClickListener(new AppHeadView.onAppHeadViewListener() {
             @Override
             public void onLeft(View view) {

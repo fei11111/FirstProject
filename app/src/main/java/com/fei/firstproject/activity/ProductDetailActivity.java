@@ -1,6 +1,7 @@
 package com.fei.firstproject.activity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutCompat;
@@ -17,6 +18,7 @@ import com.fei.firstproject.R;
 import com.fei.firstproject.entity.ProductDetailEntity;
 import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
 import com.fei.firstproject.http.factory.RetrofitFactory;
+import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.AppHeadView;
 import com.fei.firstproject.widget.NoScrollRecyclerView;
 import com.fei.firstproject.widget.PartHeadView;
@@ -60,17 +62,23 @@ public class ProductDetailActivity extends BaseActivity {
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
-
+        if (requestCode == REQUEST_PERMISSION_CODE_LOCATION) {
+            showMissingPermissionDialog("需要获取定位权限", REQUEST_PERMISSION_CODE_LOCATION);
+        }
     }
 
     @Override
     public void permissionsGrantCallBack(int requestCode) {
-
+        if (requestCode == REQUEST_PERMISSION_CODE_LOCATION) {
+            startActivityWithoutCode(new Intent(this, RetailersInfoActivity.class));
+        }
     }
 
     @Override
     public void permissionDialogDismiss(int requestCode) {
-
+        if (requestCode == REQUEST_PERMISSION_CODE_LOCATION) {
+            Utils.showToast(this, "获取定位权限失败，无法跳转页面");
+        }
     }
 
     @Override

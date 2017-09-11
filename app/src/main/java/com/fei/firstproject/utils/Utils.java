@@ -277,7 +277,7 @@ public class Utils {
         return packageNames.contains(packageName);
     }
 
-    public static void toBaiduMap(Context mContext, int[] location) {
+    public static void toBaiduMap(Context mContext, String[] location) {
         Intent intent = null;
         if (Utils.isAvilible(mContext, "com.baidu.BaiduMap")) {//传入指定应用包名
             try {
@@ -301,7 +301,7 @@ public class Utils {
         }
     }
 
-    public static void toGaodeMap(Context mContext, int[] location) {
+    public static void toGaodeMap(Context mContext, String[] location) {
         Intent intent = null;
         if (Utils.isAvilible(mContext, "com.autonavi.minimap")) {
             try {

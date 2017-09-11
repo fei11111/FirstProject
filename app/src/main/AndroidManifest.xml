@@ -74,6 +74,7 @@
         <activity android:name=".activity.ProductLibActivity" />
         <activity android:name=".activity.ProductDetailActivity" />
         <activity android:name=".activity.RetailersInfoActivity" />
+        <service android:name="com.amap.api.location.APSService"></service>
     </application>
 
 </manifest>
