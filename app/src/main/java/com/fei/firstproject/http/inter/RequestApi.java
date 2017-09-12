@@ -112,4 +112,11 @@ public interface RequestApi {
     @GET("app/getUrgentExpert.do")
     Observable<ResponseBody> getUrgentExpertEntity();
 
+    @FormUrlEncoded
+    @POST("app/getHotQuestion.do")
+    Observable<ResponseBody> getHotQuestion(@FieldMap Map<String, String> map);
+
+    @GET("app/selUnresolvedQue.do")
+    Observable<ResponseBody> getUnSolveQuestion(@QueryMap Map<String,String> map);
+
 }

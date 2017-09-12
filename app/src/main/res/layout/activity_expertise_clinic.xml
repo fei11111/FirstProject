@@ -26,7 +26,6 @@
                 android:fitsSystemWindows="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/size_10"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.3">
 
@@ -48,7 +47,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/size_5"
                         android:text="@string/expertise_room"
-                        android:textColor="@color/colorWhite"
+                        android:textColor="@color/selector_color_white_to_gray"
                         android:textSize="@dimen/tx_15" />
 
                 </LinearLayout>
@@ -70,7 +69,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/emergency_room"
-                        android:textColor="@color/colorWhite"
+                        android:textColor="@color/selector_color_white_to_gray"
                         android:textSize="@dimen/tx_15" />
 
                 </LinearLayout>
@@ -122,7 +121,7 @@
             app:srlDisableContentWhenLoading="true"
             app:srlDisableContentWhenRefresh="true"
             app:srlEnableAutoLoadmore="false"
-            app:srlEnableLoadmore="true"
+            app:srlEnableLoadmore="false"
             app:srlEnableLoadmoreWhenContentNotFull="false"
             app:srlEnableOverScrollBounce="true"
             app:srlEnableScrollContentWhenLoaded="true"
@@ -166,7 +165,8 @@
                             android:id="@+id/vp_pro"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"
+                            android:overScrollMode="never" />
 
                         <LinearLayout
                             android:id="@+id/ll_right"
@@ -183,6 +183,7 @@
                     </LinearLayout>
 
                     <android.support.v7.widget.LinearLayoutCompat
+                        android:id="@+id/ll_unsolve_question"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/size_10"
@@ -196,7 +197,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             app:desc="@string/more"
-                            app:title="@string/hot_question"></com.fei.firstproject.widget.PartHeadView>
+                            app:title="@string/unsolve_question"></com.fei.firstproject.widget.PartHeadView>
 
                         <com.fei.firstproject.widget.NoScrollRecyclerView
                             android:id="@+id/rv_unsolve_question"
@@ -205,10 +206,12 @@
                     </android.support.v7.widget.LinearLayoutCompat>
 
                     <android.support.v7.widget.LinearLayoutCompat
+                        android:id="@+id/ll_hot_question"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/size_10"
                         android:orientation="vertical"
+                        android:visibility="gone"
                         app:divider="@drawable/shape_line"
                         app:showDividers="middle">
 
