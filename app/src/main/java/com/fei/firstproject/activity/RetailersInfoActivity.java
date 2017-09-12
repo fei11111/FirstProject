@@ -7,14 +7,12 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.RetailerInfoAdapter;
 import com.fei.firstproject.entity.RetailStoresEntity;
 import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
 import com.fei.firstproject.http.factory.RetrofitFactory;
+import com.fei.firstproject.utils.LocationUtils;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.AppHeadView;
 
@@ -35,19 +33,16 @@ import okhttp3.ResponseBody;
 
 public class RetailersInfoActivity extends BaseListActivity {
 
-    private AMapLocationClient mapLocationClient;
-    private AMapLocationClientOption mapLocationClientOption;
+
     private String province;
     private String city;
     private String district;
     private RetailerInfoAdapter retailerInfoAdapter;
+    private LocationUtils locationUtils;
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mapLocationClient != null) {
-            mapLocationClient.onDestroy();
-        }
     }
 
     @Override
@@ -89,7 +84,7 @@ public class RetailersInfoActivity extends BaseListActivity {
             @Override
             public void onRight(View view) {
                 currentPage = 1;
-                mapLocationClient.startLocation();
+                locationUtils.startLocation();
             }
 
             @Override
@@ -99,24 +94,9 @@ public class RetailersInfoActivity extends BaseListActivity {
     }
 
     private void initLocation() {
-        initLocationOption();
-        initLocationClient();
-    }
-
-    private void initLocationClient() {
-        mapLocationClient = new AMapLocationClient(this);
-        mapLocationClient.setLocationOption(mapLocationClientOption);
-        mapLocationClient.setLocationListener(aMapLocationListener);
-        mapLocationClient.startLocation();
-    }
-
-    private void initLocationOption() {
-        mapLocationClientOption = new AMapLocationClientOption();
-        mapLocationClientOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-        mapLocationClientOption.setInterval(3000);
-        mapLocationClientOption.setNeedAddress(true);
-        mapLocationClientOption.setHttpTimeOut(10000);
-        mapLocationClientOption.setLocationCacheEnable(true);
+        locationUtils = LocationUtils.getInstance(this);
+        locationUtils.setOnLocationCallBackListener(onLocationCallBackListener);
+        locationUtils.startLocation();
     }
 
     private void initAppHeadView() {
@@ -128,22 +108,18 @@ public class RetailersInfoActivity extends BaseListActivity {
         appHeadView.setRightDrawable(R.drawable.selector_ic_location);
     }
 
-    private AMapLocationListener aMapLocationListener = new AMapLocationListener() {
+    private LocationUtils.OnLocationCallBackListener onLocationCallBackListener = new LocationUtils.OnLocationCallBackListener() {
         @Override
-        public void onLocationChanged(AMapLocation aMapLocation) {
-            if (aMapLocation != null) {
-                if (aMapLocation.getErrorCode() == 0) {
-                    mapLocationClient.stopLocation();
-                    province = aMapLocation.getProvince();//省信息
-                    city = aMapLocation.getCity();//城市信息
-                    district = aMapLocation.getDistrict();//城区信息
-                    getRetailersInfo();
-                } else {
-                    showRequestErrorView();
-                }
-            } else {
-                showRequestErrorView();
-            }
+        public void onSuccess(AMapLocation aMapLocation) {
+            province = aMapLocation.getProvince();//省信息
+            city = aMapLocation.getCity();//城市信息
+            district = aMapLocation.getDistrict();//城区信息
+            getRetailersInfo();
+        }
+
+        @Override
+        public void onFail() {
+            showRequestErrorView();
         }
     };
 

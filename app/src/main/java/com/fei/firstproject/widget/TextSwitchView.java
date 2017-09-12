@@ -79,4 +79,8 @@ public class TextSwitchView extends TextSwitcher implements ViewSwitcher.ViewFac
         this.timeDelay = timeDelay;
         mHander.sendMessageDelayed(Message.obtain(), timeDelay);
     }
+
+    public void setResources(String[] resources) {
+        this.resources = resources;
+    }
 }

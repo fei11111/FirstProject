@@ -18,7 +18,7 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class FileUtil
+public class FileUtils
 {
 
     /**

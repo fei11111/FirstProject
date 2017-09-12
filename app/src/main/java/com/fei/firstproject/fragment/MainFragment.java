@@ -1,5 +1,6 @@
 package com.fei.firstproject.fragment;
 
+import android.Manifest;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -17,8 +18,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.services.weather.LocalWeatherForecastResult;
+import com.amap.api.services.weather.LocalWeatherLive;
+import com.amap.api.services.weather.LocalWeatherLiveResult;
+import com.amap.api.services.weather.WeatherSearch;
+import com.amap.api.services.weather.WeatherSearchQuery;
 import com.fei.banner.Banner;
 import com.fei.firstproject.R;
+import com.fei.firstproject.activity.FieldManageActivity;
 import com.fei.firstproject.activity.ProductLibActivity;
 import com.fei.firstproject.activity.RecommendPlanActivity;
 import com.fei.firstproject.adapter.NcwAdapter;
@@ -32,6 +40,7 @@ import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
 import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.image.GlideImageLoader;
 import com.fei.firstproject.inter.OnItemClickListener;
+import com.fei.firstproject.utils.LocationUtils;
 import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.web.WebActivity;
@@ -77,13 +86,16 @@ public class MainFragment extends BaseFragment {
     PartHeadView svNcw;
     @BindView(R.id.sv_recommend_plan)
     PartHeadView svRecommendPlan;
+    @BindView(R.id.ll_head_line)
+    LinearLayout ll_head_line;
 
     private List<String> imageUrls = new ArrayList<>();
     private SensorManager mSensorManager;
     private Sensor mSensor;
     private RecommendPlanAdapter recommendPlanAdapter;
     private NcwAdapter ncwAdapter;
-
+    private static final int REQUEST_PERMISSION_CODE_LOCATION = 100;
+    private LocationUtils locationUtils;
 
     @Override
     public void onDestroyView() {
@@ -119,12 +131,18 @@ public class MainFragment extends BaseFragment {
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
-
+        if (requestCode == REQUEST_PERMISSION_CODE_LOCATION) {
+            showMissingPermissionDialog("需要定位才能获取天气", REQUEST_PERMISSION_CODE_LOCATION);
+        }
     }
 
     @Override
     public void permissionsGrantCallBack(int requestCode) {
-
+        if (requestCode == REQUEST_PERMISSION_CODE_LOCATION) {
+            locationUtils = LocationUtils.getInstance(activity);
+            locationUtils.setOnLocationCallBackListener(onLocationCallBackListener);
+            locationUtils.startLocation();
+        }
     }
 
     @Override
@@ -141,10 +159,54 @@ public class MainFragment extends BaseFragment {
     public void init(Bundle savedInstanceState) {
         LogUtils.i("tag", "main");
         initBanner();
-        initSwitch();
+        initPermission();
         initMenu();
         //重力感应
         initSensor();
+    }
+
+    private LocationUtils.OnLocationCallBackListener onLocationCallBackListener = new LocationUtils.OnLocationCallBackListener() {
+        @Override
+        public void onSuccess(AMapLocation aMapLocation) {
+            WeatherSearchQuery mquery = new WeatherSearchQuery(aMapLocation.getCity(), WeatherSearchQuery.WEATHER_TYPE_LIVE);
+            WeatherSearch mweathersearch = new WeatherSearch(activity);
+            mweathersearch.setOnWeatherSearchListener(onWeatherSearchListener);
+            mweathersearch.setQuery(mquery);
+            mweathersearch.searchWeatherAsyn(); //异步搜索
+        }
+
+        @Override
+        public void onFail() {
+
+        }
+    };
+
+    private WeatherSearch.OnWeatherSearchListener onWeatherSearchListener = new WeatherSearch.OnWeatherSearchListener() {
+        @Override
+        public void onWeatherLiveSearched(LocalWeatherLiveResult weatherLiveResult, int rCode) {
+            if (rCode == 1000) {
+                if (weatherLiveResult != null && weatherLiveResult.getLiveResult() != null) {
+                    LocalWeatherLive weatherlive = weatherLiveResult.getLiveResult();
+                    String[] resources = {weatherlive.getCity(),
+                            weatherlive.getWeather() + " " + weatherlive.getTemperature() + "℃",
+                            "湿度 " + weatherlive.getHumidity() + "%",
+                            weatherlive.getWindDirection() + "风  " + weatherlive.getWindPower() + "级"};
+                    initSwitch(resources);
+                }
+            }
+        }
+
+        @Override
+        public void onWeatherForecastSearched(LocalWeatherForecastResult localWeatherForecastResult, int i) {
+
+        }
+    };
+
+    private void initPermission() {
+        checkPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.READ_PHONE_STATE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE},
+                REQUEST_PERMISSION_CODE_LOCATION);
     }
 
     @Override
@@ -279,7 +341,7 @@ public class MainFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 if (menuName.equals(getResources().getString(R.string.tjgl))) {
-
+                    startActivityWithoutCode(new Intent(activity, FieldManageActivity.class));
                 } else if (menuName.equals(getResources().getString(R.string.zjzs))) {
 
                 } else if (menuName.equals(getResources().getString(R.string.ncsc))) {
@@ -300,7 +362,9 @@ public class MainFragment extends BaseFragment {
         return itemView;
     }
 
-    private void initSwitch() {
+    private void initSwitch(String[] resource) {
+        ll_head_line.setVisibility(View.VISIBLE);
+        tsv.setResources(resource);
         tsv.setTimeDelay(2000);
     }
 

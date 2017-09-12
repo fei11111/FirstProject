@@ -10,8 +10,8 @@ import android.widget.LinearLayout;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.entity.CityEntity;
-import com.fei.firstproject.utils.CityCodeUtil;
-import com.fei.firstproject.utils.FileUtil;
+import com.fei.firstproject.utils.CityCodeUtils;
+import com.fei.firstproject.utils.FileUtils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -56,7 +56,7 @@ public class CityPickerLayout extends LinearLayout {
     private HashMap<String, List<CityEntity>> city_map = new HashMap<String, List<CityEntity>>();
     private HashMap<String, List<CityEntity>> couny_map = new HashMap<String, List<CityEntity>>();
 
-    private CityCodeUtil cityCodeUtil = CityCodeUtil.getSingleton();
+    private CityCodeUtils cityCodeUtil = CityCodeUtils.getSingleton();
     private String city_code_string;
     private String province_string;
     private String city_string;
@@ -87,7 +87,7 @@ public class CityPickerLayout extends LinearLayout {
             @Override
             public void run() {
                 JSONParser parser = new JSONParser();
-                String area_str = FileUtil.readAssets(context, "area.json");
+                String area_str = FileUtils.readAssets(context, "area.json");
                 province_list = parser.getJSONParserResult(area_str, "area0");
                 city_map = parser.getJSONParserResultArray(area_str, "area1");
                 couny_map = parser.getJSONParserResultArray(area_str, "area2");

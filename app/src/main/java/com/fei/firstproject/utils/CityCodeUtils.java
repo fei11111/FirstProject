@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * 城市代码
  */
-public class CityCodeUtil {
+public class CityCodeUtils {
 
     private ArrayList<String> province_list = new ArrayList<String>();
     private ArrayList<String> city_list = new ArrayList<String>();
@@ -22,10 +22,10 @@ public class CityCodeUtil {
     /**
      * 单例
      */
-    public static CityCodeUtil model;
+    public static CityCodeUtils model;
     private Context context;
 
-    private CityCodeUtil() {
+    private CityCodeUtils() {
     }
 
     public ArrayList<String> getProvince_list_code() {
@@ -58,9 +58,9 @@ public class CityCodeUtil {
      *
      * @return
      */
-    public static CityCodeUtil getSingleton() {
+    public static CityCodeUtils getSingleton() {
         if (null == model) {
-            model = new CityCodeUtil();
+            model = new CityCodeUtils();
         }
         return model;
     }
