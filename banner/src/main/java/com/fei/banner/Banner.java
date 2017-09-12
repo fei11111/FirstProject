@@ -423,6 +423,7 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
             adapter = new BannerPagerAdapter();
             viewPager.addOnPageChangeListener(this);
         }
+        viewPager.setChanged(true);
         viewPager.setAdapter(adapter);
         viewPager.setFocusable(true);
         viewPager.setCurrentItem(1);
@@ -455,8 +456,8 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
 //                    viewPager.setCurrentItem(currentItem, false);
 //                    handler.post(task);
 //                } else {
-                    viewPager.setCurrentItem(currentItem);
-                    handler.postDelayed(task, delayTime);
+                viewPager.setCurrentItem(currentItem);
+                handler.postDelayed(task, delayTime);
 //                }
             }
         }

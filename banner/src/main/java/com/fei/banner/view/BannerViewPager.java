@@ -24,6 +24,11 @@ public class BannerViewPager extends ViewPager {
     private State mState;
     private int oldPage;
     private int count = 0;
+    private boolean isChanged = false;
+
+    public void setChanged(boolean changed) {
+        isChanged = changed;
+    }
 
     public void setObjectForPosition(Object obj, int position) {
         mObjs.put(Integer.valueOf(position), obj);
@@ -73,9 +78,11 @@ public class BannerViewPager extends ViewPager {
     @Override
     protected void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-        if (position == count) {
-            super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-            return;
+        if (isChanged) {
+            if (position == count) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+                return;
+            }
         }
 
         if (mState == State.IDLE && positionOffset > 0) {
