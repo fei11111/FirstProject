@@ -107,6 +107,7 @@ public class RetailersInfoActivity extends BaseListActivity {
         mapLocationClient = new AMapLocationClient(this);
         mapLocationClient.setLocationOption(mapLocationClientOption);
         mapLocationClient.setLocationListener(aMapLocationListener);
+        mapLocationClient.startLocation();
     }
 
     private void initLocationOption() {
@@ -122,6 +123,7 @@ public class RetailersInfoActivity extends BaseListActivity {
         appHeadView.setFlHeadRightVisible(View.INVISIBLE);
         appHeadView.setMiddleStyle(AppHeadView.TEXT);
         appHeadView.setMiddleText(getResources().getString(R.string.retailers_info));
+        appHeadView.setFlHeadRightVisible(View.VISIBLE);
         appHeadView.setRightStyle(AppHeadView.IMAGE);
         appHeadView.setRightDrawable(R.drawable.selector_ic_location);
     }

@@ -74,6 +74,9 @@
         <activity android:name=".activity.ProductLibActivity" />
         <activity android:name=".activity.ProductDetailActivity" />
         <activity android:name=".activity.RetailersInfoActivity" />
+        <activity android:name=".activity.FieldManageActivity" />
+        <activity android:name=".activity.ExpertiseClinicActivity" />
+
         <service android:name="com.amap.api.location.APSService"></service>
     </application>
 

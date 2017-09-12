@@ -17,6 +17,7 @@ import java.util.Map;
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -99,11 +100,13 @@ public interface RequestApi {
     @GET("plantApFrom/app/queryCheckModelLand")
     Observable<BaseEntity<List<ProductCaseEntity>>> getProductCase(@QueryMap Map<String, String> map);
 
-    @GET("productKnowledge/app/getRetailstoresByAddress")
-    Observable<ResponseBody> getRetailStores(@QueryMap Map<String, String> map);
+    @FormUrlEncoded
+    @POST("productKnowledge/app/getRetailstoresByAddress")
+    Observable<ResponseBody> getRetailStores(@FieldMap Map<String, String> map);
 
-    @GET("productKnowledge/app/getLatAndLngByAddress")
-    Observable<ResponseBody> getLocation(@Query("address") String address);
+    @FormUrlEncoded
+    @POST("productKnowledge/app/getLatAndLngByAddress")
+    Observable<ResponseBody> getLocation(@Field("address") String address);
 
 
 }
