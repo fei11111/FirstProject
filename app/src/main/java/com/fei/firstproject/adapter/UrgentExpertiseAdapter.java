@@ -34,6 +34,10 @@ public class UrgentExpertiseAdapter extends PagerAdapter {
         this.expertEntities = expertEntities;
     }
 
+    public List<UrgentExpertEntity> getExpertEntities() {
+        return expertEntities;
+    }
+
     public UrgentExpertiseAdapter(Context mContext, List<UrgentExpertEntity> expertEntities, BannerViewPager vpPro) {
         this.mContext = mContext;
         this.expertEntities = expertEntities;

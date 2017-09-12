@@ -2,10 +2,12 @@ package com.fei.firstproject.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -29,6 +31,7 @@ import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 
@@ -65,8 +68,20 @@ public class ExpertiseClinicActivity extends BaseActivity {
     PartHeadView phvHotQuestion;
     @BindView(R.id.rv_hot_question)
     NoScrollRecyclerView rvHotQuestion;
+    @BindView(R.id.iv_left_arrow)
+    ImageView ivLeftArrow;
+    @BindView(R.id.iv_right_arrow)
+    ImageView ivRightArrow;
 
     private UrgentExpertiseAdapter urgentExpertiseAdapter;
+    private int urgentExpertiseSize = -1;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
@@ -91,9 +106,47 @@ public class ExpertiseClinicActivity extends BaseActivity {
     @Override
     public void init(Bundle savedInstanceState) {
         initListener();
+        initArrow();
+    }
+
+    private void initArrow() {
+        ivLeftArrow.setEnabled(false);
     }
 
     private void initListener() {
+        initAppHeadViewListener();
+        initViewPagerListener();
+    }
+
+    private void initViewPagerListener() {
+        vpPro.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    ivLeftArrow.setEnabled(false);
+                } else if (urgentExpertiseSize != -1) {
+                    if (position + 1 == urgentExpertiseSize) {
+                        ivRightArrow.setEnabled(false);
+                    } else {
+                        ivLeftArrow.setEnabled(true);
+                        ivRightArrow.setEnabled(true);
+                    }
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+    private void initAppHeadViewListener() {
         appHeadView.setOnLeftRightClickListener(new AppHeadView.onAppHeadViewListener() {
             @Override
             public void onLeft(View view) {
@@ -142,6 +195,7 @@ public class ExpertiseClinicActivity extends BaseActivity {
                                         urgentExpertiseAdapter.setExpertEntities(urgentExpertEntities);
                                         urgentExpertiseAdapter.notifyDataSetChanged();
                                     }
+                                    urgentExpertiseSize = urgentExpertEntities.size();
                                 }
                             }
                         } catch (IOException e) {
@@ -160,4 +214,5 @@ public class ExpertiseClinicActivity extends BaseActivity {
         getHotQuestion();
         getUrgentExpertise();
     }
+
 }
