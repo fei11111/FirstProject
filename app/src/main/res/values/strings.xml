@@ -170,6 +170,11 @@
     <string name="product_case">产品使用案例</string>
     <string name="retailers_info">零售商信息</string>
     <string name="to_here">去这里</string>
+    <string name="hot_question_hint">请输入热门问题关键字</string>
+    <string name="expertise_room">专家室</string>
+    <string name="emergency_room">急诊室</string>
+    <string name="hot_question">热门问题</string>
+    <string name="unsolve_question">未解决问题</string>
 
     <!-- Strings related to Settings -->
 

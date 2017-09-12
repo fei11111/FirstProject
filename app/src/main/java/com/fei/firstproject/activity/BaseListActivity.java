@@ -67,6 +67,7 @@ public abstract class BaseListActivity extends BaseActivity {
             public void onRight(View view) {
                 currentPage = 1;
                 Utils.hideKeyBoard(BaseListActivity.this);
+                showLoading();
                 initRequest();
             }
 
@@ -74,6 +75,7 @@ public abstract class BaseListActivity extends BaseActivity {
             public void onEdit(TextView v, int actionId, KeyEvent event) {
                 currentPage = 1;
                 Utils.hideKeyBoard(BaseListActivity.this);
+                showLoading();
                 initRequest();
             }
         });

@@ -32,7 +32,7 @@ import retrofit2.http.Url;
 
 public interface RequestApi {
 
-    //本来应该是以Observable<BaseEntity<UserEntity>> 形式返回，因为后台没同意，所以BaseEntity没用
+    //本来应该是以Observable<BaseEntity<UserEntity>> 形式返回，因为后台没统一，所以BaseEntity没用
 
     @GET("versionUpdate/update_info.do")
     Call<ResponseBody> update();
@@ -43,8 +43,9 @@ public interface RequestApi {
     @GET("api.php?op=content")
     Observable<List<NcwEntity>> getNcw();
 
-    @GET("app/field/getRecommendPlansMore.do")
-    Observable<BaseEntity<List<RecommendEntity>>> getRecommendPlan(@QueryMap Map<String, String> map);
+    @FormUrlEncoded
+    @POST("app/field/getRecommendPlansMore.do")
+    Observable<BaseEntity<List<RecommendEntity>>> getRecommendPlan(@FieldMap Map<String, String> map);
 
     @GET("app/notice/listNotices.do")
     Observable<BaseEntity<List<MessageEntity>>> getMessage(@QueryMap Map<String, String> map);
@@ -108,5 +109,7 @@ public interface RequestApi {
     @POST("productKnowledge/app/getLatAndLngByAddress")
     Observable<ResponseBody> getLocation(@Field("address") String address);
 
+    @GET("app/getUrgentExpert.do")
+    Observable<ResponseBody> getUrgentExpertEntity();
 
 }

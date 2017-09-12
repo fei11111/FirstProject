@@ -116,6 +116,7 @@ public class ProductLibActivity extends BaseActivity {
             public void onRight(View view) {
                 currentPage = 1;
                 Utils.hideKeyBoard(ProductLibActivity.this);
+                showLoading();
                 initRequest();
             }
 
@@ -123,6 +124,7 @@ public class ProductLibActivity extends BaseActivity {
             public void onEdit(TextView v, int actionId, KeyEvent event) {
                 currentPage = 1;
                 Utils.hideKeyBoard(ProductLibActivity.this);
+                showLoading();
                 initRequest();
             }
         });

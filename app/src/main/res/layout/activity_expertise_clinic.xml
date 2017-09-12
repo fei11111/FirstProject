@@ -136,7 +136,97 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
+                    <LinearLayout
+                        android:id="@+id/ll_urgent_pro"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_120"
+                        android:layout_marginBottom="@dimen/size_10"
+                        android:background="@color/colorWhite"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:id="@+id/ll_left"
+                            android:layout_width="@dimen/size_35"
+                            android:layout_height="match_parent"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/selector_left_arrow" />
+                        </LinearLayout>
+
+                        <com.fei.banner.view.BannerViewPager
+                            android:id="@+id/vp_pro"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1" />
+
+                        <LinearLayout
+                            android:id="@+id/ll_right"
+                            android:layout_width="@dimen/size_35"
+                            android:layout_height="match_parent"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/selector_right_arrow" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <android.support.v7.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/size_10"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        app:divider="@drawable/shape_line"
+                        app:showDividers="middle">
+
+                        <com.fei.firstproject.widget.PartHeadView
+                            android:id="@+id/phv_unsolve_question"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:desc="@string/more"
+                            app:title="@string/hot_question"></com.fei.firstproject.widget.PartHeadView>
+
+                        <com.fei.firstproject.widget.NoScrollRecyclerView
+                            android:id="@+id/rv_unsolve_question"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"></com.fei.firstproject.widget.NoScrollRecyclerView>
+                    </android.support.v7.widget.LinearLayoutCompat>
+
+                    <android.support.v7.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/size_10"
+                        android:orientation="vertical"
+                        app:divider="@drawable/shape_line"
+                        app:showDividers="middle">
+
+                        <com.fei.firstproject.widget.PartHeadView
+                            android:id="@+id/phv_hot_question"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:desc="@string/more"
+                            app:title="@string/hot_question"></com.fei.firstproject.widget.PartHeadView>
+
+                        <com.fei.firstproject.widget.NoScrollRecyclerView
+                            android:id="@+id/rv_hot_question"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"></com.fei.firstproject.widget.NoScrollRecyclerView>
+
+                        <include layout="@layout/app_bottom_signature" />
+
+                    </android.support.v7.widget.LinearLayoutCompat>
+
+                </LinearLayout>
 
             </android.support.v4.widget.NestedScrollView>
 

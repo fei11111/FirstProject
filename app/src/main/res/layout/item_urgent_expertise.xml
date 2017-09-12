@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
+    android:paddingBottom="@dimen/size_10"
+    android:paddingLeft="@dimen/size_16"
+    android:paddingRight="@dimen/size_16"
+    android:paddingTop="@dimen/size_10">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/ll_my_attention_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_icon"
+                android:layout_width="@dimen/size_56"
+                android:layout_height="@dimen/size_56"
+                android:src="@drawable/ic_app"
+                app:civ_border_color="@color/colorPrimary"
+                app:civ_border_width="@dimen/size_1" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/size_10"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/tx_15" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_10"
+            android:layout_toRightOf="@id/ll_my_attention_left"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/btn_attention"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    style="@style/ItemAttentionTextViewStyle"
+                    android:text="@string/service_time" />
+
+                <TextView
+                    android:id="@+id/tv_service_duration"
+                    style="@style/ItemAttentionTextViewStyle" />
+
+                <TextView
+                    style="@style/ItemAttentionTextViewStyle"
+                    android:text="@string/year" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_5"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/ItemAttentionTextViewStyle"
+                    android:text="@string/speciality_crop_" />
+
+                <TextView
+                    android:id="@+id/tv_spec_crop"
+                    style="@style/ItemAttentionTextViewStyle" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_5"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/ItemAttentionTextViewStyle"
+                    android:text="@string/speciality_skill_" />
+
+                <TextView
+                    android:id="@+id/tv_spec_skill"
+                    style="@style/ItemAttentionTextViewStyle" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_5"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/ItemAttentionTextViewStyle"
+                    android:text="@string/star_level" />
+
+                <RatingBar
+                    android:id="@+id/rb_star"
+                    style="@style/RoomRatingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:isIndicator="true"
+                    android:numStars="5"
+                    android:rating="1"></RatingBar>
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

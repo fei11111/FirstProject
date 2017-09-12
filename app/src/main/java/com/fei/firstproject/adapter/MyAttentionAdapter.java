@@ -61,7 +61,7 @@ public class MyAttentionAdapter extends RecyclerView.Adapter<MyAttentionAdapter.
 
     @Override
     public MyAttentionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_my_attention, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_expertise, parent, false);
         return new MyAttentionViewHolder(view);
     }
 

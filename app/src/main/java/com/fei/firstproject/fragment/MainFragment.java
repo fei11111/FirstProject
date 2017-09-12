@@ -26,6 +26,7 @@ import com.amap.api.services.weather.WeatherSearch;
 import com.amap.api.services.weather.WeatherSearchQuery;
 import com.fei.banner.Banner;
 import com.fei.firstproject.R;
+import com.fei.firstproject.activity.ExpertiseClinicActivity;
 import com.fei.firstproject.activity.FieldManageActivity;
 import com.fei.firstproject.activity.ProductLibActivity;
 import com.fei.firstproject.activity.RecommendPlanActivity;
@@ -343,7 +344,7 @@ public class MainFragment extends BaseFragment {
                 if (menuName.equals(getResources().getString(R.string.tjgl))) {
                     startActivityWithoutCode(new Intent(activity, FieldManageActivity.class));
                 } else if (menuName.equals(getResources().getString(R.string.zjzs))) {
-
+                    startActivityWithoutCode(new Intent(activity, ExpertiseClinicActivity.class));
                 } else if (menuName.equals(getResources().getString(R.string.ncsc))) {
 
                 } else if (menuName.equals(getResources().getString(R.string.nydz))) {
