@@ -99,6 +99,7 @@ public class MeFragment extends BaseFragment {
     private static final int REQUEST_FRAGMENT_CODE_CAMERA = 200;
 
     private boolean isAppHeadTitleChange = false;
+    private boolean isFirstEnter = true;
 
     @Override
     public void onDestroyView() {
@@ -194,10 +195,8 @@ public class MeFragment extends BaseFragment {
     private void initInfo() {
         if (AppConfig.ISLOGIN) {
             tvName.setText(AppConfig.user.getUserName());
-            refreshLayout.setEnableRefresh(true);
         } else {
             tvName.setText(getResources().getString(R.string.nologin));
-            refreshLayout.setEnableRefresh(false);
         }
     }
 
@@ -207,6 +206,13 @@ public class MeFragment extends BaseFragment {
             String tokenId = SPUtils.get(activity, "tokenId", "").toString();
             String deviceId = SPUtils.get(activity, "deviceId", "").toString();
             getUserInfo(tokenId, deviceId);
+        } else {
+            if (isFirstEnter) {
+                isFirstEnter = false;
+            } else {
+                refreshLayout.finishRefresh();
+                activity.showDialogWhenUnLogin();
+            }
         }
     }
 
