@@ -175,6 +175,7 @@
     <string name="emergency_room">急诊室</string>
     <string name="hot_question">热门问题</string>
     <string name="unsolve_question">未解决问题</string>
+    <string name="growing_crop">正在种植的作物</string>
 
     <string name="sharewechat_success">分享成功!!!</string>
     <string name="sharewechat_cancel">分享取消!!!</string>
