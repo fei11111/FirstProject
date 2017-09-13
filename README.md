@@ -9,6 +9,7 @@
 　4)图片加载框架: glide<br />
 　5)定位：高德地图<br/>
 　6)扫描：zxing<br/>
-　7)其他：EventBus<br/>
+  7)viewpager:jazzyviewPager
+　8)其他：EventBus<br/>
 
 
