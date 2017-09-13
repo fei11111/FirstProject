@@ -176,6 +176,10 @@
     <string name="hot_question">热门问题</string>
     <string name="unsolve_question">未解决问题</string>
 
+    <string name="sharewechat_success">分享成功!!!</string>
+    <string name="sharewechat_cancel">分享取消!!!</string>
+    <string name="sharewechat_deny">分享被拒绝!!!</string>
+    <string name="sharewechat_back">分享返回!!!</string>
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->

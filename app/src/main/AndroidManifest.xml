@@ -69,7 +69,8 @@
         <activity android:name=".activity.AboutUsActivity" />
         <activity
             android:name=".wxapi.WXEntryActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/DialogStyle" />
         <activity android:name=".activity.AccountSecurityActivity" />
         <activity android:name=".activity.ProductLibActivity" />
         <activity android:name=".activity.ProductDetailActivity" />

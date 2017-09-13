@@ -250,8 +250,8 @@ public class MainActivity extends BaseActivity {
         appHeadView.setMiddleSearchVisible(View.GONE);
         appHeadView.setTvTitleVisible(View.VISIBLE);
         appHeadView.setMiddleText("");
-        appHeadView.setLeftDrawable(R.drawable.ic_setting);
-        appHeadView.setRightDrawable(R.drawable.ic_share);
+        appHeadView.setLeftDrawable(R.drawable.selector_ic_setting);
+        appHeadView.setRightDrawable(R.drawable.selector_ic_share);
     }
 
     private void resetAllState() {
