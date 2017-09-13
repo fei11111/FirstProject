@@ -1,3 +1,30 @@
 1.选择图片
 2.下载文件
 3.查看图片
+
+ //圆形裁剪
+    Glide.with(this)
+        .load("http://inthecheesefactory.com/uploads/source/nestedfragment/fragments.png")
+        .bitmapTransform(new CropCircleTransformation(this))
+        .into(iv_0);
+    //圆角处理
+    Glide.with(this)
+        .load("http://inthecheesefactory.com/uploads/source/nestedfragment/fragments.png")
+        .bitmapTransform(new RoundedCornersTransformation(this,30,0, RoundedCornersTransformation.CornerType.ALL))
+        .into(iv_0);
+    //灰度处理
+    Glide.with(this)
+        .load("http://inthecheesefactory.com/uploads/source/nestedfragment/fragments.png")
+        .bitmapTransform(new GrayscaleTransformation(this))
+        .into(iv_0);
+    //模糊处理
+    Glide.with(this).load(R.drawable.demo)
+            .bitmapTransform(new BlurTransformation(context))
+            .into((ImageView) findViewById(R.id.image));
+
+             //用原图的1/10作为缩略图
+                Glide
+                    .with(this)
+                    .load("http://inthecheesefactory.com/uploads/source/nestedfragment/fragments.png")
+                    .thumbnail(0.1f)
+                    .into(iv_0);
