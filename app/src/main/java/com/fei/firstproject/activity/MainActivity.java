@@ -23,13 +23,12 @@ import com.fei.firstproject.fragment.MeFragment;
 import com.fei.firstproject.fragment.manager.FragmentInstanceManager;
 import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.Utils;
+import com.fei.firstproject.utils.WxApiUtils;
 import com.fei.firstproject.web.WebActivity;
 import com.fei.firstproject.widget.AppHeadView;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.modelmsg.WXTextObject;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -57,7 +56,7 @@ public class MainActivity extends BaseActivity {
     private MainFragment mainFragment;
     private MakeFragment makeFragment;
     private MeFragment meFragment;
-    private IWXAPI api;
+
     //权限请求
     private static final int REQUEST_PERMISSION_CODE_STORAGE = 100;
     private static final int REQUEST_PERMISSION_CODE_CAMERA = 101;
@@ -101,13 +100,6 @@ public class MainActivity extends BaseActivity {
         initToolBar();
         initSetting();
         initListener();
-        initWx();
-    }
-
-    //初始化微信
-    private void initWx() {
-        api = WXAPIFactory.createWXAPI(this, AppConfig.APP_ID, true);
-        api.registerApp(AppConfig.APP_ID);
     }
 
     private void sendWx() {
@@ -122,7 +114,7 @@ public class MainActivity extends BaseActivity {
         req.transaction = "test";
         req.message = msg;
         req.scene = SendMessageToWX.Req.WXSceneTimeline;//WXSceneSession会话 WXSceneTimeline朋友圈
-        api.sendReq(req);
+        WxApiUtils.getInstance(this).getIwxapi().sendReq(req);
     }
 
     private void initPermission() {

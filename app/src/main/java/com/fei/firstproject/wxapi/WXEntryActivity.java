@@ -9,13 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
-import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.utils.LogUtils;
+import com.fei.firstproject.utils.WxApiUtils;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,8 +31,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     TextView tvDialogContent;
     @BindView(R.id.btn_dialog_confirm)
     Button btnDialogConfirm;
-
-    private IWXAPI iwxapi;
 
     @Override
     public void onReq(BaseReq baseReq) {
@@ -68,14 +64,11 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_tip_dialog);
         ButterKnife.bind(this);
-
         initWx();
     }
 
     private void initWx() {
-        iwxapi = WXAPIFactory.createWXAPI(this, AppConfig.APP_ID, true);
-        iwxapi.registerApp(AppConfig.APP_ID);
-        iwxapi.handleIntent(getIntent(), this);
+        WxApiUtils.getInstance(this).getIwxapi().handleIntent(getIntent(), this);
     }
 
     @OnClick({R.id.btn_dialog_confirm, R.id.iv_dialog_cancle})
