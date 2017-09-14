@@ -1,5 +1,6 @@
 # FirstProject
 该项目由个人独立完成，纯属无聊弄着玩，图标和图片是阿里巴巴图标矢量图和千库网找的，如有雷同，纯属巧合<br/>
+(因为是之前项目中抽取出来的接口和页面，所以没有写注释)<br />
 1.主要面向接口编程<br />
 2.并无业务逻辑，只是弄着玩，以模仿其他App为主<br />
 3.主要用到BaseAcitivity,BaseListActivity,BaseFragment，BaseListFragment<br/>
