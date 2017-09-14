@@ -14,12 +14,12 @@ import com.bumptech.glide.Glide;
 import com.fei.firstproject.R;
 import com.fei.firstproject.entity.ExpertEntity;
 import com.fei.firstproject.inter.OnItemClickListener;
+import com.fei.firstproject.widget.RoundImageView;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by Administrator on 2017/8/29.
@@ -98,7 +98,7 @@ public class MyAttentionAdapter extends RecyclerView.Adapter<MyAttentionAdapter.
     class MyAttentionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.iv_icon)
-        CircleImageView ivIcon;
+        RoundImageView ivIcon;
         @BindView(R.id.tv_name)
         TextView tvName;
         @BindView(R.id.ll_my_attention_left)

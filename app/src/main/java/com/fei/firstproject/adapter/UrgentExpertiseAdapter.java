@@ -13,11 +13,10 @@ import com.bumptech.glide.Glide;
 import com.fei.banner.view.BannerViewPager;
 import com.fei.firstproject.R;
 import com.fei.firstproject.entity.UrgentExpertEntity;
+import com.scwang.smartrefresh.header.material.CircleImageView;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by Administrator on 2017/8/29.

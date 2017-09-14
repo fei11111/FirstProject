@@ -33,6 +33,7 @@ import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.web.WebActivity;
 import com.fei.firstproject.widget.NoScrollRecyclerView;
 import com.fei.firstproject.widget.PartHeadView;
+import com.fei.firstproject.widget.RoundImageView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -43,7 +44,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.Observable;
 
 import static android.app.Activity.RESULT_OK;
@@ -71,7 +71,7 @@ public class MeFragment extends BaseFragment {
     @BindView(R.id.tv_name)
     TextView tvName;
     @BindView(R.id.iv_user_head)
-    CircleImageView ivUserHead;
+    RoundImageView ivUserHead;
     @BindView(R.id.iv_vip)
     ImageView ivVip;
     @BindView(R.id.rl_value)

@@ -36,7 +36,9 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/view_default_bg" />
+    <include
+        layout="@layout/view_default_bg"
+        android:visibility="gone" />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
@@ -45,7 +47,6 @@
         android:fadeScrollbars="false"
         android:overScrollMode="never"
         android:requiresFadingEdge="none"
-        android:visibility="gone"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:srlDisableContentWhenLoading="true"
         app:srlDisableContentWhenRefresh="true"
@@ -465,7 +466,6 @@
                         android:layout_marginTop="@dimen/size_10"
                         android:background="@color/colorWhite"
                         android:orientation="vertical"
-                        android:visibility="gone"
                         app:divider="@drawable/shape_line"
                         app:showDividers="middle">
 
@@ -508,16 +508,16 @@
                                 android:layout_centerVertical="true"
                                 android:src="@drawable/ic_right_arrow" />
 
-                            <de.hdodenhof.circleimageview.CircleImageView
+                            <com.fei.firstproject.widget.RoundImageView
                                 android:id="@+id/iv_expertise_icon"
                                 android:layout_width="@dimen/size_40"
                                 android:layout_height="@dimen/size_40"
                                 android:layout_marginRight="@dimen/size_10"
                                 android:layout_toLeftOf="@id/iv_arrow"
+                                android:background="@drawable/shape_image_circle_border_default_bg"
                                 android:clickable="false"
-                                android:src="@drawable/ic_app"
-                                app:civ_border_color="@color/colorPrimary"
-                                app:civ_border_width="@dimen/size_1" />
+                                app:srcCompat="@drawable/ic_app"
+                                app:type="circle" />
                         </RelativeLayout>
 
                         <LinearLayout

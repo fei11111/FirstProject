@@ -32,6 +32,7 @@ import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
 import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.widget.AppHeadView;
 import com.fei.firstproject.widget.PartHeadView;
+import com.fei.firstproject.widget.RoundImageView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,7 +42,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.Observable;
 
 /**
@@ -87,7 +87,7 @@ public class SelfInfoActivity extends BaseActivity {
     @BindView(R.id.iv_arrow)
     ImageView ivArrow;
     @BindView(R.id.iv_expertise_icon)
-    CircleImageView ivExpertiseIcon;
+    RoundImageView ivExpertiseIcon;
     @BindView(R.id.tv_expertise_name)
     TextView tvExpertiseName;
     @BindView(R.id.tv_expertise_speciality_skill)

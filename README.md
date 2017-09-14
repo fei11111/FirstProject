@@ -5,11 +5,11 @@
 3.用到框架用:<br/>
 　1)网络框架：Retrofit2<br/>
 　2)上拉刷新框架：smartrefresh<br/>
-　3)圆形头像框架：circleimageview<br/>
+　3)圆形头像框架：RoundImageView<br/>
 　4)图片加载框架: glide<br />
 　5)定位：高德地图<br/>
 　6)扫描：zxing<br/>
-  7)viewpager:jazzyviewPager
+  7)viewpager:jazzyviewPager<br/>
 　8)其他：EventBus<br/>
 
 

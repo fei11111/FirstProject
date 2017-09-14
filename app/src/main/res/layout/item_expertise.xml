@@ -22,13 +22,13 @@
             android:layout_centerVertical="true"
             android:orientation="vertical">
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <com.fei.firstproject.widget.RoundImageView
                 android:id="@+id/iv_icon"
                 android:layout_width="@dimen/size_56"
                 android:layout_height="@dimen/size_56"
-                android:src="@drawable/ic_app"
-                app:civ_border_color="@color/colorPrimary"
-                app:civ_border_width="@dimen/size_1" />
+                android:background="@drawable/shape_image_circle_border_default_bg"
+                app:srcCompat="@drawable/ic_app"
+                app:type="circle"/>
 
             <TextView
                 android:id="@+id/tv_name"

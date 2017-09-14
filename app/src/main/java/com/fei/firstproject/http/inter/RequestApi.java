@@ -9,6 +9,7 @@ import com.fei.firstproject.entity.OrderEntity;
 import com.fei.firstproject.entity.ProductCaseEntity;
 import com.fei.firstproject.entity.RecommendEntity;
 import com.fei.firstproject.entity.SelfInfoEntity;
+import com.fei.firstproject.entity.ShareEntity;
 import com.fei.firstproject.entity.UserEntity;
 
 import java.util.List;
@@ -117,6 +118,12 @@ public interface RequestApi {
     Observable<ResponseBody> getHotQuestion(@FieldMap Map<String, String> map);
 
     @GET("app/selUnresolvedQue.do")
-    Observable<ResponseBody> getUnSolveQuestion(@QueryMap Map<String,String> map);
+    Observable<ResponseBody> getUnSolveQuestion(@QueryMap Map<String, String> map);
+
+    @GET("app/field/searchRecordShares.do")
+    Observable<BaseEntity<List<ShareEntity>>> getShare(@QueryMap Map<String, String> map);
+
+    @GET("app/field/fieldIndex.do")
+    Observable<String> getFieldIndex(@QueryMap Map<String, String> map);
 
 }

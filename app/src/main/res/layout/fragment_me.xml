@@ -56,16 +56,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
-                            <de.hdodenhof.circleimageview.CircleImageView
+                            <com.fei.firstproject.widget.RoundImageView
                                 android:id="@+id/iv_user_head"
                                 android:layout_width="@dimen/size_65"
                                 android:layout_height="@dimen/size_65"
                                 android:layout_centerVertical="true"
-                                android:src="@drawable/ic_app"
-                                app:civ_border_color="@color/colorPrimary"
-                                app:civ_border_overlay="false"
-                                app:civ_border_width="@dimen/size_1"
-                                app:civ_fill_color="@color/colorWhite" />
+                                android:background="@drawable/shape_image_circle_border_default_bg"
+                                app:srcCompat="@drawable/ic_app"
+                                app:type="circle"/>
 
                             <RelativeLayout
                                 android:id="@+id/rl_value"

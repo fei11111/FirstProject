@@ -23,13 +23,13 @@ import com.fei.firstproject.utils.SPUtils;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.AppHeadView;
 import com.fei.firstproject.widget.PartHeadView;
+import com.fei.firstproject.widget.RoundImageView;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 
@@ -53,7 +53,7 @@ public class SettingActivity extends BaseActivity {
     @BindView(R.id.phv_about_us)
     PartHeadView phvAboutUs;
     @BindView(R.id.iv_user_head)
-    CircleImageView ivUserHead;
+    RoundImageView ivUserHead;
     @BindView(R.id.tv_name)
     TextView tvName;
     @BindView(R.id.iv_vip)

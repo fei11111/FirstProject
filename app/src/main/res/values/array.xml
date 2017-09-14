@@ -50,6 +50,26 @@
         <item>@string/cl</item>
     </string-array>
 
+    <string-array name="list_menu_field_manage_drawable">
+        <item>@drawable/ic_farmer</item>
+        <item>@drawable/ic_follow</item>
+        <item>@drawable/ic_transfer</item>
+        <item>@drawable/ic_plan</item>
+        <item>@drawable/ic_attention</item>
+        <item>@drawable/ic_crop</item>
+        <item>@drawable/ic_field</item>
+    </string-array>
+
+    <string-array name="list_menu_field_manage_str">
+        <item>@string/farmer</item>
+        <item>@string/field_follow</item>
+        <item>@string/field_transfer</item>
+        <item>@string/field_plan</item>
+        <item>@string/my_attention</item>
+        <item>@string/my_crop</item>
+        <item>@string/my_field</item>
+    </string-array>
+
     <string-array name="pref_sync_frequency_values">
         <item>15</item>
         <item>30</item>
