@@ -124,6 +124,6 @@ public interface RequestApi {
     Observable<BaseEntity<List<ShareEntity>>> getShare(@QueryMap Map<String, String> map);
 
     @GET("app/field/fieldIndex.do")
-    Observable<String> getFieldIndex(@QueryMap Map<String, String> map);
+    Observable<ResponseBody> getFieldIndex(@QueryMap Map<String, String> map);
 
 }

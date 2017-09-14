@@ -183,10 +183,8 @@ public class MeFragment extends BaseFragment {
             tvName.setText(AppConfig.user.getUserName());
             tvCollectGoods.setText("5");
             tvCollectStore.setText("10");
-            refreshLayout.setEnableRefresh(true);
         } else if (allEvent.getEventType() == EventType.APP_LOGOUT) {
             tvName.setText(getResources().getString(R.string.nologin));
-            refreshLayout.setEnableRefresh(false);
             tvCollectGoods.setText("0");
             tvCollectStore.setText("0");
         }

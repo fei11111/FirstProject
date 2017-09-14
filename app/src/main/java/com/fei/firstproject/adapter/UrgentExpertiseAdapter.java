@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide;
 import com.fei.banner.view.BannerViewPager;
 import com.fei.firstproject.R;
 import com.fei.firstproject.entity.UrgentExpertEntity;
-import com.scwang.smartrefresh.header.material.CircleImageView;
+import com.fei.firstproject.widget.RoundImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +65,7 @@ public class UrgentExpertiseAdapter extends PagerAdapter {
             TextView tvSpecCrop = (TextView) view.findViewById(R.id.tv_spec_crop);
             TextView tvSpecSkill = (TextView) view.findViewById(R.id.tv_spec_skill);
             RatingBar rbStar = (RatingBar) view.findViewById(R.id.rb_star);
-            CircleImageView ivIcon = (CircleImageView) view.findViewById(R.id.iv_icon);
+            RoundImageView ivIcon = (RoundImageView) view.findViewById(R.id.iv_icon);
             UrgentExpertEntity expertEntity = expertEntities.get(position);
             tvName.setText(expertEntity.getUserName());
             tvServiceDuration.setText(expertEntity.getServiceTime());

@@ -62,11 +62,13 @@
         android:layout_alignParentTop="true"
         android:visibility="gone">
 
-        <ImageView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_add_crop" />
+            android:drawableRight="@drawable/ic_add_crop"
+            android:text="@string/add"
+            android:gravity="center"/>
     </RelativeLayout>
 
     <FrameLayout

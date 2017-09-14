@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,13 +18,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.fei.firstproject.R;
+import com.fei.firstproject.adapter.CropAdapter;
 import com.fei.firstproject.adapter.RecommendPlanAdapter;
+import com.fei.firstproject.adapter.ShareAdapter;
 import com.fei.firstproject.config.AppConfig;
+import com.fei.firstproject.decoration.DividerGridItemDecoration;
 import com.fei.firstproject.entity.BaseEntity;
+import com.fei.firstproject.entity.CropEntity;
 import com.fei.firstproject.entity.RecommendEntity;
 import com.fei.firstproject.entity.ShareEntity;
 import com.fei.firstproject.http.BaseObserver;
+import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
 import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.inter.OnItemClickListener;
 import com.fei.firstproject.utils.Utils;
@@ -31,6 +39,10 @@ import com.fei.firstproject.widget.AppHeadView;
 import com.fei.firstproject.widget.NoScrollRecyclerView;
 import com.fei.firstproject.widget.PartHeadView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +50,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 
 /**
  * Created by Administrator on 2017/9/12.
@@ -73,6 +86,8 @@ public class FieldManageActivity extends BaseActivity {
     LinearLayoutCompat llCrop;
 
     private RecommendPlanAdapter recommendPlanAdapter;
+    private ShareAdapter shareAdapter;
+    private CropAdapter cropAdapter;
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
@@ -97,6 +112,8 @@ public class FieldManageActivity extends BaseActivity {
     @Override
     public void init(Bundle savedInstanceState) {
         initListener();
+        initRecyclerView();
+        initMenu();
     }
 
     @Override
@@ -104,12 +121,18 @@ public class FieldManageActivity extends BaseActivity {
         if (AppConfig.ISLOGIN) {
             ivBanner.setVisibility(View.GONE);
             hsvFieldManage.setVisibility(View.VISIBLE);
-            getSharePlan();
-            initMenu();
+            getFieldIndex();
         } else {
             ivBanner.setVisibility(View.VISIBLE);
             getRecommendPlan();
         }
+        getSharePlan();
+    }
+
+    private void initRecyclerView() {
+        setRecycleViewGridSetting(rvCrop);
+        setRecycleViewListSetting(rvRecommendPlan);
+        setRecycleViewListSetting(rvShare);
     }
 
     private void initMenu() {
@@ -182,15 +205,15 @@ public class FieldManageActivity extends BaseActivity {
         map.put("currentPage", "1");
         Observable<BaseEntity<List<RecommendEntity>>> recommendPlan =
                 RetrofitFactory.getBtPlantWeb().getRecommendPlan(map);
-        recommendPlan.compose(this.<BaseEntity<List<RecommendEntity>>>createTransformer(false))
+        recommendPlan.compose(this.<BaseEntity<List<RecommendEntity>>>createTransformer(true))
                 .subscribe(new BaseObserver<List<RecommendEntity>>(this) {
                     @Override
                     protected void onHandleSuccess(final List<RecommendEntity> recommendEntities) {
                         refreshLayout.finishRefresh();
                         if (recommendEntities != null && recommendEntities.size() > 0) {
+                            refreshLayout.setVisibility(View.VISIBLE);
                             llRecommendPlan.setVisibility(View.VISIBLE);
                             if (recommendPlanAdapter == null) {
-                                setRecycleViewListSetting(rvRecommendPlan);
                                 recommendPlanAdapter = new RecommendPlanAdapter(FieldManageActivity.this, recommendEntities, 3);
                                 rvRecommendPlan.setAdapter(recommendPlanAdapter);
                                 recommendPlanAdapter.setOnItemClickListener(new OnItemClickListener() {
@@ -227,12 +250,67 @@ public class FieldManageActivity extends BaseActivity {
         Map<String, String> map = new HashMap<String, String>();
         map.put("currentPage", "1");
         map.put("pageSize", "5");
-        Observable<BaseEntity<List<ShareEntity>>> share = RetrofitFactory.getBtPlantWeb().getShare(map);
+        final Observable<BaseEntity<List<ShareEntity>>> share = RetrofitFactory.getBtPlantWeb().getShare(map);
         share.compose(this.<BaseEntity<List<ShareEntity>>>createTransformer(false))
                 .subscribe(new BaseObserver<List<ShareEntity>>(this) {
                     @Override
                     protected void onHandleSuccess(List<ShareEntity> shareEntities) {
+                        if (shareEntities != null && shareEntities.size() > 0) {
+                            llShare.setVisibility(View.VISIBLE);
+                            if (shareAdapter == null) {
+                                shareAdapter = new ShareAdapter(FieldManageActivity.this, shareEntities);
+                                rvShare.setAdapter(shareAdapter);
+                            } else {
+                                shareAdapter.setShareEntities(shareEntities);
+                                shareAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    }
+                });
+    }
 
+    public void getFieldIndex() {
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", AppConfig.user.getId());
+        map.put("roleIds", AppConfig.user.getRoleId());
+        map.put("menuId", "82");
+        Observable<ResponseBody> fieldIndex = RetrofitFactory.getBtPlantWeb().getFieldIndex(map);
+        fieldIndex.compose(this.<ResponseBody>createTransformer(false))
+                .subscribe(new BaseWithoutBaseEntityObserver<ResponseBody>(this) {
+                    @Override
+                    protected void onHandleSuccess(ResponseBody responseBody) {
+                        refreshLayout.finishRefresh();
+                        refreshLayout.setVisibility(View.VISIBLE);
+                        llCrop.setVisibility(View.VISIBLE);
+                        try {
+                            String response = responseBody.string();
+                            if (TextUtils.isEmpty(response)) return;
+                            JSONObject json = new JSONObject(response);
+                            String croplist = json.getString("croplist");
+                            List<CropEntity> cropEntities = JSON.parseArray(croplist, CropEntity.class);
+                            if (cropEntities != null && cropEntities.size() > 0) {
+                                if (cropAdapter == null) {
+                                    cropAdapter = new CropAdapter(FieldManageActivity.this, cropEntities);
+                                    rvCrop.setAdapter(cropAdapter);
+                                } else {
+                                    cropAdapter.setCropEntities(cropEntities);
+                                    cropAdapter.notifyDataSetChanged();
+                                }
+                            } else {
+                                cropAdapter = new CropAdapter(FieldManageActivity.this);
+                                rvCrop.setAdapter(cropAdapter);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    protected void onHandleError(String msg) {
+                        super.onHandleError(msg);
+                        refreshLayout.finishRefresh();
                     }
                 });
     }
@@ -242,6 +320,13 @@ public class FieldManageActivity extends BaseActivity {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, LinearLayout.VERTICAL);
         recycleViewSetting.setLayoutManager(manager);
         recycleViewSetting.addItemDecoration(dividerItemDecoration);
+    }
+
+    private void setRecycleViewGridSetting(RecyclerView recycleViewSetting) {
+        GridLayoutManager manager = new GridLayoutManager(this, 2);
+        RecyclerView.ItemDecoration itemDecoration = new DividerGridItemDecoration(this);
+        recycleViewSetting.setLayoutManager(manager);
+        recycleViewSetting.addItemDecoration(itemDecoration);
     }
 
 }
