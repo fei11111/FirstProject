@@ -1,5 +1,6 @@
 package com.fei.firstproject.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutCompat;
@@ -32,9 +33,13 @@ import com.fei.firstproject.http.BaseObserver;
 import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
 import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.utils.GlideUtils;
+import com.fei.firstproject.utils.PictureUtils;
 import com.fei.firstproject.widget.AppHeadView;
 import com.fei.firstproject.widget.PartHeadView;
 import com.fei.firstproject.widget.RoundImageView;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.entity.LocalMedia;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -354,6 +359,12 @@ public class SelfInfoActivity extends BaseActivity {
         showConsultationWayDialog(names, checkNames);
     }
 
+    @OnClick(R.id.rl_expertise_icon)
+    void clickExpertiseIcon(View view) {
+        //头像
+        PictureUtils.getCirclePicture(this);
+    }
+
     private void showConsultationWayDialog(List<String> names, List<String> checkNames) {
         if (consultationWayDialog == null) {
             consultationWayDialog = new BottomListDialog(this);
@@ -399,5 +410,23 @@ public class SelfInfoActivity extends BaseActivity {
         }
         listDialog.setTitle(title);
         listDialog.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==RESULT_OK) {
+            switch (requestCode) {
+                case PictureConfig.CHOOSE_REQUEST:
+                    // 图片选择结果回调
+                    List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
+                    // 例如 LocalMedia 里面返回三种path
+                    // 1.media.getPath(); 为原图path
+                    // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true
+                    // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
+                    // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
+                    break;
+            }
+        }
     }
 }

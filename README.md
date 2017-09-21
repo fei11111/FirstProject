@@ -18,5 +18,6 @@
 　6)扫描：zxing<br/>
 　7)viewpager:jazzyviewPager<br/>
 　8)其他：EventBus<br/>
+　9)图片选择：PictureSelector
 
 
