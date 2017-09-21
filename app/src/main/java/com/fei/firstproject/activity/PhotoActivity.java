@@ -2,15 +2,16 @@ package com.fei.firstproject.activity;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.PhotoPagerAdapter;
+import com.fei.firstproject.inter.OnItemClickListener;
 
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2017/9/21.
@@ -54,7 +55,14 @@ public class PhotoActivity extends BaseActivity {
     }
 
     private void initViewPager() {
-        vpPhoto.setAdapter(new PhotoPagerAdapter(this, pics));
+        PhotoPagerAdapter photoPagerAdapter = new PhotoPagerAdapter(this, pics);
+        photoPagerAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view) {
+                onBackPressed();
+            }
+        });
+        vpPhoto.setAdapter(photoPagerAdapter);
     }
 
     private void initPage() {
@@ -73,10 +81,4 @@ public class PhotoActivity extends BaseActivity {
 
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }
