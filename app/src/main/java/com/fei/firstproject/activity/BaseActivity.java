@@ -28,7 +28,7 @@ import com.fei.firstproject.entity.UserEntity;
 import com.fei.firstproject.event.AllEvent;
 import com.fei.firstproject.event.EventType;
 import com.fei.firstproject.http.RxSchedulers;
-import com.fei.firstproject.inter.BaseInterface;
+import com.fei.firstproject.inter.IBase;
 import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.SPUtils;
 import com.fei.firstproject.widget.AppHeadView;
@@ -51,7 +51,7 @@ import io.reactivex.ObservableTransformer;
  * Created by Administrator on 2017/7/27.
  */
 
-public abstract class BaseActivity extends RxAppCompatActivity implements BaseInterface {
+public abstract class BaseActivity extends RxAppCompatActivity implements IBase {
 
     @Nullable
     @BindView(R.id.pb_loading)

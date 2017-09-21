@@ -9,7 +9,7 @@ import android.view.View;
  * Created by Administrator on 2017/7/29.
  */
 
-public interface BaseInterface {
+public interface IBase {
 
     /**
      * 权限被拒返回

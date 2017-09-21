@@ -20,7 +20,7 @@ import com.fei.banner.view.BannerViewPager;
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.HotQuestionAdapter;
 import com.fei.firstproject.adapter.UnSolveQuestionAdapter;
-import com.fei.firstproject.adapter.UrgentExpertiseAdapter;
+import com.fei.firstproject.adapter.UrgentExpertisePagerAdapter;
 import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.entity.HotQuestionEntity;
 import com.fei.firstproject.entity.UnSolveQuestionEntity;
@@ -84,7 +84,7 @@ public class ExpertiseClinicActivity extends BaseActivity {
     @BindView(R.id.ll_hot_question)
     LinearLayoutCompat llHotQuestion;
 
-    private UrgentExpertiseAdapter urgentExpertiseAdapter;
+    private UrgentExpertisePagerAdapter urgentExpertiseAdapter;
     private int urgentExpertiseSize = -1;
     private HotQuestionAdapter hotQuestionAdapter;
     private UnSolveQuestionAdapter unSolveQuestionAdapter;
@@ -249,7 +249,7 @@ public class ExpertiseClinicActivity extends BaseActivity {
                                 if (urgentExpertEntities != null && urgentExpertEntities.size() > 0) {
                                     llUrgentPro.setVisibility(View.VISIBLE);
                                     if (urgentExpertiseAdapter == null) {
-                                        urgentExpertiseAdapter = new UrgentExpertiseAdapter(ExpertiseClinicActivity.this, urgentExpertEntities, vpPro);
+                                        urgentExpertiseAdapter = new UrgentExpertisePagerAdapter(ExpertiseClinicActivity.this, urgentExpertEntities, vpPro);
                                         vpPro.setAdapter(urgentExpertiseAdapter);
                                     } else {
                                         urgentExpertiseAdapter.setExpertEntities(urgentExpertEntities);

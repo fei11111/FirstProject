@@ -25,7 +25,7 @@ import android.widget.RelativeLayout;
 import com.fei.firstproject.R;
 import com.fei.firstproject.activity.BaseActivity;
 import com.fei.firstproject.http.RxSchedulers;
-import com.fei.firstproject.inter.BaseInterface;
+import com.fei.firstproject.inter.IBase;
 import com.fei.firstproject.utils.LogUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -44,7 +44,7 @@ import io.reactivex.ObservableTransformer;
  * Created by Administrator on 2017/7/27.
  */
 
-public abstract class BaseFragment extends RxFragment implements BaseInterface {
+public abstract class BaseFragment extends RxFragment implements IBase {
 
     @Nullable
     @BindView(R.id.pb_loading)

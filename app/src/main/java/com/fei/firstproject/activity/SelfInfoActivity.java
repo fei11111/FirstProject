@@ -362,6 +362,7 @@ public class SelfInfoActivity extends BaseActivity {
     @OnClick(R.id.rl_expertise_icon)
     void clickExpertiseIcon(View view) {
         //头像
+        if (isEdit) return;
         PictureUtils.getCirclePicture(this);
     }
 

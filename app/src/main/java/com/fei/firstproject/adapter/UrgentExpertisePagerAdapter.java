@@ -24,7 +24,7 @@ import java.util.List;
  * Created by Administrator on 2017/8/29.
  */
 
-public class UrgentExpertiseAdapter extends PagerAdapter {
+public class UrgentExpertisePagerAdapter extends PagerAdapter {
 
     private Context mContext;
     private List<UrgentExpertEntity> expertEntities;
@@ -39,7 +39,7 @@ public class UrgentExpertiseAdapter extends PagerAdapter {
         return expertEntities;
     }
 
-    public UrgentExpertiseAdapter(Context mContext, List<UrgentExpertEntity> expertEntities, BannerViewPager vpPro) {
+    public UrgentExpertisePagerAdapter(Context mContext, List<UrgentExpertEntity> expertEntities, BannerViewPager vpPro) {
         this.mContext = mContext;
         this.expertEntities = expertEntities;
         this.vpPro = vpPro;

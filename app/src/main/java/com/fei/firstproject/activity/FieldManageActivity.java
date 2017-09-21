@@ -43,6 +43,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -254,11 +255,25 @@ public class FieldManageActivity extends BaseActivity {
         share.compose(this.<BaseEntity<List<ShareEntity>>>createTransformer(false))
                 .subscribe(new BaseObserver<List<ShareEntity>>(this) {
                     @Override
-                    protected void onHandleSuccess(List<ShareEntity> shareEntities) {
+                    protected void onHandleSuccess(final List<ShareEntity> shareEntities) {
                         if (shareEntities != null && shareEntities.size() > 0) {
                             llShare.setVisibility(View.VISIBLE);
                             if (shareAdapter == null) {
                                 shareAdapter = new ShareAdapter(FieldManageActivity.this, shareEntities);
+                                shareAdapter.setOnItemClickListener(new OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(View view) {
+                                        int position = rvShare.getChildAdapterPosition(view);
+                                        List<ShareEntity.ImageEntity> list = shareEntities.get(position).getImgPath();
+                                        ArrayList<String> pics = new ArrayList<String>();
+                                        for (ShareEntity.ImageEntity imageEntity : list) {
+                                            pics.add(imageEntity.getPath());
+                                        }
+                                        Intent intent = new Intent(FieldManageActivity.this, PhotoActivity.class);
+                                        intent.putExtra("pics", pics);
+                                        startActivityWithoutCode(intent);
+                                    }
+                                });
                                 rvShare.setAdapter(shareAdapter);
                             } else {
                                 shareAdapter.setShareEntities(shareEntities);

@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.fei.firstproject.R;
 import com.fei.firstproject.entity.ShareEntity;
+import com.fei.firstproject.inter.OnItemClickListener;
 import com.fei.firstproject.utils.GlideUtils;
 import com.fei.firstproject.widget.FlowLayout;
 import com.fei.firstproject.widget.RoundImageView;
@@ -29,6 +30,11 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
 
     private Context mContext;
     private List<ShareEntity> shareEntities;
+    private OnItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
 
     public ShareAdapter(Context mContext, List<ShareEntity> shareEntities) {
         this.mContext = mContext;
@@ -78,7 +84,7 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
         return shareEntities.size();
     }
 
-    class ShareViewHolder extends RecyclerView.ViewHolder {
+    class ShareViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.tv_date)
         TextView tvDate;
@@ -92,6 +98,14 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
         public ShareViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(v);
+            }
         }
     }
 

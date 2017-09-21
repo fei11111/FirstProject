@@ -156,7 +156,7 @@
         <!--预览界面状态栏颜色-->
         <item name="picture.status.color">@color/bar_grey_90</item>
         <!--预览界面返回箭头-->
-        <item name="picture.preview.leftBack.icon">@drawable/ic_head_left_arrow_normal</item>
+        <item name="picture.preview.leftBack.icon">@drawable/selector_head_left_arrow</item>
         <!--是否改变预览界面状态栏字体颜色为黑色-->
         <item name="picture.preview.statusFontColor">false</item>
         <!--裁剪页面标题背景色-->
