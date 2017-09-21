@@ -10,9 +10,11 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.fei.banner.view.BannerViewPager;
 import com.fei.firstproject.R;
 import com.fei.firstproject.entity.UrgentExpertEntity;
+import com.fei.firstproject.utils.GlideUtils;
 import com.fei.firstproject.widget.RoundImageView;
 
 import java.util.ArrayList;
@@ -77,11 +79,11 @@ public class UrgentExpertiseAdapter extends PagerAdapter {
             } else {
                 rbStar.setRating(0);
             }
+
             Glide.with(mContext)
                     .load("http://218.18.114.97:3392/btFile" + expertEntity.getImgPath())
-                    .placeholder(R.drawable.ic_app)
-                    .crossFade()
-                    .error(R.drawable.ic_pic_error)
+                    .transition(new DrawableTransitionOptions().crossFade(2000))
+                    .apply(GlideUtils.getOptions())
                     .into(ivIcon);
             views.add(view);
         }

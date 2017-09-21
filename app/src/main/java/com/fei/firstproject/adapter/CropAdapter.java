@@ -13,8 +13,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.fei.firstproject.R;
 import com.fei.firstproject.entity.CropEntity;
+import com.fei.firstproject.utils.GlideUtils;
 
 import java.util.List;
 
@@ -69,9 +71,8 @@ public class CropAdapter extends RecyclerView.Adapter<CropAdapter.CropViewHolder
             if (!TextUtils.isEmpty(imgPath) && (imgPath.contains("http") || imgPath.contains("https"))) {
                 Glide.with(mContext)
                         .load(imgPath)
-                        .placeholder(R.drawable.ic_app)
-                        .crossFade()
-                        .error(R.drawable.ic_pic_error)
+                        .transition(new DrawableTransitionOptions().crossFade(2000))
+                        .apply(GlideUtils.getOptions())
                         .into(holder.iv);
             }
             if (cropEntity.getInTemple() != 0) {

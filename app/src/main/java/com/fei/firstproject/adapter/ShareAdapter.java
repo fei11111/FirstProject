@@ -9,8 +9,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.fei.firstproject.R;
 import com.fei.firstproject.entity.ShareEntity;
+import com.fei.firstproject.utils.GlideUtils;
 import com.fei.firstproject.widget.FlowLayout;
 import com.fei.firstproject.widget.RoundImageView;
 
@@ -65,9 +67,8 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
         iv.setBorderRadius(5);
         Glide.with(mContext)
                 .load(url)
-                .placeholder(R.drawable.ic_app)
-                .crossFade()
-                .error(R.drawable.ic_pic_error)
+                .transition(new DrawableTransitionOptions().crossFade(2000))
+                .apply(GlideUtils.getOptions())
                 .into(iv);
         return iv;
     }

@@ -11,9 +11,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.fei.firstproject.R;
 import com.fei.firstproject.entity.ProductLibEntity;
 import com.fei.firstproject.inter.OnItemClickListener;
+import com.fei.firstproject.utils.GlideUtils;
 import com.fei.firstproject.widget.FlowLayout;
 
 import java.util.List;
@@ -83,9 +85,8 @@ public class ProductLibAdapter extends RecyclerView.Adapter<ProductLibAdapter.Pr
         if (!TextUtils.isEmpty(imgPath) && (imgPath.contains("http") || imgPath.contains("https"))) {
             Glide.with(mContext)
                     .load(imgPath)
-                    .placeholder(R.drawable.ic_app)
-                    .crossFade()
-                    .error(R.drawable.ic_pic_error)
+                    .transition(new DrawableTransitionOptions().crossFade(2000))
+                    .apply(GlideUtils.getOptions())
                     .into(holder.ivProductLib);
         }
     }

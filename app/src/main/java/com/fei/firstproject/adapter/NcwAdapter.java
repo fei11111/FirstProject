@@ -9,9 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.fei.firstproject.R;
 import com.fei.firstproject.entity.NcwEntity;
 import com.fei.firstproject.inter.OnItemClickListener;
+import com.fei.firstproject.utils.GlideUtils;
 
 import java.util.List;
 
@@ -58,9 +60,8 @@ public class NcwAdapter extends RecyclerView.Adapter<NcwAdapter.NcwViewHolder> {
         holder.tvNwcDesp.setText(ncwEntity.getDescription().replaceAll("\\s*", ""));
         Glide.with(mContext)
                 .load(ncwEntity.getThumb())
-                .placeholder(R.drawable.ic_app)
-                .crossFade()
-                .error(R.drawable.ic_pic_error)
+                .transition(new DrawableTransitionOptions().crossFade(2000))
+                .apply(GlideUtils.getOptions())
                 .into(holder.ivNcw);
     }
 

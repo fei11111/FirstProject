@@ -11,9 +11,11 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.fei.firstproject.R;
 import com.fei.firstproject.entity.ExpertEntity;
 import com.fei.firstproject.inter.OnItemClickListener;
+import com.fei.firstproject.utils.GlideUtils;
 import com.fei.firstproject.widget.RoundImageView;
 
 import java.util.List;
@@ -82,11 +84,11 @@ public class MyAttentionAdapter extends RecyclerView.Adapter<MyAttentionAdapter.
                 }
             }
         });
+
         Glide.with(mContext)
                 .load("http://218.18.114.97:3392/btFile" + expertEntity.getImgPath())
-                .placeholder(R.drawable.ic_app)
-                .crossFade()
-                .error(R.drawable.ic_pic_error)
+                .transition(new DrawableTransitionOptions().crossFade(2000))
+                .apply(GlideUtils.getOptions())
                 .into(holder.ivIcon);
     }
 
