@@ -90,7 +90,8 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".activity.PhotoActivity" />
+        <activity android:name=".activity.PhotoActivity"
+            android:theme="@style/PhotoTheme"/>
 
     </application>
 

@@ -2,12 +2,10 @@ package com.fei.firstproject.activity;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.View;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.PhotoPagerAdapter;
-import com.fei.firstproject.inter.OnItemClickListener;
 
 import java.util.List;
 
@@ -56,17 +54,37 @@ public class PhotoActivity extends BaseActivity {
 
     private void initViewPager() {
         PhotoPagerAdapter photoPagerAdapter = new PhotoPagerAdapter(this, pics);
-        photoPagerAdapter.setOnItemClickListener(new OnItemClickListener() {
+        vpPhoto.setAdapter(photoPagerAdapter);
+        initListener(photoPagerAdapter);
+    }
+
+    private void initListener(PhotoPagerAdapter photoPagerAdapter) {
+        photoPagerAdapter.setOnPhotoTpListener(new PhotoPagerAdapter.OnPhotoTpListener() {
             @Override
-            public void onItemClick(View view) {
+            public void onPhotoTap() {
                 onBackPressed();
             }
         });
-        vpPhoto.setAdapter(photoPagerAdapter);
+        vpPhoto.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                tvPage.setText((position + 1) + "/" + pics.size());
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     private void initPage() {
-        tvPage.setText((currentIndex + 1) + "/" + pics.size());
+        tvPage.setText("1/" + pics.size());
     }
 
     private void initData() {
