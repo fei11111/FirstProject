@@ -23,7 +23,6 @@ public class PhotoActivity extends BaseActivity {
     TextView tvPage;
 
     private List<String> pics;
-    private int currentIndex = 0;
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
