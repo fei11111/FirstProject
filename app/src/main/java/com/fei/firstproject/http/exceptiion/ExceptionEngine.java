@@ -40,7 +40,7 @@ public class ExceptionEngine {
                 case BAD_GATEWAY:
                 case SERVICE_UNAVAILABLE:
                 default:
-                    ex.message = "网络错误";  //均视为网络错误
+                    ex.message = "网络错误" + httpException.code();  //均视为网络错误
                     break;
             }
             return ex;
@@ -58,6 +58,10 @@ public class ExceptionEngine {
         }else if(e instanceof ConnectException){
             ex = new ApiException(e, ERROR.NETWORD_ERROR);
             ex.message = "连接失败";  //均视为网络错误
+            return ex;
+        } else if (e instanceof javax.net.ssl.SSLHandshakeException) {
+            ex = new ApiException(e, ERROR.SSL_ERROR);
+            ex.message = "证书验证失败";
             return ex;
         }else {
             ex = new ApiException(e, ERROR.UNKNOWN);

@@ -22,5 +22,8 @@ public class ERROR {
      * 协议出错
      */
     public static final int HTTP_ERROR = 1003;
-
+    /**
+     * 证书出错
+     */
+    public static final int SSL_ERROR = 1005;
 }
