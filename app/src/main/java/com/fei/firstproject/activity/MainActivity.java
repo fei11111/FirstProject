@@ -108,10 +108,29 @@ public class MainActivity extends BaseActivity {
         initToolBar();
         initSetting();
         initListener();
-        initUserInfo();
     }
 
-    private void initUserInfo() {
+    private void sendWx() {
+        WXTextObject textObject = new WXTextObject();
+        textObject.text = "测试";
+
+        WXMediaMessage msg = new WXMediaMessage();
+        msg.mediaObject = textObject;
+        msg.description = "测试";
+
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = "test";
+        req.message = msg;
+        req.scene = SendMessageToWX.Req.WXSceneTimeline;//WXSceneSession会话 WXSceneTimeline朋友圈
+        WxApiUtils.getInstance(this).getIwxapi().sendReq(req);
+    }
+
+    private void initPermission() {
+        checkPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION_CODE_STORAGE);
+    }
+
+    @Override
+    public void initRequest() {
         if (!AppConfig.ISLOGIN) return;
         String tokenId = SPUtils.get(this, "tokenId", "").toString();
         String deviceId = SPUtils.get(this, "deviceId", "").toString();
@@ -139,30 +158,6 @@ public class MainActivity extends BaseActivity {
                 refreshUserInfoWhenLogout();
             }
         });
-    }
-
-    private void sendWx() {
-        WXTextObject textObject = new WXTextObject();
-        textObject.text = "测试";
-
-        WXMediaMessage msg = new WXMediaMessage();
-        msg.mediaObject = textObject;
-        msg.description = "测试";
-
-        SendMessageToWX.Req req = new SendMessageToWX.Req();
-        req.transaction = "test";
-        req.message = msg;
-        req.scene = SendMessageToWX.Req.WXSceneTimeline;//WXSceneSession会话 WXSceneTimeline朋友圈
-        WxApiUtils.getInstance(this).getIwxapi().sendReq(req);
-    }
-
-    private void initPermission() {
-        checkPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION_CODE_STORAGE);
-    }
-
-    @Override
-    public void initRequest() {
-
     }
 
     private void initSetting() {
