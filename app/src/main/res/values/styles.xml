@@ -182,4 +182,104 @@
         <item name="picture.folder_checked_dot">@drawable/shape_green_oval</item>
     </style>
 
+    <style name="SmallFontStyle">
+        <item name="tx_6">@dimen/tx_6_small</item>
+        <item name="tx_8">@dimen/tx_8_small</item>
+        <item name="tx_10">@dimen/tx_10_small</item>
+        <item name="tx_12">@dimen/tx_12_small</item>
+        <item name="tx_13">@dimen/tx_13_small</item>
+        <item name="tx_14">@dimen/tx_14_small</item>
+        <item name="tx_15">@dimen/tx_15_small</item>
+        <item name="tx_16">@dimen/tx_16_small</item>
+        <item name="tx_18">@dimen/tx_18_small</item>
+        <item name="tx_20">@dimen/tx_20_small</item>
+        <item name="tx_22">@dimen/tx_22_small</item>
+        <item name="tx_25">@dimen/tx_25_small</item>
+        <item name="tx_30">@dimen/tx_30_small</item>
+    </style>
+
+    <style name="NormalFontStyle">
+        <item name="tx_6">@dimen/tx_6</item>
+        <item name="tx_8">@dimen/tx_8</item>
+        <item name="tx_10">@dimen/tx_10</item>
+        <item name="tx_12">@dimen/tx_12</item>
+        <item name="tx_13">@dimen/tx_13</item>
+        <item name="tx_14">@dimen/tx_14</item>
+        <item name="tx_15">@dimen/tx_15</item>
+        <item name="tx_16">@dimen/tx_16</item>
+        <item name="tx_18">@dimen/tx_18</item>
+        <item name="tx_20">@dimen/tx_20</item>
+        <item name="tx_22">@dimen/tx_22</item>
+        <item name="tx_25">@dimen/tx_25</item>
+        <item name="tx_30">@dimen/tx_30</item>
+    </style>
+
+    <style name="BigFontStyle">
+        <item name="tx_6">@dimen/tx_6_big</item>
+        <item name="tx_8">@dimen/tx_8_big</item>
+        <item name="tx_10">@dimen/tx_10_big</item>
+        <item name="tx_12">@dimen/tx_12_big</item>
+        <item name="tx_13">@dimen/tx_13_big</item>
+        <item name="tx_14">@dimen/tx_14_big</item>
+        <item name="tx_15">@dimen/tx_15_big</item>
+        <item name="tx_16">@dimen/tx_16_big</item>
+        <item name="tx_18">@dimen/tx_18_big</item>
+        <item name="tx_20">@dimen/tx_20_big</item>
+        <item name="tx_22">@dimen/tx_22_big</item>
+        <item name="tx_25">@dimen/tx_25_big</item>
+        <item name="tx_30">@dimen/tx_30_big</item>
+    </style>
+
+    <style name="Font6Style">
+        <item name="android:textSize">?attr/tx_6</item>
+    </style>
+
+    <style name="Font8Style">
+        <item name="android:textSize">?attr/tx_8</item>
+    </style>
+
+    <style name="Font10Style">
+        <item name="android:textSize">?attr/tx_10</item>
+    </style>
+
+    <style name="Font12Style">
+        <item name="android:textSize">?attr/tx_12</item>
+    </style>
+
+    <style name="Font13Style">
+        <item name="android:textSize">?attr/tx_13</item>
+    </style>
+
+    <style name="Font14Style">
+        <item name="android:textSize">?attr/tx_14</item>
+    </style>
+
+    <style name="Font15Style">
+        <item name="android:textSize">?attr/tx_15</item>
+    </style>
+
+    <style name="Font16Style">
+        <item name="android:textSize">?attr/tx_16</item>
+    </style>
+
+    <style name="Font18Style">
+        <item name="android:textSize">?attr/tx_18</item>
+    </style>
+
+    <style name="Font20Style">
+        <item name="android:textSize">?attr/tx_20</item>
+    </style>
+
+    <style name="Font22Style">
+        <item name="android:textSize">?attr/tx_22</item>
+    </style>
+
+    <style name="Font25Style">
+        <item name="android:textSize">?attr/tx_25</item>
+    </style>
+
+    <style name="Font30Style">
+        <item name="android:textSize">?attr/tx_30</item>
+    </style>
+
 </resources>

@@ -51,4 +51,34 @@
     <dimen name="size_2">2dp</dimen>
     <dimen name="size_1">1dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
+
+
+    <dimen name="tx_6_small">4sp</dimen>
+    <dimen name="tx_8_small">6sp</dimen>
+    <dimen name="tx_10_small">8sp</dimen>
+    <dimen name="tx_12_small">10sp</dimen>
+    <dimen name="tx_13_small">11sp</dimen>
+    <dimen name="tx_14_small">12sp</dimen>
+    <dimen name="tx_15_small">13sp</dimen>
+    <dimen name="tx_16_small">14sp</dimen>
+    <dimen name="tx_18_small">16sp</dimen>
+    <dimen name="tx_20_small">18sp</dimen>
+    <dimen name="tx_22_small">20sp</dimen>
+    <dimen name="tx_25_small">23sp</dimen>
+    <dimen name="tx_30_small">28sp</dimen>
+
+    <dimen name="tx_6_big">8sp</dimen>
+    <dimen name="tx_8_big">10sp</dimen>
+    <dimen name="tx_10_big">12sp</dimen>
+    <dimen name="tx_12_big">14sp</dimen>
+    <dimen name="tx_13_big">15sp</dimen>
+    <dimen name="tx_14_big">16sp</dimen>
+    <dimen name="tx_15_big">17sp</dimen>
+    <dimen name="tx_16_big">18sp</dimen>
+    <dimen name="tx_18_big">20sp</dimen>
+    <dimen name="tx_20_big">22sp</dimen>
+    <dimen name="tx_22_big">24sp</dimen>
+    <dimen name="tx_25_big">27sp</dimen>
+    <dimen name="tx_30_big">32sp</dimen>
+
 </resources>

@@ -58,4 +58,18 @@
             <enum name="round" value="1" />
         </attr>
     </declare-styleable>
+
+    <attr name="tx_6" format="dimension"></attr>
+    <attr name="tx_8" format="dimension"></attr>
+    <attr name="tx_10" format="dimension"></attr>
+    <attr name="tx_12" format="dimension"></attr>
+    <attr name="tx_13" format="dimension"></attr>
+    <attr name="tx_14" format="dimension"></attr>
+    <attr name="tx_15" format="dimension"></attr>
+    <attr name="tx_16" format="dimension"></attr>
+    <attr name="tx_18" format="dimension"></attr>
+    <attr name="tx_20" format="dimension"></attr>
+    <attr name="tx_22" format="dimension"></attr>
+    <attr name="tx_25" format="dimension"></attr>
+    <attr name="tx_30" format="dimension"></attr>
 </resources>

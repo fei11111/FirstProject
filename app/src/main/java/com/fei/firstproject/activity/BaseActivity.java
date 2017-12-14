@@ -212,7 +212,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IBase 
         builder.setMessage(message);
         builder.setCancelable(false);
         final AlertDialog dialog = builder.create();
-        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("去设置", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 startAppSettings();

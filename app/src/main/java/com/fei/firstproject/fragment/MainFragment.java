@@ -133,7 +133,7 @@ public class MainFragment extends BaseFragment {
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
         if (requestCode == REQUEST_PERMISSION_CODE_LOCATION) {
-            showMissingPermissionDialog("需要定位才能获取天气", REQUEST_PERMISSION_CODE_LOCATION);
+            showMissingPermissionDialog("在设置-应用-就是帅-权限中开启定位权限，才能获取天气", REQUEST_PERMISSION_CODE_LOCATION);
         }
     }
 
