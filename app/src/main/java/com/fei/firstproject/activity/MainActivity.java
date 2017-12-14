@@ -106,13 +106,8 @@ public class MainActivity extends BaseActivity {
     public void init(Bundle savedInstanceState) {
         initPermission();
         initToolBar();
-        initSetting();
+        initSetting(savedInstanceState);
         initListener();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 
     private void sendWx() {
@@ -165,8 +160,13 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    private void initSetting() {
+    private void initSetting(Bundle savedInstanceState) {
         mFragmentManager = getSupportFragmentManager();
+        if (savedInstanceState != null) {
+            mainFragment = (MainFragment) mFragmentManager.findFragmentByTag("mainFragment");
+            makeFragment = (MakeFragment) mFragmentManager.findFragmentByTag("makeFragment");
+            meFragment = (MeFragment) mFragmentManager.findFragmentByTag("meFrament");
+        }
         llBottomMain.performClick();
     }
 
@@ -225,11 +225,12 @@ public class MainActivity extends BaseActivity {
             case R.id.ll_bottom_main:
                 llBottomMain.setSelected(true);
                 setAppHeadViewSearchMode();
+
                 if (mainFragment == null) {
                     mainFragment = (MainFragment) FragmentInstanceManager.getInstance().getFragmet(MainFragment.class);
-                    switchFragment(mainFragment, true);
+                    switchFragment(mainFragment, true, "mainFragment");
                 } else {
-                    switchFragment(mainFragment, false);
+                    switchFragment(mainFragment, false, "mainFragment");
                 }
                 break;
             case R.id.ll_bottom_make:
@@ -237,9 +238,9 @@ public class MainActivity extends BaseActivity {
                 setAppHeadViewTitleMode();
                 if (makeFragment == null) {
                     makeFragment = (MakeFragment) FragmentInstanceManager.getInstance().getFragmet(MakeFragment.class);
-                    switchFragment(makeFragment, true);
+                    switchFragment(makeFragment, true, "makeFragment");
                 } else {
-                    switchFragment(makeFragment, false);
+                    switchFragment(makeFragment, false, "makeFragment");
                 }
                 break;
             case R.id.ll_bottom_me:
@@ -247,9 +248,9 @@ public class MainActivity extends BaseActivity {
                 setAppHeadViewTitleImageMode();
                 if (meFragment == null) {
                     meFragment = (MeFragment) FragmentInstanceManager.getInstance().getFragmet(MeFragment.class);
-                    switchFragment(meFragment, true);
+                    switchFragment(meFragment, true, "meFrament");
                 } else {
-                    switchFragment(meFragment, false);
+                    switchFragment(meFragment, false, "meFrament");
                 }
                 break;
         }
@@ -305,10 +306,10 @@ public class MainActivity extends BaseActivity {
     }
 
     // 提供方法切换Fragment
-    private void switchFragment(Fragment fragment, boolean isNeedAdd) {
+    private void switchFragment(Fragment fragment, boolean isNeedAdd, String tag) {
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
         if (isNeedAdd) {
-            transaction.add(R.id.fl_main_container, fragment);
+            transaction.add(R.id.fl_main_container, fragment, tag);
         }
         hideFragment(transaction);
         transaction.show(fragment);
