@@ -46,7 +46,7 @@
                         android:tag=""
                         android:text="@string/series"
                         android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/tx_15" />
+                        style="@style/Font15Style" />
 
                     <ImageView
                         android:layout_width="@dimen/size_8"
@@ -74,7 +74,7 @@
                         android:tag=""
                         android:text="@string/craft"
                         android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/tx_15" />
+                        style="@style/Font15Style" />
 
                     <ImageView
                         android:layout_width="@dimen/size_8"
@@ -103,7 +103,7 @@
                         android:tag=""
                         android:text="@string/type"
                         android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/tx_15" />
+                        style="@style/Font15Style" />
 
                     <ImageView
                         android:layout_width="@dimen/size_8"

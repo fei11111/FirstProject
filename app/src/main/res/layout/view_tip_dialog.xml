@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/size_16"
                     android:textColor="@color/colorText"
-                    android:textSize="@dimen/tx_16" />
+                    style="@style/Font16Style"  />
 
                 <Button
                     android:id="@+id/btn_dialog_confirm"

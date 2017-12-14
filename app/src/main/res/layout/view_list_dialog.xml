@@ -20,7 +20,7 @@
             android:paddingTop="@dimen/size_10"
             android:text="@string/confirm"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/tx_15"
+            style="@style/Font15Style"
             android:visibility="gone" />
 
         <TextView
@@ -35,7 +35,7 @@
             android:paddingTop="@dimen/size_10"
             android:text="@string/cancel"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/tx_15" />
+            style="@style/Font15Style" />
 
         <TextView
             android:id="@+id/tv_dialog_title"
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/tx_15" />
+            style="@style/Font15Style" />
 
     </RelativeLayout>
 

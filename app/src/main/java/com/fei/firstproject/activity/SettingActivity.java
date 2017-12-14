@@ -10,13 +10,18 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
+import com.fei.firstproject.adapter.SingleTextAdapter;
 import com.fei.firstproject.config.AppConfig;
+import com.fei.firstproject.dialog.BottomListDialog;
 import com.fei.firstproject.dialog.TipDialog;
+import com.fei.firstproject.event.AllEvent;
+import com.fei.firstproject.event.EventType;
 import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
 import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.utils.SPUtils;
@@ -25,7 +30,11 @@ import com.fei.firstproject.widget.AppHeadView;
 import com.fei.firstproject.widget.PartHeadView;
 import com.fei.firstproject.widget.RoundImageView;
 
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -61,6 +70,8 @@ public class SettingActivity extends BaseActivity {
 
     private TipDialog tipDialog;
     private static final int REQUEST_PERMISSION_TELEPHONE = 100;
+    private BottomListDialog bottomListDialog;
+    private SingleTextAdapter singleTextAdapter;
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
@@ -144,6 +155,33 @@ public class SettingActivity extends BaseActivity {
     @OnClick(R.id.phv_about_us)
     void clickAboutUs(View view) {
         startActivityWithoutCode(new Intent(this, AboutUsActivity.class));
+    }
+
+    @OnClick(R.id.phv_font_size)
+    void clickFontSize(View view) {
+        if (bottomListDialog == null) {
+            bottomListDialog = new BottomListDialog(this).setTitle("设置字体");
+            List<String> name = new ArrayList<>();
+            name.add("小");
+            name.add("适中(建议)");
+            name.add("大");
+            singleTextAdapter = new SingleTextAdapter(this, name);
+            bottomListDialog.setOnItemClickListener(new BottomListDialog.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    if (position == 0) {
+                        SPUtils.put(SettingActivity.this, "fontMode", 1);//小
+                    } else if (position == 1) {
+                        SPUtils.put(SettingActivity.this, "fontMode", 0);//适中
+                    } else if (position == 2) {
+                        SPUtils.put(SettingActivity.this, "fontMode", 2);//大
+                    }
+                    EventBus.getDefault().post(new AllEvent(EventType.APP_FONT_CHANGE));
+                }
+            });
+            bottomListDialog.setAdapter(singleTextAdapter);
+        }
+        bottomListDialog.show();
     }
 
     private void showTipDialog() {

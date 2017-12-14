@@ -11,6 +11,6 @@
         android:padding="@dimen/size_16"
         android:text="@string/signature"
         android:textColor="@color/colorText"
-        android:textSize="@dimen/tx_12"></TextView>
+        style="@style/Font12Style"></TextView>
 
 </RelativeLayout>

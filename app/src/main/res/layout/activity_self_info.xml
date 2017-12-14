@@ -73,7 +73,7 @@
                 android:background="@drawable/selector_rect_btn_bg"
                 android:text="@string/edit"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/tx_15" />
+                style="@style/Font15Style" />
 
             <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
@@ -105,7 +105,7 @@
                             android:paddingTop="@dimen/size_10"
                             android:text="@string/base_info"
                             android:textColor="@color/colorPrimary"
-                            android:textSize="@dimen/tx_15" />
+                            style="@style/Font15Style" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -124,7 +124,7 @@
                                 android:gravity="left"
                                 android:text="@string/account"
                                 android:textColor="@color/colorText"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style" />
 
                             <TextView
                                 android:id="@+id/tv_account"
@@ -135,7 +135,7 @@
                                 android:gravity="right"
                                 android:lines="1"
                                 android:textColor="@color/colorTextSub"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -155,7 +155,7 @@
                                 android:gravity="left"
                                 android:text="@string/user_name"
                                 android:textColor="@color/colorText"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style" />
 
                             <TextView
                                 android:id="@+id/tv_user_name"
@@ -166,7 +166,7 @@
                                 android:gravity="right"
                                 android:lines="1"
                                 android:textColor="@color/colorTextSub"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -186,7 +186,7 @@
                                 android:gravity="left"
                                 android:text="@string/current_role"
                                 android:textColor="@color/colorText"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style" />
 
                             <TextView
                                 android:id="@+id/tv_current_role"
@@ -197,7 +197,7 @@
                                 android:gravity="right"
                                 android:lines="1"
                                 android:textColor="@color/colorTextSub"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style" />
                         </LinearLayout>
 
                         <com.fei.firstproject.widget.PartHeadView
@@ -223,7 +223,7 @@
                                 android:gravity="left"
                                 android:text="@string/account_create_time"
                                 android:textColor="@color/colorText"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style" />
 
                             <TextView
                                 android:id="@+id/tv_account_create_time"
@@ -234,7 +234,7 @@
                                 android:gravity="right"
                                 android:lines="1"
                                 android:textColor="@color/colorTextSub"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style"/>
                         </LinearLayout>
                     </android.support.v7.widget.LinearLayoutCompat>
 
@@ -259,7 +259,7 @@
                             android:paddingTop="@dimen/size_10"
                             android:text="@string/farmer"
                             android:textColor="@color/colorPrimary"
-                            android:textSize="@dimen/tx_15" />
+                            style="@style/Font15Style" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -278,7 +278,7 @@
                                 android:gravity="left"
                                 android:text="@string/name"
                                 android:textColor="@color/colorText"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style" />
 
                             <TextView
                                 android:id="@+id/tv_farmer_name"
@@ -289,7 +289,7 @@
                                 android:gravity="right"
                                 android:lines="1"
                                 android:textColor="@color/colorTextSub"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style" />
                         </LinearLayout>
 
                         <com.fei.firstproject.widget.PartHeadView
@@ -315,7 +315,7 @@
                                 android:gravity="left"
                                 android:text="@string/detail_address"
                                 android:textColor="@color/colorText"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style"/>
 
                             <EditText
                                 android:id="@+id/et_farmer_detail_address"
@@ -328,7 +328,7 @@
                                 android:gravity="right"
                                 android:lines="1"
                                 android:textColor="@color/colorTextSub"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style"/>
                         </LinearLayout>
 
                     </android.support.v7.widget.LinearLayoutCompat>
@@ -354,7 +354,7 @@
                             android:paddingTop="@dimen/size_10"
                             android:text="@string/service_station"
                             android:textColor="@color/colorPrimary"
-                            android:textSize="@dimen/tx_15" />
+                            style="@style/Font15Style" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -373,7 +373,7 @@
                                 android:gravity="left"
                                 android:text="@string/service_station_name"
                                 android:textColor="@color/colorText"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style" />
 
                             <TextView
                                 android:id="@+id/tv_service_station_name"
@@ -384,7 +384,7 @@
                                 android:gravity="right"
                                 android:lines="1"
                                 android:textColor="@color/colorTextSub"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -404,7 +404,7 @@
                                 android:gravity="left"
                                 android:text="@string/legal_representative"
                                 android:textColor="@color/colorText"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style"/>
 
                             <TextView
                                 android:id="@+id/tv_service_station_legal_representative"
@@ -415,7 +415,7 @@
                                 android:gravity="right"
                                 android:lines="1"
                                 android:textColor="@color/colorTextSub"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style"/>
                         </LinearLayout>
 
                         <com.fei.firstproject.widget.PartHeadView
@@ -441,7 +441,7 @@
                                 android:gravity="left"
                                 android:text="@string/detail_address"
                                 android:textColor="@color/colorText"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style" />
 
                             <EditText
                                 android:id="@+id/et_service_station_detail_address"
@@ -454,7 +454,7 @@
                                 android:gravity="right"
                                 android:lines="1"
                                 android:textColor="@color/colorTextSub"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style"/>
                         </LinearLayout>
                     </android.support.v7.widget.LinearLayoutCompat>
 
@@ -479,7 +479,7 @@
                             android:paddingTop="@dimen/size_10"
                             android:text="@string/expertise"
                             android:textColor="@color/colorPrimary"
-                            android:textSize="@dimen/tx_15" />
+                            style="@style/Font15Style" />
 
                         <RelativeLayout
                             android:id="@+id/rl_expertise_icon"
@@ -498,7 +498,7 @@
                                 android:gravity="left"
                                 android:text="@string/expertise_icon"
                                 android:textColor="@color/colorText"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style" />
 
                             <ImageView
                                 android:id="@+id/iv_arrow"
@@ -537,7 +537,7 @@
                                 android:gravity="left"
                                 android:text="@string/expertise_name"
                                 android:textColor="@color/colorText"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style"/>
 
                             <TextView
                                 android:id="@+id/tv_expertise_name"
@@ -548,7 +548,7 @@
                                 android:gravity="right"
                                 android:lines="1"
                                 android:textColor="@color/colorTextSub"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -568,7 +568,7 @@
                                 android:gravity="left"
                                 android:text="@string/speciality_skill"
                                 android:textColor="@color/colorText"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style"/>
 
                             <TextView
                                 android:id="@+id/tv_expertise_speciality_skill"
@@ -579,7 +579,7 @@
                                 android:gravity="right"
                                 android:lines="1"
                                 android:textColor="@color/colorTextSub"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -599,7 +599,7 @@
                                 android:gravity="left"
                                 android:text="@string/speciality_crop"
                                 android:textColor="@color/colorText"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style"/>
 
                             <TextView
                                 android:id="@+id/tv_expertise_speciality_crop"
@@ -610,7 +610,7 @@
                                 android:gravity="right"
                                 android:lines="1"
                                 android:textColor="@color/colorTextSub"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -630,7 +630,7 @@
                                 android:gravity="left"
                                 android:text="@string/expertise_level"
                                 android:textColor="@color/colorText"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style" />
 
                             <TextView
                                 android:id="@+id/tv_expertise_level"
@@ -641,7 +641,7 @@
                                 android:gravity="right"
                                 android:lines="1"
                                 android:textColor="@color/colorTextSub"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -661,7 +661,7 @@
                                 android:gravity="left"
                                 android:text="@string/working_time"
                                 android:textColor="@color/colorText"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style" />
 
                             <TextView
                                 android:id="@+id/tv_expertise_working_time"
@@ -672,7 +672,7 @@
                                 android:gravity="right"
                                 android:lines="1"
                                 android:textColor="@color/colorTextSub"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style" />
                         </LinearLayout>
 
                         <com.fei.firstproject.widget.PartHeadView
@@ -698,7 +698,7 @@
                                 android:gravity="left"
                                 android:text="@string/detail_address"
                                 android:textColor="@color/colorText"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style" />
 
                             <EditText
                                 android:id="@+id/et_expertise_detail_address"
@@ -711,7 +711,7 @@
                                 android:gravity="right"
                                 android:lines="1"
                                 android:textColor="@color/colorTextSub"
-                                android:textSize="@dimen/tx_15" />
+                                style="@style/Font15Style" />
                         </LinearLayout>
 
                         <com.fei.firstproject.widget.PartHeadView

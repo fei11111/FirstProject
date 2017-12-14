@@ -11,6 +11,6 @@
         android:gravity="center"
         android:padding="@dimen/size_10"
         android:textColor="@color/colorText"
-        android:textSize="@dimen/tx_15" />
+        style="@style/Font15Style"/>
 
 </LinearLayout>

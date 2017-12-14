@@ -48,7 +48,7 @@
                         android:layout_marginLeft="@dimen/size_5"
                         android:text="@string/expertise_room"
                         android:textColor="@color/selector_color_white_to_gray"
-                        android:textSize="@dimen/tx_15" />
+                        style="@style/Font15Style"  />
 
                 </LinearLayout>
 
@@ -70,7 +70,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/emergency_room"
                         android:textColor="@color/selector_color_white_to_gray"
-                        android:textSize="@dimen/tx_15" />
+                        style="@style/Font15Style" />
 
                 </LinearLayout>
 

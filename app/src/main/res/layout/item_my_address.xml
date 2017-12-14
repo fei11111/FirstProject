@@ -22,8 +22,8 @@
             android:layout_height="wrap_content"
             android:text=""
             android:textColor="@color/colorText"
-            android:textSize="@dimen/tx_15" />
-
+            style="@style/Font15Style" />
+        
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorTextSub"
-                android:textSize="@dimen/tx_15" />
+                style="@style/Font15Style" />
 
             <TextView
                 android:id="@+id/tv_phone"
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/size_10"
                 android:textColor="@color/colorTextSub"
-                android:textSize="@dimen/tx_15" />
+                style="@style/Font15Style" />
 
         </LinearLayout>
     </LinearLayout>
@@ -63,7 +63,7 @@
             android:gravity="center"
             android:text="@string/default_address"
             android:textColor="@color/colorText"
-            android:textSize="@dimen/tx_15" />
+            style="@style/Font15Style" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -81,7 +81,7 @@
                 android:padding="@dimen/size_10"
                 android:text="@string/edit"
                 android:textColor="@color/colorText"
-                android:textSize="@dimen/tx_15" />
+                style="@style/Font15Style" />
 
             <TextView
                 android:id="@+id/tv_del"
@@ -92,7 +92,7 @@
                 android:padding="@dimen/size_10"
                 android:text="@string/delete"
                 android:textColor="@color/colorText"
-                android:textSize="@dimen/tx_15" />
+                style="@style/Font15Style" />
 
         </LinearLayout>
 

@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:lines="1"
-                android:textSize="@dimen/tx_12" />
+                style="@style/Font12Style" />
 
             <TextView
                 android:id="@+id/tv_land"
@@ -40,7 +40,7 @@
                 android:layout_marginTop="@dimen/size_5"
                 android:ellipsize="end"
                 android:lines="1"
-                android:textSize="@dimen/tx_12" />
+                style="@style/Font12Style" />
 
             <TextView
                 android:id="@+id/tv_date"
@@ -49,7 +49,7 @@
                 android:layout_marginTop="@dimen/size_5"
                 android:ellipsize="end"
                 android:lines="1"
-                android:textSize="@dimen/tx_12" />
+                style="@style/Font12Style" />
         </LinearLayout>
     </LinearLayout>
 

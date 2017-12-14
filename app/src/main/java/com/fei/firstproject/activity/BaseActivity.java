@@ -38,6 +38,8 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +95,9 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IBase 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initTheme();
         setContentView(getContentViewResId());
+        EventBus.getDefault().register(this);
         unbinder = ButterKnife.bind(this);
         initProgress();
         initlistener();
@@ -101,9 +105,28 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IBase 
         initRequest();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    void dealEvent(AllEvent allEvent) {
+        if(allEvent.getEventType()==EventType.APP_FONT_CHANGE) {
+            recreate();
+        }
+    }
+
+    protected void initTheme() {
+        int mode = (int) SPUtils.get(this, "fontMode", 0);
+        if (mode == 0) {
+            setTheme(R.style.NormalFontStyle);
+        } else if (mode == 1) {
+            setTheme(R.style.SmallFontStyle);
+        } else if (mode == 2) {
+            setTheme(R.style.BigFontStyle);
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         unbinder.unbind();
     }
 

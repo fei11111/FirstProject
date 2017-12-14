@@ -19,22 +19,22 @@
 
             <TextView
                 android:id="@+id/tv_service"
+                style="@style/Font15Style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:lines="1"
-                android:textColor="@color/colorText"
-                android:textSize="@dimen/tx_15" />
+                android:textColor="@color/colorText" />
 
             <TextView
                 android:id="@+id/tv_status"
+                style="@style/Font15Style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:ellipsize="end"
                 android:lines="1"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/tx_15" />
+                android:textColor="@color/colorPrimary" />
         </RelativeLayout>
 
         <LinearLayout
@@ -58,17 +58,18 @@
 
                 <TextView
                     android:id="@+id/tv_desc"
+                    style="@style/Font15Style"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:lines="2"
                     android:ellipsize="end"
                     android:gravity="left|center_vertical"
+                    android:lines="2"
                     android:text="11111111111111111112222222222222222222222222222221"
-                    android:textColor="@color/colorText"
-                    android:textSize="@dimen/tx_15" />
+                    android:textColor="@color/colorText" />
 
                 <TextView
                     android:id="@+id/tv_count"
+                    style="@style/Font15Style"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/size_5"
@@ -76,8 +77,7 @@
                     android:gravity="right"
                     android:lines="1"
                     android:text="22222222222222222222"
-                    android:textColor="@color/colorTextSub"
-                    android:textSize="@dimen/tx_15" />
+                    android:textColor="@color/colorTextSub" />
             </LinearLayout>
         </LinearLayout>
 
@@ -93,24 +93,24 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    style="@style/Font15Style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:gravity="center"
                     android:text="@string/payment_declare"
-                    android:textColor="@color/colorText"
-                    android:textSize="@dimen/tx_15" />
+                    android:textColor="@color/colorText" />
 
                 <TextView
                     android:id="@+id/tv_money"
+                    style="@style/Font20Style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:gravity="center"
-                    android:textColor="@color/colorText"
-                    android:textSize="@dimen/tx_20" />
+                    android:textColor="@color/colorText" />
 
             </LinearLayout>
 
@@ -129,22 +129,22 @@
 
                 <Button
                     android:id="@+id/btn_pay"
+                    style="@style/Font15Style"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/size_36"
                     android:background="@drawable/selector_pay_corner_btn_bg"
                     android:gravity="center"
-                    android:textColor="@color/selector_color_white_to_black"
-                    android:textSize="@dimen/tx_15" />
+                    android:textColor="@color/selector_color_white_to_black" />
 
                 <Button
                     android:id="@+id/btn_cancle"
+                    style="@style/Font15Style"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/size_36"
                     android:layout_marginLeft="@dimen/size_8"
                     android:background="@drawable/selector_pay_corner_btn_bg"
                     android:gravity="center"
-                    android:textColor="@color/selector_color_white_to_black"
-                    android:textSize="@dimen/tx_15" />
+                    android:textColor="@color/selector_color_white_to_black" />
 
             </LinearLayout>
 

@@ -23,11 +23,11 @@
 
         <TextView
             android:id="@+id/tv_head_left"
+            style="@style/Font15Style"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:textColor="@color/selector_color_white_to_gray"
-            android:textSize="@dimen/tx_15"
             android:visibility="gone" />
 
     </FrameLayout>
@@ -48,11 +48,11 @@
 
         <TextView
             android:id="@+id/tv_head_right"
+            style="@style/Font15Style"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:textColor="@color/selector_color_white_to_gray"
-            android:textSize="@dimen/tx_15"
             android:visibility="gone" />
 
     </FrameLayout>
@@ -74,6 +74,7 @@
 
             <EditText
                 android:id="@+id/et_search"
+                style="@style/Font12Style"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/shape_search_bg"
@@ -84,8 +85,7 @@
                 android:paddingLeft="@dimen/size_30"
                 android:paddingRight="@dimen/size_30"
                 android:textColor="@color/colorText"
-                android:textColorHint="@color/colorTextSub"
-                android:textSize="@dimen/tx_12" />
+                android:textColorHint="@color/colorTextSub" />
 
             <ImageView
                 android:layout_width="@dimen/size_15"
@@ -107,13 +107,13 @@
 
         <TextView
             android:id="@+id/tv_title"
+            style="@style/Font20Style"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:ellipsize="end"
             android:gravity="center"
             android:lines="1"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/tx_20" />
+            android:textColor="@color/colorWhite" />
 
     </FrameLayout>
 

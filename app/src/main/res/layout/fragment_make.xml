@@ -42,8 +42,9 @@
                     android:layout_marginTop="@dimen/size_10"
                     android:text="@string/make_fertilizer"
                     android:textColor="@color/colorText"
-                    android:textSize="@dimen/tx_15" />
+                    style="@style/Font15Style" />
             </LinearLayout>
+
 
             <View
                 android:layout_width="@dimen/size_1"
@@ -71,7 +72,7 @@
                     android:layout_marginTop="@dimen/size_10"
                     android:text="@string/fast_make"
                     android:textColor="@color/colorText"
-                    android:textSize="@dimen/tx_15" />
+                    style="@style/Font15Style" />
             </LinearLayout>
 
         </LinearLayout>
@@ -104,7 +105,7 @@
                     android:layout_marginTop="@dimen/size_10"
                     android:text="@string/plan_make"
                     android:textColor="@color/colorText"
-                    android:textSize="@dimen/tx_15" />
+                    style="@style/Font15Style" />
             </LinearLayout>
 
             <View
@@ -133,7 +134,7 @@
                     android:layout_marginTop="@dimen/size_10"
                     android:text="@string/plan_search"
                     android:textColor="@color/colorText"
-                    android:textSize="@dimen/tx_15" />
+                    style="@style/Font15Style" />
             </LinearLayout>
         </LinearLayout>
     </android.support.v7.widget.LinearLayoutCompat>

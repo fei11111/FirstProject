@@ -79,6 +79,7 @@
 
                     <TextView
                         android:id="@+id/tv_product_detail_title"
+                        style="@style/Font20Style"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/size_10"
@@ -87,7 +88,6 @@
                         android:layout_marginTop="@dimen/size_10"
                         android:gravity="center"
                         android:textColor="@color/colorText"
-                        android:textSize="@dimen/tx_20"
                         android:textStyle="bold" />
 
                     <RelativeLayout
@@ -96,12 +96,12 @@
 
                         <TextView
                             android:id="@+id/tv_product_detail_date"
+                            style="@style/Font15Style"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_marginRight="10dp"
-                            android:textColor="@color/colorTextSub"
-                            android:textSize="@dimen/tx_15" />
+                            android:textColor="@color/colorTextSub" />
 
                     </RelativeLayout>
 

@@ -101,12 +101,6 @@ public class MeFragment extends BaseFragment {
     private boolean isAppHeadTitleChange = false;
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
@@ -152,11 +146,17 @@ public class MeFragment extends BaseFragment {
 
     @Override
     public void init(Bundle savedInstanceState) {
-        LogUtils.i("tag", "me");
         EventBus.getDefault().register(this);
+        LogUtils.i("tag", "me");
         initInfo();
         initRecyclerView();
         initListener();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
     }
 
     private void initListener() {

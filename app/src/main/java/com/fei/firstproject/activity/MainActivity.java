@@ -110,6 +110,11 @@ public class MainActivity extends BaseActivity {
         initListener();
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
     private void sendWx() {
         WXTextObject textObject = new WXTextObject();
         textObject.text = "测试";

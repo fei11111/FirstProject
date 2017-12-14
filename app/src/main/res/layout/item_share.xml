@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:textColor="@color/colorTextSub"
-            android:textSize="@dimen/tx_15" />
+            style="@style/Font15Style" />
 
         <TextView
             android:id="@+id/tv_title"
@@ -30,7 +30,7 @@
             android:ellipsize="end"
             android:lines="1"
             android:textColor="@color/colorText"
-            android:textSize="@dimen/tx_15" />
+            style="@style/Font15Style" />
 
     </RelativeLayout>
 
@@ -41,7 +41,7 @@
         android:layout_below="@id/tv_title"
         android:layout_marginTop="@dimen/size_5"
         android:textColor="@color/colorTextSub"
-        android:textSize="@dimen/tx_15" />
+        style="@style/Font15Style" />
 
     <com.fei.firstproject.widget.FlowLayout
         android:id="@+id/fl_pic"

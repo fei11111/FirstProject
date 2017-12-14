@@ -29,7 +29,7 @@
                 app:leftStyle="image"
                 app:leftVisible="visible"
                 app:middleStyle="text"
-                app:middleText="@string/setting"
+                app:middleText="@string/account_setting"
                 app:rightVisible="invisible"></com.fei.firstproject.widget.AppHeadView>
         </android.support.v7.widget.Toolbar>
 
@@ -37,14 +37,14 @@
 
     <Button
         android:id="@+id/btn_logout"
+        style="@style/Font15Style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@drawable/selector_rect_btn_bg"
         android:gravity="center"
         android:text="@string/log_out"
-        android:textColor="@color/colorWhite"
-        android:textSize="@dimen/tx_15" />
+        android:textColor="@color/colorWhite" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -58,7 +58,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_10"
-            android:background="@color/colorWhite"
             android:orientation="vertical"
             app:divider="@drawable/shape_line"
             app:showDividers="middle">
@@ -66,69 +65,75 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:paddingBottom="@dimen/size_10"
-                android:paddingLeft="@dimen/size_16"
-                android:paddingRight="@dimen/size_16"
-                android:paddingTop="@dimen/size_10">
-
-                <com.fei.firstproject.widget.RoundImageView
-                    android:id="@+id/iv_user_head"
-                    android:layout_width="@dimen/size_65"
-                    android:layout_height="@dimen/size_65"
-                    android:layout_centerInParent="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/shape_image_circle_border_default_bg"
-                    app:srcCompat="@drawable/ic_app"
-                    app:type="circle" />
+                android:background="@color/colorWhite">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/size_10"
-                    android:layout_toRightOf="@id/iv_user_head"
-                    android:orientation="vertical">
+                    android:background="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/size_10"
+                    android:paddingLeft="@dimen/size_16"
+                    android:paddingRight="@dimen/size_16"
+                    android:paddingTop="@dimen/size_10">
 
-                    <TextView
-                        android:id="@+id/tv_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/colorText"
-                        android:textSize="@dimen/tx_16" />
+                    <com.fei.firstproject.widget.RoundImageView
+                        android:id="@+id/iv_user_head"
+                        android:layout_width="@dimen/size_65"
+                        android:layout_height="@dimen/size_65"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/shape_image_circle_border_default_bg"
+                        app:srcCompat="@drawable/ic_app"
+                        app:type="circle" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/size_5"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:id="@+id/iv_vip"
-                            android:layout_width="@dimen/size_16"
-                            android:layout_height="@dimen/size_16"
-                            android:src="@drawable/ic_vip" />
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/size_10"
+                        android:layout_toRightOf="@id/iv_user_head"
+                        android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tv_name"
+                            style="@style/Font16Style"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/size_5"
-                            android:text="@string/handsome_value"
-                            android:textColor="@color/colorTextSub"
-                            android:textSize="@dimen/tx_12" />
+                            android:textColor="@color/colorText" />
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="100"
-                            android:textColor="@color/colorTextSub"
-                            android:textSize="@dimen/tx_12"
-                            android:textStyle="bold" />
+                            android:layout_marginTop="@dimen/size_5"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/iv_vip"
+                                android:layout_width="@dimen/size_16"
+                                android:layout_height="@dimen/size_16"
+                                android:src="@drawable/ic_vip" />
+
+                            <TextView
+                                style="@style/Font12Style"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/size_5"
+                                android:text="@string/handsome_value"
+                                android:textColor="@color/colorTextSub" />
+
+                            <TextView
+                                style="@style/Font12Style"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="100"
+                                android:textColor="@color/colorTextSub"
+                                android:textStyle="bold" />
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
 
+                </LinearLayout>
             </LinearLayout>
 
             <com.fei.firstproject.widget.PartHeadView
@@ -151,6 +156,15 @@
                 android:layout_height="wrap_content"
                 app:leftIcon="@drawable/ic_address"
                 app:title="@string/my_address"></com.fei.firstproject.widget.PartHeadView>
+
+            <com.fei.firstproject.widget.PartHeadView
+                android:id="@+id/phv_font_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_10"
+                app:leftIcon="@drawable/ic_address"
+                app:title="@string/font_size"></com.fei.firstproject.widget.PartHeadView>
+
 
             <com.fei.firstproject.widget.PartHeadView
                 android:id="@+id/phv_about_us"

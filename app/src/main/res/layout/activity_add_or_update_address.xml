@@ -47,7 +47,7 @@
             android:background="@drawable/selector_rect_btn_bg"
             android:text="@string/confirm"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/tx_15" />
+            style="@style/Font15Style"  />
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -77,7 +77,7 @@
                         android:ems="4"
                         android:text="@string/contacts"
                         android:textColor="@color/colorText"
-                        android:textSize="@dimen/tx_15" />
+                        style="@style/Font15Style"  />
 
                     <android.support.v7.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
@@ -105,7 +105,7 @@
                                 android:paddingRight="@dimen/size_30"
                                 android:textColor="@color/colorText"
                                 android:textColorHint="@color/colorTextSub"
-                                android:textSize="@dimen/tx_12" />
+                                style="@style/Font12Style" />
 
                             <ImageView
                                 android:layout_width="@dimen/size_15"
@@ -164,7 +164,7 @@
                         android:ems="4"
                         android:text="@string/phone"
                         android:textColor="@color/colorText"
-                        android:textSize="@dimen/tx_15" />
+                        style="@style/Font15Style"  />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -184,7 +184,7 @@
                             android:paddingRight="@dimen/size_30"
                             android:textColor="@color/colorText"
                             android:textColorHint="@color/colorTextSub"
-                            android:textSize="@dimen/tx_12" />
+                            style="@style/Font12Style"/>
 
                         <ImageView
                             android:layout_width="@dimen/size_15"
@@ -215,7 +215,7 @@
                         android:ems="4"
                         android:text="@string/address"
                         android:textColor="@color/colorText"
-                        android:textSize="@dimen/tx_16" />
+                        style="@style/Font16Style" />
 
                     <ImageView
                         android:id="@+id/iv_arrow"
@@ -235,7 +235,7 @@
                         android:layout_toLeftOf="@id/iv_arrow"
                         android:layout_toRightOf="@id/tv_address_left"
                         android:textColor="@color/colorTextSub"
-                        android:textSize="@dimen/tx_14" />
+                        style="@style/Font14Style"  />
                 </RelativeLayout>
 
                 <LinearLayout
@@ -253,7 +253,7 @@
                         android:ems="4"
                         android:text="@string/detail_address"
                         android:textColor="@color/colorText"
-                        android:textSize="@dimen/tx_15" />
+                        style="@style/Font15Style"  />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -273,7 +273,7 @@
                             android:paddingRight="@dimen/size_30"
                             android:textColor="@color/colorText"
                             android:textColorHint="@color/colorTextSub"
-                            android:textSize="@dimen/tx_12" />
+                            style="@style/Font12Style" />
 
                         <ImageView
                             android:layout_width="@dimen/size_15"

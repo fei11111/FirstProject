@@ -89,7 +89,7 @@
                         android:paddingTop="@dimen/size_10"
                         android:text="@string/growing_crop"
                         android:textColor="@color/colorText"
-                        android:textSize="@dimen/tx_15" />
+                        style="@style/Font15Style"  />
 
                     <com.fei.firstproject.widget.NoScrollRecyclerView
                         android:id="@+id/rv_crop"

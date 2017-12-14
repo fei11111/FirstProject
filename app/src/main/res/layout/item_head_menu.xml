@@ -20,6 +20,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/size_5"
         android:textColor="@color/colorText"
-        android:textSize="@dimen/tx_15" />
+        style="@style/Font15Style" />
 
 </LinearLayout>

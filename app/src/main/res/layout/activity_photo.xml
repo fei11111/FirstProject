@@ -18,6 +18,6 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:textColor="@color/colorWhite"
-        android:textSize="@dimen/tx_15" />
+        style="@style/Font15Style" />
 
 </RelativeLayout>

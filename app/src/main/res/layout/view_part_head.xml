@@ -30,7 +30,7 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/iv_left_view"
             android:textColor="@color/colorText"
-            android:textSize="@dimen/tx_16" />
+            style="@style/Font16Style"  />
 
         <ImageView
             android:id="@+id/iv_arrow"
@@ -48,6 +48,6 @@
             android:layout_marginRight="@dimen/size_10"
             android:layout_toLeftOf="@id/iv_arrow"
             android:textColor="@color/colorTextSub"
-            android:textSize="@dimen/tx_14" />
+            style="@style/Font14Style" />
     </RelativeLayout>
 </RelativeLayout>

@@ -68,7 +68,7 @@
                     android:lines="1"
                     android:maxLines="1"
                     android:textColor="@color/colorText"
-                    android:textSize="@dimen/tx_15" />
+                    style="@style/Font15Style" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -88,7 +88,7 @@
                     android:lines="1"
                     android:maxLines="1"
                     android:textColor="@color/colorText"
-                    android:textSize="@dimen/tx_15" />
+                    style="@style/Font15Style" />
             </android.support.design.widget.TextInputLayout>
 
             <LinearLayout
@@ -113,7 +113,7 @@
                         android:lines="1"
                         android:maxLines="1"
                         android:textColor="@color/colorText"
-                        android:textSize="@dimen/tx_15" />
+                        style="@style/Font15Style"/>
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -136,7 +136,7 @@
                 android:gravity="center"
                 android:text="@string/title_activity_login"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/tx_15" />
+                style="@style/Font15Style" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -149,7 +149,7 @@
                     android:layout_alignParentRight="true"
                     android:padding="@dimen/fab_margin"
                     android:text="@string/register"
-                    android:textSize="@dimen/tx_15" />
+                    style="@style/Font15Style" />
             </RelativeLayout>
 
             <LinearLayout
@@ -209,7 +209,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/size_5"
                             android:text="@string/weixin"
-                            android:textSize="@dimen/tx_15" />
+                            style="@style/Font15Style" />
 
                     </LinearLayout>
 
@@ -233,7 +233,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/size_5"
                             android:text="@string/qq"
-                            android:textSize="@dimen/tx_15" />
+                            style="@style/Font15Style"/>
 
                     </LinearLayout>
 

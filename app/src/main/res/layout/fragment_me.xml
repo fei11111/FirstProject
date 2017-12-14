@@ -93,14 +93,14 @@
                                         android:layout_marginLeft="@dimen/size_5"
                                         android:text="@string/handsome_value"
                                         android:textColor="@color/colorWhite"
-                                        android:textSize="@dimen/tx_12" />
+                                        style="@style/Font12Style" />
 
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="100"
                                         android:textColor="@color/colorWhite"
-                                        android:textSize="@dimen/tx_12"
+                                        style="@style/Font12Style"
                                         android:textStyle="bold" />
 
                                     <ImageView
@@ -123,8 +123,8 @@
                                 android:layout_toRightOf="@id/iv_user_head"
                                 android:text="@string/nologin"
                                 android:textColor="@color/colorText"
-                                android:textSize="@dimen/tx_15" />
-
+                                style="@style/Font15Style"/>
+                            
                         </RelativeLayout>
 
                         <LinearLayout
@@ -148,7 +148,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="0"
                                     android:textColor="@color/colorText"
-                                    android:textSize="@dimen/tx_15" />
+                                    style="@style/Font15Style"/>
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -156,7 +156,7 @@
                                     android:layout_marginTop="@dimen/size_5"
                                     android:text="@string/collect_goods"
                                     android:textColor="@color/colorTextSub"
-                                    android:textSize="@dimen/tx_13" />
+                                    style="@style/Font13Style" />
 
                             </LinearLayout>
 
@@ -175,7 +175,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="0"
                                     android:textColor="@color/colorText"
-                                    android:textSize="@dimen/tx_15" />
+                                    style="@style/Font15Style"/>
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -183,7 +183,7 @@
                                     android:layout_marginTop="@dimen/size_5"
                                     android:text="@string/collect_store"
                                     android:textColor="@color/colorTextSub"
-                                    android:textSize="@dimen/tx_13" />
+                                    style="@style/Font13Style" />
 
                             </LinearLayout>
 
@@ -201,7 +201,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="0"
                                     android:textColor="@color/colorText"
-                                    android:textSize="@dimen/tx_15" />
+                                    style="@style/Font15Style"/>
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -209,7 +209,7 @@
                                     android:layout_marginTop="@dimen/size_5"
                                     android:text="@string/balance"
                                     android:textColor="@color/colorTextSub"
-                                    android:textSize="@dimen/tx_13" />
+                                    style="@style/Font13Style"  />
 
                             </LinearLayout>
 
@@ -369,7 +369,7 @@
                             android:layout_marginLeft="@dimen/size_10"
                             android:gravity="center"
                             android:text="@string/me"
-                            android:textSize="@dimen/tx_15" />
+                            style="@style/Font15Style"/>
 
                     </LinearLayout>
 
@@ -408,7 +408,7 @@
                             android:layout_marginLeft="@dimen/size_10"
                             android:gravity="center"
                             android:text="@string/other"
-                            android:textSize="@dimen/tx_15" />
+                            style="@style/Font15Style"/>
 
                     </LinearLayout>
 

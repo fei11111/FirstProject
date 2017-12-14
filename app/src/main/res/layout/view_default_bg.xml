@@ -30,12 +30,12 @@
             android:src="@drawable/ic_no_data" />
 
         <TextView
+            style="@style/Font18Style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_10"
             android:text="@string/no_data"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/tx_18" />
+            android:textColor="@color/colorPrimary" />
     </LinearLayout>
 
     <LinearLayout

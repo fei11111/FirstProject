@@ -117,6 +117,8 @@
     <string name="speciality_skill_">技术专长：</string>
     <string name="star_level">星级：</string>
     <string name="setting">设置</string>
+    <string name="font_size">字体大小</string>
+    <string name="account_setting">账户设置</string>
     <string name="self_info">个人信息</string>
     <string name="account_security">账户与安全</string>
     <string name="my_address">我的收获地址</string>

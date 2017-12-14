@@ -44,7 +44,7 @@
                 android:ellipsize="end"
                 android:lines="1"
                 android:textColor="@color/colorText"
-                android:textSize="@dimen/tx_15" />
+                style="@style/Font15Style" />
 
             <TextView
                 android:id="@+id/tv_recommend_plan_desp"
