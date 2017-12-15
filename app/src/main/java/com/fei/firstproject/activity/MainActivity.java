@@ -71,6 +71,8 @@ public class MainActivity extends BaseActivity {
     //Activity请求返回
     private static final int REQUEST_ACTIVITY_CODE_CAMERA = 200;
 
+    private int tagPosition = 0;
+
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
         if (requestCode == REQUEST_PERMISSION_CODE_STORAGE) {
@@ -104,9 +106,9 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
+        initView(savedInstanceState);
         initPermission();
         initToolBar();
-        initSetting(savedInstanceState);
         initListener();
     }
 
@@ -160,14 +162,15 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    private void initSetting(Bundle savedInstanceState) {
+    private void initView(Bundle savedInstanceState) {
         mFragmentManager = getSupportFragmentManager();
         if (savedInstanceState != null) {
             mainFragment = (MainFragment) mFragmentManager.findFragmentByTag("mainFragment");
             makeFragment = (MakeFragment) mFragmentManager.findFragmentByTag("makeFragment");
             meFragment = (MeFragment) mFragmentManager.findFragmentByTag("meFrament");
+            tagPosition = savedInstanceState.getInt("position");
         }
-        llBottomMain.performClick();
+        setTab(tagPosition);
     }
 
     private void initToolBar() {
@@ -223,9 +226,23 @@ public class MainActivity extends BaseActivity {
         resetAllState();
         switch (id) {
             case R.id.ll_bottom_main:
-                llBottomMain.setSelected(true);
-                setAppHeadViewSearchMode();
+                tagPosition = 0;
+                break;
+            case R.id.ll_bottom_make:
+                tagPosition = 1;
+                break;
+            case R.id.ll_bottom_me:
+                tagPosition = 2;
+                break;
+        }
+        setTab(tagPosition);
+    }
 
+    private void setTab(int position) {
+        switch (position){
+            case 0:
+                setAppHeadViewSearchMode();
+                llBottomMain.setSelected(true);
                 if (mainFragment == null) {
                     mainFragment = (MainFragment) FragmentInstanceManager.getInstance().getFragmet(MainFragment.class);
                     switchFragment(mainFragment, true, "mainFragment");
@@ -233,9 +250,9 @@ public class MainActivity extends BaseActivity {
                     switchFragment(mainFragment, false, "mainFragment");
                 }
                 break;
-            case R.id.ll_bottom_make:
-                llBottomMake.setSelected(true);
+            case 1:
                 setAppHeadViewTitleMode();
+                llBottomMake.setSelected(true);
                 if (makeFragment == null) {
                     makeFragment = (MakeFragment) FragmentInstanceManager.getInstance().getFragmet(MakeFragment.class);
                     switchFragment(makeFragment, true, "makeFragment");
@@ -243,7 +260,7 @@ public class MainActivity extends BaseActivity {
                     switchFragment(makeFragment, false, "makeFragment");
                 }
                 break;
-            case R.id.ll_bottom_me:
+            case 2:
                 llBottomMe.setSelected(true);
                 setAppHeadViewTitleImageMode();
                 if (meFragment == null) {
@@ -314,6 +331,12 @@ public class MainActivity extends BaseActivity {
         hideFragment(transaction);
         transaction.show(fragment);
         transaction.commit();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("position", tagPosition);
     }
 
     @Override
