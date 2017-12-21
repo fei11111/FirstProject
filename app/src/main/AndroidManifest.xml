@@ -92,6 +92,8 @@
 
         <activity android:name=".activity.PhotoActivity"
             android:theme="@style/PhotoTheme"/>
+        
+         <activity android:name=".activity.AddressBookActivity" />
 
     </application>
 
