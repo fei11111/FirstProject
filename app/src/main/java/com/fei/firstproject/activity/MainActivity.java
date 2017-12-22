@@ -68,9 +68,9 @@ public class MainActivity extends BaseActivity {
     //权限请求
     private static final int REQUEST_PERMISSION_CODE_STORAGE = 100;
     private static final int REQUEST_PERMISSION_CODE_CAMERA = 101;
-    private static final int REQUEST_ACTIVITY_CODE_LOGIN = 300;
     //Activity请求返回
     private static final int REQUEST_ACTIVITY_CODE_CAMERA = 200;
+    private static final int REQUEST_ACTIVITY_CODE_LOGIN = 201;
 
     private int tagPosition = 0;
 
