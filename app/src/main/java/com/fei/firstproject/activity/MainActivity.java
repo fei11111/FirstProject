@@ -187,8 +187,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onLeft(View view) {
                 if (mainFragment != null && mainFragment.isVisible()) {
-                    startActivity(new Intent(MainActivity.this,AddressBookActivity.class));
-//                    checkPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION_CODE_CAMERA);
+                    checkPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION_CODE_CAMERA);
                 } else if (meFragment != null && meFragment.isVisible()) {
                     if (AppConfig.ISLOGIN) {
                         startActivityWithoutCode(new Intent(MainActivity.this, SettingActivity.class));
@@ -240,7 +239,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setTab(int position) {
-        switch (position){
+        switch (position) {
             case 0:
                 setAppHeadViewSearchMode();
                 llBottomMain.setSelected(true);

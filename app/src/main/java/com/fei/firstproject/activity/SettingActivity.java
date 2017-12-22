@@ -131,32 +131,42 @@ public class SettingActivity extends BaseActivity {
         });
     }
 
+    //通讯录
+    @OnClick(R.id.phv_address_book)
+    void clickAddreddressBook(View view){
+        startActivityWithoutCode(new Intent(this,AddressBookActivity.class));
+    }
     //个人信息
     @OnClick(R.id.phv_self_info)
     void clickSelfInfo(View view) {
         startActivityWithoutCode(new Intent(this, SelfInfoActivity.class));
     }
 
+    //退出
     @OnClick(R.id.btn_logout)
     void clickLogout(View view) {
         checkPermissions(new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_PERMISSION_TELEPHONE);
     }
 
+    //账户安全
     @OnClick(R.id.phv_account_security)
     void clickAccountSecurity(View view) {
         startActivityWithoutCode(new Intent(this, AccountSecurityActivity.class));
     }
 
+    //地址
     @OnClick(R.id.phv_my_address)
     void clickMyAddress(View view) {
         startActivityWithoutCode(new Intent(this, MyAddressActivity.class));
     }
 
+    //关于我们
     @OnClick(R.id.phv_about_us)
     void clickAboutUs(View view) {
         startActivityWithoutCode(new Intent(this, AboutUsActivity.class));
     }
 
+    //设置字体
     @OnClick(R.id.phv_font_size)
     void clickFontSize(View view) {
         if (bottomListDialog == null) {
