@@ -68,6 +68,7 @@ public class MainActivity extends BaseActivity {
     //权限请求
     private static final int REQUEST_PERMISSION_CODE_STORAGE = 100;
     private static final int REQUEST_PERMISSION_CODE_CAMERA = 101;
+    private static final int REQUEST_ACTIVITY_CODE_LOGIN = 300;
     //Activity请求返回
     private static final int REQUEST_ACTIVITY_CODE_CAMERA = 200;
 
@@ -175,11 +176,6 @@ public class MainActivity extends BaseActivity {
 
     private void initToolBar() {
         setSupportActionBar(toolbar);
-        if (AppConfig.ISLOGIN) {
-            appHeadView.setFlHeadLeftVisible(View.INVISIBLE);
-        } else {
-            appHeadView.setFlHeadLeftVisible(View.VISIBLE);
-        }
     }
 
     private void initListener() {
@@ -187,7 +183,11 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onLeft(View view) {
                 if (mainFragment != null && mainFragment.isVisible()) {
-                    checkPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION_CODE_CAMERA);
+                    if (AppConfig.ISLOGIN) {
+                        checkPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION_CODE_CAMERA);
+                    } else {
+                        startActivityWithCode(new Intent(MainActivity.this, LoginActivity.class), REQUEST_ACTIVITY_CODE_LOGIN);
+                    }
                 } else if (meFragment != null && meFragment.isVisible()) {
                     if (AppConfig.ISLOGIN) {
                         startActivityWithoutCode(new Intent(MainActivity.this, SettingActivity.class));
@@ -278,9 +278,17 @@ public class MainActivity extends BaseActivity {
         appHeadView.setFlHeadLeftVisible(View.VISIBLE);
         appHeadView.setFlHeadRightVisible(View.VISIBLE);
         appHeadView.setMiddleSearchVisible(View.VISIBLE);
-        appHeadView.setLeftDrawable(R.drawable.selector_ic_scan);
-        appHeadView.setRightDrawable(R.drawable.selector_ic_main_message);
         appHeadView.setTvTitleVisible(View.GONE);
+        if (!AppConfig.ISLOGIN) {
+            //未登录
+            appHeadView.setLeftStyle(AppHeadView.TEXT);
+            appHeadView.setLeftText(getResources().getString(R.string.login));
+        } else {
+            //登录
+            appHeadView.setLeftStyle(AppHeadView.IMAGE);
+            appHeadView.setLeftDrawable(R.drawable.selector_ic_scan);
+        }
+        appHeadView.setRightDrawable(R.drawable.selector_ic_main_message);
     }
 
     //设置头部是文本模式
@@ -299,6 +307,7 @@ public class MainActivity extends BaseActivity {
         appHeadView.setMiddleSearchVisible(View.GONE);
         appHeadView.setTvTitleVisible(View.VISIBLE);
         appHeadView.setMiddleText("");
+        appHeadView.setLeftStyle(AppHeadView.IMAGE);
         appHeadView.setLeftDrawable(R.drawable.selector_ic_setting);
         appHeadView.setRightDrawable(R.drawable.selector_ic_share);
     }
@@ -347,8 +356,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         LogUtils.i("tag", "activity - onActivityResult");
-        if (resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_ACTIVITY_CODE_CAMERA) {
+        if (requestCode == REQUEST_ACTIVITY_CODE_CAMERA) {
+            if (resultCode == RESULT_OK) {
                 if (data != null) {
                     String result = data.getStringExtra("result");
                     if (!TextUtils.isEmpty(result)) {
@@ -361,6 +370,11 @@ public class MainActivity extends BaseActivity {
                         }
                     }
                 }
+            }
+        } else if (requestCode == REQUEST_ACTIVITY_CODE_LOGIN) {
+            if (AppConfig.ISLOGIN) {
+                appHeadView.setLeftStyle(AppHeadView.IMAGE);
+                appHeadView.setLeftDrawable(R.drawable.selector_ic_scan);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
