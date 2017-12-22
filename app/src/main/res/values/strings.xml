@@ -92,8 +92,9 @@
     <string name="login_fail_and_retry">登录失败，请重试</string>
     <string name="storage_permission_fail">无法访问存储，将影响APP使用</string>
     <string name="camera_permission_fail">无法获取相机使用权限</string>
-    <string name="need_storage_permission">需要访问存储权限</string>
+    <string name="need_storage_permission">设置-应用-就是帅-权限中开启存储权限</string>
     <string name="need_camera_permission_to_scan">在设置-应用-就是帅-权限中开启相机权限，才能扫一扫</string>
+    <string name="need_contacts_permission">设置-应用-就是帅-权限中开启获取联系人权限</string>
     <string name="payment_declare">实付款：¥</string>
     <string name="immediately_pay">立即付款</string>
     <string name="cancel_pay">撤单</string>
@@ -185,6 +186,7 @@
     <string name="my_field">我的地块</string>
     <string name="add">添加</string>
     <string name="photo_detail">查看图片</string>
+    <string name="friends_list">好友列表</string>
 
     <string name="sharewechat_success">分享成功!!!</string>
     <string name="sharewechat_cancel">分享取消!!!</string>

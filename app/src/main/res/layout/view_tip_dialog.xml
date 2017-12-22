@@ -12,7 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_50"
-            android:background="@drawable/shape_container_rect_border_bg">
+            android:background="@drawable/shape_container_rect_border_bg_white">
 
             <ImageView
                 android:id="@+id/iv_dialog_cancle"

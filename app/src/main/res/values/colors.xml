@@ -7,6 +7,7 @@
     <color name="colorRipple">#58FAAC</color>
     <color name="colorAlphaGreen">#a02E7D32</color>
     <color name="colorBackground">#F1F1F1</color>
+    <color name="colorAlphaBackground">#60000000</color>
     <color name="colorEnable">#a1a1a1</color>
     <color name="colorText">#5f5f5f</color>
     <color name="colorTextSub">#a6aab0</color>
