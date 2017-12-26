@@ -186,7 +186,7 @@ public class MainActivity extends BaseActivity {
                     if (AppConfig.ISLOGIN) {
                         checkPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION_CODE_CAMERA);
                     } else {
-                        startActivityWithCode(new Intent(MainActivity.this, LoginActivity.class), REQUEST_ACTIVITY_CODE_LOGIN);
+                        startActivityForResult(new Intent(MainActivity.this, LoginActivity.class), REQUEST_ACTIVITY_CODE_LOGIN);
                     }
                 } else if (meFragment != null && meFragment.isVisible()) {
                     if (AppConfig.ISLOGIN) {

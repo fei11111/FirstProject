@@ -42,41 +42,85 @@
             android:value="f8a6721ab93f1ea945ba60b33fde61b5" />
 
         <activity
-            android:name=".activity.MainActivity"
-            android:configChanges="orientation|keyboardHidden|navigation"
-            android:windowSoftInputMode="adjustPan">
+            android:name=".activity.WelcomeActivity"
+            android:configChanges="orientation|keyboardHidden|navigation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".activity.MainActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".activity.LoginActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
             android:theme="@style/ActivityBottomStyle" />
-        <activity android:name=".activity.CaptureActivity" />
-        <activity android:name=".activity.MessageActivity" />
-        <activity android:name=".activity.RecommendPlanActivity" />
-        <activity android:name=".activity.MyOrderActivity" />
-        <activity android:name=".activity.MyAttentionActivity" />
-        <activity android:name=".web.WebActivity" />
-        <activity android:name=".activity.RegisterActivity" />
-        <activity android:name=".activity.SettingActivity" />
-        <activity android:name=".activity.SelfInfoActivity" />
-        <activity android:name=".activity.AddAddressOrUpdateActivity" />
-        <activity android:name=".activity.MyAddressActivity" />
-        <activity android:name=".activity.MapActivity" />
-        <activity android:name=".activity.AboutUsActivity" />
+        <activity
+            android:name=".activity.CaptureActivity"
+            android:configChanges="orientation|keyboardHidden|navigation" />
+        <activity
+            android:name=".activity.MessageActivity"
+            android:configChanges="orientation|keyboardHidden|navigation" />
+        <activity
+            android:name=".activity.RecommendPlanActivity"
+            android:configChanges="orientation|keyboardHidden|navigation" />
+        <activity
+            android:name=".activity.MyOrderActivity"
+            android:configChanges="orientation|keyboardHidden|navigation" />
+        <activity
+            android:name=".activity.MyAttentionActivity"
+            android:configChanges="orientation|keyboardHidden|navigation" />
+        <activity
+            android:name=".web.WebActivity"
+            android:configChanges="orientation|keyboardHidden|navigation" />
+        <activity
+            android:name=".activity.RegisterActivity"
+            android:configChanges="orientation|keyboardHidden|navigation" />
+        <activity
+            android:name=".activity.SettingActivity"
+            android:configChanges="orientation|keyboardHidden|navigation" />
+        <activity
+            android:name=".activity.SelfInfoActivity"
+            android:configChanges="orientation|keyboardHidden|navigation" />
+        <activity
+            android:name=".activity.AddAddressOrUpdateActivity"
+            android:configChanges="orientation|keyboardHidden|navigation" />
+        <activity
+            android:name=".activity.MyAddressActivity"
+            android:configChanges="orientation|keyboardHidden|navigation" />
+        <activity
+            android:name=".activity.MapActivity"
+            android:configChanges="orientation|keyboardHidden|navigation" />
+        <activity
+            android:name=".activity.AboutUsActivity"
+            android:configChanges="orientation|keyboardHidden|navigation" />
         <activity
             android:name=".wxapi.WXEntryActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="true"
             android:theme="@style/DialogStyle" />
-        <activity android:name=".activity.AccountSecurityActivity" />
-        <activity android:name=".activity.ProductLibActivity" />
-        <activity android:name=".activity.ProductDetailActivity" />
-        <activity android:name=".activity.RetailersInfoActivity" />
-        <activity android:name=".activity.FieldManageActivity" />
-        <activity android:name=".activity.ExpertiseClinicActivity" />
+        <activity
+            android:name=".activity.AccountSecurityActivity"
+            android:configChanges="orientation|keyboardHidden|navigation" />
+        <activity
+            android:name=".activity.ProductLibActivity"
+            android:configChanges="orientation|keyboardHidden|navigation" />
+        <activity
+            android:name=".activity.ProductDetailActivity"
+            android:configChanges="orientation|keyboardHidden|navigation" />
+        <activity
+            android:name=".activity.RetailersInfoActivity"
+            android:configChanges="orientation|keyboardHidden|navigation" />
+        <activity
+            android:name=".activity.FieldManageActivity"
+            android:configChanges="orientation|keyboardHidden|navigation" />
+        <activity
+            android:name=".activity.ExpertiseClinicActivity"
+            android:configChanges="orientation|keyboardHidden|navigation" />
 
         <service android:name="com.amap.api.location.APSService"></service>
 
@@ -92,9 +136,12 @@
 
         <activity
             android:name=".activity.PhotoActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
             android:theme="@style/PhotoTheme" />
 
-        <activity android:name=".activity.AddressBookActivity" />
+        <activity
+            android:name=".activity.AddressBookActivity"
+            android:configChanges="orientation|keyboardHidden|navigation" />
 
     </application>
 
