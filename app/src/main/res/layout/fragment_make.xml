@@ -126,7 +126,7 @@
                 <ImageView
                     android:layout_width="@dimen/size_45"
                     android:layout_height="@dimen/size_45"
-                    android:src="@drawable/ic_check" />
+                    android:src="@drawable/ic_plan_search" />
 
                 <TextView
                     android:layout_width="wrap_content"

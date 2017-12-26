@@ -2,6 +2,8 @@ package com.fei.firstproject.activity;
 
 import android.os.Bundle;
 
+import com.fei.firstproject.R;
+
 /**
  * Created by Fei on 2017/8/31.
  */
@@ -24,7 +26,7 @@ public class RegisterActivity extends BaseActivity {
 
     @Override
     public int getContentViewResId() {
-        return 0;
+        return R.layout.activity_register;
     }
 
     @Override
