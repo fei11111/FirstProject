@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
-import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -20,16 +19,15 @@ import com.fei.firstproject.R;
 
 public class ReciprocalView extends View {
 
-    private int width;
-    private int height;
-    private RectF rectF;
     private Paint mPaint;
     private Paint textPaint;
     private float ratio = 0;
-    private Path mPath;
+    private Path srcPath;
     private PathMeasure pathMeasure;
-    private Path mDst;
+    private Path dstPath;
     private String content = "";
+    private int centerX = 0;
+    private int centerY = 0;
 
     public ReciprocalView(Context context) {
         this(context, null);
@@ -45,43 +43,50 @@ public class ReciprocalView extends View {
     }
 
     private void init() {
+        initPaint();
+        initPath();
+    }
+
+    private void initPaint() {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setColor(getResources().getColor(R.color.colorTextSub));
         mPaint.setStrokeWidth(2);
         mPaint.setStyle(Paint.Style.STROKE);
-        mDst = new Path();
+
         textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         textPaint.setTextSize(30);
         textPaint.setColor(getResources().getColor(R.color.colorTextSub));
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        width = getMeasuredWidth();
-        height = getMeasuredHeight();
-        rectF = new RectF(0, 0, width, height);
-        mPath = new Path();
-        mPath.addCircle(width / 2, height / 2, height / 2, Path.Direction.CW);
-        pathMeasure = new PathMeasure(mPath, false);
+    private void initPath() {
+        dstPath = new Path();
+        srcPath = new Path();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        if (centerX == 0) {
+            int width = getMeasuredWidth();
+            int height = getMeasuredHeight();
+            centerX = width / 2;
+            centerY = height / 2;
+            srcPath.addCircle(centerX, centerY, centerX - 5, Path.Direction.CW);
+            pathMeasure = new PathMeasure(srcPath, false);
+        }
         if (!TextUtils.isEmpty(content)) {
-            mDst.reset();
+            dstPath.reset();
             ratio += 0.005f;
             if (ratio > 1) {
                 ratio = 0;
             }
             float v = ratio * pathMeasure.getLength();
-            pathMeasure.getSegment(v, pathMeasure.getLength(), mDst, true);
-            canvas.drawPath(mDst, mPaint);
-            float v1 = textPaint.measureText(content);
-            int left = (int) (width / 2 - v1 / 2);
+            pathMeasure.getSegment(v, pathMeasure.getLength(), dstPath, true);
+            canvas.drawPath(dstPath, mPaint);
+            float textLength = textPaint.measureText(content);
+            int left = (int) (centerX - textLength / 2);
             Paint.FontMetrics fontMetrics = textPaint.getFontMetrics();
-            int top = (int) (height / 2 + (Math.abs(fontMetrics.ascent) - fontMetrics.descent) / 2);
+            int top = (int) (centerY + (Math.abs(fontMetrics.ascent) - fontMetrics.descent) / 2);
             canvas.drawText(content, left, top, textPaint);
             invalidate();
         }

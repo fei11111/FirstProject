@@ -37,7 +37,7 @@ public class WelcomeActivity extends BaseActivity {
             int time = msg.what;
             time--;
             if (time == 0) {
-                startActivityWithoutCode(new Intent(WelcomeActivity.this, MainActivity.class));
+                startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
                 WelcomeActivity.this.finish();
             } else {
                 spView.setContent(time + "s");
