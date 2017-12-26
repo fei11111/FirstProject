@@ -18,7 +18,6 @@ import com.fei.firstproject.R;
 import com.fei.firstproject.widget.ReciprocalView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2017/12/25.
@@ -89,12 +88,5 @@ public class WelcomeActivity extends BaseActivity {
     @Override
     public void initRequest() {
 
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 }
