@@ -1,5 +1,6 @@
 package com.fei.firstproject.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -147,21 +148,21 @@ public class AddAddressOrUpdateActivity extends BaseActivity {
 
     @OnClick(R.id.rl_address)
     void clickAddress(View view) {
-//        checkPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-//                        Manifest.permission.READ_PHONE_STATE,
-//                        Manifest.permission.READ_EXTERNAL_STORAGE},
-//                REQUEST_PERMISSION_CODE_MAP);
+        checkPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.READ_PHONE_STATE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE},
+                REQUEST_PERMISSION_CODE_MAP);
 
-        if (cityDialog == null) {
-            cityDialog = new CityDialog(this);
-            cityDialog.setOnConfirmListener(new CityDialog.OnConfirmListener() {
-                @Override
-                public void onClick(String province, String city, String couny) {
-                    tvAddress.setText(province + city + couny);
-                }
-            });
-        }
-        cityDialog.show();
+//        if (cityDialog == null) {
+//            cityDialog = new CityDialog(this);
+//            cityDialog.setOnConfirmListener(new CityDialog.OnConfirmListener() {
+//                @Override
+//                public void onClick(String province, String city, String couny) {
+//                    tvAddress.setText(province + city + couny);
+//                }
+//            });
+//        }
+//        cityDialog.show();
     }
 
     @OnClick(R.id.btn_add_address)
