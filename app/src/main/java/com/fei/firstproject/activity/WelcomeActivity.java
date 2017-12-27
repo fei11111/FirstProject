@@ -43,8 +43,10 @@ public class WelcomeActivity extends BaseActivity {
                 WelcomeActivity.this.finish();
             } else {
                 spView.setContent(time + "s");
-                msg.arg1 = time;
-                mHandler.sendMessageDelayed(msg, 1000);
+                Message m = Message.obtain();
+                m.what = messageWhat;
+                m.arg1 = time;
+                mHandler.sendMessageDelayed(m, 1000);
             }
         }
     };
