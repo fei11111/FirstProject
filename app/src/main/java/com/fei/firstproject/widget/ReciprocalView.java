@@ -96,5 +96,6 @@ public class ReciprocalView extends View {
         this.content = content;
         invalidate();
     }
+
 }
 
