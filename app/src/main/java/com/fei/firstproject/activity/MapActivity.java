@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -32,11 +33,13 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
     Button btnConfirm;
     @BindView(R.id.map)
     MapView mMapView;
+    @BindView(R.id.tv_address)
+    TextView tvAddress;
 
     private AMap aMap;
     private AMapLocationClient mlocationClient;
     private AMapLocationClientOption mLocationOption;
-    private LocationSource.OnLocationChangedListener mListener;
+    private OnLocationChangedListener mListener;
 
     @Override
     protected void onResume() {
@@ -164,7 +167,8 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
             if (amapLocation != null
                     && amapLocation.getErrorCode() == 0) {
                 mListener.onLocationChanged(amapLocation);// 显示系统小蓝点
-                LogUtils.i("tag",amapLocation.toString());
+                tvAddress.setText(amapLocation.getAddress());
+                LogUtils.i("tag", amapLocation.toString());
             } else {
                 String errText = "定位失败," + amapLocation.getErrorCode() + ": " + amapLocation.getErrorInfo();
                 LogUtils.e("AmapErr", errText);
@@ -208,4 +212,5 @@ public class MapActivity extends BaseActivity implements AMapLocationListener, L
         }
         mlocationClient = null;
     }
+
 }

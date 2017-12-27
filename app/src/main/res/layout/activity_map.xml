@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:src="@drawable/ic_location"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </RelativeLayout>
 
@@ -58,15 +58,24 @@
         android:layout_margin="@dimen/size_10"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/tv_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBackground"
+            style="@style/Font15Style"
+            android:padding="@dimen/size_10"/>
+
         <Button
             android:id="@+id/btn_confirm"
+            style="@style/Font15Style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/selector_rect_btn_bg"
             android:gravity="center"
             android:text="@string/confirm"
             android:textColor="@color/colorWhite"
-            style="@style/Font15Style"/>
+            android:layout_marginTop="@dimen/size_10"/>
 
     </LinearLayout>
 
