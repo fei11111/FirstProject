@@ -90,7 +90,7 @@ public class WelcomeActivity extends BaseActivity {
 
     private void initView() {
         Glide.with(this)
-                .load("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1514192826178&di=81727587ce4f9b5461210b35a734b921&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01e51c58608f42a8012060c8d8d0e8.gif")
+                .load("http://p0.ifengimg.com/pmop/2017/0822/02ECFE921D08ABCCE23B8088036B6DC451E0A785_size375_w500_h284.gif")
                 .transition(new DrawableTransitionOptions().crossFade(2000))
                 .listener(new RequestListener<Drawable>() {
                     @Override

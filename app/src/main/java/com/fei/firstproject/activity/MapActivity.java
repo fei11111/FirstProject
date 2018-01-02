@@ -9,9 +9,11 @@ import android.widget.TextView;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapOptions;
+import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.UiSettings;
+import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.fei.firstproject.R;
 import com.fei.firstproject.utils.LogUtils;
@@ -98,8 +100,11 @@ public class MapActivity extends BaseActivity {
             @Override
             public void onMyLocationChange(Location location) {
                 Bundle extras = location.getExtras();
-                String address = extras.getString("Address","");
+                String address = extras.getString("Address", "");
                 LogUtils.i("tag", location.toString());
+                final LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(latLng);
+                aMap.moveCamera(cameraUpdate);
                 tvAddress.setText(address);
             }
         });
@@ -111,14 +116,12 @@ public class MapActivity extends BaseActivity {
         uiSettings.setZoomControlsEnabled(false);
         uiSettings.setMyLocationButtonEnabled(true);
         uiSettings.setLogoPosition(AMapOptions.LOGO_MARGIN_RIGHT);
+        uiSettings.setScrollGesturesEnabled(true);
         MyLocationStyle myLocationStyle = new MyLocationStyle();//初始化定位蓝点样式类myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);//连续定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动。（1秒1次定位）如果不设置myLocationType，默认也会执行此种模式。
-        myLocationStyle.interval(1000); //设置连续定位模式下的定位间隔，只在连续定位模式下生效，单次定位模式下不会生效。单位为毫秒。
-        myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_FOLLOW_NO_CENTER);
-//        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_location);
-//        BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(bitmap);
-//        myLocationStyle.myLocationIcon(bitmapDescriptor);
-        myLocationStyle.strokeColor(android.R.color.transparent);//设置定位蓝点精度圆圈的边框颜色的方法。
-        myLocationStyle.radiusFillColor(android.R.color.transparent);//设置定位蓝点精度圆圈的填充颜色的方法。
+        myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATE);
+        myLocationStyle.strokeWidth(2);
+        myLocationStyle.strokeColor(R.color.colorWhite);//设置定位蓝点精度圆圈的边框颜色的方法。
+        myLocationStyle.radiusFillColor(R.color.colorBlue);
         myLocationStyle.showMyLocation(true);
         aMap.setMyLocationStyle(myLocationStyle);//设置定位蓝点的Style
         aMap.moveCamera(CameraUpdateFactory.zoomTo(17));
