@@ -15,11 +15,24 @@
         <item name="colorControlHighlight">@color/colorBackground</item>
     </style>
 
-    <style name="PhotoTheme" parent="Theme.AppCompat.Light">
+    <style name="BlackTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorBlack</item>
         <item name="colorPrimaryDark">@color/colorBlack</item>
-        <item name="colorAccent">@color/colorBlack</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:windowEnterAnimation">@transition/activity_explode</item>
+        <item name="android:windowExitAnimation">@transition/activity_slide</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="toolbarStyle">@style/CustomToolbar</item>
+        <item name="colorControlHighlight">@color/colorBlack</item>
+    </style>
+
+    <style name="WhiteTheme" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorBackground</item>
+        <item name="colorPrimaryDark">@color/colorBackground</item>
+        <item name="colorAccent">@color/colorPrimary</item>
         <item name="android:windowEnterAnimation">@transition/activity_explode</item>
         <item name="android:windowExitAnimation">@transition/activity_slide</item>
         <item name="windowActionBar">false</item>

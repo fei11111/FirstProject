@@ -18,6 +18,7 @@ import com.fei.firstproject.activity.LoginActivity;
 import com.fei.firstproject.activity.MyAttentionActivity;
 import com.fei.firstproject.activity.MyOrderActivity;
 import com.fei.firstproject.activity.SelfInfoActivity;
+import com.fei.firstproject.activity.VideoPlayerActivity;
 import com.fei.firstproject.adapter.MeFragmentAdapter;
 import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.decoration.DividerGridItemDecoration;
@@ -288,7 +289,9 @@ public class MeFragment extends BaseFragment {
                 if (AppConfig.ISLOGIN) {
                     int position = recycler_other.getChildAdapterPosition(view);
                     switch (position) {
-
+                        case 4:
+                            startActivity(new Intent(activity, VideoPlayerActivity.class));
+                            break;
                     }
                 } else {
                     activity.showDialogWhenUnLogin();

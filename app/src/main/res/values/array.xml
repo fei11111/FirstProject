@@ -21,6 +21,7 @@
         <item>@string/identity_authentication</item>
         <item>@string/call_center</item>
         <item>@string/complaint_advice</item>
+        <item>@string/mtv</item>
     </string-array>
 
     <string-array name="list_other_drawable">
@@ -28,6 +29,7 @@
         <item>@drawable/ic_identity_authentication</item>
         <item>@drawable/ic_call_center</item>
         <item>@drawable/ic_complaint_advice</item>
+        <item>@drawable/ic_mv</item>
     </string-array>
 
     <string-array name="list_menu_head_drawable">

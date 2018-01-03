@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBlack"
+    android:gravity="center_vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_220"
+        android:background="@color/colorBackground">
+
+        <SurfaceView
+            android:id="@+id/surfaceView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <RelativeLayout
+            android:id="@+id/rl_controller"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_30"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorAlphaBackground">
+
+            <LinearLayout
+                android:id="@+id/ll_play_time"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_play"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="@dimen/size_2"
+                    android:padding="@dimen/size_2"
+                    android:src="@drawable/ic_pause" />
+
+                <TextView
+                    android:id="@+id/tv_current_time"
+                    style="@style/Font15Style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/size_2"
+                    android:layout_marginRight="@dimen/size_5"
+                    android:text="@string/zero_time"
+                    android:textColor="@color/colorWhite" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_full_screen"
+                android:layout_width="@dimen/size_30"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/size_10"
+                android:src="@drawable/ic_full_sreen" />
+
+            <SeekBar
+                android:id="@+id/sb_time"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/iv_full_screen"
+                android:layout_toRightOf="@id/ll_play_time" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

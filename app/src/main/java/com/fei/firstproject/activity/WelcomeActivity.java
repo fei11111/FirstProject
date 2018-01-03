@@ -68,7 +68,7 @@ public class WelcomeActivity extends BaseActivity {
 
     @Override
     public int getContentViewResId() {
-        return R.layout.activity_splash;
+        return R.layout.activity_welcome;
     }
 
     @Override

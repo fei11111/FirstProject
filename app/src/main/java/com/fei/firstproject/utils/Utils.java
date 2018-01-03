@@ -318,4 +318,12 @@ public class Utils {
         }
     }
 
+    /**
+     * 输出两位数
+     */
+
+    public static String formatToDoubleDigit(int num) {
+        return String.format("%02d", num);
+    }
+
 }

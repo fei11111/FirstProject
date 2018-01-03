@@ -43,7 +43,8 @@
 
         <activity
             android:name=".activity.WelcomeActivity"
-            android:configChanges="orientation|keyboardHidden|navigation">
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:theme="@style/WhiteTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -137,11 +138,15 @@
         <activity
             android:name=".activity.PhotoActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
-            android:theme="@style/PhotoTheme" />
+            android:theme="@style/BlackTheme" />
 
         <activity
             android:name=".activity.AddressBookActivity"
             android:configChanges="orientation|keyboardHidden|navigation" />
+
+        <activity
+            android:name=".activity.VideoPlayerActivity"
+            android:theme="@style/BlackTheme" />
 
     </application>
 
