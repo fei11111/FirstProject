@@ -6,12 +6,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -23,6 +25,7 @@ import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnTouch;
 
 import static com.fei.firstproject.utils.Utils.formatToDoubleDigit;
 
@@ -48,6 +51,10 @@ public class VideoPlayerActivity extends BaseActivity {
     SurfaceView surfaceView;
     @BindView(R.id.rl_controller)
     RelativeLayout rlController;
+    @BindView(R.id.sb_progress)
+    SeekBar sbProgress;
+    @BindView(R.id.ll_play_time)
+    LinearLayout llPlayTime;
 
     private MediaPlayer mediaPlayer;
     private int currentPosition = 0;
@@ -56,6 +63,8 @@ public class VideoPlayerActivity extends BaseActivity {
     private boolean isHide = false;
     private boolean isPlaying = false;//记录锁屏时播放状态
     private boolean isLock = false;//记录是否是锁屏，锁屏后才调用onResume
+    private float downX;
+    private float downY;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -72,8 +81,8 @@ public class VideoPlayerActivity extends BaseActivity {
                     mHandler.sendEmptyMessageDelayed(REFRESH_WHAT, 1000);
                 }
             } else if (msg.what == HIDE_WHAT) {
-                ivPlay.setVisibility(View.GONE);
                 rlController.startAnimation(outAnimation);
+                sbProgress.setVisibility(View.GONE);
                 isHide = !isHide;
             }
         }
@@ -117,14 +126,8 @@ public class VideoPlayerActivity extends BaseActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    seekBar.setProgress(progress);
-                    if (mediaPlayer != null) {
-                        mediaPlayer.seekTo(progress);
-                        int time = progress / 1000;
-                        int minute = time / 60;
-                        int second = time % 60;
-                        tvCurrentTime.setText(formatToDoubleDigit(minute) + ":" + formatToDoubleDigit(second));
-                    }
+                    currentPosition = progress;
+                    refreshView();
                 }
             }
 
@@ -146,7 +149,9 @@ public class VideoPlayerActivity extends BaseActivity {
             public void onPrepared(MediaPlayer mp) {
                 mediaPlayer.start();
                 //进度条
-                sbTime.setMax(mediaPlayer.getDuration());
+                int duration = mediaPlayer.getDuration();
+                sbTime.setMax(duration);
+                sbProgress.setMax(duration);
                 //总时长
                 int time = mediaPlayer.getDuration() / 1000;
                 int minute = time / 60;
@@ -228,7 +233,7 @@ public class VideoPlayerActivity extends BaseActivity {
         if (mediaPlayer != null) {
             mediaPlayer.reset();
             mediaPlayer.setDisplay(surfaceView.getHolder());
-            Uri uri = Uri.parse("http://192.168.1.214:3391/btFile/videos/9cd31488-0707-46d6-aaa7-83a4a27c5e0d.mp4");
+            Uri uri = Uri.parse("http://220.170.49.103/5/q/c/b/t/qcbtgdrzcagiurhsrcszksmyhgtlvx/he.yinyuetai.com/0FF7014EAEF781F14E9784C3B30944E0.flv");
             try {
                 mediaPlayer.setDataSource(this, uri);
             } catch (IOException e) {
@@ -274,18 +279,65 @@ public class VideoPlayerActivity extends BaseActivity {
         pause();
     }
 
-    @OnClick(R.id.surfaceView)
-    void clickSurfaceView(View view) {
-        if (isHide) {
-            mHandler.removeMessages(HIDE_WHAT);
-            ivPlay.setVisibility(View.VISIBLE);
-            rlController.startAnimation(inAnimation);
-            mHandler.sendEmptyMessageDelayed(HIDE_WHAT, 3000);
-        } else {
-            ivPlay.setVisibility(View.GONE);
-            rlController.startAnimation(outAnimation);
+    @OnTouch(R.id.surfaceView)
+    boolean onTouchSurface(View view, MotionEvent motionEvent) {
+        switch (motionEvent.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                mHandler.removeMessages(HIDE_WHAT);
+                downX = motionEvent.getX();
+                downY = motionEvent.getY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                float moveX = motionEvent.getX();
+                float moveY = motionEvent.getY();
+                int distanceX = (int) (moveX - downX);
+                int distanceY = (int) (moveY - downY);
+
+                if (Math.abs(distanceY) < 50) {
+                    if (distanceX > 100) {
+                        //前进
+                        sbProgress.setVisibility(View.VISIBLE);
+                        sbProgress.setProgress(currentPosition);
+                        currentPosition = currentPosition + 1500;
+                        sbProgress.setProgress(currentPosition);
+                        refreshView();
+                        downX = moveX;
+                        downY = moveY;
+                    } else if (distanceX < -100) {
+                        //后退
+                        sbProgress.setVisibility(View.VISIBLE);
+                        sbProgress.setProgress(currentPosition);
+                        currentPosition = currentPosition - 1500;
+                        sbProgress.setProgress(currentPosition);
+                        refreshView();
+                        downX = moveX;
+                        downY = moveY;
+                    }
+                }
+
+                break;
+            case MotionEvent.ACTION_UP:
+                if (isHide) {
+                    rlController.startAnimation(inAnimation);
+                } else {
+                    rlController.startAnimation(outAnimation);
+                }
+                mHandler.sendEmptyMessageDelayed(HIDE_WHAT, 3000);
+                isHide = !isHide;
+                break;
         }
-        isHide = !isHide;
+        return true;
+    }
+
+    private void refreshView() {
+        sbTime.setProgress(currentPosition);
+        if (mediaPlayer != null) {
+            mediaPlayer.seekTo(currentPosition);
+            int time = currentPosition / 1000;
+            int minute = time / 60;
+            int second = time % 60;
+            tvCurrentTime.setText(formatToDoubleDigit(minute) + ":" + formatToDoubleDigit(second));
+        }
     }
 
     @Override

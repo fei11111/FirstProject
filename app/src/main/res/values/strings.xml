@@ -188,7 +188,7 @@
     <string name="add">添加</string>
     <string name="photo_detail">查看图片</string>
     <string name="friends_list">好友列表</string>
-    <string name="zero_time">00:00</string>
+    <string name="zero_time">00:00/00:00</string>
     <string name="mtv">MTV</string>
 
     <string name="sharewechat_success">分享成功!!!</string>

@@ -106,8 +106,8 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IBase 
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    void dealEvent(AllEvent allEvent) {
-        if(allEvent.getEventType()==EventType.APP_FONT_CHANGE) {
+    public void dealEvent(AllEvent allEvent) {
+        if (allEvent.getEventType() == EventType.APP_FONT_CHANGE) {
             recreate();
         }
     }

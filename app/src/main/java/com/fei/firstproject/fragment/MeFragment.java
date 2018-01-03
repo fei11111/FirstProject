@@ -178,7 +178,7 @@ public class MeFragment extends BaseFragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    void dealEvent(AllEvent allEvent) {
+    public void dealEvent(AllEvent allEvent) {
         if (allEvent.getEventType() == EventType.APP_LOGIN) {
             tvName.setText(AppConfig.user.getUserName());
             tvCollectGoods.setText("5");
