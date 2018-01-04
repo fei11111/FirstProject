@@ -126,4 +126,7 @@ public interface RequestApi {
     @GET("app/field/fieldIndex.do")
     Observable<ResponseBody> getFieldIndex(@QueryMap Map<String, String> map);
 
+    @GET
+    Observable<ResponseBody> downloadFile(@Url String url);
+
 }

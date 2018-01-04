@@ -3,6 +3,10 @@ package com.fei.firstproject.http.manager;
 import android.util.Log;
 
 import com.fei.firstproject.MyApplication;
+import com.fei.firstproject.download.ProgressHandler;
+import com.fei.firstproject.download.ProgressResponseBody;
+import com.fei.firstproject.download.bean.ProgressBean;
+import com.fei.firstproject.download.inter.ProgressListener;
 import com.fei.firstproject.utils.NetUtils;
 
 import java.io.IOException;
@@ -17,8 +21,27 @@ import okhttp3.Response;
  */
 
 public class RspNetInterceptor implements Interceptor {
+
     private final int maxAge = 60 * 60 * 24 * 7;
     private final int maxStale = 60 * 60 * 24 * 28; // tolerate 4-weeks stale
+    private static ProgressBean progressBean = new ProgressBean();
+    private static ProgressHandler mProgressHandler;
+
+    final ProgressListener progressListener = new ProgressListener() {
+        //该方法在子线程中运行
+        @Override
+        public void onProgress(long progress, long total, boolean done) {
+            Log.d("progress:",String.format("%d%% done\n",(100 * progress) / total));
+            if (mProgressHandler == null){
+                return;
+            }
+
+            progressBean.setBytesRead(progress);
+            progressBean.setContentLength(total);
+            progressBean.setDone(done);
+            mProgressHandler.sendMessage(progressBean);
+        }
+    };
 
     @Override
     public Response intercept(Chain chain) throws IOException {
@@ -41,6 +64,7 @@ public class RspNetInterceptor implements Interceptor {
                     //覆盖服务器响应头的Cache-Control,用我们自己的,因为服务器响应回来的可能不支持缓存
                     .header("Cache-Control", "public,max-age=" + maxAge)
                     .removeHeader("Pragma")
+                    .body(new ProgressResponseBody(response.body(), progressListener))
                     .build();
         } else {
             Log.d("OkHttp", "网络不可用响应拦截");
@@ -50,5 +74,9 @@ public class RspNetInterceptor implements Interceptor {
                     .build();
         }
         return response;
+    }
+
+    public static void setProgressHandler(ProgressHandler progressHandler){
+        mProgressHandler = progressHandler;
     }
 }
