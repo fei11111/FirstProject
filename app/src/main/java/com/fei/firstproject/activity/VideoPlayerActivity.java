@@ -198,15 +198,14 @@ public class VideoPlayerActivity extends BaseActivity {
                 DisplayMetrics dm = new DisplayMetrics();
                 getWindowManager().getDefaultDisplay().getMetrics(dm);
                 int screenWidth = dm.widthPixels;
-                int screenHeight = dm.heightPixels;
-                int h = screenWidth * height / width;
-                int margin = (screenHeight - h) / 2;
 
                 RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                         RelativeLayout.LayoutParams.MATCH_PARENT,
-                        RelativeLayout.LayoutParams.MATCH_PARENT);
-                lp.setMargins(0, margin, 0, margin);
-                rlContent.setLayoutParams(lp);
+                        RelativeLayout.LayoutParams.WRAP_CONTENT);
+                lp.addRule(RelativeLayout.CENTER_IN_PARENT);
+                lp.width = screenWidth;
+                lp.height = screenWidth * height / width;
+                surfaceView.setLayoutParams(lp);
             }
         });
     }
@@ -344,7 +343,7 @@ public class VideoPlayerActivity extends BaseActivity {
         }
     }
 
-    @OnTouch(R.id.surfaceView)
+    @OnTouch(R.id.rl_content)
     boolean onTouchSurface(View view, MotionEvent motionEvent) {
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
@@ -467,19 +466,27 @@ public class VideoPlayerActivity extends BaseActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        isMove = false;
+        isHide = true;
+        llSound.setVisibility(View.GONE);
+        llProgress.setVisibility(View.GONE);
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         int screenWidth = dm.widthPixels;
-        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) rlContent.getLayoutParams();
-        lp.width = screenWidth;
+        int screenHeight = dm.heightPixels;
         if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
             //横屏
-            lp.height = screenWidth * videoHeight / videoWidth * 9 / 16;
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) surfaceView.getLayoutParams();
+            layoutParams.width = screenWidth;
+            layoutParams.height = screenHeight - Utils.getStatusBarHeight(this);
+            surfaceView.setLayoutParams(layoutParams);
         } else {
             //竖屏
-            lp.height = screenWidth * videoHeight / videoWidth * 16 / 9;
+            RelativeLayout.LayoutParams surfaceParams = (RelativeLayout.LayoutParams) surfaceView.getLayoutParams();
+            surfaceParams.width = screenWidth;
+            surfaceParams.height = screenWidth * videoHeight / videoWidth;
+            surfaceView.setLayoutParams(surfaceParams);
         }
-        rlContent.setLayoutParams(lp);
     }
 
     @Override
