@@ -1,27 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBlack"
     android:gravity="center_vertical">
 
     <RelativeLayout
+        android:id="@+id/rl_content"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/size_220"
-        android:background="@color/colorBackground">
+        android:layout_height="wrap_content">
 
         <SurfaceView
             android:id="@+id/surfaceView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
 
-        <SeekBar
-            android:id="@+id/sb_progress"
-            android:layout_width="@dimen/size_150"
+        <LinearLayout
+            android:id="@+id/ll_sound"
+            android:layout_width="@dimen/size_80"
+            android:layout_height="@dimen/size_80"
+            android:layout_centerInParent="true"
+            android:background="@drawable/shape_container_rect_border_bg_black"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_sound"
+                style="@style/Font25Style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorWhite" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_progress"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:thumb="@null"
-            android:visibility="gone" />
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_progress_time"
+                style="@style/Font18Style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorWhite" />
+
+            <SeekBar
+                android:id="@+id/sb_progress"
+                android:layout_width="@dimen/size_150"
+                android:layout_height="@dimen/size_1"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="@dimen/size_5"
+                android:progressDrawable="@drawable/layer_progress_bar_white"
+                android:thumb="@null" />
+
+        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/rl_controller"
@@ -74,10 +111,6 @@
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@id/iv_full_screen"
                 android:layout_toRightOf="@id/ll_play_time" />
-
         </RelativeLayout>
-
     </RelativeLayout>
-
-
-</LinearLayout>
+</RelativeLayout>

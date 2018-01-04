@@ -17,6 +17,7 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
     <!-- 这个权限用于进行网络定位-->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
     <!-- 这个权限用于访问GPS定位-->
@@ -146,7 +147,8 @@
 
         <activity
             android:name=".activity.VideoPlayerActivity"
-            android:theme="@style/BlackTheme" />
+            android:theme="@style/BlackTheme"
+            android:configChanges="orientation|keyboardHidden|screenSize"  />
 
     </application>
 
