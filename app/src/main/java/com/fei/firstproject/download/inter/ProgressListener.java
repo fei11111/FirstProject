@@ -2,6 +2,7 @@ package com.fei.firstproject.download.inter;
 
 /**
  * Created by Fei on 2018/1/4.
+ * http://blog.csdn.net/ljd2038/article/details/51189334
  */
 
 public interface ProgressListener {
