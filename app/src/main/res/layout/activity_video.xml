@@ -102,7 +102,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/size_10"
-                android:src="@drawable/ic_full_sreen" />
+                android:src="@drawable/ic_open_full_sreen" />
 
             <SeekBar
                 android:id="@+id/sb_time"

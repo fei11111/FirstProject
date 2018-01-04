@@ -476,12 +476,14 @@ public class VideoPlayerActivity extends BaseActivity {
         int screenHeight = dm.heightPixels;
         if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
             //横屏
+            ivFullScreen.setImageResource(R.drawable.ic_close_full_screen);
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) surfaceView.getLayoutParams();
             layoutParams.width = screenWidth;
             layoutParams.height = screenHeight - Utils.getStatusBarHeight(this);
             surfaceView.setLayoutParams(layoutParams);
         } else {
             //竖屏
+            ivFullScreen.setImageResource(R.drawable.ic_open_full_sreen);
             RelativeLayout.LayoutParams surfaceParams = (RelativeLayout.LayoutParams) surfaceView.getLayoutParams();
             surfaceParams.width = screenWidth;
             surfaceParams.height = screenWidth * videoHeight / videoWidth;
