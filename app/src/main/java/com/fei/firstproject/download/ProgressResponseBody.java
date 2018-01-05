@@ -55,7 +55,9 @@ public class ProgressResponseBody extends ResponseBody {
             public long read(Buffer sink, long byteCount) throws IOException {
                 long bytesRead = super.read(sink, byteCount);
                 totalBytesRead += bytesRead != -1 ? bytesRead : 0;
-                progressListener.onProgress(totalBytesRead, responseBody.contentLength(), bytesRead == -1);
+                if (progressListener != null) {
+                    progressListener.onProgress(totalBytesRead, responseBody.contentLength(), bytesRead == -1);
+                }
                 return bytesRead;
             }
         };

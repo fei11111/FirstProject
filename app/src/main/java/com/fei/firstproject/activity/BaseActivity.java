@@ -81,6 +81,9 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IBase 
     protected CustomeProgressDialog progressDialog;
     private TipDialog tipDialog;
 
+    /**
+     * @param isShow 是否显示错误的view
+     * */
     protected <T> ObservableTransformer<T, T> createTransformer(final boolean isShow) {
         return RxSchedulers.compose(this, this.<T>bindToLifecycle(), new RxSchedulers.OnConnectError() {
             @Override

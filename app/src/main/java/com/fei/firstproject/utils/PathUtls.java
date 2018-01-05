@@ -15,6 +15,7 @@ public class PathUtls {
     private static String imgPath = appPath + File.separator + "image";
     private static String cachePath = appPath + File.separator + "cache";
     private static String logPath = appPath + File.separator + "log";
+    private static String downloadPath = appPath + File.separator + "download";
 
     public static String getRootPath() {
         return rootPath;
@@ -34,5 +35,9 @@ public class PathUtls {
 
     public static String getCachePath() {
         return cachePath;
+    }
+
+    public static String getDownloadPath() {
+        return downloadPath;
     }
 }

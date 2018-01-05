@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="@dimen/size_5">
+
+    <ImageView
+        android:id="@+id/iv_notification"
+        android:layout_width="@dimen/size_50"
+        android:layout_height="@dimen/size_50"
+        android:src="@drawable/ic_app" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/size_10"
+        android:layout_marginRight="@dimen/size_10"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_notification_name"
+            style="@style/Font15Style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:lines="1"
+            android:textColor="@color/colorText" />
+
+        <ProgressBar
+            android:id="@+id/pb_notification"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_2"
+            android:max="100"
+            android:progress="0"
+            android:progressDrawable="@drawable/layer_progress_bar_white" />
+
+        <TextView
+            android:id="@+id/tv_notification_progress"
+            style="@style/Font12Style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_5"
+            android:gravity="center_vertical"
+            android:lines="1"
+            android:textColor="@color/colorText" />
+
+    </LinearLayout>
+
+</LinearLayout>

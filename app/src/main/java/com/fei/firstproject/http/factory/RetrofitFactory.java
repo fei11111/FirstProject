@@ -1,6 +1,7 @@
 package com.fei.firstproject.http.factory;
 
 import com.fei.firstproject.config.AppConfig;
+import com.fei.firstproject.download.inter.ProgressListener;
 import com.fei.firstproject.http.inter.RequestApi;
 import com.fei.firstproject.http.manager.RspNetInterceptor;
 import com.fei.firstproject.utils.LogUtils;
@@ -22,7 +23,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitFactory {
 
-
     public static final String BIGDB_URL = AppConfig.HOST + "/bigdb/";
     public static final String NCW_URL = "http://batian.ncw365.com/";
     public static final String BT_WEB_URL = AppConfig.HOST2 + "/bt-web/";
@@ -30,12 +30,18 @@ public class RetrofitFactory {
     private static File cacheFile = new File(PathUtls.getCachePath());
     private static Cache cache = new Cache(cacheFile, AppConfig.CACHE_SIZE);
 
+    public static void setProgressListener(ProgressListener progressListener) {
+        rspNetInterceptor.setProgressListener(progressListener);
+    }
+
+    private static RspNetInterceptor rspNetInterceptor = new RspNetInterceptor();
+
     private static OkHttpClient httpClient = new OkHttpClient.Builder()
             .connectTimeout(15, TimeUnit.SECONDS)
             .readTimeout(20, TimeUnit.SECONDS)
             .writeTimeout(20, TimeUnit.SECONDS)
-            .addNetworkInterceptor(new RspNetInterceptor())
-            .addInterceptor(new RspNetInterceptor())
+            .addNetworkInterceptor(rspNetInterceptor)
+            .addInterceptor(rspNetInterceptor)
             .addInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
                 @Override
                 public void log(String message) {

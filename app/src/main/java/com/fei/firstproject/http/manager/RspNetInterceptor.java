@@ -3,9 +3,7 @@ package com.fei.firstproject.http.manager;
 import android.util.Log;
 
 import com.fei.firstproject.MyApplication;
-import com.fei.firstproject.download.ProgressHandler;
 import com.fei.firstproject.download.ProgressResponseBody;
-import com.fei.firstproject.download.bean.ProgressBean;
 import com.fei.firstproject.download.inter.ProgressListener;
 import com.fei.firstproject.utils.NetUtils;
 
@@ -24,24 +22,11 @@ public class RspNetInterceptor implements Interceptor {
 
     private final int maxAge = 60 * 60 * 24 * 7;
     private final int maxStale = 60 * 60 * 24 * 28; // tolerate 4-weeks stale
-    private static ProgressBean progressBean = new ProgressBean();
-    private static ProgressHandler mProgressHandler;
+    private ProgressListener progressListener;
 
-    final ProgressListener progressListener = new ProgressListener() {
-        //该方法在子线程中运行
-        @Override
-        public void onProgress(long progress, long total, boolean done) {
-            Log.d("progress:",String.format("%d%% done\n",(100 * progress) / total));
-            if (mProgressHandler == null){
-                return;
-            }
-
-            progressBean.setBytesRead(progress);
-            progressBean.setContentLength(total);
-            progressBean.setDone(done);
-            mProgressHandler.sendMessage(progressBean);
-        }
-    };
+    public void setProgressListener(ProgressListener progressListener) {
+        this.progressListener = progressListener;
+    }
 
     @Override
     public Response intercept(Chain chain) throws IOException {
@@ -74,9 +59,5 @@ public class RspNetInterceptor implements Interceptor {
                     .build();
         }
         return response;
-    }
-
-    public static void setProgressHandler(ProgressHandler progressHandler){
-        mProgressHandler = progressHandler;
     }
 }

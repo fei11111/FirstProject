@@ -1,5 +1,6 @@
 package com.fei.firstproject.activity;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.media.AudioManager;
@@ -22,8 +23,12 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
+import com.fei.firstproject.entity.DownLoadEntity;
+import com.fei.firstproject.service.DownLoadService;
+import com.fei.firstproject.utils.PathUtls;
 import com.fei.firstproject.utils.Utils;
 
+import java.io.File;
 import java.io.IOException;
 
 import butterknife.BindView;
@@ -57,8 +62,8 @@ public class VideoPlayerActivity extends BaseActivity {
     RelativeLayout rlController;
     @BindView(R.id.sb_progress)
     SeekBar sbProgress;
-    @BindView(R.id.ll_play_time)
-    LinearLayout llPlayTime;
+    @BindView(R.id.ll_left_controller)
+    LinearLayout llLeftController;
     @BindView(R.id.tv_progress_time)
     TextView tvProgressTime;
     @BindView(R.id.ll_progress)
@@ -69,6 +74,10 @@ public class VideoPlayerActivity extends BaseActivity {
     LinearLayout llSound;
     @BindView(R.id.rl_content)
     RelativeLayout rlContent;
+    @BindView(R.id.iv_download)
+    ImageView ivDownload;
+    @BindView(R.id.ll_right_controller)
+    LinearLayout llRightController;
 
     private MediaPlayer mediaPlayer;
     private int currentPosition = 0;
@@ -110,6 +119,58 @@ public class VideoPlayerActivity extends BaseActivity {
             }
         }
     };
+
+    @Override
+    protected void onResume() {
+        if (isLock) {
+            if (mediaPlayer != null) {
+                mediaPlayer.seekTo(currentPosition);
+                if (isPlaying) {
+                    mediaPlayer.start();
+                    ivPlay.setImageResource(R.drawable.ic_pause);
+                    mHandler.sendEmptyMessageDelayed(REFRESH_WHAT, 1000);
+                } else {
+                    ivPlay.setImageResource(R.drawable.ic_play);
+                    mHandler.removeMessages(REFRESH_WHAT);
+                }
+            }
+        }
+        isLock = false;
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        if (mediaPlayer != null) {
+            isPlaying = mediaPlayer.isPlaying();
+            currentPosition = mediaPlayer.getCurrentPosition();
+            if (isPlaying) {
+                mediaPlayer.pause();
+                ivPlay.setImageResource(R.drawable.ic_play);
+                mHandler.removeMessages(REFRESH_WHAT);
+            }
+        }
+        isLock = true;
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        isMove = false;
+        isHide = true;
+        llSound.setVisibility(View.GONE);
+        llProgress.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        stop();
+        mHandler.removeMessages(HIDE_BOTTOM_PROGRESS);
+        mHandler.removeMessages(REFRESH_WHAT);
+        mHandler.removeMessages(HIDE_CENTER_PROGRESS);
+        super.onDestroy();
+    }
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
@@ -343,6 +404,38 @@ public class VideoPlayerActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 下载
+     */
+    @OnClick(R.id.iv_download)
+    void clickDownLoad(View view) {
+//        RetrofitFactory.setProgressListener(progressListener);
+//        RetrofitFactory.getBigDb().downloadFile("http://192.168.1.214:3391/btFile/videos/9cd31488-0707-46d6-aaa7-83a4a27c5e0d.mp4")
+//                .compose(this.<ResponseBody>createTransformer(false))
+//                .subscribe(new BaseWithoutBaseEntityObserver<ResponseBody>(this) {
+//                    @Override
+//                    protected void onHandleSuccess(ResponseBody responseBody) {
+//
+//                    }
+//                });
+        Utils.showToast(this, "点击了");
+        String url = "http://192.168.1.214:3391/btFile/videos/9cd31488-0707-46d6-aaa7-83a4a27c5e0d.mp4";
+        int i = url.lastIndexOf("/");
+        String fileName = url.substring(i + 1, url.length());
+        DownLoadEntity downLoadEntity = new DownLoadEntity();
+        downLoadEntity.setDownloadUrl(url);
+        downLoadEntity.setInstall(false);
+        downLoadEntity.setName("小幸运");
+        downLoadEntity.setSavePath(PathUtls.getDownloadPath() + File.separator + fileName);
+        downLoadEntity.setImgUrl("http://img5.imgtn.bdimg.com/it/u=2134166203,2250130646&fm=11&gp=0.jpg");
+        Intent intent = new Intent(this, DownLoadService.class);
+        intent.putExtra("downloadEntity", downLoadEntity);
+        startService(intent);
+    }
+
+    /**
+     * 触屏
+     */
     @OnTouch(R.id.rl_content)
     boolean onTouchSurface(View view, MotionEvent motionEvent) {
         switch (motionEvent.getAction()) {
@@ -468,6 +561,9 @@ public class VideoPlayerActivity extends BaseActivity {
         super.onConfigurationChanged(newConfig);
         isMove = false;
         isHide = true;
+        mHandler.removeMessages(HIDE_BOTTOM_PROGRESS);
+        mHandler.removeMessages(REFRESH_WHAT);
+        mHandler.removeMessages(HIDE_CENTER_PROGRESS);
         llSound.setVisibility(View.GONE);
         llProgress.setVisibility(View.GONE);
         DisplayMetrics dm = new DisplayMetrics();
@@ -491,55 +587,4 @@ public class VideoPlayerActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onResume() {
-        if (isLock) {
-            if (mediaPlayer != null) {
-                mediaPlayer.seekTo(currentPosition);
-                if (isPlaying) {
-                    mediaPlayer.start();
-                    ivPlay.setImageResource(R.drawable.ic_pause);
-                    mHandler.sendEmptyMessageDelayed(REFRESH_WHAT, 1000);
-                } else {
-                    ivPlay.setImageResource(R.drawable.ic_play);
-                    mHandler.removeMessages(REFRESH_WHAT);
-                }
-            }
-        }
-        isLock = false;
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        if (mediaPlayer != null) {
-            isPlaying = mediaPlayer.isPlaying();
-            currentPosition = mediaPlayer.getCurrentPosition();
-            if (isPlaying) {
-                mediaPlayer.pause();
-                ivPlay.setImageResource(R.drawable.ic_play);
-                mHandler.removeMessages(REFRESH_WHAT);
-            }
-        }
-        isLock = true;
-        super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        isMove = false;
-        isHide = true;
-        llSound.setVisibility(View.GONE);
-        llProgress.setVisibility(View.GONE);
-    }
-
-    @Override
-    protected void onDestroy() {
-        stop();
-        mHandler.removeMessages(HIDE_BOTTOM_PROGRESS);
-        mHandler.removeMessages(REFRESH_WHAT);
-        mHandler.removeMessages(HIDE_CENTER_PROGRESS);
-        super.onDestroy();
-    }
 }
