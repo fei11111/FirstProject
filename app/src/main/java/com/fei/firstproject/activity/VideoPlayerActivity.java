@@ -269,6 +269,15 @@ public class VideoPlayerActivity extends BaseActivity {
                 surfaceView.setLayoutParams(lp);
             }
         });
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                ivPlay.setImageResource(R.drawable.ic_play);
+                currentPosition = 0;
+                mediaPlayer.stop();
+
+            }
+        });
     }
 
     /**
@@ -344,7 +353,7 @@ public class VideoPlayerActivity extends BaseActivity {
             mediaPlayer.setDisplay(surfaceView.getHolder());
             //http://192.168.1.214:3391/btFile/videos/9cd31488-0707-46d6-aaa7-83a4a27c5e0d.mp4
             //http://220.170.49.103/5/q/c/b/t/qcbtgdrzcagiurhsrcszksmyhgtlvx/he.yinyuetai.com/0FF7014EAEF781F14E9784C3B30944E0.flv
-            Uri uri = Uri.parse("http://192.168.1.214:3391/btFile/videos/9cd31488-0707-46d6-aaa7-83a4a27c5e0d.mp4");
+            Uri uri = Uri.parse("http://220.170.49.103/5/q/c/b/t/qcbtgdrzcagiurhsrcszksmyhgtlvx/he.yinyuetai.com/0FF7014EAEF781F14E9784C3B30944E0.flv");
             try {
                 mediaPlayer.setDataSource(this, uri);
             } catch (IOException e) {
@@ -409,17 +418,7 @@ public class VideoPlayerActivity extends BaseActivity {
      */
     @OnClick(R.id.iv_download)
     void clickDownLoad(View view) {
-//        RetrofitFactory.setProgressListener(progressListener);
-//        RetrofitFactory.getBigDb().downloadFile("http://192.168.1.214:3391/btFile/videos/9cd31488-0707-46d6-aaa7-83a4a27c5e0d.mp4")
-//                .compose(this.<ResponseBody>createTransformer(false))
-//                .subscribe(new BaseWithoutBaseEntityObserver<ResponseBody>(this) {
-//                    @Override
-//                    protected void onHandleSuccess(ResponseBody responseBody) {
-//
-//                    }
-//                });
-        Utils.showToast(this, "点击了");
-        String url = "http://192.168.1.214:3391/btFile/videos/9cd31488-0707-46d6-aaa7-83a4a27c5e0d.mp4";
+        String url = "http://220.170.49.103/5/q/c/b/t/qcbtgdrzcagiurhsrcszksmyhgtlvx/he.yinyuetai.com/0FF7014EAEF781F14E9784C3B30944E0.flv";
         int i = url.lastIndexOf("/");
         String fileName = url.substring(i + 1, url.length());
         DownLoadEntity downLoadEntity = new DownLoadEntity();
@@ -427,7 +426,7 @@ public class VideoPlayerActivity extends BaseActivity {
         downLoadEntity.setInstall(false);
         downLoadEntity.setName("小幸运");
         downLoadEntity.setSavePath(PathUtls.getDownloadPath() + File.separator + fileName);
-        downLoadEntity.setImgUrl("http://img5.imgtn.bdimg.com/it/u=2134166203,2250130646&fm=11&gp=0.jpg");
+        downLoadEntity.setImgUrl("http://f.hiphotos.baidu.com/image/pic/item/3ac79f3df8dcd1008742b1cc788b4710b8122f04.jpg");
         Intent intent = new Intent(this, DownLoadService.class);
         intent.putExtra("downloadEntity", downLoadEntity);
         startService(intent);

@@ -16,6 +16,7 @@ import com.fei.firstproject.download.inter.ProgressListener;
 import com.fei.firstproject.entity.DownLoadEntity;
 import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.utils.LogUtils;
+import com.fei.firstproject.utils.Utils;
 
 import java.io.File;
 
@@ -50,42 +51,25 @@ public class DownLoadService extends Service {
         if (notificationManager == null) {
             notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         }
-//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-//        RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.view_notification);
-//        builder.setContent(remoteViews)
-//                .setTicker("测试通知来啦")
-//                .setContentIntent(PendingIntent.getActivity(this, 1, new Intent(), PendingIntent.FLAG_NO_CREATE))
-//                .setWhen(System.currentTimeMillis())// 通知产生的时间，会在通知信息里显示
-//                .setPriority(Notification.PRIORITY_DEFAULT)// 设置该通知优先级
-//                .setOngoing(true)
-//                .setAutoCancel(false)
-//                .setSmallIcon(R.drawable.ic_launcher);
-//
-//        Notification notification = builder.build();
-//        notification.flags = Notification.FLAG_AUTO_CANCEL;
-//        notificationManager.notify(notificationId, notification);
-
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext());
         RemoteViews mRemoteViews = new RemoteViews(getPackageName(), R.layout.view_notification);
+        mRemoteViews.setImageViewResource(R.id.iv_notification, R.drawable.ic_app);
+        mRemoteViews.setTextViewText(R.id.tv_notification_name, downloadEntity.getName());
+        mRemoteViews.setProgressBar(R.id.pb_notification, 100, 0, false);
         mBuilder
-                .setContent(mRemoteViews)//设置通知栏标题
-                .setContentIntent(getDefalutIntent(Notification.FLAG_ONGOING_EVENT))
                 .setWhen(System.currentTimeMillis())// 通知产生的时间，会在通知信息里显示
-                .setTicker("正在播放")
+                .setTicker("下载中...")
                 .setPriority(Notification.PRIORITY_DEFAULT)// 设置该通知优先级
                 .setOngoing(true)
-                .setSmallIcon(R.drawable.ic_launcher);
+                .setCustomContentView(mRemoteViews)//设置通知栏标题
+                .setContentIntent(getDefalutIntent(Notification.FLAG_ONGOING_EVENT))
+                .setSmallIcon(R.drawable.ic_download);
         Notification notify = mBuilder.build();
-        if(android.os.Build.VERSION.SDK_INT >= 16) {
-            notification = builder.build();
-            notification.bigContentView = remoteViews;
-        }
-//        notify.flags = Notification.FLAG_ONGOING_EVENT;
+        notify.flags = Notification.FLAG_ONGOING_EVENT;
         notificationManager.notify(notificationId, notify);
 
         downloadEntity.setBuilder(mBuilder);
         downloadEntity.setFlag(notificationId);
-        downloadEntity.setNotification(notify);
 
         //下载
         download(downloadEntity);
@@ -104,11 +88,16 @@ public class DownLoadService extends Service {
             @Override
             public void onProgress(long progress, long total, boolean done) {
                 LogUtils.i("tag", "progress--" + progress + "--total--" + total);
-//                downloadEntity.getRemoteView().setProgressBar(R.id.pb_notification, 100, (int) (progress * 1f / total), false);
-//                downloadEntity.getNotification().contentView = downloadEntity.getRemoteView();
-                downloadEntity.getBuilder().setProgress(100, (int) (progress * 1f / total), false);
-                downloadEntity.getBuilder().setContentText(progress / total + "");
-                notificationManager.notify(downloadEntity.getFlag(), downloadEntity.getNotification());
+                NotificationCompat.Builder builder = downloadEntity.getBuilder();
+                if (builder != null) {
+                    RemoteViews contentView = builder.getContentView();
+                    if (contentView != null) {
+                        float v = progress * 1f / total;
+                        contentView.setProgressBar(R.id.pb_notification, 100, (int) (progress * 1f / total) * 100, true);
+                        contentView.setTextViewText(R.id.tv_notification_progress, Utils.bytes2kb(progress) + "/" + Utils.bytes2kb(total));
+                        notificationManager.notify(downloadEntity.getFlag(), builder.build());
+                    }
+                }
                 if (done) {
                     notificationManager.cancel(downloadEntity.getFlag());
                     if (downloadEntity.isInstall()) {

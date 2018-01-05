@@ -55,7 +55,7 @@
                 android:layout_height="@dimen/size_1"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="@dimen/size_5"
-                android:progressDrawable="@drawable/layer_progress_bar_white"
+                android:progressDrawable="@drawable/layer_progress_bar_green"
                 android:thumb="@null" />
 
         </LinearLayout>

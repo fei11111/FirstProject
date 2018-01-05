@@ -1,8 +1,6 @@
 package com.fei.firstproject.entity;
 
-import android.app.Notification;
 import android.support.v4.app.NotificationCompat;
-import android.widget.RemoteViews;
 
 import java.io.Serializable;
 
@@ -18,9 +16,7 @@ public class DownLoadEntity implements Serializable {
     private boolean isInstall;//是否要安装
     private int flag;//下载标志
     private String savePath;
-    private RemoteViews remoteView;
-    private Notification notification;
-    private NotificationCompat.Builder builder;
+    private NotificationCompat.Builder builder;//为了刷新界面
 
     public String getDownloadUrl() {
         return downloadUrl;
@@ -68,22 +64,6 @@ public class DownLoadEntity implements Serializable {
 
     public void setSavePath(String savePath) {
         this.savePath = savePath;
-    }
-
-    public RemoteViews getRemoteView() {
-        return remoteView;
-    }
-
-    public void setRemoteView(RemoteViews remoteView) {
-        this.remoteView = remoteView;
-    }
-
-    public Notification getNotification() {
-        return notification;
-    }
-
-    public void setNotification(Notification notification) {
-        this.notification = notification;
     }
 
     public NotificationCompat.Builder getBuilder() {
