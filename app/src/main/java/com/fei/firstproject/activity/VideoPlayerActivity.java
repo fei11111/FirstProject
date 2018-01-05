@@ -90,6 +90,7 @@ public class VideoPlayerActivity extends BaseActivity {
     private float downX;
     private float downY;
     private boolean isMove = false;
+    private boolean isPrepared = false;//判断是否准备好了
     private AudioManager audioManager;
     private int videoWidth;
     private int videoHeight;
@@ -186,7 +187,6 @@ public class VideoPlayerActivity extends BaseActivity {
     public void permissionDialogDismiss(int requestCode) {
 
     }
-
     @Override
     public int getContentViewResId() {
         return R.layout.activity_video;
@@ -232,6 +232,7 @@ public class VideoPlayerActivity extends BaseActivity {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 proDisimis();
+                isPrepared = true;
                 mediaPlayer.start();
                 //进度条
                 int duration = mediaPlayer.getDuration();
@@ -272,12 +273,23 @@ public class VideoPlayerActivity extends BaseActivity {
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                ivPlay.setImageResource(R.drawable.ic_play);
-                currentPosition = 0;
-                mediaPlayer.stop();
+                complete();
+            }
+        });
+        mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
+            @Override
+            public void onBufferingUpdate(MediaPlayer mp, int percent) {
 
             }
         });
+    }
+
+    private void complete() {
+        isPrepared = false;
+        ivPlay.setImageResource(R.drawable.ic_play);
+        mediaPlayer.stop();
+        currentPosition = 0;
+        play(false);
     }
 
     /**
@@ -324,7 +336,7 @@ public class VideoPlayerActivity extends BaseActivity {
         @Override
         public void surfaceCreated(SurfaceHolder holder) {
             proShow();
-            play();
+            play(true);
         }
 
         @Override
@@ -347,7 +359,7 @@ public class VideoPlayerActivity extends BaseActivity {
     /**
      * 开始
      */
-    private void play() {
+    private void play(boolean isPlay) {
         if (mediaPlayer != null) {
             mediaPlayer.reset();
             mediaPlayer.setDisplay(surfaceView.getHolder());
@@ -362,7 +374,9 @@ public class VideoPlayerActivity extends BaseActivity {
             //播放时屏幕保持唤醒
             mediaPlayer.setScreenOnWhilePlaying(true);
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            mediaPlayer.prepareAsync();
+            if (isPlay) {
+                mediaPlayer.prepareAsync();
+            }
         }
     }
 
@@ -398,7 +412,13 @@ public class VideoPlayerActivity extends BaseActivity {
      */
     @OnClick(R.id.iv_play)
     void clickPlay(View view) {
-        pause();
+        if (isPrepared) {
+            pause();
+        } else {
+            if (mediaPlayer != null) {
+                mediaPlayer.prepareAsync();
+            }
+        }
     }
 
     /**
