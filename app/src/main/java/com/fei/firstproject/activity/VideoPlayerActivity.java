@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.fei.firstproject.R;
 import com.fei.firstproject.entity.DownLoadEntity;
 import com.fei.firstproject.service.DownLoadService;
+import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.PathUtls;
 import com.fei.firstproject.utils.Utils;
 
@@ -94,6 +95,11 @@ public class VideoPlayerActivity extends BaseActivity {
     private AudioManager audioManager;
     private int videoWidth;
     private int videoHeight;
+
+    //http://192.168.1.214:3391/btFile/videos/9cd31488-0707-46d6-aaa7-83a4a27c5e0d.mp4
+    //http://220.170.49.103/5/q/c/b/t/qcbtgdrzcagiurhsrcszksmyhgtlvx/he.yinyuetai.com/0FF7014EAEF781F14E9784C3B30944E0.flv
+    private String url = "http://192.168.1.214:3391/btFile/videos/9cd31488-0707-46d6-aaa7-83a4a27c5e0d.mp4";
+//    private String url = "http://220.170.49.103/5/q/c/b/t/qcbtgdrzcagiurhsrcszksmyhgtlvx/he.yinyuetai.com/0FF7014EAEF781F14E9784C3B30944E0.flv";
 
     private Handler mHandler = new Handler() {
         @Override
@@ -187,6 +193,7 @@ public class VideoPlayerActivity extends BaseActivity {
     public void permissionDialogDismiss(int requestCode) {
 
     }
+
     @Override
     public int getContentViewResId() {
         return R.layout.activity_video;
@@ -279,17 +286,26 @@ public class VideoPlayerActivity extends BaseActivity {
         mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
             @Override
             public void onBufferingUpdate(MediaPlayer mp, int percent) {
-
+                LogUtils.i("tag", "percent-" + percent);
+            }
+        });
+        mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mp, int what, int extra) {
+                LogUtils.i("tag", "what" + what);
+                LogUtils.i("tag", "extra" + extra);
+                return false;
             }
         });
     }
 
     private void complete() {
-        isPrepared = false;
+//        isPrepared = false;
         ivPlay.setImageResource(R.drawable.ic_play);
         mediaPlayer.stop();
         currentPosition = 0;
-        play(false);
+        mediaPlayer.seekTo(currentPosition);
+//        play(false);
     }
 
     /**
@@ -363,9 +379,8 @@ public class VideoPlayerActivity extends BaseActivity {
         if (mediaPlayer != null) {
             mediaPlayer.reset();
             mediaPlayer.setDisplay(surfaceView.getHolder());
-            //http://192.168.1.214:3391/btFile/videos/9cd31488-0707-46d6-aaa7-83a4a27c5e0d.mp4
-            //http://220.170.49.103/5/q/c/b/t/qcbtgdrzcagiurhsrcszksmyhgtlvx/he.yinyuetai.com/0FF7014EAEF781F14E9784C3B30944E0.flv
-            Uri uri = Uri.parse("http://220.170.49.103/5/q/c/b/t/qcbtgdrzcagiurhsrcszksmyhgtlvx/he.yinyuetai.com/0FF7014EAEF781F14E9784C3B30944E0.flv");
+
+            Uri uri = Uri.parse(url);
             try {
                 mediaPlayer.setDataSource(this, uri);
             } catch (IOException e) {
@@ -412,13 +427,13 @@ public class VideoPlayerActivity extends BaseActivity {
      */
     @OnClick(R.id.iv_play)
     void clickPlay(View view) {
-        if (isPrepared) {
-            pause();
-        } else {
-            if (mediaPlayer != null) {
-                mediaPlayer.prepareAsync();
-            }
-        }
+//        if (isPrepared) {
+        pause();
+//        } else {
+//            if (mediaPlayer != null) {
+//                mediaPlayer.prepareAsync();
+//            }
+//        }
     }
 
     /**
@@ -438,13 +453,16 @@ public class VideoPlayerActivity extends BaseActivity {
      */
     @OnClick(R.id.iv_download)
     void clickDownLoad(View view) {
-        String url = "http://220.170.49.103/5/q/c/b/t/qcbtgdrzcagiurhsrcszksmyhgtlvx/he.yinyuetai.com/0FF7014EAEF781F14E9784C3B30944E0.flv";
         int i = url.lastIndexOf("/");
         String fileName = url.substring(i + 1, url.length());
         DownLoadEntity downLoadEntity = new DownLoadEntity();
         downLoadEntity.setDownloadUrl(url);
         downLoadEntity.setInstall(false);
         downLoadEntity.setName("小幸运");
+        File file = new File(PathUtls.getDownloadPath());
+        if (!file.exists()) {
+            file.mkdirs();
+        }
         downLoadEntity.setSavePath(PathUtls.getDownloadPath() + File.separator + fileName);
         downLoadEntity.setImgUrl("http://f.hiphotos.baidu.com/image/pic/item/3ac79f3df8dcd1008742b1cc788b4710b8122f04.jpg");
         Intent intent = new Intent(this, DownLoadService.class);
