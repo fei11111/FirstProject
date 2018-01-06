@@ -116,7 +116,7 @@ public class VideoPlayerActivity extends BaseActivity {
                     mHandler.sendEmptyMessageDelayed(REFRESH_WHAT, 1000);
                 }
             } else if (msg.what == HIDE_BOTTOM_PROGRESS) {
-                //底下进度条
+                //底下进度条,3秒过后没有隐藏就开启动画隐藏
                 rlController.startAnimation(outAnimation);
                 isHide = !isHide;
             } else if (msg.what == HIDE_CENTER_PROGRESS) {
@@ -321,6 +321,7 @@ public class VideoPlayerActivity extends BaseActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
+                isHide = false;
                 rlController.setVisibility(View.VISIBLE);
             }
 
@@ -338,6 +339,7 @@ public class VideoPlayerActivity extends BaseActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
+                isHide = true;
                 rlController.setVisibility(View.GONE);
             }
 
@@ -468,6 +470,10 @@ public class VideoPlayerActivity extends BaseActivity {
         Intent intent = new Intent(this, DownLoadService.class);
         intent.putExtra("downloadEntity", downLoadEntity);
         startService(intent);
+
+        mHandler.removeMessages(HIDE_BOTTOM_PROGRESS);
+        rlController.clearAnimation();
+        mHandler.sendEmptyMessage(HIDE_BOTTOM_PROGRESS);
     }
 
     /**
@@ -524,13 +530,14 @@ public class VideoPlayerActivity extends BaseActivity {
             case MotionEvent.ACTION_UP:
                 if (!isMove) {
                     mHandler.removeMessages(HIDE_BOTTOM_PROGRESS);
+                    rlController.clearAnimation();
                     if (isHide) {
                         rlController.startAnimation(inAnimation);
+                        //出现后3秒后隐藏
+                        mHandler.sendEmptyMessageDelayed(HIDE_BOTTOM_PROGRESS, 3000);
                     } else {
                         rlController.startAnimation(outAnimation);
                     }
-                    mHandler.sendEmptyMessageDelayed(HIDE_BOTTOM_PROGRESS, 3000);
-                    isHide = !isHide;
                 } else {
                     mHandler.sendEmptyMessageDelayed(HIDE_CENTER_PROGRESS, 1000);
                 }

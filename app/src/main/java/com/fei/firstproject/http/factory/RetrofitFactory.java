@@ -30,18 +30,12 @@ public class RetrofitFactory {
     private static File cacheFile = new File(PathUtls.getCachePath());
     private static Cache cache = new Cache(cacheFile, AppConfig.CACHE_SIZE);
 
-    public static void setProgressListener(ProgressListener progressListener) {
-        rspNetInterceptor.setProgressListener(progressListener);
-    }
-
-    private static RspNetInterceptor rspNetInterceptor = new RspNetInterceptor();
-
     private static OkHttpClient httpClient = new OkHttpClient.Builder()
             .connectTimeout(15, TimeUnit.SECONDS)
             .readTimeout(20, TimeUnit.SECONDS)
             .writeTimeout(20, TimeUnit.SECONDS)
-            .addNetworkInterceptor(rspNetInterceptor)
-            .addInterceptor(rspNetInterceptor)
+            .addNetworkInterceptor(new RspNetInterceptor())
+            .addInterceptor(new RspNetInterceptor())
             .addInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
                 @Override
                 public void log(String message) {
@@ -91,6 +85,31 @@ public class RetrofitFactory {
 
     public static RequestApi getBtPlantWeb() {
         return requestBtPlantWebApi;
+    }
+
+    //下载Api独立出来
+    public static RequestApi getDownLoad(ProgressListener progressListener) {
+        return new Retrofit.Builder()
+                // 添加Gson转换器
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(new OkHttpClient.Builder()
+                        .connectTimeout(15, TimeUnit.SECONDS)
+                        .readTimeout(20, TimeUnit.SECONDS)
+                        .writeTimeout(20, TimeUnit.SECONDS)
+                        .addNetworkInterceptor(new RspNetInterceptor(progressListener))
+                        .addInterceptor(new RspNetInterceptor(progressListener))
+                        .addInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+                            @Override
+                            public void log(String message) {
+                                //打印retrofit日志
+                                LogUtils.i("RetrofitLog", "retrofitBack = " + message);
+                            }
+                        }).setLevel(HttpLoggingInterceptor.Level.BODY))
+                        .cache(cache).build())
+                .baseUrl(BT_PLANT_WEB_URL)
+                .build()
+                .create(RequestApi.class);
     }
 
 }

@@ -24,7 +24,10 @@ public class RspNetInterceptor implements Interceptor {
     private final int maxStale = 60 * 60 * 24 * 28; // tolerate 4-weeks stale
     private ProgressListener progressListener;
 
-    public void setProgressListener(ProgressListener progressListener) {
+    public RspNetInterceptor() {
+    }
+
+    public RspNetInterceptor(ProgressListener progressListener) {
         this.progressListener = progressListener;
     }
 
