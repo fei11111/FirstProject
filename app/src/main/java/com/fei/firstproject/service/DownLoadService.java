@@ -1,14 +1,15 @@
 package com.fei.firstproject.service;
 
+import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.widget.RemoteViews;
@@ -45,20 +46,20 @@ import okhttp3.ResponseBody;
  * http://blog.csdn.net/vipzjyno1/article/details/25248021/
  */
 
-public class DownLoadService extends Service {
+public class DownLoadService extends IntentService {
 
     private NotificationManager notificationManager;
     private int notificationId = 2000;
     private ExecutorService executorService;
 
     /*  开始下载*/
-    private static final int DOWNLOAD_START = 0;
+    private static final int DOWNLOAD_START = 100;
     /* 下载中 和 完成下载*/
-    private static final int DOWNLOAD = 1;
+    private static final int DOWNLOAD = 101;
     /* 下载失败 */
-    private static final int DOWNLOAD_ERROR = 2;
+    private static final int DOWNLOAD_ERROR = 102;
     /* 保存成功 */
-    private static final int SAVE_FINISHED = 3;
+    private static final int SAVE_FINISHED = 103;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -81,14 +82,23 @@ public class DownLoadService extends Service {
         }
     };
 
+    /**
+     * Creates an IntentService.  Invoked by your subclass's constructor.
+     *
+     * @param name Used to name the worker thread, important only for debugging.
+     */
+    public DownLoadService(String name) {
+        super(name);
+    }
+
     private void refreshNotification(DownLoadEntity downLoadEntity) {
         if (downLoadEntity != null) {
             synchronized (downLoadEntity) {
                 if (downLoadEntity.isDone() && downLoadEntity.getProgress() == downLoadEntity.getTotalLength()) {
                     notificationManager.cancel(downLoadEntity.getFlag());
-                    mHandler.removeMessages(downLoadEntity.getFlag());
+//                    mHandler.removeMessages(downLoadEntity.getFlag());
                     if (downLoadEntity.getFlag() != -1) {
-                        Utils.showToast(DownLoadService.this, downLoadEntity.getName() + "下载完成");
+//                        Utils.showToast(DownLoadService.this, downLoadEntity.getName() + "下载完成");
                         downLoadEntity.setFlag(-1);
                     }
                     if (downLoadEntity.isInstall()) {
@@ -104,7 +114,7 @@ public class DownLoadService extends Service {
                         if (contentView != null) {
                             long progress = downLoadEntity.getProgress();
                             long total = downLoadEntity.getTotalLength();
-                            contentView.setProgressBar(R.id.pb_notification, 100, (int) (progress * 1f / total) * 100, false);
+                            contentView.setProgressBar(R.id.pb_notification, 100, (int) ((progress * 1.0f / total) * 100), false);
                             contentView.setTextViewText(R.id.tv_notification_progress, Utils.bytes2kb(progress) + "/" + Utils.bytes2kb(total));
                             notificationManager.notify(downLoadEntity.getFlag(), builder.build());
                         }
@@ -180,7 +190,8 @@ public class DownLoadService extends Service {
      * 下载
      */
     private void download(final DownLoadEntity downloadEntity) {
-        mHandler.sendEmptyMessage(DOWNLOAD_START);
+
+//        mHandler.sendEmptyMessage(DOWNLOAD_START);
         final RequestApi downLoad = RetrofitFactory.getDownLoad(new ProgressListener() {
             @Override
             public void onProgress(long progress, long total, boolean done) {
@@ -192,10 +203,12 @@ public class DownLoadService extends Service {
                     downloadEntity.setBuilder(null);
                     downloadEntity.setDone(true);
                 }
-                Message message = Message.obtain();
-                message.obj = downloadEntity;
-                message.what = DOWNLOAD;
-                mHandler.sendMessage(message);
+
+                refreshNotification(downloadEntity);
+//                Message message = Message.obtain();
+//                message.obj = downloadEntity;
+//                message.what = DOWNLOAD;
+//                mHandler.sendMessage(message);
             }
         });
         downLoad.downloadFile(downloadEntity.getDownloadUrl())
@@ -205,7 +218,7 @@ public class DownLoadService extends Service {
                     public void accept(Disposable disposable) throws Exception {
                         // 可添加网络连接判断等
                         if (!NetUtils.isConnected(DownLoadService.this)) {
-                            mHandler.sendEmptyMessage(DOWNLOAD_ERROR);
+//                            mHandler.sendEmptyMessage(DOWNLOAD_ERROR);
                         }
                     }
                 })
@@ -237,10 +250,10 @@ public class DownLoadService extends Service {
                                 fos.close();
                                 bis.close();
                                 is.close();
-                                Message message = Message.obtain();
-                                message.what = SAVE_FINISHED;
-                                message.obj = downloadEntity.getSavePath();
-                                mHandler.sendMessage(message);
+//                                Message message = Message.obtain();
+//                                message.what = SAVE_FINISHED;
+//                                message.obj = downloadEntity.getSavePath();
+//                                mHandler.sendMessage(message);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -249,7 +262,7 @@ public class DownLoadService extends Service {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        mHandler.sendEmptyMessage(DOWNLOAD_ERROR);
+//                        mHandler.sendEmptyMessage(DOWNLOAD_ERROR);
                     }
 
                     @Override
@@ -261,6 +274,11 @@ public class DownLoadService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    @Override
+    protected void onHandleIntent(@Nullable Intent intent) {
+
     }
 
     /**
