@@ -1,5 +1,6 @@
 package com.fei.firstproject.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.fei.firstproject.R;
+import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.ReciprocalView;
 
 import butterknife.BindView;
@@ -25,6 +27,8 @@ import butterknife.BindView;
  */
 
 public class WelcomeActivity extends BaseActivity {
+
+    private static final int REQUEST_PERMISSION_CODE_STORAGE = 100;
 
     @BindView(R.id.giv_splash)
     ImageView givSplash;
@@ -53,7 +57,9 @@ public class WelcomeActivity extends BaseActivity {
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
-
+        if (requestCode == REQUEST_PERMISSION_CODE_STORAGE) {
+            showMissingPermissionDialog(getString(R.string.need_storage_permission), requestCode);
+        }
     }
 
     @Override
@@ -63,7 +69,9 @@ public class WelcomeActivity extends BaseActivity {
 
     @Override
     public void permissionDialogDismiss(int requestCode) {
-
+        if (requestCode == REQUEST_PERMISSION_CODE_STORAGE) {
+            Utils.showToast(this, getString(R.string.storage_permission_fail));
+        }
     }
 
     @Override
@@ -75,6 +83,11 @@ public class WelcomeActivity extends BaseActivity {
     public void init(Bundle savedInstanceState) {
         initView();
         initListener();
+        initPermission();
+    }
+
+    private void initPermission() {
+        checkPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION_CODE_STORAGE);
     }
 
     private void initListener() {

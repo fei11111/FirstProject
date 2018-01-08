@@ -11,6 +11,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.fei.firstproject.R;
+import com.fei.firstproject.utils.Utils;
 
 /**
  * Created by Administrator on 2017/12/25.
@@ -54,7 +55,7 @@ public class ReciprocalView extends View {
         mPaint.setStyle(Paint.Style.STROKE);
 
         textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        textPaint.setTextSize(30);
+        textPaint.setTextSize(Utils.sp2px(getContext(),11f));
         textPaint.setColor(getResources().getColor(R.color.colorTextSub));
     }
 

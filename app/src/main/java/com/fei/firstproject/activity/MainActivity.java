@@ -66,7 +66,6 @@ public class MainActivity extends BaseActivity {
     private MeFragment meFragment;
 
     //权限请求
-    private static final int REQUEST_PERMISSION_CODE_STORAGE = 100;
     private static final int REQUEST_PERMISSION_CODE_CAMERA = 101;
     //Activity请求返回
     private static final int REQUEST_ACTIVITY_CODE_CAMERA = 200;
@@ -76,9 +75,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
-        if (requestCode == REQUEST_PERMISSION_CODE_STORAGE) {
-            showMissingPermissionDialog(getString(R.string.need_storage_permission), requestCode);
-        } else if (requestCode == REQUEST_PERMISSION_CODE_CAMERA) {
+        if (requestCode == REQUEST_PERMISSION_CODE_CAMERA) {
             showMissingPermissionDialog(getString(R.string.need_camera_permission_to_scan), requestCode);
         }
     }
@@ -93,9 +90,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void permissionDialogDismiss(int requestCode) {
-        if (requestCode == REQUEST_PERMISSION_CODE_STORAGE) {
-            Utils.showToast(this, getString(R.string.storage_permission_fail));
-        } else if (requestCode == REQUEST_PERMISSION_CODE_CAMERA) {
+        if (requestCode == REQUEST_PERMISSION_CODE_CAMERA) {
             Utils.showToast(this, getString(R.string.camera_permission_fail));
         }
     }
@@ -108,7 +103,6 @@ public class MainActivity extends BaseActivity {
     @Override
     public void init(Bundle savedInstanceState) {
         initView(savedInstanceState);
-        initPermission();
         initToolBar();
         initListener();
     }
@@ -126,10 +120,6 @@ public class MainActivity extends BaseActivity {
         req.message = msg;
         req.scene = SendMessageToWX.Req.WXSceneTimeline;//WXSceneSession会话 WXSceneTimeline朋友圈
         WxApiUtils.getInstance(this).getIwxapi().sendReq(req);
-    }
-
-    private void initPermission() {
-        checkPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION_CODE_STORAGE);
     }
 
     @Override
