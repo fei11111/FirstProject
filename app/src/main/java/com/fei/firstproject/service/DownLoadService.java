@@ -1,26 +1,27 @@
 package com.fei.firstproject.service;
 
-import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.widget.RemoteViews;
 
 import com.fei.firstproject.R;
+import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.download.inter.ProgressListener;
 import com.fei.firstproject.entity.DownLoadEntity;
 import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.http.inter.RequestApi;
 import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.NetUtils;
+import com.fei.firstproject.utils.SPUtils;
 import com.fei.firstproject.utils.Utils;
 
 import java.io.BufferedInputStream;
@@ -28,10 +29,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -41,21 +38,21 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
+import static com.fei.firstproject.config.AppConfig.notificationId;
+
 /**
  * Created by Administrator on 2018/1/5.
  * http://blog.csdn.net/vipzjyno1/article/details/25248021/
  */
 
-public class DownLoadService extends IntentService {
+public class DownLoadService extends Service {
 
     private NotificationManager notificationManager;
-    private int notificationId = 2000;
-    private ExecutorService executorService;
 
     /*  开始下载*/
     private static final int DOWNLOAD_START = 100;
     /* 下载中 和 完成下载*/
-    private static final int DOWNLOAD = 101;
+    private static final int DOWNLOAD_FINISHED = 101;
     /* 下载失败 */
     private static final int DOWNLOAD_ERROR = 102;
     /* 保存成功 */
@@ -64,74 +61,35 @@ public class DownLoadService extends IntentService {
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+            DownLoadEntity downLoadEntity = (DownLoadEntity) msg.obj;
             switch (msg.what) {
                 case DOWNLOAD_START:
                     Utils.showToast(DownLoadService.this, "下载中...");
                     break;
-                case DOWNLOAD:
-                    DownLoadEntity downLoadEntity = (DownLoadEntity) msg.obj;
-                    refreshNotification(downLoadEntity);
+                case DOWNLOAD_FINISHED:
+                    if (downLoadEntity != null) {
+                        Utils.showToast(DownLoadService.this, downLoadEntity.getName() + "下载完成");
+                    }
                     break;
                 case DOWNLOAD_ERROR:
-                    Utils.showToast(DownLoadService.this, "下载失败");
+                    if (downLoadEntity != null) {
+                        notificationManager.cancel(downLoadEntity.getFlag());
+                        Utils.showToast(DownLoadService.this, downLoadEntity.getName() + "下载失败");
+                    }
                     break;
                 case SAVE_FINISHED:
-                    String path = (String) msg.obj;
-                    Utils.showToast(DownLoadService.this, "已保存到" + path);
+                    if (downLoadEntity != null) {
+                        Utils.showToast(DownLoadService.this, downLoadEntity.getName() + "已保存到" + downLoadEntity.getSavePath());
+                    }
+                    break;
             }
         }
     };
 
-    /**
-     * Creates an IntentService.  Invoked by your subclass's constructor.
-     *
-     * @param name Used to name the worker thread, important only for debugging.
-     */
-    public DownLoadService(String name) {
-        super(name);
-    }
-
-    private void refreshNotification(DownLoadEntity downLoadEntity) {
-        if (downLoadEntity != null) {
-            synchronized (downLoadEntity) {
-                if (downLoadEntity.isDone() && downLoadEntity.getProgress() == downLoadEntity.getTotalLength()) {
-                    notificationManager.cancel(downLoadEntity.getFlag());
-//                    mHandler.removeMessages(downLoadEntity.getFlag());
-                    if (downLoadEntity.getFlag() != -1) {
-//                        Utils.showToast(DownLoadService.this, downLoadEntity.getName() + "下载完成");
-                        downLoadEntity.setFlag(-1);
-                    }
-                    if (downLoadEntity.isInstall()) {
-                        String savePath = downLoadEntity.getSavePath();
-                        if (!TextUtils.isEmpty(savePath)) {
-                            installApk(savePath);
-                        }
-                    }
-                } else {
-                    NotificationCompat.Builder builder = downLoadEntity.getBuilder();
-                    if (builder != null) {
-                        RemoteViews contentView = builder.getContentView();
-                        if (contentView != null) {
-                            long progress = downLoadEntity.getProgress();
-                            long total = downLoadEntity.getTotalLength();
-                            contentView.setProgressBar(R.id.pb_notification, 100, (int) ((progress * 1.0f / total) * 100), false);
-                            contentView.setTextViewText(R.id.tv_notification_progress, Utils.bytes2kb(progress) + "/" + Utils.bytes2kb(total));
-                            notificationManager.notify(downLoadEntity.getFlag(), builder.build());
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
-        /**创建线程池*/
-        int processors = Runtime.getRuntime().availableProcessors();
-        executorService = new ThreadPoolExecutor(processors + 1, processors * 2 + 1,
-                60, TimeUnit.SECONDS,
-                new LinkedBlockingQueue<Runnable>());
+        LogUtils.i("tag", "DownLoadService-onCreate");
     }
 
 
@@ -144,6 +102,42 @@ public class DownLoadService extends IntentService {
             }
         }
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    private void refreshNotification(DownLoadEntity downLoadEntity) {
+        if (downLoadEntity != null) {
+            if (downLoadEntity.isDone() && downLoadEntity.getProgress() == downLoadEntity.getTotalLength()) {
+                notificationManager.cancel(downLoadEntity.getFlag());
+                Message message = Message.obtain();
+                message.what = DOWNLOAD_FINISHED;
+                message.obj = downLoadEntity;
+                mHandler.sendMessage(message);
+                LogUtils.i("tag", "发送下载成功");
+                if (downLoadEntity.isInstall()) {
+                    String savePath = downLoadEntity.getSavePath();
+                    if (!TextUtils.isEmpty(savePath)) {
+                        installApk(savePath);
+                    }
+                }
+            } else {
+                NotificationCompat.Builder builder = downLoadEntity.getBuilder();
+                if (builder != null) {
+                    RemoteViews contentView = builder.getContentView();
+                    if (contentView != null) {
+                        long progress = downLoadEntity.getProgress();
+                        long total = downLoadEntity.getTotalLength();
+                        contentView.setProgressBar(R.id.pb_notification, 100, (int) ((progress * 1.0f / total) * 100), false);
+                        contentView.setTextViewText(R.id.tv_notification_progress, Utils.bytes2kb(progress) + "/" + Utils.bytes2kb(total));
+                        notificationManager.notify(downLoadEntity.getFlag(), builder.build());
+                    }
+                }
+            }
+        }
     }
 
     protected void setNotificationProgrss(final DownLoadEntity downloadEntity) {
@@ -170,15 +164,10 @@ public class DownLoadService extends IntentService {
         notificationManager.notify(notificationId, notify);
 
         downloadEntity.setBuilder(mBuilder);
-        downloadEntity.setFlag(notificationId);
-
+        downloadEntity.setFlag(AppConfig.notificationId);
+        SPUtils.put(this, "notificationId", notificationId);
         //下载
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                download(downloadEntity);
-            }
-        });
+        download(downloadEntity);
     }
 
     public PendingIntent getDefalutIntent(int flags) {
@@ -190,25 +179,22 @@ public class DownLoadService extends IntentService {
      * 下载
      */
     private void download(final DownLoadEntity downloadEntity) {
-
-//        mHandler.sendEmptyMessage(DOWNLOAD_START);
+        mHandler.sendEmptyMessage(DOWNLOAD_START);
         final RequestApi downLoad = RetrofitFactory.getDownLoad(new ProgressListener() {
             @Override
             public void onProgress(long progress, long total, boolean done) {
                 LogUtils.i("tag", "progress--" + progress + "--total--" + total);
-                downloadEntity.setProgress(progress);
-                downloadEntity.setTotalLength(total);
-                downloadEntity.setDone(false);
-                if (done) {
-                    downloadEntity.setBuilder(null);
-                    downloadEntity.setDone(true);
+                synchronized (downloadEntity) {
+                    downloadEntity.setProgress(progress);
+                    downloadEntity.setTotalLength(total);
+                    if (!downloadEntity.isDone()) {
+                        if (done) {
+                            downloadEntity.setBuilder(null);
+                            downloadEntity.setDone(true);
+                        }
+                        refreshNotification(downloadEntity);
+                    }
                 }
-
-                refreshNotification(downloadEntity);
-//                Message message = Message.obtain();
-//                message.obj = downloadEntity;
-//                message.what = DOWNLOAD;
-//                mHandler.sendMessage(message);
             }
         });
         downLoad.downloadFile(downloadEntity.getDownloadUrl())
@@ -218,7 +204,10 @@ public class DownLoadService extends IntentService {
                     public void accept(Disposable disposable) throws Exception {
                         // 可添加网络连接判断等
                         if (!NetUtils.isConnected(DownLoadService.this)) {
-//                            mHandler.sendEmptyMessage(DOWNLOAD_ERROR);
+                            Message message = Message.obtain();
+                            message.obj = downloadEntity;
+                            message.what = DOWNLOAD_ERROR;
+                            mHandler.sendMessage(message);
                         }
                     }
                 })
@@ -250,10 +239,10 @@ public class DownLoadService extends IntentService {
                                 fos.close();
                                 bis.close();
                                 is.close();
-//                                Message message = Message.obtain();
-//                                message.what = SAVE_FINISHED;
-//                                message.obj = downloadEntity.getSavePath();
-//                                mHandler.sendMessage(message);
+                                Message message = Message.obtain();
+                                message.what = SAVE_FINISHED;
+                                message.obj = downloadEntity;
+                                mHandler.sendMessage(message);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -262,23 +251,16 @@ public class DownLoadService extends IntentService {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-//                        mHandler.sendEmptyMessage(DOWNLOAD_ERROR);
+                        Message message = Message.obtain();
+                        message.obj = downloadEntity;
+                        message.what = DOWNLOAD_ERROR;
+                        mHandler.sendMessage(message);
                     }
 
                     @Override
                     public void onComplete() {
                     }
                 });
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-
-    @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
-
     }
 
     /**

@@ -14,6 +14,7 @@ public class AppConfig {
     public static int CACHE_SIZE = 2 * 1024 * 1024;
     public static UserEntity user;
     public static String APP_ID = "wx90d5674a33d19e2b";
+    public static int notificationId;
 
     // 正式环境
     public static final String HOST = "http://218.18.114.100:8880";
