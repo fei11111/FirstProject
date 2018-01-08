@@ -96,10 +96,8 @@ public class VideoPlayerActivity extends BaseActivity {
     private int videoWidth;
     private int videoHeight;
 
-    //http://192.168.1.214:3391/btFile/videos/9cd31488-0707-46d6-aaa7-83a4a27c5e0d.mp4
-    //http://220.170.49.103/5/q/c/b/t/qcbtgdrzcagiurhsrcszksmyhgtlvx/he.yinyuetai.com/0FF7014EAEF781F14E9784C3B30944E0.flv
-    private String url = "http://192.168.1.214:3391/btFile/videos/9cd31488-0707-46d6-aaa7-83a4a27c5e0d.mp4";
-//    private String url = "http://220.170.49.103/5/q/c/b/t/qcbtgdrzcagiurhsrcszksmyhgtlvx/he.yinyuetai.com/0FF7014EAEF781F14E9784C3B30944E0.flv";
+    //    private String url = "http://192.168.1.214:3391/btFile/videos/9cd31488-0707-46d6-aaa7-83a4a27c5e0d.mp4";
+    private String url = "http://220.170.49.103/5/q/c/b/t/qcbtgdrzcagiurhsrcszksmyhgtlvx/he.yinyuetai.com/0FF7014EAEF781F14E9784C3B30944E0.flv";
 
     private Handler mHandler = new Handler() {
         @Override
@@ -242,6 +240,7 @@ public class VideoPlayerActivity extends BaseActivity {
                 isPrepared = true;
                 mediaPlayer.start();
                 //进度条
+                ivPlay.setImageResource(R.drawable.ic_pause);
                 int duration = mediaPlayer.getDuration();
                 sbTime.setMax(duration);
                 sbProgress.setMax(duration);
@@ -300,12 +299,12 @@ public class VideoPlayerActivity extends BaseActivity {
     }
 
     private void complete() {
-//        isPrepared = false;
+        isPrepared = false;
         ivPlay.setImageResource(R.drawable.ic_play);
         mediaPlayer.stop();
+        surfaceView.destroyDrawingCache();
         currentPosition = 0;
-        mediaPlayer.seekTo(currentPosition);
-//        play(false);
+        play(false);
     }
 
     /**
@@ -353,7 +352,6 @@ public class VideoPlayerActivity extends BaseActivity {
     private class MyCallBack implements SurfaceHolder.Callback {
         @Override
         public void surfaceCreated(SurfaceHolder holder) {
-            proShow();
             play(true);
         }
 
@@ -392,6 +390,7 @@ public class VideoPlayerActivity extends BaseActivity {
             mediaPlayer.setScreenOnWhilePlaying(true);
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             if (isPlay) {
+                proShow();
                 mediaPlayer.prepareAsync();
             }
         }
@@ -429,13 +428,14 @@ public class VideoPlayerActivity extends BaseActivity {
      */
     @OnClick(R.id.iv_play)
     void clickPlay(View view) {
-//        if (isPrepared) {
-        pause();
-//        } else {
-//            if (mediaPlayer != null) {
-//                mediaPlayer.prepareAsync();
-//            }
-//        }
+        if (isPrepared) {
+            pause();
+        } else {
+            if (mediaPlayer != null) {
+                proShow();
+                mediaPlayer.prepareAsync();
+            }
+        }
     }
 
     /**
@@ -538,9 +538,8 @@ public class VideoPlayerActivity extends BaseActivity {
                     } else {
                         rlController.startAnimation(outAnimation);
                     }
-                } else {
-                    mHandler.sendEmptyMessageDelayed(HIDE_CENTER_PROGRESS, 1000);
                 }
+                mHandler.sendEmptyMessageDelayed(HIDE_CENTER_PROGRESS, 1000);
                 break;
         }
         return true;

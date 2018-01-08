@@ -52,7 +52,7 @@
             <SeekBar
                 android:id="@+id/sb_progress"
                 android:layout_width="@dimen/size_150"
-                android:layout_height="@dimen/size_1"
+                android:layout_height="@dimen/size_2"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="@dimen/size_5"
                 android:progressDrawable="@drawable/layer_progress_bar_green"
@@ -71,6 +71,7 @@
                 android:id="@+id/ll_left_controller"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/size_5"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -89,7 +90,6 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/size_2"
-                    android:layout_marginRight="@dimen/size_5"
                     android:text="@string/zero_time"
                     android:textColor="@color/colorWhite" />
             </LinearLayout>
@@ -100,7 +100,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/size_10"
+                android:layout_marginLeft="@dimen/size_5"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -108,8 +108,8 @@
                     android:layout_width="@dimen/size_30"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/size_5"
-                    android:src="@drawable/ic_download"
-                    android:padding="@dimen/size_2"/>
+                    android:padding="@dimen/size_2"
+                    android:src="@drawable/ic_download" />
 
                 <ImageView
                     android:id="@+id/iv_full_screen"
@@ -122,10 +122,14 @@
             <SeekBar
                 android:id="@+id/sb_time"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@id/ll_right_controller"
-                android:layout_toRightOf="@id/ll_left_controller" />
+                android:layout_toRightOf="@id/ll_left_controller"
+                android:maxHeight="@dimen/size_4"
+                android:minHeight="@dimen/size_4"
+                android:progressDrawable="@drawable/layer_progress_bar_green"
+                android:thumb="@drawable/ic_dot" />
         </RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>
