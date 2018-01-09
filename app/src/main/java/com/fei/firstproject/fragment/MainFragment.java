@@ -140,7 +140,7 @@ public class MainFragment extends BaseFragment {
     @Override
     public void permissionsGrantCallBack(int requestCode) {
         if (requestCode == REQUEST_PERMISSION_CODE_LOCATION) {
-            locationUtils = LocationUtils.getInstance(activity);
+            locationUtils = LocationUtils.getInstance(activity.getApplicationContext());
             locationUtils.setOnLocationCallBackListener(onLocationCallBackListener);
             locationUtils.startLocation();
         }

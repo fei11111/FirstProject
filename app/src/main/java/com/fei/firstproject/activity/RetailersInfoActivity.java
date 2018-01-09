@@ -94,7 +94,7 @@ public class RetailersInfoActivity extends BaseListActivity {
     }
 
     private void initLocation() {
-        locationUtils = LocationUtils.getInstance(this);
+        locationUtils = LocationUtils.getInstance(getApplicationContext());
         locationUtils.setOnLocationCallBackListener(onLocationCallBackListener);
         locationUtils.startLocation();
     }

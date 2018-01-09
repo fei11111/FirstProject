@@ -651,36 +651,38 @@ public class VideoPlayerActivity extends BaseActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        isMove = false;
-        isHide = true;
-        mHandler.removeMessages(HIDE_BOTTOM_PROGRESS);
-        mHandler.removeMessages(REFRESH_WHAT);
-        mHandler.removeMessages(HIDE_CENTER_PROGRESS);
-        llSound.setVisibility(View.GONE);
-        llProgress.setVisibility(View.GONE);
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-        int screenWidth = dm.widthPixels;
-        int screenHeight = dm.heightPixels;
+        if (isPrepared) {
+            isMove = false;
+            isHide = true;
+            mHandler.removeMessages(HIDE_BOTTOM_PROGRESS);
+            mHandler.removeMessages(REFRESH_WHAT);
+            mHandler.removeMessages(HIDE_CENTER_PROGRESS);
+            llSound.setVisibility(View.GONE);
+            llProgress.setVisibility(View.GONE);
+            DisplayMetrics dm = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(dm);
+            int screenWidth = dm.widthPixels;
+            int screenHeight = dm.heightPixels;
 
-        if (newConfig.orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
-            //竖屏
-            ivFullScreen.setImageResource(R.drawable.ic_open_full_sreen);
-            RelativeLayout.LayoutParams surfaceParams = (RelativeLayout.LayoutParams) surfaceView.getLayoutParams();
-            surfaceParams.width = screenWidth;
-            surfaceParams.height = screenWidth * videoHeight / videoWidth;
-            surfaceView.setLayoutParams(surfaceParams);
-        } else {
-            //横屏
-            ivFullScreen.setImageResource(R.drawable.ic_close_full_screen);
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) surfaceView.getLayoutParams();
-            layoutParams.width = screenWidth;
-            layoutParams.height = screenHeight - Utils.getStatusBarHeight(this);
-            surfaceView.setLayoutParams(layoutParams);
+            if (newConfig.orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+                //竖屏
+                ivFullScreen.setImageResource(R.drawable.ic_open_full_sreen);
+                RelativeLayout.LayoutParams surfaceParams = (RelativeLayout.LayoutParams) surfaceView.getLayoutParams();
+                surfaceParams.width = screenWidth;
+                surfaceParams.height = screenWidth * videoHeight / videoWidth;
+                surfaceView.setLayoutParams(surfaceParams);
+            } else {
+                //横屏
+                ivFullScreen.setImageResource(R.drawable.ic_close_full_screen);
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) surfaceView.getLayoutParams();
+                layoutParams.width = screenWidth;
+                layoutParams.height = screenHeight - Utils.getStatusBarHeight(this);
+                surfaceView.setLayoutParams(layoutParams);
+            }
+            //屏幕转化后需要重新启动handler
+            mHandler.sendEmptyMessageDelayed(REFRESH_WHAT, 1000);
+            mHandler.sendEmptyMessageDelayed(HIDE_BOTTOM_PROGRESS, 1000);
         }
-        //屏幕转化后需要重新启动handler
-        mHandler.sendEmptyMessageDelayed(REFRESH_WHAT, 1000);
-        mHandler.sendEmptyMessageDelayed(HIDE_BOTTOM_PROGRESS, 1000);
     }
 
 }

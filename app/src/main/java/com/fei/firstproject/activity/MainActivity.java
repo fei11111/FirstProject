@@ -119,7 +119,7 @@ public class MainActivity extends BaseActivity {
         req.transaction = "test";
         req.message = msg;
         req.scene = SendMessageToWX.Req.WXSceneTimeline;//WXSceneSession会话 WXSceneTimeline朋友圈
-        WxApiUtils.getInstance(this).getIwxapi().sendReq(req);
+        WxApiUtils.getInstance(getApplicationContext()).getIwxapi().sendReq(req);
     }
 
     @Override

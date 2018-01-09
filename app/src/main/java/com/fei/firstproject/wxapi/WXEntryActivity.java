@@ -68,7 +68,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     }
 
     private void initWx() {
-        WxApiUtils.getInstance(this).getIwxapi().handleIntent(getIntent(), this);
+        WxApiUtils.getInstance(getApplicationContext()).getIwxapi().handleIntent(getIntent(), this);
     }
 
     @OnClick({R.id.btn_dialog_confirm, R.id.iv_dialog_cancle})
