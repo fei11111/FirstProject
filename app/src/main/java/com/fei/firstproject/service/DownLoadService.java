@@ -28,6 +28,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -128,6 +130,9 @@ public class DownLoadService extends IntentService {
         mRemoteViews.setImageViewResource(R.id.iv_notification, R.drawable.ic_app);
         mRemoteViews.setTextViewText(R.id.tv_notification_name, downloadEntity.getName());
         mRemoteViews.setProgressBar(R.id.pb_notification, 100, 0, false);
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+        String time = format.format(new Date());
+        mRemoteViews.setTextViewText(R.id.tv_notification_time, time);
         mBuilder
                 .setWhen(System.currentTimeMillis())// 通知产生的时间，会在通知信息里显示
                 .setTicker("下载中...")
@@ -267,4 +272,6 @@ public class DownLoadService extends IntentService {
                 "application/vnd.android.package-a rchive");
         startActivity(intent);
     }
+
+
 }

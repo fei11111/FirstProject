@@ -24,11 +24,11 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="6"
+            android:ellipsize="end"
             android:gravity="center_vertical"
             android:lines="1"
             android:textColor="@color/colorText"
-            android:textSize="@dimen/tx_15"
-            android:ellipsize="end"/>
+            android:textSize="@dimen/tx_15" />
 
         <ProgressBar
             android:id="@+id/pb_notification"
@@ -40,16 +40,34 @@
             android:progress="0"
             android:progressDrawable="@drawable/layer_progress_bar_green" />
 
-        <TextView
-            android:id="@+id/tv_notification_progress"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="6"
-            android:gravity="center_vertical"
-            android:lines="1"
-            android:textColor="@color/colorText"
-            android:textSize="@dimen/tx_12"
-            android:ellipsize="end"/>
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tv_notification_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:lines="1"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/tx_12" />
+
+            <TextView
+                android:id="@+id/tv_notification_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:lines="1"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/tx_12" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 
