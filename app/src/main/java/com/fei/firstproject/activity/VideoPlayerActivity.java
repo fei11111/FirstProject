@@ -28,6 +28,7 @@ import com.fei.firstproject.entity.DownLoadEntity;
 import com.fei.firstproject.service.DownLoadService;
 import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.PathUtls;
+import com.fei.firstproject.utils.ScreenRotateUtil;
 import com.fei.firstproject.utils.Utils;
 
 import java.io.File;
@@ -127,6 +128,8 @@ public class VideoPlayerActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
+        ScreenRotateUtil.getInstance(this).start(this);
+        ScreenRotateUtil.getInstance(this).setEffetSysSetting(true);
         if (isLock) {
             if (mediaPlayer != null) {
                 mediaPlayer.seekTo(currentPosition);
@@ -146,6 +149,7 @@ public class VideoPlayerActivity extends BaseActivity {
 
     @Override
     protected void onPause() {
+        ScreenRotateUtil.getInstance(this).stop();
         if (mediaPlayer != null) {
             isPlaying = mediaPlayer.isPlaying();
             currentPosition = mediaPlayer.getCurrentPosition();
@@ -482,11 +486,7 @@ public class VideoPlayerActivity extends BaseActivity {
      */
     @OnClick(R.id.iv_full_screen)
     void clickFullScreen(View view) {
-        if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//切换竖屏
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);//切换横屏
-        }
+        ScreenRotateUtil.getInstance(this).toggleRotate();
     }
 
     /**
@@ -662,21 +662,25 @@ public class VideoPlayerActivity extends BaseActivity {
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         int screenWidth = dm.widthPixels;
         int screenHeight = dm.heightPixels;
-        if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
-            //横屏
-            ivFullScreen.setImageResource(R.drawable.ic_close_full_screen);
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) surfaceView.getLayoutParams();
-            layoutParams.width = screenWidth;
-            layoutParams.height = screenHeight - Utils.getStatusBarHeight(this);
-            surfaceView.setLayoutParams(layoutParams);
-        } else {
+
+        if (newConfig.orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
             //竖屏
             ivFullScreen.setImageResource(R.drawable.ic_open_full_sreen);
             RelativeLayout.LayoutParams surfaceParams = (RelativeLayout.LayoutParams) surfaceView.getLayoutParams();
             surfaceParams.width = screenWidth;
             surfaceParams.height = screenWidth * videoHeight / videoWidth;
             surfaceView.setLayoutParams(surfaceParams);
+        } else {
+            //横屏
+            ivFullScreen.setImageResource(R.drawable.ic_close_full_screen);
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) surfaceView.getLayoutParams();
+            layoutParams.width = screenWidth;
+            layoutParams.height = screenHeight - Utils.getStatusBarHeight(this);
+            surfaceView.setLayoutParams(layoutParams);
         }
+        //屏幕转化后需要重新启动handler
+        mHandler.sendEmptyMessageDelayed(REFRESH_WHAT, 1000);
+        mHandler.sendEmptyMessageDelayed(HIDE_BOTTOM_PROGRESS, 1000);
     }
 
 }

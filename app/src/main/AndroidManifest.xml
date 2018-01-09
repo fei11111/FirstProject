@@ -172,7 +172,7 @@
 
         <activity
             android:name=".activity.VideoPlayerActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:configChanges="orientation|screenSize"
             android:theme="@style/BlackTheme" />
 
         <service android:name=".service.DownLoadService" />
