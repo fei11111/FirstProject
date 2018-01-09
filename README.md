@@ -10,7 +10,7 @@
      BseListActivity,BaseListFragment则集成Base,且增加了RecycleView和底部按钮，
   基本用来绘制只用到ListView的界面。
 4.视频播放MediaPlayer和surfaceView结合，视频下载并通知栏显示下载进度。
-4.用到框架用:<br/>
+5.用到框架用:<br/>
 　1)网络框架：Retrofit2<br/>
 　2)上拉刷新框架：smartrefresh<br/>
 　3)圆形头像框架：RoundImageView<br/>
