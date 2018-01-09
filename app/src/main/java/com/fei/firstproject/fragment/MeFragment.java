@@ -1,5 +1,6 @@
 package com.fei.firstproject.fragment;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
@@ -13,7 +14,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
-import com.fei.firstproject.activity.CaptureActivity;
 import com.fei.firstproject.activity.LoginActivity;
 import com.fei.firstproject.activity.MyAttentionActivity;
 import com.fei.firstproject.activity.MyOrderActivity;
@@ -96,7 +96,7 @@ public class MeFragment extends BaseFragment {
     private MeFragmentAdapter otherAdapter;
 
 
-    private static final int REQUEST_PERMISSION_CODE_CAMERA = 100;
+    private static final int REQUEST_PERMISSION_CODE_STORAGE = 100;
     private static final int REQUEST_FRAGMENT_CODE_CAMERA = 200;
 
     private boolean isAppHeadTitleChange = false;
@@ -119,24 +119,28 @@ public class MeFragment extends BaseFragment {
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
-        if (requestCode == REQUEST_PERMISSION_CODE_CAMERA) {
-            //相机权限
-            showMissingPermissionDialog(getString(R.string.need_camera_permission_to_scan), requestCode);
+        if (requestCode == REQUEST_PERMISSION_CODE_STORAGE) {
+            //存储权限
+            showMissingPermissionDialog(getString(R.string.need_storage_permission), requestCode);
         }
     }
 
     @Override
     public void permissionsGrantCallBack(int requestCode) {
-        if (requestCode == REQUEST_PERMISSION_CODE_CAMERA) {
-            //相机权限
-            startActivityWithCode(new Intent(activity, CaptureActivity.class), REQUEST_FRAGMENT_CODE_CAMERA);
+        if (requestCode == REQUEST_PERMISSION_CODE_STORAGE) {
+            //存储权限
+            String url = "http://192.168.1.214:3391/btFile/videos/9cd31488-0707-46d6-aaa7-83a4a27c5e0d.mp4";
+//    String url = "http://220.170.49.103/5/q/c/b/t/qcbtgdrzcagiurhsrcszksmyhgtlvx/he.yinyuetai.com/0FF7014EAEF781F14E9784C3B30944E0.flv";
+            Intent intent = new Intent(activity, VideoPlayerActivity.class);
+            intent.putExtra("url", url);
+            startActivity(intent);
         }
     }
 
     @Override
     public void permissionDialogDismiss(int requestCode) {
-        if (requestCode == REQUEST_PERMISSION_CODE_CAMERA) {
-            Utils.showToast(activity, getString(R.string.camera_permission_fail));
+        if (requestCode == REQUEST_PERMISSION_CODE_STORAGE) {
+            Utils.showToast(activity, getString(R.string.storage_permission_fail));
         }
     }
 
@@ -290,7 +294,7 @@ public class MeFragment extends BaseFragment {
                     int position = recycler_other.getChildAdapterPosition(view);
                     switch (position) {
                         case 4:
-                            startActivity(new Intent(activity, VideoPlayerActivity.class));
+                            checkPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSION_CODE_STORAGE);
                             break;
                     }
                 } else {

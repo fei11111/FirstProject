@@ -51,3 +51,57 @@
                         // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
                         // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
                         break;
+
+   下载
+   //        FinalHttp finalHttp = new FinalHttp();
+   //        finalHttp.download(downloadEntity.getDownloadUrl(),
+   //                downloadEntity.getSavePath(), new AjaxCallBack<File>() {
+   //                    @Override
+   //                    public void onStart() {
+   //                        super.onStart();
+   //                        SPUtils.put(DownLoadService.this, downloadEntity.getName(), downloadEntity);//存在sp里记录
+   //                        mHandler.sendEmptyMessage(DOWNLOAD_START);
+   //                    }
+   //
+   //                    @Override
+   //                    public void onLoading(long count, long current) {
+   //                        super.onLoading(count, current);
+   //                        LogUtils.i("loading", "count--" + count + "current--" + current);
+   //                        downloadEntity.setProgress(current);
+   //                        downloadEntity.setTotalLength(count);
+   //                        if (current == count) {
+   //                            notificationManager.cancel(downloadEntity.getFlag());
+   //                            downloadEntity.setBuilder(null);
+   //                            downloadEntity.setDone(true);
+   //                            Utils.showToast(DownLoadService.this, downloadEntity.getName() + "下载完成");
+   //                            LogUtils.i("tag", "发送下载成功");
+   //                        } else {
+   //                            executorService.execute(new Runnable() {
+   //                                @Override
+   //                                public void run() {
+   //                                    refreshNotification(downloadEntity);
+   //                                }
+   //                            });
+   //                        }
+   //                    }
+   //
+   //                    @Override
+   //                    public void onSuccess(File t) {
+   //                        super.onSuccess(t);
+   //                        SPUtils.put(DownLoadService.this, downloadEntity.getName(), downloadEntity);//存在sp里记录，下载完成
+   //                        Utils.showToast(DownLoadService.this, downloadEntity.getName() + "已保存到" + downloadEntity.getSavePath());
+   //                        if (downloadEntity.isInstall()) {
+   //                            String savePath = downloadEntity.getSavePath();
+   //                            if (!TextUtils.isEmpty(savePath)) {
+   //                                installApk(savePath);
+   //                            }
+   //                        }
+   //                    }
+   //
+   //                    @Override
+   //                    public void onFailure(Throwable t, int errorNo, String strMsg) {
+   //                        super.onFailure(t, errorNo, strMsg);
+   //                        Utils.showToast(DownLoadService.this, downloadEntity.getName() + "下载失败");
+   //                    }
+   //
+   //                });

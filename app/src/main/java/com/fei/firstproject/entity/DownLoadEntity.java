@@ -12,7 +12,6 @@ public class DownLoadEntity implements Serializable {
 
     private String name;
     private String downloadUrl;
-    private String imgUrl;
     private boolean isInstall;//是否要安装
     private int flag;//下载标志
     private String savePath;//保存文件的路径
@@ -27,14 +26,6 @@ public class DownLoadEntity implements Serializable {
 
     public void setDownloadUrl(String downloadUrl) {
         this.downloadUrl = downloadUrl;
-    }
-
-    public String getImgUrl() {
-        return imgUrl;
-    }
-
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
     }
 
     public boolean isInstall() {

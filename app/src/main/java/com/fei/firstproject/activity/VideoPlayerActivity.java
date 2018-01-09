@@ -5,10 +5,10 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -23,6 +23,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
+import com.fei.firstproject.dialog.TipDialog;
 import com.fei.firstproject.entity.DownLoadEntity;
 import com.fei.firstproject.service.DownLoadService;
 import com.fei.firstproject.utils.LogUtils;
@@ -95,9 +96,8 @@ public class VideoPlayerActivity extends BaseActivity {
     private AudioManager audioManager;
     private int videoWidth;
     private int videoHeight;
-
-    //    private String url = "http://192.168.1.214:3391/btFile/videos/9cd31488-0707-46d6-aaa7-83a4a27c5e0d.mp4";
-    private String url = "http://220.170.49.103/5/q/c/b/t/qcbtgdrzcagiurhsrcszksmyhgtlvx/he.yinyuetai.com/0FF7014EAEF781F14E9784C3B30944E0.flv";
+    private DownLoadEntity downLoadEntity;
+    private TipDialog tipDialog;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -199,10 +199,40 @@ public class VideoPlayerActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
-        initAnimation();
-        initMediaPlayer();
-        initListener();
-        initSurface();
+        String url = getIntent().getStringExtra("url");
+        if (!TextUtils.isEmpty(url)) {
+            initDownloadEntity(url);
+            initAnimation();
+            initMediaPlayer();
+            initListener();
+            initSurface();
+        }
+    }
+
+    @Override
+    public void initRequest() {
+
+    }
+
+    private void initDownloadEntity(String url) {
+        //得到url后先生存DownLoadEntity
+        int i = url.lastIndexOf("/");
+        String fileName = url.substring(i + 1, url.length());
+        //sp里未保存过
+        downLoadEntity = new DownLoadEntity();
+        downLoadEntity.setDownloadUrl(url);
+        downLoadEntity.setInstall(false);
+        downLoadEntity.setName(fileName);
+        File file = new File(PathUtls.getDownloadPath());
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        downLoadEntity.setSavePath(PathUtls.getDownloadPath() + File.separator + fileName);//加了点作为隐藏文件
+        downLoadEntity.setFlag(-1);
+        downLoadEntity.setDone(false);
+        downLoadEntity.setProgress(0);
+        downLoadEntity.setTotalLength(0);
+        downLoadEntity.setBuilder(null);
     }
 
     private void initSurface() {
@@ -240,8 +270,8 @@ public class VideoPlayerActivity extends BaseActivity {
                 isPrepared = true;
                 mediaPlayer.start();
                 //进度条
-                ivPlay.setImageResource(R.drawable.ic_pause);
                 int duration = mediaPlayer.getDuration();
+                ivPlay.setImageResource(R.drawable.ic_pause);
                 sbTime.setMax(duration);
                 sbProgress.setMax(duration);
                 //总时长
@@ -298,13 +328,15 @@ public class VideoPlayerActivity extends BaseActivity {
         });
     }
 
+    /**
+     * 播放完成后
+     */
     private void complete() {
         isPrepared = false;
         ivPlay.setImageResource(R.drawable.ic_play);
         mediaPlayer.stop();
-        surfaceView.destroyDrawingCache();
         currentPosition = 0;
-        play(false);
+        getVideoFromLocal(false);
     }
 
     /**
@@ -352,7 +384,8 @@ public class VideoPlayerActivity extends BaseActivity {
     private class MyCallBack implements SurfaceHolder.Callback {
         @Override
         public void surfaceCreated(SurfaceHolder holder) {
-            play(true);
+            proShow();
+            getVideoFromLocal(true);
         }
 
         @Override
@@ -367,22 +400,29 @@ public class VideoPlayerActivity extends BaseActivity {
 
     }
 
-    @Override
-    public void initRequest() {
-
+    /**
+     * 判断本地是否有该视频,本地有就播放本地
+     */
+    private void getVideoFromLocal(boolean isPlay) {
+        if (downLoadEntity == null) return;
+        String savePath = downLoadEntity.getSavePath();
+        if (new File(savePath).exists()) {
+            play(isPlay, savePath);
+        } else {
+            play(isPlay, downLoadEntity.getDownloadUrl());
+        }
     }
 
     /**
      * 开始
      */
-    private void play(boolean isPlay) {
+    private void play(boolean isPlay, String path) {
         if (mediaPlayer != null) {
             mediaPlayer.reset();
             mediaPlayer.setDisplay(surfaceView.getHolder());
 
-            Uri uri = Uri.parse(url);
             try {
-                mediaPlayer.setDataSource(this, uri);
+                mediaPlayer.setDataSource(path);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -390,7 +430,6 @@ public class VideoPlayerActivity extends BaseActivity {
             mediaPlayer.setScreenOnWhilePlaying(true);
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             if (isPlay) {
-                proShow();
                 mediaPlayer.prepareAsync();
             }
         }
@@ -455,22 +494,30 @@ public class VideoPlayerActivity extends BaseActivity {
      */
     @OnClick(R.id.iv_download)
     void clickDownLoad(View view) {
-        int i = url.lastIndexOf("/");
-        String fileName = url.substring(i + 1, url.length());
-        DownLoadEntity downLoadEntity = new DownLoadEntity();
-        downLoadEntity.setDownloadUrl(url);
-        downLoadEntity.setInstall(false);
-        downLoadEntity.setName("小幸运");
-        File file = new File(PathUtls.getDownloadPath());
-        if (!file.exists()) {
-            file.mkdirs();
+        if (downLoadEntity != null) {
+            if (new File(downLoadEntity.getSavePath()).exists()) {
+                //文件存在
+                if (tipDialog == null) {
+                    tipDialog = new TipDialog(this);
+                    tipDialog.setCanceledOnTouchOutside(false);
+                    tipDialog.setContentText(getResources().getString(R.string.file_exit_if_download));
+                    tipDialog.setConfirmButtonText(getResources().getString(R.string.go_to_download));
+                    tipDialog.setOnConfirmListener(new TipDialog.OnConfirmListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(VideoPlayerActivity.this, DownLoadService.class);
+                            intent.putExtra("downloadEntity", downLoadEntity);
+                            startService(intent);
+                        }
+                    });
+                }
+                tipDialog.show();
+            } else {
+                Intent intent = new Intent(this, DownLoadService.class);
+                intent.putExtra("downloadEntity", downLoadEntity);
+                startService(intent);
+            }
         }
-        downLoadEntity.setSavePath(PathUtls.getDownloadPath() + File.separator + fileName);
-        downLoadEntity.setImgUrl("http://f.hiphotos.baidu.com/image/pic/item/3ac79f3df8dcd1008742b1cc788b4710b8122f04.jpg");
-        Intent intent = new Intent(this, DownLoadService.class);
-        intent.putExtra("downloadEntity", downLoadEntity);
-        startService(intent);
-
         mHandler.removeMessages(HIDE_BOTTOM_PROGRESS);
         rlController.clearAnimation();
         mHandler.sendEmptyMessage(HIDE_BOTTOM_PROGRESS);
@@ -529,6 +576,7 @@ public class VideoPlayerActivity extends BaseActivity {
                 break;
             case MotionEvent.ACTION_UP:
                 if (!isMove) {
+                    //未移动
                     mHandler.removeMessages(HIDE_BOTTOM_PROGRESS);
                     rlController.clearAnimation();
                     if (isHide) {
@@ -538,8 +586,9 @@ public class VideoPlayerActivity extends BaseActivity {
                     } else {
                         rlController.startAnimation(outAnimation);
                     }
+                } else {
+                    mHandler.sendEmptyMessageDelayed(HIDE_CENTER_PROGRESS, 1000);
                 }
-                mHandler.sendEmptyMessageDelayed(HIDE_CENTER_PROGRESS, 1000);
                 break;
         }
         return true;

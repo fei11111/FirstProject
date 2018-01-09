@@ -71,7 +71,6 @@
                 android:id="@+id/ll_left_controller"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginRight="@dimen/size_5"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -100,14 +99,12 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/size_5"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/iv_download"
                     android:layout_width="@dimen/size_30"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/size_5"
                     android:padding="@dimen/size_2"
                     android:src="@drawable/ic_download" />
 

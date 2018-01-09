@@ -32,7 +32,7 @@ public class MyApplication extends Application {
 
     private void initUserInfo() {
         AppConfig.user = (UserEntity) SPUtils.get(this, "user", null);
-        AppConfig.notificationId = (int) SPUtils.get(this, "notificationId", 1000);
+        AppConfig.notificationId = (int) SPUtils.get(this, "notificationId", 10);
         if (AppConfig.user == null) {
             AppConfig.ISLOGIN = false;
         } else {
