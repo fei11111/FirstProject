@@ -273,6 +273,7 @@ public class ScreenRotateUtil {
      * 注销监听
      */
     public void stop() {
+        isLandscape = true;
         sm.unregisterListener(listener);
         mActivity = null;  // 防止内存泄漏
     }

@@ -128,8 +128,8 @@ public class VideoPlayerActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
-        ScreenRotateUtil.getInstance(this).start(this);
-        ScreenRotateUtil.getInstance(this).setEffetSysSetting(true);
+        ScreenRotateUtil.getInstance(getApplicationContext()).start(this);
+        ScreenRotateUtil.getInstance(getApplicationContext()).setEffetSysSetting(true);
         if (isLock) {
             if (mediaPlayer != null) {
                 mediaPlayer.seekTo(currentPosition);
@@ -149,7 +149,7 @@ public class VideoPlayerActivity extends BaseActivity {
 
     @Override
     protected void onPause() {
-        ScreenRotateUtil.getInstance(this).stop();
+        ScreenRotateUtil.getInstance(getApplicationContext()).stop();
         if (mediaPlayer != null) {
             isPlaying = mediaPlayer.isPlaying();
             currentPosition = mediaPlayer.getCurrentPosition();
