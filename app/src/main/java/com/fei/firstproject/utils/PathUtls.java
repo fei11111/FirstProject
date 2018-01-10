@@ -26,18 +26,34 @@ public class PathUtls {
     }
 
     public static String getImgPath() {
+        File dirFile = new File(imgPath);
+        if (!dirFile.exists()) {
+            dirFile.mkdirs();
+        }
         return imgPath;
     }
 
     public static String getLogPath() {
+        File dirFile = new File(logPath);
+        if (!dirFile.exists()) {
+            dirFile.mkdirs();
+        }
         return logPath;
     }
 
     public static String getCachePath() {
+        File dirFile = new File(cachePath);
+        if (!dirFile.exists()) {
+            dirFile.mkdirs();
+        }
         return cachePath;
     }
 
     public static String getDownloadPath() {
+        File dirFile = new File(downloadPath);
+        if (!dirFile.exists()) {
+            dirFile.mkdirs();
+        }
         return downloadPath;
     }
 }

@@ -99,12 +99,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
             String time = formatter.format(new Date());
             String fileName = "crash_" + time + ".log";
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                String path = PathUtls.getLogPath();
-                File dir = new File(path);
-                if (!dir.exists()) {
-                    dir.mkdirs();
-                }
-                FileOutputStream fos = new FileOutputStream(path + File.separator + fileName);
+                FileOutputStream fos = new FileOutputStream(PathUtls.getLogPath() + File.separator + fileName);
                 fos.write(sb.toString().getBytes());
                 fos.close();
             }

@@ -227,10 +227,6 @@ public class VideoPlayerActivity extends BaseActivity {
         downLoadEntity.setDownloadUrl(url);
         downLoadEntity.setInstall(false);
         downLoadEntity.setName(fileName);
-        File file = new File(PathUtls.getDownloadPath());
-        if (!file.exists()) {
-            file.mkdirs();
-        }
         downLoadEntity.setSavePath(PathUtls.getDownloadPath() + File.separator + "." + fileName);//加了点作为隐藏文件
         downLoadEntity.setFlag(-1);
         downLoadEntity.setDone(false);
