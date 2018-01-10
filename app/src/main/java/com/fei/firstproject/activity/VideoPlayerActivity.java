@@ -231,7 +231,7 @@ public class VideoPlayerActivity extends BaseActivity {
         if (!file.exists()) {
             file.mkdirs();
         }
-        downLoadEntity.setSavePath(PathUtls.getDownloadPath() + File.separator + fileName);//加了点作为隐藏文件
+        downLoadEntity.setSavePath(PathUtls.getDownloadPath() + File.separator + "." + fileName);//加了点作为隐藏文件
         downLoadEntity.setFlag(-1);
         downLoadEntity.setDone(false);
         downLoadEntity.setProgress(0);
