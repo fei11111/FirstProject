@@ -173,14 +173,15 @@ public class DownLoadService extends IntentService {
                     downloadEntity.setTotalLength(total);
                     if (!downloadEntity.isDone()) {
                         if (done) {
-                            downloadEntity.setBuilder(null);
-                            downloadEntity.setDone(true);
-                            SPUtils.put(DownLoadService.this, downloadEntity.getName(), downloadEntity);//完成时重新添加到sp里
-                            notificationManager.cancel(downloadEntity.getFlag());
-                            Message message = Message.obtain();
-                            message.what = DOWNLOAD_FINISHED;
-                            message.obj = downloadEntity;
-                            mHandler.sendMessage(message);
+                            if (progress == total) {
+                                downloadEntity.setBuilder(null);
+                                downloadEntity.setDone(true);
+                                notificationManager.cancel(downloadEntity.getFlag());
+                                Message message = Message.obtain();
+                                message.what = DOWNLOAD_FINISHED;
+                                message.obj = downloadEntity;
+                                mHandler.sendMessage(message);
+                            }
                         }
                         refreshNotification(downloadEntity);
                     }

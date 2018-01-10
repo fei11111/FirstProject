@@ -249,8 +249,10 @@ public class VideoPlayerActivity extends BaseActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    currentPosition = progress;
-                    refreshView();
+                    if (isPrepared) {
+                        currentPosition = progress;
+                        refreshView();
+                    }
                 }
             }
 
@@ -325,9 +327,13 @@ public class VideoPlayerActivity extends BaseActivity {
         mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
             @Override
             public boolean onError(MediaPlayer mp, int what, int extra) {
-                LogUtils.i("tag", "what" + what);
-                LogUtils.i("tag", "extra" + extra);
-                return false;
+                proDisimis();
+                if (what == MediaPlayer.MEDIA_ERROR_SERVER_DIED) {
+                    Utils.showToast(VideoPlayerActivity.this, "服务器错误");
+                } else if (what == MediaPlayer.MEDIA_ERROR_UNKNOWN) {
+                    Utils.showToast(VideoPlayerActivity.this, "视频文件错误");
+                }
+                return true;
             }
         });
     }
@@ -475,8 +481,11 @@ public class VideoPlayerActivity extends BaseActivity {
             pause();
         } else {
             if (mediaPlayer != null) {
-                proShow();
-                mediaPlayer.prepareAsync();
+                if (mediaPlayer.getDuration() > 0) {
+                    //设置了资源才进入准备状态
+                    proShow();
+                    mediaPlayer.prepareAsync();
+                }
             }
         }
     }
@@ -486,6 +495,7 @@ public class VideoPlayerActivity extends BaseActivity {
      */
     @OnClick(R.id.iv_full_screen)
     void clickFullScreen(View view) {
+        if (!isPrepared) return;
         ScreenRotateUtil.getInstance(this).toggleRotate();
     }
 
@@ -494,6 +504,7 @@ public class VideoPlayerActivity extends BaseActivity {
      */
     @OnClick(R.id.iv_download)
     void clickDownLoad(View view) {
+        if (!isPrepared) return;
         if (downLoadEntity != null) {
             if (new File(downLoadEntity.getSavePath()).exists()) {
                 //文件存在
@@ -528,70 +539,74 @@ public class VideoPlayerActivity extends BaseActivity {
      */
     @OnTouch(R.id.rl_content)
     boolean onTouchSurface(View view, MotionEvent motionEvent) {
-        switch (motionEvent.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                isMove = false;
-                downX = motionEvent.getX();
-                downY = motionEvent.getY();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                mHandler.removeMessages(HIDE_CENTER_PROGRESS);
-                float moveX = motionEvent.getX();
-                float moveY = motionEvent.getY();
-                int distanceX = (int) (moveX - downX);
-                int distanceY = (int) (moveY - downY);
-                if (Math.abs(distanceX) < 50 && Math.abs(distanceY) > 100) {
-                    llProgress.setVisibility(View.GONE);
-                    isMove = true;
-                    //音量
-                    if (distanceY < 0) {
-                        //增大
-                        setVolume(true);
+        if (!isPrepared) {
+            return false;
+        } else {
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    isMove = false;
+                    downX = motionEvent.getX();
+                    downY = motionEvent.getY();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    mHandler.removeMessages(HIDE_CENTER_PROGRESS);
+                    float moveX = motionEvent.getX();
+                    float moveY = motionEvent.getY();
+                    int distanceX = (int) (moveX - downX);
+                    int distanceY = (int) (moveY - downY);
+                    if (Math.abs(distanceX) < 50 && Math.abs(distanceY) > 100) {
+                        llProgress.setVisibility(View.GONE);
+                        isMove = true;
+                        //音量
+                        if (distanceY < 0) {
+                            //增大
+                            setVolume(true);
+                        } else {
+                            //降低
+                            setVolume(false);
+                        }
+                        downX = moveX;
+                        downY = moveY;
+                    } else if (Math.abs(distanceY) < 50 && Math.abs(distanceX) > 100) {
+                        llSound.setVisibility(View.GONE);
+                        isMove = true;
+                        //快进/后退
+                        currentPosition = currentPosition + distanceX * 50;
+                        if (currentPosition < 0) {
+                            currentPosition = 0;
+                        } else if (currentPosition > mediaPlayer.getDuration()) {
+                            currentPosition = mediaPlayer.getDuration();
+                        }
+                        llProgress.setVisibility(View.VISIBLE);
+                        sbProgress.setProgress(currentPosition);
+                        int time = currentPosition / 1000;
+                        int minute = time / 60;
+                        int second = time % 60;
+                        tvProgressTime.setText(formatToDoubleDigit(minute) + ":" + formatToDoubleDigit(second));
+                        refreshView();
+                        downX = moveX;
+                        downY = moveY;
+                    }
+                    break;
+                case MotionEvent.ACTION_UP:
+                    if (!isMove) {
+                        //未移动
+                        mHandler.removeMessages(HIDE_BOTTOM_PROGRESS);
+                        rlController.clearAnimation();
+                        if (isHide) {
+                            rlController.startAnimation(inAnimation);
+                            //出现后3秒后隐藏
+                            mHandler.sendEmptyMessageDelayed(HIDE_BOTTOM_PROGRESS, 3000);
+                        } else {
+                            rlController.startAnimation(outAnimation);
+                        }
                     } else {
-                        //降低
-                        setVolume(false);
+                        mHandler.sendEmptyMessageDelayed(HIDE_CENTER_PROGRESS, 1000);
                     }
-                    downX = moveX;
-                    downY = moveY;
-                } else if (Math.abs(distanceY) < 50 && Math.abs(distanceX) > 100) {
-                    llSound.setVisibility(View.GONE);
-                    isMove = true;
-                    //快进/后退
-                    currentPosition = currentPosition + distanceX * 50;
-                    if (currentPosition < 0) {
-                        currentPosition = 0;
-                    } else if (currentPosition > mediaPlayer.getDuration()) {
-                        currentPosition = mediaPlayer.getDuration();
-                    }
-                    llProgress.setVisibility(View.VISIBLE);
-                    sbProgress.setProgress(currentPosition);
-                    int time = currentPosition / 1000;
-                    int minute = time / 60;
-                    int second = time % 60;
-                    tvProgressTime.setText(formatToDoubleDigit(minute) + ":" + formatToDoubleDigit(second));
-                    refreshView();
-                    downX = moveX;
-                    downY = moveY;
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                if (!isMove) {
-                    //未移动
-                    mHandler.removeMessages(HIDE_BOTTOM_PROGRESS);
-                    rlController.clearAnimation();
-                    if (isHide) {
-                        rlController.startAnimation(inAnimation);
-                        //出现后3秒后隐藏
-                        mHandler.sendEmptyMessageDelayed(HIDE_BOTTOM_PROGRESS, 3000);
-                    } else {
-                        rlController.startAnimation(outAnimation);
-                    }
-                } else {
-                    mHandler.sendEmptyMessageDelayed(HIDE_CENTER_PROGRESS, 1000);
-                }
-                break;
+                    break;
+            }
+            return true;
         }
-        return true;
     }
 
     /**
