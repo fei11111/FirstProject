@@ -274,7 +274,7 @@ public class SelfInfoActivity extends BaseActivity {
     private void showSaveTipDialog() {
         if (tipDialog == null) {
             tipDialog = new TipDialog(this);
-            tipDialog.setTitle("确定保存？");
+            tipDialog.setContentText("是否保存？");
             tipDialog.setOnConfirmListener(new TipDialog.OnConfirmListener() {
                 @Override
                 public void onClick(View view) {
