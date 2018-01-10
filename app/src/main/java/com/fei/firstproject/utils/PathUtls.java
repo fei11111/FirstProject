@@ -22,6 +22,10 @@ public class PathUtls {
     }
 
     public static String getAppPath() {
+        File dirFile = new File(appPath);
+        if (!dirFile.exists()) {
+            dirFile.mkdirs();
+        }
         return appPath;
     }
 
