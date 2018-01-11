@@ -84,7 +84,7 @@ public class MainActivity extends BaseActivity {
     public void permissionsGrantCallBack(int requestCode) {
         if (requestCode == REQUEST_PERMISSION_CODE_CAMERA) {
             //相机权限
-            startActivityWithCode(new Intent(this, CaptureActivity.class), REQUEST_ACTIVITY_CODE_CAMERA);
+            startActivityForResult(new Intent(this, CaptureActivity.class), REQUEST_ACTIVITY_CODE_CAMERA);
         }
     }
 
