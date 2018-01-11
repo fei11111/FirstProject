@@ -2,7 +2,7 @@ package com.fei.firstproject;
 
 import android.os.Environment;
 
-import com.fei.firstproject.utils.PathUtls;
+import com.fei.firstproject.utils.PathUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -99,7 +99,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
             String time = formatter.format(new Date());
             String fileName = "crash_" + time + ".log";
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                FileOutputStream fos = new FileOutputStream(PathUtls.getLogPath() + File.separator + fileName);
+                FileOutputStream fos = new FileOutputStream(PathUtils.getLogPath() + File.separator + fileName);
                 fos.write(sb.toString().getBytes());
                 fos.close();
             }

@@ -5,7 +5,7 @@ import com.fei.firstproject.download.inter.ProgressListener;
 import com.fei.firstproject.http.inter.RequestApi;
 import com.fei.firstproject.http.manager.RspNetInterceptor;
 import com.fei.firstproject.utils.LogUtils;
-import com.fei.firstproject.utils.PathUtls;
+import com.fei.firstproject.utils.PathUtils;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
@@ -27,7 +27,7 @@ public class RetrofitFactory {
     public static final String NCW_URL = "http://batian.ncw365.com/";
     public static final String BT_WEB_URL = AppConfig.HOST2 + "/bt-web/";
     public static final String BT_PLANT_WEB_URL = AppConfig.HOST3 + "/bt-plant-web/";
-    private static File cacheFile = new File(PathUtls.getCachePath());
+    private static File cacheFile = new File(PathUtils.getCachePath());
     private static Cache cache = new Cache(cacheFile, AppConfig.CACHE_SIZE);
 
     private static OkHttpClient httpClient = new OkHttpClient.Builder()

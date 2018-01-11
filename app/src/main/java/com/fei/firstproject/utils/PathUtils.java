@@ -8,7 +8,7 @@ import java.io.File;
  * Created by Administrator on 2017/7/28.
  */
 
-public class PathUtls {
+public class PathUtils {
 
     private static String rootPath = Environment.getExternalStorageDirectory().getAbsolutePath();
     private static String appPath = rootPath + File.separator + "fei";

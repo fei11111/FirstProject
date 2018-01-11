@@ -27,7 +27,7 @@ import com.fei.firstproject.dialog.TipDialog;
 import com.fei.firstproject.entity.DownLoadEntity;
 import com.fei.firstproject.service.DownLoadService;
 import com.fei.firstproject.utils.LogUtils;
-import com.fei.firstproject.utils.PathUtls;
+import com.fei.firstproject.utils.PathUtils;
 import com.fei.firstproject.utils.ScreenRotateUtil;
 import com.fei.firstproject.utils.Utils;
 
@@ -227,7 +227,7 @@ public class VideoPlayerActivity extends BaseActivity {
         downLoadEntity.setDownloadUrl(url);
         downLoadEntity.setInstall(false);
         downLoadEntity.setName(fileName);
-        downLoadEntity.setSavePath(PathUtls.getDownloadPath() + File.separator + "." + fileName);//加了点作为隐藏文件
+        downLoadEntity.setSavePath(PathUtils.getDownloadPath() + File.separator + "." + fileName);//加了点作为隐藏文件
         downLoadEntity.setFlag(-1);
         downLoadEntity.setDone(false);
         downLoadEntity.setProgress(0);

@@ -21,7 +21,7 @@ public class PictureUtils {
     public static PictureSelector getCirclePicture(Activity activity) {
         if (pictureSelector == null) {
             pictureSelector = PictureSelector.create(activity);
-            pictureSelector.externalPictureAudio(PathUtls.getImgPath());
+            pictureSelector.externalPictureAudio(PathUtils.getImgPath());
         }
         pictureSelector.openGallery(PictureMimeType.ofImage())//全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()
                 .theme(R.style.PictureStyle)//主题样式(不设置为默认样式) 也可参考demo values/styles下 例如：R.style.picture.white.style
@@ -56,7 +56,7 @@ public class PictureUtils {
     public static PictureSelector getRectPicture(Activity activity) {
         if (pictureSelector == null) {
             pictureSelector = PictureSelector.create(activity);
-            pictureSelector.externalPictureAudio(PathUtls.getImgPath());
+            pictureSelector.externalPictureAudio(PathUtils.getImgPath());
         }
         pictureSelector.openGallery(PictureMimeType.ofImage())//全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()
                 .theme(R.style.PictureStyle)//主题样式(不设置为默认样式) 也可参考demo values/styles下 例如：R.style.picture.white.style
