@@ -123,7 +123,7 @@ public class PhotoActivity extends BaseActivity {
                                 fos.close();
                                 bis.close();
                                 is.close();
-                                Utils.showToast(PhotoActivity.this, "保存成功");
+                                Utils.showToast(PhotoActivity.this, "保存成功,保存在" + filePath);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }

@@ -83,13 +83,12 @@ public class VideoPlayerActivity extends BaseActivity {
     LinearLayout llRightController;
 
     private MediaPlayer mediaPlayer;
-    private int currentPosition = 0;
+    private int currentPosition = -1;
     private String totalTime;
     private Animation inAnimation;
     private Animation outAnimation;
     private boolean isHide = false;
-    private boolean isPlaying = false;//记录锁屏时播放状态
-    private boolean isLock = false;//记录是否是锁屏，锁屏后才调用onResume
+    private boolean isPlaying = true;//记录播放状态
     private float downX;
     private float downY;
     private boolean isMove = false;
@@ -130,8 +129,10 @@ public class VideoPlayerActivity extends BaseActivity {
     protected void onResume() {
         ScreenRotateUtil.getInstance(getApplicationContext()).start(this);
         ScreenRotateUtil.getInstance(getApplicationContext()).setEffetSysSetting(true);
-        if (isLock) {
-            if (mediaPlayer != null) {
+        if (currentPosition > 0) {//进入后台后返回
+            if (mediaPlayer == null) {
+                init(null);
+            } else {
                 mediaPlayer.seekTo(currentPosition);
                 if (isPlaying) {
                     mediaPlayer.start();
@@ -143,7 +144,6 @@ public class VideoPlayerActivity extends BaseActivity {
                 }
             }
         }
-        isLock = false;
         super.onResume();
     }
 
@@ -159,7 +159,6 @@ public class VideoPlayerActivity extends BaseActivity {
                 mHandler.removeMessages(REFRESH_WHAT);
             }
         }
-        isLock = true;
         super.onPause();
     }
 
@@ -175,6 +174,7 @@ public class VideoPlayerActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         stop();
+        currentPosition = -1;
         mHandler.removeMessages(HIDE_BOTTOM_PROGRESS);
         mHandler.removeMessages(REFRESH_WHAT);
         mHandler.removeMessages(HIDE_CENTER_PROGRESS);
@@ -270,6 +270,9 @@ public class VideoPlayerActivity extends BaseActivity {
             public void onPrepared(MediaPlayer mp) {
                 proDisimis();
                 isPrepared = true;
+                if (currentPosition != -1) {
+                    mediaPlayer.seekTo(currentPosition);
+                }
                 mediaPlayer.start();
                 //进度条
                 int duration = mediaPlayer.getDuration();
@@ -391,7 +394,7 @@ public class VideoPlayerActivity extends BaseActivity {
         @Override
         public void surfaceCreated(SurfaceHolder holder) {
             proShow();
-            getVideoFromLocal(true);
+            getVideoFromLocal(isPlaying);
         }
 
         @Override
@@ -535,7 +538,7 @@ public class VideoPlayerActivity extends BaseActivity {
      */
     @OnTouch(R.id.rl_content)
     boolean onTouchSurface(View view, MotionEvent motionEvent) {
-        if (!isPrepared) {
+        if (!isPrepared || mediaPlayer == null) {
             return false;
         } else {
             switch (motionEvent.getAction()) {

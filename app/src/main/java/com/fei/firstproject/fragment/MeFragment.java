@@ -129,8 +129,8 @@ public class MeFragment extends BaseFragment {
     public void permissionsGrantCallBack(int requestCode) {
         if (requestCode == REQUEST_PERMISSION_CODE_STORAGE) {
             //存储权限
-            String url = "http://192.168.1.214:3391/btFile/videos/9cd31488-0707-46d6-aaa7-83a4a27c5e0d.mp4";
-//            String url = "http://220.170.49.103/5/q/c/b/t/qcbtgdrzcagiurhsrcszksmyhgtlvx/he.yinyuetai.com/0FF7014EAEF781F14E9784C3B30944E0.flv";
+//            String url = "http://192.168.1.214:3391/btFile/videos/9cd31488-0707-46d6-aaa7-83a4a27c5e0d.mp4";
+            String url = "http://220.170.49.103/5/q/c/b/t/qcbtgdrzcagiurhsrcszksmyhgtlvx/he.yinyuetai.com/0FF7014EAEF781F14E9784C3B30944E0.flv";
             Intent intent = new Intent(activity, VideoPlayerActivity.class);
             intent.putExtra("url", url);
             startActivity(intent);
