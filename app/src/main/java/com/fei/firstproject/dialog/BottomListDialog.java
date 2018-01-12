@@ -2,6 +2,7 @@ package com.fei.firstproject.dialog;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.IntDef;
 import android.support.design.widget.BottomSheetDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +10,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.utils.Utils;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,11 +38,44 @@ public class BottomListDialog extends BottomSheetDialog {
     TextView tvDialogTitle;
     @BindView(R.id.lv_dialog)
     ListView lvDialog;
+    @BindView(R.id.rl_dialog_head)
+    RelativeLayout rlDialogHead;
 
     private Context mContext;
     private OnCancleListener onCancleListener;
     private OnItemClickListener onItemClickListener;
     private OnConfirmListener onConfirmListener;
+
+    /**
+     * @hide
+     */
+    @IntDef({VISIBLE, INVISIBLE, GONE})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface Visibility {
+    }
+
+
+    /**
+     * This view is visible.
+     * Use with {@link #setVisibility} and <a href="#attr_android:visibility">{@code
+     * android:visibility}.
+     */
+    public static final int VISIBLE = 0x00000000;
+
+    /**
+     * This view is invisible, but it still takes up space for layout purposes.
+     * Use with {@link #setVisibility} and <a href="#attr_android:visibility">{@code
+     * android:visibility}.
+     */
+    public static final int INVISIBLE = 0x00000004;
+
+    /**
+     * This view is invisible, and it doesn't take any space for layout
+     * purposes. Use with {@link #setVisibility} and <a href="#attr_android:visibility">{@code
+     * android:visibility}.
+     */
+    public static final int GONE = 0x00000008;
+
 
     public void setOnCancleListener(OnCancleListener onCancleListener) {
         this.onCancleListener = onCancleListener;
@@ -87,6 +125,10 @@ public class BottomListDialog extends BottomSheetDialog {
     public BottomListDialog setAdapter(ListAdapter adapter) {
         lvDialog.setAdapter(adapter);
         return this;
+    }
+
+    public void setRlDialogHeadVisibility(@Visibility int visibility) {
+        rlDialogHead.setVisibility(visibility);
     }
 
     @OnClick(R.id.tv_dialog_cancle)

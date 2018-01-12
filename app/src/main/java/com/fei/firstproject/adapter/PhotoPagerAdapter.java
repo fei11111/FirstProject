@@ -61,6 +61,15 @@ public class PhotoPagerAdapter extends PagerAdapter {
                     }
                 }
             });
+            photoView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (onPhotoTpListener != null) {
+                        onPhotoTpListener.onLongTap(position);
+                    }
+                    return false;
+                }
+            });
             Glide.with(mContext)
                     .load(pics.get(position))
                     .into(photoView);
@@ -77,5 +86,7 @@ public class PhotoPagerAdapter extends PagerAdapter {
 
     public interface OnPhotoTpListener {
         void onPhotoTap();
+
+        void onLongTap(int position);
     }
 }
