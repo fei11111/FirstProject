@@ -6,6 +6,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
         <item name="android:listDivider">@drawable/shape_divider</item>
         <item name="android:windowEnterAnimation">@transition/activity_explode</item>
         <item name="android:windowExitAnimation">@transition/activity_slide</item>
@@ -20,6 +22,8 @@
         <item name="colorPrimary">@color/colorBlack</item>
         <item name="colorPrimaryDark">@color/colorBlack</item>
         <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:statusBarColor">@color/colorBlack</item>
+        <item name="android:navigationBarColor">@color/colorBlack</item>
         <item name="android:windowEnterAnimation">@transition/activity_explode</item>
         <item name="android:windowExitAnimation">@transition/activity_slide</item>
         <item name="windowActionBar">false</item>
