@@ -3,6 +3,8 @@ package com.fei.firstproject.dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -115,6 +117,33 @@ public class BottomListDialog extends BottomSheetDialog {
         int statusBarHeight = Utils.getStatusBarHeight(mContext);
         int height = screenHeight - statusBarHeight;
         getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, height == 0 ? ViewGroup.LayoutParams.MATCH_PARENT : height);
+        setDialogState();
+    }
+
+    /**
+     * 修复bug
+     * 原因是当我们向下拖拽时，BottomSheetBehavior的状态变为了STATE_HIDDEN，而BottomSheetDialog在内部用BottomSheetBehavior对状态做了处理，
+     * 再次show之后，系统未恢复bottomSheetDialogBehavior的状态，还是隐藏
+     * */
+    private void setDialogState() {
+        View view = getDelegate().findViewById(android.support.design.R.id.design_bottom_sheet);
+        final BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(view);
+        //实现对状态改变的监听
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                    dismiss();
+                    //设置BottomSheetBehavior状态为STATE_COLLAPSED
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
     }
 
     public BottomListDialog setTitle(String title) {
@@ -158,6 +187,11 @@ public class BottomListDialog extends BottomSheetDialog {
     @Override
     public void show() {
         super.show();
+    }
+
+    @Override
+    public void dismiss() {
+        super.dismiss();
     }
 
     public interface OnCancleListener {
