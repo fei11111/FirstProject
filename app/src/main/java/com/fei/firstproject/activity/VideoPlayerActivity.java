@@ -88,7 +88,6 @@ public class VideoPlayerActivity extends BaseActivity {
     private Animation inAnimation;
     private Animation outAnimation;
     private boolean isHide = false;
-    private boolean isPlaying = true;//记录播放状态
     private float downX;
     private float downY;
     private boolean isMove = false;
@@ -131,17 +130,12 @@ public class VideoPlayerActivity extends BaseActivity {
         ScreenRotateUtil.getInstance(getApplicationContext()).setEffetSysSetting(true);
         if (currentPosition > 0) {//进入后台后返回
             if (mediaPlayer == null) {
-                init(null);
+                initMediaPlayer();
             } else {
                 mediaPlayer.seekTo(currentPosition);
-                if (isPlaying) {
-                    mediaPlayer.start();
-                    ivPlay.setImageResource(R.drawable.ic_pause);
-                    mHandler.sendEmptyMessageDelayed(REFRESH_WHAT, 1000);
-                } else {
-                    ivPlay.setImageResource(R.drawable.ic_play);
-                    mHandler.removeMessages(REFRESH_WHAT);
-                }
+                mediaPlayer.start();
+                ivPlay.setImageResource(R.drawable.ic_pause);
+                mHandler.sendEmptyMessageDelayed(REFRESH_WHAT, 1000);
             }
         }
         super.onResume();
@@ -151,13 +145,10 @@ public class VideoPlayerActivity extends BaseActivity {
     protected void onPause() {
         ScreenRotateUtil.getInstance(getApplicationContext()).stop();
         if (mediaPlayer != null) {
-            isPlaying = mediaPlayer.isPlaying();
             currentPosition = mediaPlayer.getCurrentPosition();
-            if (isPlaying) {
-                mediaPlayer.pause();
-                ivPlay.setImageResource(R.drawable.ic_play);
-                mHandler.removeMessages(REFRESH_WHAT);
-            }
+            mediaPlayer.pause();
+            ivPlay.setImageResource(R.drawable.ic_play);
+            mHandler.removeMessages(REFRESH_WHAT);
         }
         super.onPause();
     }
@@ -274,9 +265,9 @@ public class VideoPlayerActivity extends BaseActivity {
                     mediaPlayer.seekTo(currentPosition);
                 }
                 mediaPlayer.start();
+                ivPlay.setImageResource(R.drawable.ic_pause);
                 //进度条
                 int duration = mediaPlayer.getDuration();
-                ivPlay.setImageResource(R.drawable.ic_pause);
                 sbTime.setMax(duration);
                 sbProgress.setMax(duration);
                 //总时长
@@ -394,7 +385,7 @@ public class VideoPlayerActivity extends BaseActivity {
         @Override
         public void surfaceCreated(SurfaceHolder holder) {
             proShow();
-            getVideoFromLocal(isPlaying);
+            getVideoFromLocal(true);
         }
 
         @Override
@@ -548,12 +539,12 @@ public class VideoPlayerActivity extends BaseActivity {
                     downY = motionEvent.getY();
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    mHandler.removeMessages(HIDE_CENTER_PROGRESS);
                     float moveX = motionEvent.getX();
                     float moveY = motionEvent.getY();
                     int distanceX = (int) (moveX - downX);
                     int distanceY = (int) (moveY - downY);
                     if (Math.abs(distanceX) < 50 && Math.abs(distanceY) > 100) {
+                        mHandler.removeMessages(HIDE_CENTER_PROGRESS);
                         llProgress.setVisibility(View.GONE);
                         isMove = true;
                         //音量
@@ -567,6 +558,7 @@ public class VideoPlayerActivity extends BaseActivity {
                         downX = moveX;
                         downY = moveY;
                     } else if (Math.abs(distanceY) < 50 && Math.abs(distanceX) > 100) {
+                        mHandler.removeMessages(HIDE_CENTER_PROGRESS);
                         llSound.setVisibility(View.GONE);
                         isMove = true;
                         //快进/后退
