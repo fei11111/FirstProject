@@ -158,6 +158,7 @@ public class VideoPlayerActivity extends BaseActivity {
         super.onStop();
         isMove = false;
         isHide = true;
+        isPrepared = false;
         llSound.setVisibility(View.GONE);
         llProgress.setVisibility(View.GONE);
         stop();
@@ -250,7 +251,7 @@ public class VideoPlayerActivity extends BaseActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                if (isPrepared && mediaPlayer != null) {
+                if (isPrepared) {
                     proShow();
                 }
             }
