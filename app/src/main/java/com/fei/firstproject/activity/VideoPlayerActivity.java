@@ -160,11 +160,11 @@ public class VideoPlayerActivity extends BaseActivity {
         isHide = true;
         llSound.setVisibility(View.GONE);
         llProgress.setVisibility(View.GONE);
+        stop();
     }
 
     @Override
     protected void onDestroy() {
-        stop();
         currentPosition = -1;
         mHandler.removeMessages(HIDE_BOTTOM_PROGRESS);
         mHandler.removeMessages(REFRESH_WHAT);
@@ -250,6 +250,9 @@ public class VideoPlayerActivity extends BaseActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                if (isPrepared && mediaPlayer != null) {
+                    proShow();
+                }
             }
         });
     }
@@ -259,7 +262,7 @@ public class VideoPlayerActivity extends BaseActivity {
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-                proDisimis();
+//                proDisimis();
                 isPrepared = true;
                 if (currentPosition != -1) {
                     mediaPlayer.seekTo(currentPosition);
@@ -312,6 +315,9 @@ public class VideoPlayerActivity extends BaseActivity {
             @Override
             public void onBufferingUpdate(MediaPlayer mp, int percent) {
                 LogUtils.i("tag", "percent-" + percent);
+                if (mediaPlayer != null && mediaPlayer.isPlaying() && progressDialog.isShowing()) {
+                    proDisimis();
+                }
             }
         });
         mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
