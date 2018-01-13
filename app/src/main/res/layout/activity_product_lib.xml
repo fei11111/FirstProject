@@ -39,14 +39,14 @@
 
                     <TextView
                         android:id="@+id/tv_series"
+                        style="@style/Font15Style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:tag=""
                         android:text="@string/series"
-                        android:textColor="@color/colorWhite"
-                        style="@style/Font15Style" />
+                        android:textColor="@color/colorWhite" />
 
                     <ImageView
                         android:layout_width="@dimen/size_8"
@@ -67,14 +67,14 @@
 
                     <TextView
                         android:id="@+id/tv_craft"
+                        style="@style/Font15Style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:tag=""
                         android:text="@string/craft"
-                        android:textColor="@color/colorWhite"
-                        style="@style/Font15Style" />
+                        android:textColor="@color/colorWhite" />
 
                     <ImageView
                         android:layout_width="@dimen/size_8"
@@ -96,14 +96,14 @@
 
                     <TextView
                         android:id="@+id/tv_type"
+                        style="@style/Font15Style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:tag=""
                         android:text="@string/type"
-                        android:textColor="@color/colorWhite"
-                        style="@style/Font15Style" />
+                        android:textColor="@color/colorWhite" />
 
                     <ImageView
                         android:layout_width="@dimen/size_8"
@@ -143,45 +143,40 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
+
+    <include layout="@layout/view_default_bg" />
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:fadeScrollbars="false"
+        android:overScrollMode="never"
+        android:requiresFadingEdge="none"
+        android:visibility="gone"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:srlDisableContentWhenLoading="true"
+        app:srlDisableContentWhenRefresh="true"
+        app:srlEnableAutoLoadmore="false"
+        app:srlEnableLoadmore="true"
+        app:srlEnableLoadmoreWhenContentNotFull="false"
+        app:srlEnableOverScrollBounce="true"
+        app:srlEnableScrollContentWhenLoaded="true"
+        app:srlPrimaryColor="@color/colorPrimary">>
 
-        <include layout="@layout/view_default_bg" />
+        <com.scwang.smartrefresh.header.CircleHeader
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_40" />
 
-        <com.scwang.smartrefresh.layout.SmartRefreshLayout
-            android:id="@+id/refreshLayout"
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fadeScrollbars="false"
-            android:overScrollMode="never"
-            android:requiresFadingEdge="none"
-            android:visibility="gone"
-            app:srlDisableContentWhenLoading="true"
-            app:srlDisableContentWhenRefresh="true"
-            app:srlEnableAutoLoadmore="false"
-            app:srlEnableLoadmore="true"
-            app:srlEnableLoadmoreWhenContentNotFull="false"
-            app:srlEnableOverScrollBounce="true"
-            app:srlEnableScrollContentWhenLoaded="true"
-            app:srlPrimaryColor="@color/colorPrimary">
+            android:layout_above="@id/btn_base_list"
+            android:background="@color/colorWhite"></android.support.v7.widget.RecyclerView>
 
-            <com.scwang.smartrefresh.header.CircleHeader
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/size_40" />
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@id/btn_base_list"
-                android:background="@color/colorWhite"></android.support.v7.widget.RecyclerView>
-
-        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-
-    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
