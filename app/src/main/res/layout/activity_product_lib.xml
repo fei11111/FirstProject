@@ -19,6 +19,28 @@
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                <com.fei.firstproject.widget.AppHeadView
+                    android:id="@+id/appHeadView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:leftDrawable="@drawable/selector_head_left_arrow"
+                    app:leftPadding="@dimen/size_10"
+                    app:leftStyle="image"
+                    app:leftVisible="visible"
+                    app:middleSearchHint="@string/product_lib_search_hint"
+                    app:middleStyle="search"
+                    app:rightStyle="text"
+                    app:rightText="@string/search"
+                    app:rightVisible="visible"></com.fei.firstproject.widget.AppHeadView>
+            </android.support.v7.widget.Toolbar>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -116,29 +138,6 @@
 
                 </RelativeLayout>
             </LinearLayout>
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay">
-
-                <com.fei.firstproject.widget.AppHeadView
-                    android:id="@+id/appHeadView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:leftDrawable="@drawable/selector_head_left_arrow"
-                    app:leftPadding="@dimen/size_10"
-                    app:leftStyle="image"
-                    app:leftVisible="visible"
-                    app:middleSearchHint="@string/product_lib_search_hint"
-                    app:middleStyle="search"
-                    app:rightStyle="text"
-                    app:rightText="@string/search"
-                    app:rightVisible="visible"></com.fei.firstproject.widget.AppHeadView>
-            </android.support.v7.widget.Toolbar>
-
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
@@ -159,7 +158,7 @@
         app:srlDisableContentWhenRefresh="true"
         app:srlEnableAutoLoadmore="false"
         app:srlEnableLoadmore="true"
-        app:srlEnableLoadmoreWhenContentNotFull="false"
+        app:srlEnableLoadmoreWhenContentNotFull="true"
         app:srlEnableOverScrollBounce="true"
         app:srlEnableScrollContentWhenLoaded="true"
         app:srlPrimaryColor="@color/colorPrimary">>

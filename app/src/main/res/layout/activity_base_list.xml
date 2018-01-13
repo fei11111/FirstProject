@@ -44,7 +44,7 @@
         app:srlDisableContentWhenRefresh="true"
         app:srlEnableAutoLoadmore="false"
         app:srlEnableLoadmore="true"
-        app:srlEnableLoadmoreWhenContentNotFull="false"
+        app:srlEnableLoadmoreWhenContentNotFull="true"
         app:srlEnableOverScrollBounce="true"
         app:srlEnableScrollContentWhenLoaded="true"
         app:srlPrimaryColor="@color/colorPrimary">
