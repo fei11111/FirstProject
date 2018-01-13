@@ -18,6 +18,8 @@ import android.widget.TextView;
 import com.fei.firstproject.R;
 import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.entity.UserEntity;
+import com.fei.firstproject.event.AllEvent;
+import com.fei.firstproject.event.EventType;
 import com.fei.firstproject.fragment.MainFragment;
 import com.fei.firstproject.fragment.MakeFragment;
 import com.fei.firstproject.fragment.MeFragment;
@@ -33,6 +35,9 @@ import com.fei.firstproject.widget.AppHeadView;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.modelmsg.WXTextObject;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -69,7 +74,6 @@ public class MainActivity extends BaseActivity {
     private static final int REQUEST_PERMISSION_CODE_CAMERA = 101;
     //Activity请求返回
     private static final int REQUEST_ACTIVITY_CODE_CAMERA = 200;
-    private static final int REQUEST_ACTIVITY_CODE_LOGIN = 201;
 
     private int tagPosition = 0;
 
@@ -105,6 +109,19 @@ public class MainActivity extends BaseActivity {
         initView(savedInstanceState);
         initToolBar();
         initListener();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void dealEvent(AllEvent allEvent) {
+        if (tagPosition == 0) {
+            if (allEvent.getEventType() == EventType.APP_LOGIN) {
+                appHeadView.setLeftStyle(AppHeadView.IMAGE);
+                appHeadView.setLeftDrawable(R.drawable.selector_ic_scan);
+            } else if (allEvent.getEventType() == EventType.APP_LOGOUT) {
+                appHeadView.setLeftStyle(AppHeadView.TEXT);
+                appHeadView.setLeftText(getResources().getString(R.string.login));
+            }
+        }
     }
 
     private void sendWx() {
@@ -176,7 +193,7 @@ public class MainActivity extends BaseActivity {
                     if (AppConfig.ISLOGIN) {
                         checkPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION_CODE_CAMERA);
                     } else {
-                        startActivityForResult(new Intent(MainActivity.this, LoginActivity.class), REQUEST_ACTIVITY_CODE_LOGIN);
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     }
                 } else if (meFragment != null && meFragment.isVisible()) {
                     if (AppConfig.ISLOGIN) {
@@ -361,13 +378,7 @@ public class MainActivity extends BaseActivity {
                     }
                 }
             }
-        } else if (requestCode == REQUEST_ACTIVITY_CODE_LOGIN) {
-            if (AppConfig.ISLOGIN) {
-                appHeadView.setLeftStyle(AppHeadView.IMAGE);
-                appHeadView.setLeftDrawable(R.drawable.selector_ic_scan);
-            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
 }
