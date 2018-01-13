@@ -330,14 +330,9 @@ public class ProductLibActivity extends BaseActivity {
                 title = "类型";
                 break;
         }
-        if (bottomListDialog == null) {
-            bottomListDialog = new BottomListDialog(this);
-            singleTextAdapter = new SingleTextAdapter(this, name);
-            bottomListDialog.setAdapter(singleTextAdapter);
-        } else {
-            singleTextAdapter.setNames(name);
-            singleTextAdapter.notifyDataSetChanged();
-        }
+        bottomListDialog = new BottomListDialog(this);
+        singleTextAdapter = new SingleTextAdapter(this, name);
+        bottomListDialog.setAdapter(singleTextAdapter);
         final String str = title;
         bottomListDialog.setOnItemClickListener(new BottomListDialog.OnItemClickListener() {
             @Override
@@ -356,6 +351,7 @@ public class ProductLibActivity extends BaseActivity {
         });
         bottomListDialog.setTitle(title);
         bottomListDialog.show();
+//        bottomListDialog.setListViewHeightBasedOnChildren();
     }
 
 }

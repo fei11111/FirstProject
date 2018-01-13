@@ -2,6 +2,7 @@ package com.fei.firstproject.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,8 @@ public class TipDialog extends Dialog {
 
     private Context mContext;
     private OnConfirmListener onConfirmListener;
+    private String confirmText;
+    private String contentText;
 
     public void setOnConfirmListener(OnConfirmListener onConfirmListener) {
         this.onConfirmListener = onConfirmListener;
@@ -38,12 +41,16 @@ public class TipDialog extends Dialog {
     public TipDialog(Context context) {
         super(context, R.style.DialogCenterStyle);
         mContext = context;
-        init();
     }
 
     public TipDialog(Context context, int theme) {
         super(context, theme);
         mContext = context;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         init();
     }
 
@@ -51,18 +58,22 @@ public class TipDialog extends Dialog {
         View view = LayoutInflater.from(mContext).inflate(R.layout.view_tip_dialog, null);
         setContentView(view);
         ButterKnife.bind(this, view);
+
+        if (!TextUtils.isEmpty(contentText)) {
+            tvDialogContent.setText(contentText);
+        }
+
+        if (!TextUtils.isEmpty(confirmText)) {
+            btnDialogConfirm.setText(confirmText);
+        }
     }
 
     public void setContentText(String content) {
-        if (!TextUtils.isEmpty(content)) {
-            tvDialogContent.setText(content);
-        }
+        this.contentText = content;
     }
 
     public void setConfirmButtonText(String btnText) {
-        if (!TextUtils.isEmpty(btnText)) {
-            btnDialogConfirm.setText(btnText);
-        }
+        this.confirmText = btnText;
     }
 
     @OnClick(R.id.iv_dialog_cancle)

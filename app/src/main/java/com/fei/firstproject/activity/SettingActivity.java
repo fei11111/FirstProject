@@ -133,9 +133,10 @@ public class SettingActivity extends BaseActivity {
 
     //通讯录
     @OnClick(R.id.phv_address_book)
-    void clickAddreddressBook(View view){
-        startActivityWithoutCode(new Intent(this,AddressBookActivity.class));
+    void clickAddreddressBook(View view) {
+        startActivityWithoutCode(new Intent(this, AddressBookActivity.class));
     }
+
     //个人信息
     @OnClick(R.id.phv_self_info)
     void clickSelfInfo(View view) {
@@ -170,7 +171,8 @@ public class SettingActivity extends BaseActivity {
     @OnClick(R.id.phv_font_size)
     void clickFontSize(View view) {
         if (bottomListDialog == null) {
-            bottomListDialog = new BottomListDialog(this).setTitle("设置字体");
+            bottomListDialog = new BottomListDialog(this);
+            bottomListDialog.setTitle("设置字体");
             List<String> name = new ArrayList<>();
             name.add("小");
             name.add("适中(建议)");

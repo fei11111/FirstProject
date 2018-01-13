@@ -181,7 +181,7 @@ public class PhotoActivity extends BaseActivity {
                     List<String> name = new ArrayList<String>();
                     name.add("保存");
                     bottomListDialog = new BottomListDialog(PhotoActivity.this);
-                    bottomListDialog.setRlDialogHeadVisibility(BottomListDialog.GONE);
+                    bottomListDialog.setRlDialogHeadVisibility(View.GONE);
                     SingleTextAdapter singleTextAdapter = new SingleTextAdapter(PhotoActivity.this, name);
                     bottomListDialog.setAdapter(singleTextAdapter);
                     bottomListDialog.setOnItemClickListener(new BottomListDialog.OnItemClickListener() {
