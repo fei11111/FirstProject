@@ -171,22 +171,4 @@ public class BottomListDialog extends BottomSheetDialog {
         void onItemClick(AdapterView<?> parent, View view, int position, long id);
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (!hasFocus) {
-            return;
-        }
-        setHeight();
-    }
-
-    private void setHeight() {
-//        Window window = getWindow();
-//        DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics();
-//        WindowManager.LayoutParams attributes = window.getAttributes();
-//        if (window.getDecorView().getHeight() >= (int) (displayMetrics.heightPixels * 0.6)) {
-//            attributes.height = (int) (displayMetrics.heightPixels * 0.6);
-//        }
-//
-    }
 }
