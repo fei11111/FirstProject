@@ -28,6 +28,7 @@ import com.fei.banner.Banner;
 import com.fei.firstproject.R;
 import com.fei.firstproject.activity.ExpertiseClinicActivity;
 import com.fei.firstproject.activity.FieldManageActivity;
+import com.fei.firstproject.activity.MarketInfoActivity;
 import com.fei.firstproject.activity.ProductLibActivity;
 import com.fei.firstproject.activity.RecommendPlanActivity;
 import com.fei.firstproject.adapter.NcwAdapter;
@@ -352,7 +353,7 @@ public class MainFragment extends BaseFragment {
                 } else if (menuName.equals(getResources().getString(R.string.cpk))) {
                     startActivityWithoutCode(new Intent(activity, ProductLibActivity.class));
                 } else if (menuName.equals(getResources().getString(R.string.schq))) {
-
+                    startActivityWithoutCode(new Intent(activity, MarketInfoActivity.class));
                 } else if (menuName.equals(getResources().getString(R.string.cl))) {
 
                 }

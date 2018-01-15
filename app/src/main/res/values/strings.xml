@@ -75,6 +75,7 @@
     <string name="more">更多</string>
     <string name="ncw">农财网</string>
     <string name="recommend_tip">请输入推荐方案的关键字</string>
+    <string name="variety_tip">请输入品种的关键字</string>
     <string name="recommend_plan">推荐方案</string>
     <string name="scan">扫一扫</string>
     <string name="web_search_tip">请输入网址</string>
@@ -193,6 +194,12 @@
     <string name="downloading">正在下载</string>
     <string name="file_exit_if_download">该文件已存在，是否重新下载？</string>
     <string name="go_to_download">去下载</string>
+    <string name="maket_info">市场行情</string>
+    <string name="nationwide">全国</string>
+    <string name="variety">品种</string>
+    <string name="gather">采集点</string>
+    <string name="price">价格</string>
+    <string name="time">时间</string>
 
     <string name="sharewechat_success">分享成功!!!</string>
     <string name="sharewechat_cancel">分享取消!!!</string>

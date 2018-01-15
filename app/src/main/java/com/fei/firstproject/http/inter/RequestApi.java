@@ -6,6 +6,7 @@ import com.fei.firstproject.entity.ExpertEntity;
 import com.fei.firstproject.entity.MessageEntity;
 import com.fei.firstproject.entity.NcwEntity;
 import com.fei.firstproject.entity.OrderEntity;
+import com.fei.firstproject.entity.PriceInfoEntity;
 import com.fei.firstproject.entity.ProductCaseEntity;
 import com.fei.firstproject.entity.RecommendEntity;
 import com.fei.firstproject.entity.SelfInfoEntity;
@@ -128,5 +129,12 @@ public interface RequestApi {
 
     @GET
     Observable<ResponseBody> downloadFile(@Url String url);
+
+    @FormUrlEncoded
+    @POST("app/information/getPriceInfo")
+    Observable<BaseEntity<List<PriceInfoEntity>>> getPriceInfo(@FieldMap Map<String, String> map);
+
+    @GET("app/information/getPriceParams")
+    Observable<BaseEntity<List<String>>> getParams(@QueryMap Map<String, String> map);
 
 }
