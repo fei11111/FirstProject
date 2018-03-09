@@ -70,10 +70,16 @@ public class TipDialog extends Dialog {
 
     public void setContentText(String content) {
         this.contentText = content;
+        if (tvDialogContent != null) {
+            tvDialogContent.setText(contentText);
+        }
     }
 
     public void setConfirmButtonText(String btnText) {
         this.confirmText = btnText;
+        if (btnDialogConfirm != null) {
+            btnDialogConfirm.setText(confirmText);
+        }
     }
 
     @OnClick(R.id.iv_dialog_cancle)

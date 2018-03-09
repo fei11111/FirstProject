@@ -45,7 +45,7 @@
     <string-array name="list_menu_head_str">
         <item>@string/tjgl</item>
         <item>@string/zjzs</item>
-        <item>@string/ncsc</item>
+        <item>@string/jdsc</item>
         <item>@string/nydz</item>
         <item>@string/cpk</item>
         <item>@string/schq</item>

@@ -346,8 +346,10 @@ public class MainFragment extends BaseFragment {
                     startActivityWithoutCode(new Intent(activity, FieldManageActivity.class));
                 } else if (menuName.equals(getResources().getString(R.string.zjzs))) {
                     startActivityWithoutCode(new Intent(activity, ExpertiseClinicActivity.class));
-                } else if (menuName.equals(getResources().getString(R.string.ncsc))) {
-
+                } else if (menuName.equals(getResources().getString(R.string.jdsc))) {
+                    Intent intent = new Intent(activity,WebActivity.class);
+                    intent.putExtra("url","https://app.jd.com/");
+                    startActivity(intent);
                 } else if (menuName.equals(getResources().getString(R.string.nydz))) {
 
                 } else if (menuName.equals(getResources().getString(R.string.cpk))) {

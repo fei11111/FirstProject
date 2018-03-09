@@ -159,7 +159,7 @@ public class FieldManageActivity extends BaseActivity {
                     startActivityWithoutCode(new Intent(FieldManageActivity.this, FieldManageActivity.class));
                 } else if (menuName.equals(getResources().getString(R.string.zjzs))) {
                     startActivityWithoutCode(new Intent(FieldManageActivity.this, ExpertiseClinicActivity.class));
-                } else if (menuName.equals(getResources().getString(R.string.ncsc))) {
+                } else if (menuName.equals(getResources().getString(R.string.jdsc))) {
 
                 } else if (menuName.equals(getResources().getString(R.string.nydz))) {
 
