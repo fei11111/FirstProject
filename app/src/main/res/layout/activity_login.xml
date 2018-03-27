@@ -61,7 +61,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_username"
-                    android:imeActionId="@+id/btn_login"
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textEmailAddress"
@@ -81,7 +80,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_password"
-                    android:imeActionId="@+id/btn_login"
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
@@ -106,7 +104,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/prompt_vertify"
-                        android:imeActionId="@+id/btn_login"
                         android:imeActionLabel="@string/action_sign_in_short"
                         android:imeOptions="actionUnspecified"
                         android:inputType="text"
@@ -121,7 +118,7 @@
                     android:id="@+id/tv_code"
                     android:layout_width="@dimen/size_120"
                     android:layout_height="@dimen/size_40"
-                    android:layout_marginLeft="@dimen/size_16"
+                    android:layout_marginStart="@dimen/size_16"
                     android:background="@color/colorWhite" />
 
             </LinearLayout>
@@ -146,7 +143,7 @@
                     android:id="@+id/tv_register"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:padding="@dimen/fab_margin"
                     android:text="@string/register"
                     style="@style/Font15Style" />
@@ -187,7 +184,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:baselineAligned="false">
 
                     <LinearLayout
                         android:id="@+id/llweixin"
@@ -202,7 +200,8 @@
                         <ImageView
                             android:layout_width="@dimen/size_40"
                             android:layout_height="@dimen/size_40"
-                            android:src="@drawable/ic_weixin" />
+                            android:src="@drawable/ic_weixin"
+                            android:contentDescription="@string/app_name"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -226,7 +225,8 @@
                         <ImageView
                             android:layout_width="@dimen/size_40"
                             android:layout_height="@dimen/size_40"
-                            android:src="@drawable/ic_qq" />
+                            android:src="@drawable/ic_qq"
+                            android:contentDescription="@null"/>
 
                         <TextView
                             android:layout_width="wrap_content"

@@ -14,7 +14,9 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="toolbarStyle">@style/CustomToolbar</item>
-        <item name="colorControlHighlight">@color/colorBackground</item>
+        <item name="colorControlHighlight">@color/colorPrimary</item>
+        <item name="colorControlNormal">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
 
     <style name="BlackTheme" parent="Theme.AppCompat.Light">
