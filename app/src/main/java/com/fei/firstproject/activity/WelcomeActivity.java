@@ -108,6 +108,8 @@ public class WelcomeActivity extends BaseActivity {
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
+                        WelcomeActivity.this.finish();
                         return false;
                     }
 
