@@ -80,7 +80,7 @@ public class MeFragment extends BaseFragment {
     RelativeLayout rlValue;
     @BindView(R.id.ll_me_info)
     RelativeLayout llMeInfo;
-    @BindView(R.id.sv_me)
+    @BindView(R.id.swipe_target)
     NestedScrollView svMe;
     @BindView(R.id.tv_collect_goods)
     TextView tvCollectGoods;
