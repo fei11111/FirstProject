@@ -122,7 +122,7 @@ public abstract class BaseFragment extends RxFragment implements IBase {
 
         if (refreshLayout != null) {
             refreshLayout.setRefreshEnabled(true);
-            refreshLayout.setLoadingMore(false);
+            refreshLayout.setLoadMoreEnabled(false);
             refreshLayout.setOnRefreshListener(new OnRefreshListener() {
                 @Override
                 public void onRefresh() {

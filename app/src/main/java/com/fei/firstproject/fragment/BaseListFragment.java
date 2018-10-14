@@ -19,7 +19,7 @@ import butterknife.BindView;
 
 public abstract class BaseListFragment extends BaseFragment {
 
-    @BindView(R.id.recyclerView)
+    @BindView(R.id.swipe_target)
     RecyclerView recyclerView;
 
     protected int currentPage = 1;
@@ -36,7 +36,7 @@ public abstract class BaseListFragment extends BaseFragment {
     }
 
     private void initListener() {
-        refreshLayout.setLoadingMore(true);
+        refreshLayout.setLoadMoreEnabled(true);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {

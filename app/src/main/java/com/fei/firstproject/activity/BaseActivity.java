@@ -379,6 +379,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IBase 
     }
 
     public void setGridRecycleViewSetting(RecyclerView recycleViewSetting, Activity activity,int count) {
+        recycleViewSetting.setNestedScrollingEnabled(false);
         GridLayoutManager manager = new GridLayoutManager(activity, count);
         RecyclerView.ItemDecoration itemDecoration = new DividerGridItemDecoration(activity);
         recycleViewSetting.setLayoutManager(manager);

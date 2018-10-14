@@ -9,6 +9,8 @@
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:swipe_style="classic">
 
         <include
@@ -17,11 +19,11 @@
 
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@id/swipe_target"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorWhite"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"></android.support.v7.widget.RecyclerView>
+            android:layout_marginBottom="@dimen/size_45"
+            android:background="@color/colorWhite"></android.support.v7.widget.RecyclerView>
 
         <include
             android:id="@id/swipe_load_more_footer"
@@ -30,9 +32,7 @@
 
     </com.aspsine.swipetoloadlayout.SwipeToLoadLayout>
 
-    <include layout="@layout/view_default_bg"
-        android:visibility="gone"/>
-
+    <include layout="@layout/view_default_bg" />
 
 
 </FrameLayout>

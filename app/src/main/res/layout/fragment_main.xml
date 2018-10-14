@@ -8,6 +8,7 @@
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         app:swipe_style="classic">
 
         <include
@@ -127,8 +128,6 @@
         </android.support.v4.widget.NestedScrollView>
     </com.aspsine.swipetoloadlayout.SwipeToLoadLayout>
 
-    <include
-        layout="@layout/view_default_bg"
-        android:visibility="gone" />
+    <include layout="@layout/view_default_bg" />
 
 </FrameLayout>

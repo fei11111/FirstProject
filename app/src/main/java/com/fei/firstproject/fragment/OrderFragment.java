@@ -83,6 +83,7 @@ public class OrderFragment extends BaseListFragment {
                     protected void onHandleSuccess(OrderEntity orderEntity) {
                         dismissLoading();
                         refreshLayout.setRefreshing(false);
+                        refreshLayout.setLoadingMore(false);
                         List<OrderEntity.DataBean> data = orderEntity.getData();
                         if (data != null && data.size() > 0) {
                             refreshLayout.setVisibility(View.VISIBLE);
@@ -120,6 +121,7 @@ public class OrderFragment extends BaseListFragment {
                         currentPage--;
                         showRequestErrorView();
                         refreshLayout.setRefreshing(false);
+                        refreshLayout.setLoadingMore(false);
                     }
                 });
     }
