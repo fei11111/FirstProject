@@ -36,6 +36,13 @@
         android:theme="@style/AppTheme">
 
         <meta-data
+            android:name="design_width_in_dp"
+            android:value="360" />
+        <meta-data
+            android:name="design_height_in_dp"
+            android:value="640" />
+
+        <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="f8a6721ab93f1ea945ba60b33fde61b5" />
 

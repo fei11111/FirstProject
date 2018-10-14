@@ -76,4 +76,5 @@ dependencies {
     implementation 'com.android.support:support-vector-drawable:27.1.0'
     implementation 'com.android.support:cardview-v7:27.1.0'
     implementation 'com.android.support:gridlayout-v7:27.1.0'
+    implementation 'me.jessyan:autosize:0.9.5' //适配https://github.com/JessYanCoding/AndroidAutoSize
 }
