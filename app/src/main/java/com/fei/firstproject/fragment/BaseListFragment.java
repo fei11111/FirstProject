@@ -6,9 +6,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.LinearLayout;
 
+import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
+import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.fei.firstproject.R;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 
 import butterknife.BindView;
 
@@ -32,35 +32,26 @@ public abstract class BaseListFragment extends BaseFragment {
     @Override
     public void init(Bundle savedInstanceState) {
         initListener();
-        initRecyclerView();
         initData();
     }
 
     private void initListener() {
-        refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
+        refreshLayout.setLoadingMore(true);
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
-                currentPage++;
-                initRequest();
-            }
-
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
+            public void onRefresh() {
                 currentPage = 1;
                 initRequest();
             }
         });
-    }
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                currentPage++;
+                initRequest();
+            }
+        });
 
-    private void initRecyclerView() {
-//        setRecycleViewSetting(recyclerView);
-    }
-
-    public void setRecycleViewSetting(RecyclerView recycleViewSetting) {
-        LinearLayoutManager manager = new LinearLayoutManager(activity);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(activity, LinearLayout.VERTICAL);
-        recycleViewSetting.setLayoutManager(manager);
-        recycleViewSetting.addItemDecoration(dividerItemDecoration);
     }
 
     public abstract void initData();

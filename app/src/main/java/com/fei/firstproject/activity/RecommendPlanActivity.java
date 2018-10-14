@@ -62,7 +62,7 @@ public class RecommendPlanActivity extends BaseListActivity {
         String searchWord = appHeadView.getEtSearchText();
         Map<String, String> map = new HashMap<>();
         map.put("searchWord", searchWord);
-        map.put("pageSize", "10");
+        map.put("pageSize", "20");
         map.put("currentPage", currentPage + "");
         Observable<BaseEntity<List<RecommendEntity>>> recommendPlan =
                 RetrofitFactory.getBtPlantWeb().getRecommendPlan(map);

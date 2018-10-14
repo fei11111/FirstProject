@@ -1,5 +1,6 @@
 package com.fei.firstproject.activity;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,6 +15,10 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -22,6 +27,7 @@ import android.widget.RelativeLayout;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.config.AppConfig;
+import com.fei.firstproject.decoration.DividerGridItemDecoration;
 import com.fei.firstproject.dialog.CustomeProgressDialog;
 import com.fei.firstproject.dialog.TipDialog;
 import com.fei.firstproject.entity.UserEntity;
@@ -362,6 +368,21 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IBase 
     @Nullable
     public AppHeadView getAppHeadView() {
         return appHeadView;
+    }
+
+    public void setLinearRecycleViewSetting(RecyclerView recycleViewSetting, Activity activity) {
+        recycleViewSetting.setNestedScrollingEnabled(false);
+        LinearLayoutManager manager = new LinearLayoutManager(activity);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(activity, LinearLayout.VERTICAL);
+        recycleViewSetting.setLayoutManager(manager);
+        recycleViewSetting.addItemDecoration(dividerItemDecoration);
+    }
+
+    public void setGridRecycleViewSetting(RecyclerView recycleViewSetting, Activity activity,int count) {
+        GridLayoutManager manager = new GridLayoutManager(activity, count);
+        RecyclerView.ItemDecoration itemDecoration = new DividerGridItemDecoration(activity);
+        recycleViewSetting.setLayoutManager(manager);
+        recycleViewSetting.addItemDecoration(itemDecoration);
     }
 
     @Override

@@ -3,31 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
-    android:orientation="vertical">
+    android:background="@color/colorBackground">
 
-    <include layout="@layout/view_default_bg" />
-
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+    <com.aspsine.swipetoloadlayout.SwipeToLoadLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fadeScrollbars="false"
-        android:overScrollMode="never"
-        android:requiresFadingEdge="none"
-        android:visibility="gone"
-        app:srlDisableContentWhenLoading="true"
-        app:srlDisableContentWhenRefresh="true"
-        app:srlEnableAutoLoadmore="false"
-        app:srlEnableLoadmore="true"
-        app:srlEnableLoadmoreWhenContentNotFull="false"
-        app:srlEnableOverScrollBounce="true"
-        app:srlEnableScrollContentWhenLoaded="true"
-        app:srlPrimaryColor="@color/colorPrimary">
+        app:swipe_style="classic">
 
-        <com.scwang.smartrefresh.header.CircleHeader
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size_40" />
+        <include
+            android:id="@+id/swipe_refresh_header"
+            layout="@layout/layout_classic_header" />
+
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -35,6 +22,17 @@
             android:layout_height="match_parent"
             android:background="@color/colorWhite"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"></android.support.v7.widget.RecyclerView>
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+        <include
+            android:id="@id/swipe_load_more_footer"
+            layout="@layout/layout_classic_footer" />
+
+
+    </com.aspsine.swipetoloadlayout.SwipeToLoadLayout>
+
+    <include layout="@layout/view_default_bg"
+        android:visibility="gone"/>
+
+
 
 </FrameLayout>

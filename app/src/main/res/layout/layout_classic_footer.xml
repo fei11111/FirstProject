@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.fei.firstproject.widget.recyclerViewConfig.ClassicLoadMoreFooterView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <ProgressBar
+            android:id="@+id/progressbar"
+            style="?android:attr/progressBarStyleSmallInverse"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@+id/tvLoadMore"
+            android:indeterminateDrawable="@drawable/progressbar" />
+
+        <ImageView
+            android:id="@+id/ivSuccess"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@+id/tvLoadMore"
+            android:background="@drawable/ic_room_choose_y" />
+
+        <TextView
+            android:id="@+id/tvLoadMore"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="LoadMore"
+            android:textColor="@color/black_common"
+            android:textSize="17sp" />
+    </RelativeLayout>
+</com.fei.firstproject.widget.recyclerViewConfig.ClassicLoadMoreFooterView>

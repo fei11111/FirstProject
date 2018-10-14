@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.aspsine.swipetoloadlayout.SwipeToLoadLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/refreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:srlDisableContentWhenLoading="true"
-    app:srlDisableContentWhenRefresh="true"
-    app:srlEnableAutoLoadmore="false"
-    app:srlEnableLoadmore="false"
-    app:srlEnableLoadmoreWhenContentNotFull="false"
-    app:srlEnableOverScrollBounce="true"
-    app:srlEnableScrollContentWhenLoaded="true"
-    app:srlPrimaryColor="@color/colorPrimary">
+    app:swipe_style="classic">
 
-    <com.scwang.smartrefresh.header.CircleHeader
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/size_40" />
+    <include
+        android:id="@id/swipe_refresh_header"
+        layout="@layout/layout_classic_header" />
 
-    <RelativeLayout
+    <FrameLayout
+        android:id="@id/swipe_target"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorBackground">
@@ -425,6 +420,6 @@
 
         </android.support.v4.widget.NestedScrollView>
 
-    </RelativeLayout>
+    </FrameLayout>
 
-</com.scwang.smartrefresh.layout.SmartRefreshLayout>
+</com.aspsine.swipetoloadlayout.SwipeToLoadLayout>

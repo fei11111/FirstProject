@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
@@ -209,7 +210,7 @@ public class MeFragment extends BaseFragment {
             String deviceId = SPUtils.get(activity, "deviceId", "").toString();
             getUserInfo(tokenId, deviceId);
         } else {
-            refreshLayout.finishRefresh();
+            refreshLayout.setRefreshing(false);
             activity.showDialogWhenUnLogin();
         }
     }
@@ -222,7 +223,7 @@ public class MeFragment extends BaseFragment {
         userInfo.compose(this.<UserEntity>createTransformer(false)).subscribe(new BaseWithoutBaseEntityObserver<UserEntity>(activity) {
             @Override
             protected void onHandleSuccess(UserEntity userEntity) {
-                refreshLayout.finishRefresh();
+                refreshLayout.setRefreshing(false);
                 if (userEntity != null) {
                     if (userEntity.getSuccess().equals("YES")) {
                         activity.refreshUserInfoWhenLogin(userEntity);
@@ -236,7 +237,7 @@ public class MeFragment extends BaseFragment {
 
             @Override
             protected void onHandleError(String msg) {
-                refreshLayout.finishRefresh();
+                refreshLayout.setRefreshing(false);
                 super.onHandleError(msg);
                 activity.refreshUserInfoWhenLogout();
             }
@@ -249,20 +250,14 @@ public class MeFragment extends BaseFragment {
     }
 
     private void initViewMe() {
-        GridLayoutManager manager = new GridLayoutManager(activity, 3);
-        RecyclerView.ItemDecoration itemDecoration = new DividerGridItemDecoration(activity);
-        recycler_me.setLayoutManager(manager);
-        recycler_me.addItemDecoration(itemDecoration);
+        activity.setGridRecycleViewSetting(recycler_me, activity, 3);
         meAdatper = new MeFragmentAdapter(activity, R.array.list_me_drawable, getResources().getStringArray(R.array.list_me_str));
         meAdatper.setOnItemClickListener(meItemClickListener);
         recycler_me.setAdapter(meAdatper);
     }
 
     private void initViewOther() {
-        GridLayoutManager manager = new GridLayoutManager(activity, 3);
-        RecyclerView.ItemDecoration itemDecoration = new DividerGridItemDecoration(activity);
-        recycler_other.setLayoutManager(manager);
-        recycler_other.addItemDecoration(itemDecoration);
+        activity.setGridRecycleViewSetting(recycler_other, activity, 3);
         otherAdapter = new MeFragmentAdapter(activity, R.array.list_other_drawable, getResources().getStringArray(R.array.list_other_str));
         otherAdapter.setOnItemClickListener(otherItemClickListener);
         recycler_other.setAdapter(otherAdapter);

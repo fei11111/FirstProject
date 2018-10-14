@@ -3,14 +3,11 @@ package com.fei.firstproject.activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
@@ -53,7 +50,7 @@ public abstract class BaseListActivity extends BaseActivity {
     }
 
     private void initRecyclerView() {
-        setRecycleViewSetting(recyclerView);
+        setLinearRecycleViewSetting(recyclerView, this);
     }
 
     void initListener() {
@@ -95,12 +92,6 @@ public abstract class BaseListActivity extends BaseActivity {
         });
     }
 
-    private void setRecycleViewSetting(RecyclerView recycleViewSetting) {
-        LinearLayoutManager manager = new LinearLayoutManager(this);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, LinearLayout.VERTICAL);
-        recycleViewSetting.setLayoutManager(manager);
-        recycleViewSetting.addItemDecoration(dividerItemDecoration);
-    }
 
     //设置头部
     public abstract void initView();

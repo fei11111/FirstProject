@@ -82,13 +82,12 @@ public class OrderFragment extends BaseListFragment {
                     @Override
                     protected void onHandleSuccess(OrderEntity orderEntity) {
                         dismissLoading();
-                        refreshLayout.finishRefresh();
-                        refreshLayout.finishLoadmore();
+                        refreshLayout.setRefreshing(false);
                         List<OrderEntity.DataBean> data = orderEntity.getData();
                         if (data != null && data.size() > 0) {
                             refreshLayout.setVisibility(View.VISIBLE);
                             if (orderAdapter == null) {
-                                setRecycleViewSetting(recyclerView);
+                                activity.setLinearRecycleViewSetting(recyclerView, activity);
                                 orderAdapter = new OrderAdapter(activity, data);
                                 orderAdapter.setOnCancelPayListener(onCancelPayListener);
                                 orderAdapter.setOnConfirmReceiveListener(onConfirmReceiveListener);
@@ -120,8 +119,7 @@ public class OrderFragment extends BaseListFragment {
                         super.onHandleError(msg);
                         currentPage--;
                         showRequestErrorView();
-                        refreshLayout.finishRefresh();
-                        refreshLayout.finishLoadmore();
+                        refreshLayout.setRefreshing(false);
                     }
                 });
     }

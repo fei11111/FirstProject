@@ -14,6 +14,9 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,14 +25,13 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import com.aspsine.swipetoloadlayout.OnRefreshListener;
+import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.fei.firstproject.R;
 import com.fei.firstproject.activity.BaseActivity;
 import com.fei.firstproject.http.RxSchedulers;
 import com.fei.firstproject.inter.IBase;
 import com.fei.firstproject.utils.LogUtils;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
 import java.util.ArrayList;
@@ -63,7 +65,7 @@ public abstract class BaseFragment extends RxFragment implements IBase {
     LinearLayout llRequestError;
     @Nullable
     @BindView(R.id.refreshLayout)
-    SmartRefreshLayout refreshLayout;
+    SwipeToLoadLayout refreshLayout;
 
     private Unbinder unbinder;
     protected BaseActivity activity;
@@ -119,14 +121,11 @@ public abstract class BaseFragment extends RxFragment implements IBase {
         }
 
         if (refreshLayout != null) {
-            refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
+            refreshLayout.setRefreshEnabled(true);
+            refreshLayout.setLoadingMore(false);
+            refreshLayout.setOnRefreshListener(new OnRefreshListener() {
                 @Override
-                public void onLoadmore(RefreshLayout refreshlayout) {
-                    initRequest();
-                }
-
-                @Override
-                public void onRefresh(RefreshLayout refreshlayout) {
+                public void onRefresh() {
                     initRequest();
                 }
             });

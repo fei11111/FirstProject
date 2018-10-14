@@ -7,10 +7,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.HorizontalScrollView;
@@ -110,10 +107,14 @@ public class MainFragment extends BaseFragment {
     public void onHiddenChanged(boolean hidden) {
         if (hidden) {
             stopBanner();
-            mSensorManager.unregisterListener(lsn);
+            if (mSensorManager != null) {
+                mSensorManager.unregisterListener(lsn);
+            }
         } else {
             startBanner();
-            mSensorManager.registerListener(lsn, mSensor, SensorManager.SENSOR_DELAY_GAME);
+            if (mSensorManager != null) {
+                mSensorManager.registerListener(lsn, mSensor, SensorManager.SENSOR_DELAY_GAME);
+            }
         }
         super.onHiddenChanged(hidden);
     }
@@ -221,10 +222,11 @@ public class MainFragment extends BaseFragment {
 
     public void getRecommendPlan() {
         //province=&county=&city=&
+        final int size = 15;
         String searchWord = activity.getAppHeadView().getEtSearchText();
         Map<String, String> map = new HashMap<>();
         map.put("searchWord", searchWord);
-        map.put("pageSize", "3");
+        map.put("pageSize", size + "");
         map.put("currentPage", "1");
         Observable<BaseEntity<List<RecommendEntity>>> recommendPlan =
                 RetrofitFactory.getBtPlantWeb().getRecommendPlan(map);
@@ -232,12 +234,12 @@ public class MainFragment extends BaseFragment {
                 .subscribe(new BaseObserver<List<RecommendEntity>>(activity) {
                     @Override
                     protected void onHandleSuccess(final List<RecommendEntity> recommendEntities) {
-                        refreshLayout.finishRefresh();
+                        refreshLayout.setRefreshing(false);
                         if (recommendEntities != null && recommendEntities.size() > 0) {
                             llRecommendPlan.setVisibility(View.VISIBLE);
                             if (recommendPlanAdapter == null) {
-                                setRecycleViewSetting(rvRecommendPlan);
-                                recommendPlanAdapter = new RecommendPlanAdapter(activity, recommendEntities, 3);
+                                activity.setLinearRecycleViewSetting(rvRecommendPlan, activity);
+                                recommendPlanAdapter = new RecommendPlanAdapter(activity, recommendEntities, size);
                                 rvRecommendPlan.setAdapter(recommendPlanAdapter);
                                 recommendPlanAdapter.setOnItemClickListener(new OnItemClickListener() {
                                     @Override
@@ -264,7 +266,7 @@ public class MainFragment extends BaseFragment {
                     @Override
                     protected void onHandleError(String msg) {
                         super.onHandleError(msg);
-                        refreshLayout.finishRefresh();
+                        refreshLayout.setRefreshing(false);
                     }
                 });
     }
@@ -274,13 +276,13 @@ public class MainFragment extends BaseFragment {
         ncw.compose(this.<List<NcwEntity>>createTransformer(true)).subscribe(new BaseWithoutBaseEntityObserver<List<NcwEntity>>(activity) {
             @Override
             protected void onHandleSuccess(final List<NcwEntity> ncwEntities) {
-                refreshLayout.finishRefresh();
+                refreshLayout.setRefreshing(false);
                 if (ncwEntities != null && ncwEntities.size() > 0) {
                     dismissLoading();
                     refreshLayout.setVisibility(View.VISIBLE);
                     llNcw.setVisibility(View.VISIBLE);
                     if (ncwAdapter == null) {
-                        setRecycleViewSetting(rvNcw);
+                        activity.setLinearRecycleViewSetting(rvNcw, activity);
                         ncwAdapter = new NcwAdapter(activity, ncwEntities);
                         ncwAdapter.setOnItemClickListener(new OnItemClickListener() {
                             @Override
@@ -305,17 +307,10 @@ public class MainFragment extends BaseFragment {
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
-                refreshLayout.finishRefresh();
+                refreshLayout.setRefreshing(false);
                 showRequestErrorView();
             }
         });
-    }
-
-    private void setRecycleViewSetting(RecyclerView recycleViewSetting) {
-        LinearLayoutManager manager = new LinearLayoutManager(activity);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(activity, LinearLayout.VERTICAL);
-        recycleViewSetting.setLayoutManager(manager);
-        recycleViewSetting.addItemDecoration(dividerItemDecoration);
     }
 
     private void initSensor() {
@@ -347,8 +342,8 @@ public class MainFragment extends BaseFragment {
                 } else if (menuName.equals(getResources().getString(R.string.zjzs))) {
                     startActivityWithoutCode(new Intent(activity, ExpertiseClinicActivity.class));
                 } else if (menuName.equals(getResources().getString(R.string.jdsc))) {
-                    Intent intent = new Intent(activity,WebActivity.class);
-                    intent.putExtra("url","https://app.jd.com/");
+                    Intent intent = new Intent(activity, WebActivity.class);
+                    intent.putExtra("url", "https://app.jd.com/");
                     startActivity(intent);
                 } else if (menuName.equals(getResources().getString(R.string.nydz))) {
 

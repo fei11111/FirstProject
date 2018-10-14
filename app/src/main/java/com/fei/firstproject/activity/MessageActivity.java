@@ -70,6 +70,11 @@ public class MessageActivity extends BaseListActivity {
                         if (messageEntities != null && messageEntities.size() > 0) {
                             refreshLayout.setVisibility(View.VISIBLE);
                             if (messageAdapter == null) {
+                                messageEntities.addAll(messageEntities);
+                                messageEntities.addAll(messageEntities);
+                                messageEntities.addAll(messageEntities);
+                                messageEntities.addAll(messageEntities);
+                                messageEntities.addAll(messageEntities);
                                 messageAdapter = new MyMessageAdapter(MessageActivity.this, messageEntities);
                                 recyclerView.setAdapter(messageAdapter);
                             } else {

@@ -83,4 +83,8 @@
     <dimen name="tx_25_big">27sp</dimen>
     <dimen name="tx_30_big">32sp</dimen>
 
+    <!--refresh-->
+    <dimen name="load_more_footer_height_classic">60dp</dimen>
+    <dimen name="refresh_header_height_classic">80dp</dimen>
+
 </resources>
