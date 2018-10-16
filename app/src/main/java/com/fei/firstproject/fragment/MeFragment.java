@@ -18,6 +18,7 @@ import com.fei.firstproject.R;
 import com.fei.firstproject.activity.LoginActivity;
 import com.fei.firstproject.activity.MyAttentionActivity;
 import com.fei.firstproject.activity.MyOrderActivity;
+import com.fei.firstproject.activity.RunActivity;
 import com.fei.firstproject.activity.SelfInfoActivity;
 import com.fei.firstproject.activity.VideoPlayerActivity;
 import com.fei.firstproject.adapter.MeFragmentAdapter;
@@ -291,6 +292,8 @@ public class MeFragment extends BaseFragment {
                         case 4:
                             checkPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSION_CODE_STORAGE);
                             break;
+                        case 5 :
+                            startActivityWithoutCode(new Intent(activity, RunActivity.class));
                     }
                 } else {
                     activity.showDialogWhenUnLogin();

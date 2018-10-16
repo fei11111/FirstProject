@@ -191,6 +191,7 @@
     <string name="friends_list">好友列表</string>
     <string name="zero_time">00:00/00:00</string>
     <string name="mtv">MTV</string>
+    <string name="run">运动</string>
     <string name="downloading">正在下载</string>
     <string name="file_exit_if_download">该文件已存在，是否重新下载？</string>
     <string name="go_to_download">去下载</string>

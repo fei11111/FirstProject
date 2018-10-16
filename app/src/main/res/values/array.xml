@@ -22,6 +22,7 @@
         <item>@string/call_center</item>
         <item>@string/complaint_advice</item>
         <item>@string/mtv</item>
+        <item>@string/run</item>
     </string-array>
 
     <string-array name="list_other_drawable">
@@ -30,6 +31,7 @@
         <item>@drawable/ic_call_center</item>
         <item>@drawable/ic_complaint_advice</item>
         <item>@drawable/ic_mv</item>
+        <item>@drawable/ic_run</item>
     </string-array>
 
     <string-array name="list_menu_head_drawable">
