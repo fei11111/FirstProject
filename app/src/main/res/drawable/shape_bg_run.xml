@@ -12,4 +12,9 @@
         android:bottomLeftRadius="@dimen/size_220"
         android:bottomRightRadius="@dimen/size_220" />
 
+    <gradient
+        android:startColor="@color/colorRed"
+        android:endColor="@color/colorBgRun"
+        android:angle="270"/>
+
 </shape>

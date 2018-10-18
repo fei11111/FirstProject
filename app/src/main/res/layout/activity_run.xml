@@ -58,14 +58,13 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="5.5"
-                    >
+                    android:layout_weight="5.5">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:background="@drawable/shape_bg_run">
+                        android:background="@drawable/shape_bg_run"
+                        android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -94,13 +93,17 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="距离" />
+                                    android:text="距离"
+                                    android:textColor="@color/colorWhite"
+                                    android:textSize="@dimen/size_15" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/size_5"
-                                    android:text="0.00千米" />
+                                    android:text="0.00千米"
+                                    android:textColor="@color/colorWhite"
+                                    android:textSize="@dimen/size_15" />
 
                             </LinearLayout>
 
@@ -121,13 +124,17 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="距离" />
+                                    android:text="距离"
+                                    android:textColor="@color/colorWhite"
+                                    android:textSize="@dimen/size_15" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/size_5"
-                                    android:text="0.00千米" />
+                                    android:text="0.00千米"
+                                    android:textColor="@color/colorWhite"
+                                    android:textSize="@dimen/size_15" />
 
                             </LinearLayout>
 
