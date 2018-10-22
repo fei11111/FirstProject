@@ -59,6 +59,12 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="CircleStrokeView">
+        <attr name="circleWidth" format="dimension"></attr>
+        <attr name="circleColor" format="reference"></attr>
+        <attr name="bgCircleColor" format="reference"></attr>
+    </declare-styleable>
+
     <attr name="tx_6" format="dimension"></attr>
     <attr name="tx_8" format="dimension"></attr>
     <attr name="tx_10" format="dimension"></attr>

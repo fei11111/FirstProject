@@ -23,6 +23,7 @@
     <color name="viewfinder_mask">#60000000</color>
     <color name="result_view">#b0000000</color>
     <color name="possible_result_points">#00000000</color>
+    <color name="colorAccentAlpha">#904CAF50</color>
 
     <!--refresh-->
     <color name="black_common">#464646</color>

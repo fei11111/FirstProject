@@ -2,6 +2,7 @@
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/ic_bg_run"
@@ -35,7 +36,9 @@
                     app:leftVisible="visible"
                     app:middleStyle="text"
                     app:middleText="@string/run"
-                    app:rightVisible="invisible"></com.fei.firstproject.widget.AppHeadView>
+                    app:rightDrawable="@drawable/selector_ic_setting"
+                    app:rightStyle="image"
+                    app:rightVisible="visible"></com.fei.firstproject.widget.AppHeadView>
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
 
@@ -58,35 +61,105 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="5.5">
+                    android:layout_weight="4.7">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/shape_bg_run"
+                        android:background="@drawable/layer_bg_run"
                         android:orientation="vertical">
 
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/tv_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="@dimen/size_10"
+                            android:text="2018-10-30"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/size_15" />
+
+                        <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
-                            android:layout_weight="1"></LinearLayout>
+                            android:layout_weight="3.2">
+
+                            <com.fei.firstproject.widget.CircleStrokeView
+                                android:id="@+id/circle_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:background="@color/transparent"
+                                app:bgCircleColor="@color/colorWhite"
+                                app:circleColor="@color/colorBlue"
+                                app:circleWidth="@dimen/size_2" />
+
+                            <LinearLayout
+                                android:id="@+id/ll_circle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:padding="@dimen/size_10">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/step_num"
+                                    android:textColor="@color/colorWhite"
+                                    android:textSize="@dimen/tx_16" />
+
+                                <TextView
+                                    android:id="@+id/tv_total"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/colorWhite"
+                                    android:textSize="@dimen/tx_16" />
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/finish"
+                                        android:textColor="@color/colorWhite"
+                                        android:textSize="@dimen/tx_16" />
+
+                                    <TextView
+                                        android:id="@+id/tv_percent"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/colorWhite"
+                                        android:textSize="@dimen/tx_16" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="%"
+                                        android:textColor="@color/colorWhite"
+                                        android:textSize="@dimen/tx_16" />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </FrameLayout>
+
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
-                            android:layout_weight="3"></LinearLayout>
-
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="2"
+                            android:layout_weight="1.8"
                             android:gravity="center">
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginRight="@dimen/size_20"
+                                android:layout_margin="@dimen/size_10"
                                 android:gravity="center"
                                 android:orientation="vertical">
 
@@ -110,14 +183,14 @@
                             <View
                                 android:layout_width="1px"
                                 android:layout_height="match_parent"
-                                android:layout_marginBottom="@dimen/size_10"
                                 android:layout_marginTop="@dimen/size_10"
+                                android:layout_marginBottom="@dimen/size_10"
                                 android:background="@color/white" />
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/size_20"
+                                android:layout_margin="@dimen/size_10"
                                 android:gravity="center"
                                 android:orientation="vertical">
 
@@ -147,7 +220,59 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="4.5"></LinearLayout>
+                    android:layout_weight="5.3"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_36"
+                        android:layout_margin="@dimen/size_16"
+                        android:checkedButton="@id/rb_day"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rb_day"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/select_tab_left"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="@string/day"
+                            android:textColor="@color/colorWhite" />
+
+                        <RadioButton
+                            android:id="@+id/rb_week"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/select_tab_middle"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="@string/week"
+                            android:textColor="@color/colorWhite" />
+
+                        <RadioButton
+                            android:id="@+id/rb_month"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/select_tab_right"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="@string/month"
+                            android:textColor="@color/colorWhite" />
+
+                    </RadioGroup>
+
+                    <lecho.lib.hellocharts.view.LineChartView
+                        android:id="@+id/chart"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -156,10 +281,10 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:id="@+id/main_left_drawer_layout"
+        android:id="@+id/right_drawer_layout"
         android:layout_width="240dp"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
+        android:layout_gravity="end"
         android:background="@color/colorPrimary"
         android:paddingTop="50dp">
 
@@ -167,7 +292,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="左边菜单测试" />
+            android:text="右边菜单测试" />
 
     </RelativeLayout>
 

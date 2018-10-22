@@ -201,6 +201,11 @@
     <string name="gather">采集点</string>
     <string name="price">价格</string>
     <string name="time">时间</string>
+    <string name="finish">完成</string>
+    <string name="step_num">步数</string>
+    <string name="day">日</string>
+    <string name="week">周</string>
+    <string name="month">月</string>
 
     <string name="sharewechat_success">分享成功!!!</string>
     <string name="sharewechat_cancel">分享取消!!!</string>
