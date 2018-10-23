@@ -5,7 +5,7 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_bg_run"
+    android:background="@drawable/ic_run_bg"
     tools:context=".activity.RunActivity">
 
     <LinearLayout
@@ -52,20 +52,19 @@
                 android:id="@id/swipe_refresh_header"
                 layout="@layout/layout_classic_header" />
 
-            <LinearLayout
+            <ScrollView
                 android:id="@id/swipe_target"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="4.7">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="@dimen/size_220"
                         android:background="@drawable/layer_bg_run"
                         android:orientation="vertical">
 
@@ -154,13 +153,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1.8"
-                            android:gravity="center">
+                            android:gravity="center_horizontal">
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="@dimen/size_10"
-                                android:gravity="center"
+                                android:layout_marginRight="@dimen/size_10"
+                                android:gravity="center_horizontal"
                                 android:orientation="vertical">
 
                                 <TextView
@@ -184,13 +183,13 @@
                                 android:layout_width="1px"
                                 android:layout_height="match_parent"
                                 android:layout_marginTop="@dimen/size_10"
-                                android:layout_marginBottom="@dimen/size_10"
+                                android:layout_marginBottom="@dimen/size_30"
                                 android:background="@color/white" />
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="@dimen/size_10"
+                                android:layout_marginLeft="@dimen/size_10"
                                 android:gravity="center"
                                 android:orientation="vertical">
 
@@ -215,66 +214,65 @@
 
                     </LinearLayout>
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="5.3"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <RadioGroup
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/size_36"
-                        android:layout_margin="@dimen/size_16"
-                        android:checkedButton="@id/rb_day"
-                        android:orientation="horizontal">
+                        android:layout_height="@dimen/size_300"
+                        android:gravity="center"
+                        android:orientation="vertical">
 
-                        <RadioButton
-                            android:id="@+id/rb_day"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="@drawable/select_tab_left"
-                            android:button="@null"
-                            android:gravity="center"
-                            android:text="@string/day"
-                            android:textColor="@color/colorWhite" />
+                        <RadioGroup
+                            android:id="@+id/rg_tab"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/size_36"
+                            android:layout_margin="@dimen/size_16"
+                            android:checkedButton="@id/rb_day"
+                            android:orientation="horizontal">
 
-                        <RadioButton
-                            android:id="@+id/rb_week"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="@drawable/select_tab_middle"
-                            android:button="@null"
-                            android:gravity="center"
-                            android:text="@string/week"
-                            android:textColor="@color/colorWhite" />
+                            <RadioButton
+                                android:id="@+id/rb_day"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@drawable/select_tab_left"
+                                android:button="@null"
+                                android:gravity="center"
+                                android:text="@string/day"
+                                android:textColor="@color/colorWhite" />
 
-                        <RadioButton
-                            android:id="@+id/rb_month"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="@drawable/select_tab_right"
-                            android:button="@null"
-                            android:gravity="center"
-                            android:text="@string/month"
-                            android:textColor="@color/colorWhite" />
+                            <RadioButton
+                                android:id="@+id/rb_week"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@drawable/select_tab_middle"
+                                android:button="@null"
+                                android:gravity="center"
+                                android:text="@string/week"
+                                android:textColor="@color/colorWhite" />
 
-                    </RadioGroup>
+                            <RadioButton
+                                android:id="@+id/rb_month"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@drawable/select_tab_right"
+                                android:button="@null"
+                                android:gravity="center"
+                                android:text="@string/month"
+                                android:textColor="@color/colorWhite" />
 
-                    <lecho.lib.hellocharts.view.LineChartView
-                        android:id="@+id/chart"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        </RadioGroup>
 
+                        <lecho.lib.hellocharts.view.LineChartView
+                            android:id="@+id/chart"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+
+                    </LinearLayout>
 
                 </LinearLayout>
-
-            </LinearLayout>
+            </ScrollView>
 
         </com.aspsine.swipetoloadlayout.SwipeToLoadLayout>
 
