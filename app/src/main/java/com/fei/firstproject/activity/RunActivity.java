@@ -135,7 +135,7 @@ public class RunActivity extends BaseActivity {
         }
 
         for (int i = 0; i < times.length; i++) {
-            yValues.add(new AxisValue(i * 5).setLabel(i * 5 + ""));
+            yValues.add(new AxisValue(i * (100 / times.length)).setLabel(i * (100 / times.length) + ""));
         }
 
         chart.setLineChartData(data);//给图表设置数据
@@ -153,7 +153,7 @@ public class RunActivity extends BaseActivity {
         }
 
         for (int i = 0; i < weeks.length; i++) {
-            yValues.add(new AxisValue(i * 5).setLabel(i * 5 + ""));
+            yValues.add(new AxisValue(i * (100 / weeks.length)).setLabel(i * (100 / weeks.length) + ""));
         }
 
         chart.setLineChartData(data);//给图表设置数据
@@ -166,12 +166,12 @@ public class RunActivity extends BaseActivity {
         yValues.clear();
 
         for (int i = 0; i < days.length; i++) {
-            xValues.add(new AxisValue(12 / days.length * i).setLabel(days[i]));
+            xValues.add(new AxisValue(12 / days.length * i).setValue(Float.parseFloat(days[i])));
             values.add(new PointValue(i, ra.nextInt(10) * (i + 1)));
         }
 
         for (int i = 0; i < days.length; i++) {
-            yValues.add(new AxisValue(i * 5).setLabel(i * 5 + ""));
+            yValues.add(new AxisValue(i * (100 / days.length)).setLabel(i * (100 / days.length) + ""));
         }
 
         chart.setLineChartData(data);//给图表设置数据
