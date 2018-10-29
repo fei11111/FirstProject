@@ -85,4 +85,6 @@ dependencies {
     implementation 'me.jessyan:autosize:0.9.5' //适配https://github.com/JessYanCoding/AndroidAutoSize
     implementation 'com.github.Aspsine:SwipeToLoadLayout:1.0.4'
     implementation 'com.github.lecho:hellocharts-library:1.5.8@aar'
+    implementation  'com.umeng.umsdk:analytics:7.5.4'
+    implementation  'com.umeng.umsdk:common:1.5.4'
 }

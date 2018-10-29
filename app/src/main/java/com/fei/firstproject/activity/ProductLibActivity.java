@@ -102,7 +102,7 @@ public class ProductLibActivity extends BaseActivity {
     }
 
     private void initRecyclerView() {
-        setRecycleViewSetting(recyclerView);
+        setLinearRecycleViewSetting(recyclerView,this);
     }
 
     private void initListener() {
@@ -144,13 +144,6 @@ public class ProductLibActivity extends BaseActivity {
         });
     }
 
-    private void setRecycleViewSetting(RecyclerView recycleViewSetting) {
-        LinearLayoutManager manager = new LinearLayoutManager(this);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, LinearLayout.VERTICAL);
-        recycleViewSetting.setLayoutManager(manager);
-        recycleViewSetting.addItemDecoration(dividerItemDecoration);
-    }
-
     @Override
     public void initRequest() {
         getProductLib();
@@ -172,7 +165,7 @@ public class ProductLibActivity extends BaseActivity {
         }
         Map<String, String> map = new HashMap<>();
         map.put("searchWord", appHeadView.getEtSearchText());
-        map.put("pageSize", "10");
+        map.put("pageSize", "15");
         map.put("currentPage", currentPage + "");
         map.put("series", series);
         map.put("technology", technology);

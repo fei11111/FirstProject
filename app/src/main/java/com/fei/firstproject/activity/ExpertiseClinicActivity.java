@@ -126,8 +126,8 @@ public class ExpertiseClinicActivity extends BaseActivity {
     }
 
     private void initRecycleView() {
-        setRecycleViewSetting(rvHotQuestion);
-        setRecycleViewSetting(rvUnsolveQuestion);
+        setLinearRecycleViewSetting(rvHotQuestion,this);
+        setLinearRecycleViewSetting(rvUnsolveQuestion,this);
     }
 
     private void initArrow() {
@@ -295,13 +295,6 @@ public class ExpertiseClinicActivity extends BaseActivity {
                         }
                     }
                 });
-    }
-
-    private void setRecycleViewSetting(RecyclerView recycleViewSetting) {
-        LinearLayoutManager manager = new LinearLayoutManager(this);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, LinearLayout.VERTICAL);
-        recycleViewSetting.setLayoutManager(manager);
-        recycleViewSetting.addItemDecoration(dividerItemDecoration);
     }
 
     @OnClick({R.id.ll_left, R.id.ll_right})

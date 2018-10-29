@@ -131,9 +131,9 @@ public class FieldManageActivity extends BaseActivity {
     }
 
     private void initRecyclerView() {
-        setRecycleViewGridSetting(rvCrop);
-        setRecycleViewListSetting(rvRecommendPlan);
-        setRecycleViewListSetting(rvShare);
+        setGridRecycleViewSetting(rvCrop,this,2);
+        setLinearRecycleViewSetting(rvRecommendPlan,this);
+        setLinearRecycleViewSetting(rvShare,this);
     }
 
     private void initMenu() {
@@ -328,20 +328,6 @@ public class FieldManageActivity extends BaseActivity {
                         refreshLayout.finishRefresh();
                     }
                 });
-    }
-
-    private void setRecycleViewListSetting(RecyclerView recycleViewSetting) {
-        LinearLayoutManager manager = new LinearLayoutManager(this);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, LinearLayout.VERTICAL);
-        recycleViewSetting.setLayoutManager(manager);
-        recycleViewSetting.addItemDecoration(dividerItemDecoration);
-    }
-
-    private void setRecycleViewGridSetting(RecyclerView recycleViewSetting) {
-        GridLayoutManager manager = new GridLayoutManager(this, 2);
-        RecyclerView.ItemDecoration itemDecoration = new DividerGridItemDecoration(this);
-        recycleViewSetting.setLayoutManager(manager);
-        recycleViewSetting.addItemDecoration(itemDecoration);
     }
 
 }

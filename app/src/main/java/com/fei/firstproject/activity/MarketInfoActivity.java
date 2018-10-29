@@ -115,7 +115,7 @@ public class MarketInfoActivity extends BaseActivity {
     }
 
     private void initRecyclerView() {
-        setRecycleViewSetting(recyclerView);
+        setLinearRecycleViewSetting(recyclerView, this);
     }
 
     private void initListener() {
@@ -159,7 +159,7 @@ public class MarketInfoActivity extends BaseActivity {
     private void getPriceInfo() {
         if (currentPage < 1) currentPage = 1;
         Map<String, String> map = new HashMap<>();
-        map.put("pageSize", "10");
+        map.put("pageSize", "15");
         map.put("currentPage", currentPage + "");
         map.put("province", province);
         map.put("market", market);
@@ -197,13 +197,6 @@ public class MarketInfoActivity extends BaseActivity {
                         }
                     }
                 });
-    }
-
-    private void setRecycleViewSetting(RecyclerView recycleViewSetting) {
-        LinearLayoutManager manager = new LinearLayoutManager(this);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, LinearLayout.VERTICAL);
-        recycleViewSetting.setLayoutManager(manager);
-        recycleViewSetting.addItemDecoration(dividerItemDecoration);
     }
 
     @OnClick({R.id.rl_price, R.id.rl_time, R.id.rl_variety, R.id.rl_gather})

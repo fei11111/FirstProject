@@ -3,6 +3,7 @@ package com.fei.firstproject;
 import android.os.Environment;
 
 import com.fei.firstproject.utils.PathUtils;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -50,12 +51,14 @@ public class CrashHandler implements UncaughtExceptionHandler {
 
         if (!handleException(arg1) && defaultHandler != null) {
             defaultHandler.uncaughtException(arg0, arg1);
+            MobclickAgent.reportError(MyApplication.getInstance(), arg1);
         } else {
             try {
                 Thread.sleep(2000);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+            MobclickAgent.onKillProcess(MyApplication.getInstance());
             android.os.Process.killProcess(android.os.Process.myPid());
             System.exit(1);
         }

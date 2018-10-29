@@ -42,6 +42,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -89,7 +90,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IBase 
 
     /**
      * @param isShow 是否显示错误的view
-     * */
+     */
     protected <T> ObservableTransformer<T, T> createTransformer(final boolean isShow) {
         return RxSchedulers.compose(this, this.<T>bindToLifecycle(), new RxSchedulers.OnConnectError() {
             @Override
@@ -112,6 +113,20 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IBase 
         initlistener();
         init(savedInstanceState);
         initRequest();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(this.getLocalClassName());
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(this.getLocalClassName());
+        MobclickAgent.onPause(this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -378,7 +393,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IBase 
         recycleViewSetting.addItemDecoration(dividerItemDecoration);
     }
 
-    public void setGridRecycleViewSetting(RecyclerView recycleViewSetting, Activity activity,int count) {
+    public void setGridRecycleViewSetting(RecyclerView recycleViewSetting, Activity activity, int count) {
         recycleViewSetting.setNestedScrollingEnabled(false);
         GridLayoutManager manager = new GridLayoutManager(activity, count);
         RecyclerView.ItemDecoration itemDecoration = new DividerGridItemDecoration(activity);
