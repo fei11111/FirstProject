@@ -105,6 +105,15 @@ public class PriceParamsActivity extends BaseListActivity {
                             }
                         }
                     }
+
+                    @Override
+                    protected void onHandleError(String msg) {
+                        super.onHandleError(msg);
+                        currentPage--;
+                        refreshLayout.finishRefresh();
+                        refreshLayout.finishLoadmore();
+                        showRequestErrorView();
+                    }
                 });
 
     }

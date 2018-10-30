@@ -196,6 +196,15 @@ public class MarketInfoActivity extends BaseActivity {
                             }
                         }
                     }
+
+                    @Override
+                    protected void onHandleError(String msg) {
+                        super.onHandleError(msg);
+                        currentPage--;
+                        refreshLayout.finishRefresh();
+                        refreshLayout.finishLoadmore();
+                        showRequestErrorView();
+                    }
                 });
     }
 
