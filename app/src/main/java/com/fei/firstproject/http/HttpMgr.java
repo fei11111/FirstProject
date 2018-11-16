@@ -14,6 +14,10 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 
+/**
+ * 网络请求
+ */
+
 public class HttpMgr {
 
     public static void getRecommendPlan(IBase context, Map<String, String> map, CallBack<List<RecommendEntity>> callBack) {

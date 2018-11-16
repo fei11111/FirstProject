@@ -48,7 +48,7 @@ public class HttpUtils<T> {
             activity = (BaseActivity) iBase;
             context = activity;
             transformer = createTransformer(activity, isShowErrorView);
-        } else {
+        } else if(iBase instanceof BaseFragment){
             fragment = (BaseFragment) iBase;
             context = fragment.getActivity();
             transformer = createTransformer(fragment, isShowErrorView);
