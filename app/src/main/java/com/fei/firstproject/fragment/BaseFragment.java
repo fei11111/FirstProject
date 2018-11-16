@@ -248,7 +248,7 @@ public abstract class BaseFragment extends RxFragment implements IBase {
         }
     }
 
-    protected void showRequestErrorView() {
+    public void showRequestErrorView() {
         if (pbLoading != null && llRequestError != null && rlDefault != null && llNoData != null) {
             rlDefault.setVisibility(View.VISIBLE);
             llRequestError.setVisibility(View.VISIBLE);

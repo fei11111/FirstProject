@@ -36,7 +36,10 @@ import com.fei.firstproject.entity.NcwEntity;
 import com.fei.firstproject.entity.RecommendEntity;
 import com.fei.firstproject.http.BaseObserver;
 import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
+import com.fei.firstproject.http.HttpMgr;
+import com.fei.firstproject.http.HttpUtils;
 import com.fei.firstproject.http.factory.RetrofitFactory;
+import com.fei.firstproject.http.inter.CallBack;
 import com.fei.firstproject.image.GlideImageLoader;
 import com.fei.firstproject.inter.OnItemClickListener;
 import com.fei.firstproject.utils.LocationUtils;
@@ -228,54 +231,49 @@ public class MainFragment extends BaseFragment {
         map.put("searchWord", searchWord);
         map.put("pageSize", size + "");
         map.put("currentPage", "1");
-        Observable<BaseEntity<List<RecommendEntity>>> recommendPlan =
-                RetrofitFactory.getBtPlantWeb().getRecommendPlan(map);
-        recommendPlan.compose(this.<BaseEntity<List<RecommendEntity>>>createTransformer(false))
-                .subscribe(new BaseObserver<List<RecommendEntity>>(activity) {
-                    @Override
-                    protected void onHandleSuccess(final List<RecommendEntity> recommendEntities) {
-                        refreshLayout.setRefreshing(false);
-                        if (recommendEntities != null && recommendEntities.size() > 0) {
-                            llRecommendPlan.setVisibility(View.VISIBLE);
-                            if (recommendPlanAdapter == null) {
-                                activity.setLinearRecycleViewSetting(rvRecommendPlan, activity);
-                                recommendPlanAdapter = new RecommendPlanAdapter(activity, recommendEntities, size);
-                                rvRecommendPlan.setAdapter(recommendPlanAdapter);
-                                recommendPlanAdapter.setOnItemClickListener(new OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(View view) {
-                                        int position = rvRecommendPlan.getChildAdapterPosition(view);
-                                        RecommendEntity recommendEntity = recommendPlanAdapter.getRecommendEntities().get(position);
-                                        String url = AppConfig.PLANT_DESC_URL + "?id=" + recommendEntity.getId() + "&version="
-                                                + recommendEntity.getVersion()
-                                                + "&cropCode=" + recommendEntity.getCropCode()
-                                                + "&categoryCode=" + recommendEntity.getCropCategoryCode()
-                                                + "&title=" + recommendEntity.getTitle();
-                                        Intent intent = new Intent(activity, WebActivity.class);
-                                        intent.putExtra("url", url);
-                                        startActivityWithoutCode(intent);
-                                    }
-                                });
-                            } else {
-                                recommendPlanAdapter.setRecommendEntities(recommendEntities);
-                                recommendPlanAdapter.notifyDataSetChanged();
+        HttpMgr.getRecommendPlan(this, map, new CallBack<List<RecommendEntity>>() {
+            @Override
+            public void onSuccess(List<RecommendEntity> recommendEntities) {
+                refreshLayout.setRefreshing(false);
+                if (recommendEntities != null && recommendEntities.size() > 0) {
+                    llRecommendPlan.setVisibility(View.VISIBLE);
+                    if (recommendPlanAdapter == null) {
+                        activity.setLinearRecycleViewSetting(rvRecommendPlan, activity);
+                        recommendPlanAdapter = new RecommendPlanAdapter(activity, recommendEntities, size);
+                        rvRecommendPlan.setAdapter(recommendPlanAdapter);
+                        recommendPlanAdapter.setOnItemClickListener(new OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view) {
+                                int position = rvRecommendPlan.getChildAdapterPosition(view);
+                                RecommendEntity recommendEntity = recommendPlanAdapter.getRecommendEntities().get(position);
+                                String url = AppConfig.PLANT_DESC_URL + "?id=" + recommendEntity.getId() + "&version="
+                                        + recommendEntity.getVersion()
+                                        + "&cropCode=" + recommendEntity.getCropCode()
+                                        + "&categoryCode=" + recommendEntity.getCropCategoryCode()
+                                        + "&title=" + recommendEntity.getTitle();
+                                Intent intent = new Intent(activity, WebActivity.class);
+                                intent.putExtra("url", url);
+                                startActivityWithoutCode(intent);
                             }
-                        }
+                        });
+                    } else {
+                        recommendPlanAdapter.setRecommendEntities(recommendEntities);
+                        recommendPlanAdapter.notifyDataSetChanged();
                     }
+                }
+            }
 
-                    @Override
-                    protected void onHandleError(String msg) {
-                        super.onHandleError(msg);
-                        refreshLayout.setRefreshing(false);
-                    }
-                });
+            @Override
+            public void onFail() {
+                refreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     private void getNcw() {
-        final Observable<List<NcwEntity>> ncw = RetrofitFactory.getNcw().getNcw();
-        ncw.compose(this.<List<NcwEntity>>createTransformer(true)).subscribe(new BaseWithoutBaseEntityObserver<List<NcwEntity>>(activity) {
+        HttpMgr.getNcw(this, new CallBack<List<NcwEntity>>() {
             @Override
-            protected void onHandleSuccess(final List<NcwEntity> ncwEntities) {
+            public void onSuccess(List<NcwEntity> ncwEntities) {
                 refreshLayout.setRefreshing(false);
                 if (ncwEntities != null && ncwEntities.size() > 0) {
                     dismissLoading();
@@ -305,10 +303,8 @@ public class MainFragment extends BaseFragment {
             }
 
             @Override
-            public void onError(Throwable e) {
-                super.onError(e);
+            public void onFail() {
                 refreshLayout.setRefreshing(false);
-                showRequestErrorView();
             }
         });
     }

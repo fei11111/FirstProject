@@ -45,12 +45,12 @@ public interface RequestApi {
     @GET("api.php?op=content")
     Observable<List<NcwEntity>> getNcw();
 
+    @GET("app/notice/listNotices.do")
+    Observable<BaseEntity<List<MessageEntity>>> getMessage(@QueryMap Map<String, String> map);
+
     @FormUrlEncoded
     @POST("app/field/getRecommendPlansMore.do")
     Observable<BaseEntity<List<RecommendEntity>>> getRecommendPlan(@FieldMap Map<String, String> map);
-
-    @GET("app/notice/listNotices.do")
-    Observable<BaseEntity<List<MessageEntity>>> getMessage(@QueryMap Map<String, String> map);
 
     @GET("App/getUserInFoByToken.shtml")
     Observable<UserEntity> getUserInfo(@QueryMap Map<String, String> map);
