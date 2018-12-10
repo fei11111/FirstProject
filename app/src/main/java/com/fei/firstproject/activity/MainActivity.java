@@ -206,18 +206,15 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onRight(View view) {
-                AppConfig.user  = new UserEntity();
-                AppConfig.user.setId("1119200");
-                startActivityWithoutCode(new Intent(MainActivity.this, MessageActivity.class));
-//                if (mainFragment != null && mainFragment.isVisible()) {
-//                    if (AppConfig.ISLOGIN) {
-//                        startActivityWithoutCode(new Intent(MainActivity.this, MessageActivity.class));
-//                    } else {
-//                        showDialogWhenUnLogin();
-//                    }
-//                } else if (meFragment != null && meFragment.isVisible()) {
-//                    sendWx();
-//                }
+                if (mainFragment != null && mainFragment.isVisible()) {
+                    if (AppConfig.ISLOGIN) {
+                        startActivityWithoutCode(new Intent(MainActivity.this, MessageActivity.class));
+                    } else {
+                        showDialogWhenUnLogin();
+                    }
+                } else if (meFragment != null && meFragment.isVisible()) {
+                    sendWx();
+                }
             }
 
             @Override

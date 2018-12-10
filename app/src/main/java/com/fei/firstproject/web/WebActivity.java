@@ -65,6 +65,7 @@ public class WebActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
+        appHeadView.setMiddleSearchDisable();
         initWebView();
         initListener();
         initUrl();

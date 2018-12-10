@@ -48,6 +48,8 @@ public class AppHeadView extends RelativeLayout {
     TextView tvTitle;
     @BindView(R.id.iv_delete)
     ImageView ivDelete;
+    @BindView(R.id.iv_search)
+    ImageView ivSearch;
 
     private Context mContext;
     private int leftVisible = View.VISIBLE;
@@ -292,6 +294,13 @@ public class AppHeadView extends RelativeLayout {
         if (!TextUtils.isEmpty(middleSearchHint)) {
             etSearch.setHint(middleSearchHint);
         }
+    }
+
+    public void setMiddleSearchDisable() {
+        rlSearch.setEnabled(false);
+        etSearch.setEnabled(false);
+        ivDelete.setEnabled(false);
+        ivSearch.setVisibility(GONE);
     }
 
     public void setLeftDrawable(int drawable) {
