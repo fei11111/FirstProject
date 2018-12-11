@@ -14,7 +14,7 @@ android {
         multiDexEnabled true
         ndk {
             //设置支持的SO库架构（开发者可以根据需要，选择一个或多个平台的so）
-            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "x86","arm64-v8a","x86_64"
+            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "x86", "arm64-v8a", "x86_64"
         }
     }
     signingConfigs {
@@ -35,10 +35,33 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            zipAlignEnabled true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            debuggable false
+        }
+        debug {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+            debuggable true
         }
     }
     productFlavors {
+    }
+
+    android.applicationVariants.all { variant ->
+            variant.outputs.all {
+                output ->
+                    def envStr
+                    if (buildType.name == 'release') {
+                        envStr = "正式"
+                    } else {
+                        envStr = "测试"
+                    }
+                    outputFileName = new File("(" + envStr + ")" + "app_v" + defaultConfig.versionName + "_" +
+                            new Date().format("yyyy-MM--dd") + "_" + buildType.name + ".apk")
+
+            }
     }
 }
 
@@ -85,6 +108,6 @@ dependencies {
     implementation 'me.jessyan:autosize:0.9.5' //适配https://github.com/JessYanCoding/AndroidAutoSize
     implementation 'com.github.Aspsine:SwipeToLoadLayout:1.0.4'
     implementation 'com.github.lecho:hellocharts-library:1.5.8@aar'
-    implementation  'com.umeng.umsdk:analytics:7.5.4'
-    implementation  'com.umeng.umsdk:common:1.5.4'
+    implementation 'com.umeng.umsdk:analytics:7.5.4'
+    implementation 'com.umeng.umsdk:common:1.5.4'
 }
