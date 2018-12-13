@@ -17,6 +17,7 @@
         <item name="colorControlHighlight">@color/colorPrimary</item>
         <item name="colorControlNormal">@color/colorPrimary</item>
         <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="android:windowFullscreen">false</item>
     </style>
 
     <style name="BlackTheme" parent="Theme.AppCompat.Light">
@@ -36,8 +37,8 @@
 
     <style name="WhiteTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorBackground</item>
-        <item name="colorPrimaryDark">@color/colorBackground</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="android:windowEnterAnimation">@transition/activity_explode</item>
         <item name="android:windowExitAnimation">@transition/activity_slide</item>
@@ -45,6 +46,8 @@
         <item name="windowNoTitle">true</item>
         <item name="toolbarStyle">@style/CustomToolbar</item>
         <item name="colorControlHighlight">@color/colorBlack</item>
+        <item name="android:windowBackground">@drawable/ic_background</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 
 

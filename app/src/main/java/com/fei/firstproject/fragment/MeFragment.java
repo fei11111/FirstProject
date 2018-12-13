@@ -4,26 +4,24 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.activity.LoginActivity;
+import com.fei.firstproject.activity.MyAskActivity;
 import com.fei.firstproject.activity.MyAttentionActivity;
 import com.fei.firstproject.activity.MyOrderActivity;
 import com.fei.firstproject.activity.RunActivity;
 import com.fei.firstproject.activity.SelfInfoActivity;
 import com.fei.firstproject.activity.VideoPlayerActivity;
+import com.fei.firstproject.activity.WebActivity;
 import com.fei.firstproject.adapter.MeFragmentAdapter;
 import com.fei.firstproject.config.AppConfig;
-import com.fei.firstproject.decoration.DividerGridItemDecoration;
 import com.fei.firstproject.entity.UserEntity;
 import com.fei.firstproject.event.AllEvent;
 import com.fei.firstproject.event.EventType;
@@ -33,7 +31,6 @@ import com.fei.firstproject.inter.OnItemClickListener;
 import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.SPUtils;
 import com.fei.firstproject.utils.Utils;
-import com.fei.firstproject.web.WebActivity;
 import com.fei.firstproject.widget.NoScrollRecyclerView;
 import com.fei.firstproject.widget.PartHeadView;
 import com.fei.firstproject.widget.RoundImageView;
@@ -271,6 +268,9 @@ public class MeFragment extends BaseFragment {
                 if (AppConfig.ISLOGIN) {
                     int position = recycler_me.getChildAdapterPosition(view);
                     switch (position) {
+                        case 0:
+                            startActivityWithoutCode(new Intent(activity, MyAskActivity.class));
+                            break;
                         case 3:
                             startActivityWithoutCode(new Intent(activity, MyAttentionActivity.class));
                             break;
@@ -292,7 +292,7 @@ public class MeFragment extends BaseFragment {
                         case 4:
                             checkPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSION_CODE_STORAGE);
                             break;
-                        case 5 :
+                        case 5:
                             startActivityWithoutCode(new Intent(activity, RunActivity.class));
                     }
                 } else {

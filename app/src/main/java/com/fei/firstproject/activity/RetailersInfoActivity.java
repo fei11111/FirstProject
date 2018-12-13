@@ -33,7 +33,6 @@ import okhttp3.ResponseBody;
 
 public class RetailersInfoActivity extends BaseListActivity {
 
-
     private String province;
     private String city;
     private String district;

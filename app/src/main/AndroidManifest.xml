@@ -87,7 +87,7 @@
             android:configChanges="orientation|keyboardHidden|navigation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".web.WebActivity"
+            android:name=".activity.WebActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:screenOrientation="portrait" />
         <activity
@@ -185,7 +185,14 @@
             android:name=".activity.PriceParamsActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.RunActivity"></activity>
+        <activity
+            android:name=".activity.RunActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activity.MyAskActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

@@ -4,36 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
     tools:context="com.fei.firstproject.activity.SettingActivity">
-
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        app:elevation="0dp">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
-
-            <com.fei.firstproject.widget.AppHeadView
-                android:id="@+id/appHeadView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:leftDrawable="@drawable/selector_head_left_arrow"
-                app:leftPadding="@dimen/size_10"
-                app:leftStyle="image"
-                app:leftVisible="visible"
-                app:middleStyle="text"
-                app:middleText="@string/account_setting"
-                app:rightVisible="invisible"></com.fei.firstproject.widget.AppHeadView>
-        </android.support.v7.widget.Toolbar>
-
-    </android.support.design.widget.AppBarLayout>
 
     <Button
         android:id="@+id/btn_logout"
@@ -50,8 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/app_bar_layout"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true">
 
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -72,10 +43,10 @@
                     android:background="?attr/selectableItemBackground"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:paddingBottom="@dimen/size_10"
                     android:paddingLeft="@dimen/size_16"
+                    android:paddingTop="@dimen/size_10"
                     android:paddingRight="@dimen/size_16"
-                    android:paddingTop="@dimen/size_10">
+                    android:paddingBottom="@dimen/size_10">
 
                     <com.fei.firstproject.widget.RoundImageView
                         android:id="@+id/iv_user_head"

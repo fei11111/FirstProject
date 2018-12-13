@@ -8,32 +8,6 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        app:elevation="0dp">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
-
-            <com.fei.firstproject.widget.AppHeadView
-                android:id="@+id/appHeadView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:leftDrawable="@drawable/selector_head_left_arrow"
-                app:leftPadding="@dimen/size_10"
-                app:leftStyle="image"
-                app:leftVisible="visible"
-                app:middleStyle="text"
-                app:rightVisible="invisible"></com.fei.firstproject.widget.AppHeadView>
-        </android.support.v7.widget.Toolbar>
-    </android.support.design.widget.AppBarLayout>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -41,13 +15,13 @@
 
         <Button
             android:id="@+id/btn_add_address"
+            style="@style/Font15Style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="@drawable/selector_rect_btn_bg"
             android:text="@string/confirm"
-            android:textColor="@color/colorWhite"
-            style="@style/Font15Style"  />
+            android:textColor="@color/colorWhite" />
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -66,18 +40,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingBottom="@dimen/size_10"
                     android:paddingLeft="@dimen/size_16"
+                    android:paddingTop="@dimen/size_10"
                     android:paddingRight="@dimen/size_16"
-                    android:paddingTop="@dimen/size_10">
+                    android:paddingBottom="@dimen/size_10">
 
                     <TextView
+                        style="@style/Font15Style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ems="4"
                         android:text="@string/contacts"
-                        android:textColor="@color/colorText"
-                        style="@style/Font15Style"  />
+                        android:textColor="@color/colorText" />
 
                     <android.support.v7.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
@@ -94,6 +68,7 @@
 
                             <EditText
                                 android:id="@+id/et_contacts"
+                                style="@style/Font12Style"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:background="@null"
@@ -104,8 +79,7 @@
                                 android:lines="1"
                                 android:paddingRight="@dimen/size_30"
                                 android:textColor="@color/colorText"
-                                android:textColorHint="@color/colorTextSub"
-                                style="@style/Font12Style" />
+                                android:textColorHint="@color/colorTextSub" />
 
                             <ImageView
                                 android:layout_width="@dimen/size_15"
@@ -153,18 +127,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingBottom="@dimen/size_10"
                     android:paddingLeft="@dimen/size_16"
+                    android:paddingTop="@dimen/size_10"
                     android:paddingRight="@dimen/size_16"
-                    android:paddingTop="@dimen/size_10">
+                    android:paddingBottom="@dimen/size_10">
 
                     <TextView
+                        style="@style/Font15Style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ems="4"
                         android:text="@string/phone"
-                        android:textColor="@color/colorText"
-                        style="@style/Font15Style"  />
+                        android:textColor="@color/colorText" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -173,6 +147,7 @@
 
                         <EditText
                             android:id="@+id/et_phone"
+                            style="@style/Font12Style"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@null"
@@ -183,8 +158,7 @@
                             android:lines="1"
                             android:paddingRight="@dimen/size_30"
                             android:textColor="@color/colorText"
-                            android:textColorHint="@color/colorTextSub"
-                            style="@style/Font12Style"/>
+                            android:textColorHint="@color/colorTextSub" />
 
                         <ImageView
                             android:layout_width="@dimen/size_15"
@@ -202,20 +176,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackground"
-                    android:paddingBottom="@dimen/size_10"
                     android:paddingLeft="@dimen/size_16"
+                    android:paddingTop="@dimen/size_10"
                     android:paddingRight="@dimen/size_16"
-                    android:paddingTop="@dimen/size_10">
+                    android:paddingBottom="@dimen/size_10">
 
                     <TextView
                         android:id="@+id/tv_address_left"
+                        style="@style/Font16Style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:ems="4"
                         android:text="@string/address"
-                        android:textColor="@color/colorText"
-                        style="@style/Font16Style" />
+                        android:textColor="@color/colorText" />
 
                     <ImageView
                         android:id="@+id/iv_arrow"
@@ -227,6 +201,7 @@
 
                     <TextView
                         android:id="@+id/tv_address"
+                        style="@style/Font14Style"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -234,26 +209,25 @@
                         android:layout_marginRight="@dimen/size_10"
                         android:layout_toLeftOf="@id/iv_arrow"
                         android:layout_toRightOf="@id/tv_address_left"
-                        android:textColor="@color/colorTextSub"
-                        style="@style/Font14Style"  />
+                        android:textColor="@color/colorTextSub" />
                 </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingBottom="@dimen/size_10"
                     android:paddingLeft="@dimen/size_16"
+                    android:paddingTop="@dimen/size_10"
                     android:paddingRight="@dimen/size_16"
-                    android:paddingTop="@dimen/size_10">
+                    android:paddingBottom="@dimen/size_10">
 
                     <TextView
+                        style="@style/Font15Style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ems="4"
                         android:text="@string/detail_address"
-                        android:textColor="@color/colorText"
-                        style="@style/Font15Style"  />
+                        android:textColor="@color/colorText" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -262,6 +236,7 @@
 
                         <EditText
                             android:id="@+id/et_detail_address"
+                            style="@style/Font12Style"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@null"
@@ -272,8 +247,7 @@
                             android:lines="1"
                             android:paddingRight="@dimen/size_30"
                             android:textColor="@color/colorText"
-                            android:textColorHint="@color/colorTextSub"
-                            style="@style/Font12Style" />
+                            android:textColorHint="@color/colorTextSub" />
 
                         <ImageView
                             android:layout_width="@dimen/size_15"

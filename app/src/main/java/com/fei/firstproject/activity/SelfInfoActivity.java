@@ -2,11 +2,8 @@ package com.fei.firstproject.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutCompat;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -34,7 +31,6 @@ import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
 import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.utils.GlideUtils;
 import com.fei.firstproject.utils.PictureUtils;
-import com.fei.firstproject.widget.AppHeadView;
 import com.fei.firstproject.widget.PartHeadView;
 import com.fei.firstproject.widget.RoundImageView;
 import com.luck.picture.lib.PictureSelector;
@@ -57,10 +53,6 @@ import io.reactivex.Observable;
 
 public class SelfInfoActivity extends BaseActivity {
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.app_bar_layout)
-    AppBarLayout appBarLayout;
     @BindView(R.id.btn_save)
     Button btnSave;
     @BindView(R.id.tv_account)
@@ -147,27 +139,12 @@ public class SelfInfoActivity extends BaseActivity {
     }
 
     @Override
-    public void init(Bundle savedInstanceState) {
-        initListener();
+    public void initTitle() {
+        setBackTitle(getString(R.string.self_info));
     }
 
-    private void initListener() {
-        appHeadView.setOnLeftRightClickListener(new AppHeadView.onAppHeadViewListener() {
-            @Override
-            public void onLeft(View view) {
-                onBackPressed();
-            }
-
-            @Override
-            public void onRight(View view) {
-
-            }
-
-            @Override
-            public void onEdit(TextView v, int actionId, KeyEvent event) {
-
-            }
-        });
+    @Override
+    public void init(Bundle savedInstanceState) {
     }
 
     @Override
@@ -416,7 +393,7 @@ public class SelfInfoActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==RESULT_OK) {
+        if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case PictureConfig.CHOOSE_REQUEST:
                     // 图片选择结果回调

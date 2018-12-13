@@ -18,11 +18,6 @@ import butterknife.BindView;
 
 public class AboutUsActivity extends BaseActivity {
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.app_bar_layout)
-    AppBarLayout appBarLayout;
-
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
 
@@ -44,27 +39,13 @@ public class AboutUsActivity extends BaseActivity {
     }
 
     @Override
-    public void init(Bundle savedInstanceState) {
-        initListener();
+    public void initTitle() {
+        setBackTitle(getString(R.string.about_us));
     }
 
-    private void initListener() {
-        appHeadView.setOnLeftRightClickListener(new AppHeadView.onAppHeadViewListener() {
-            @Override
-            public void onLeft(View view) {
-                onBackPressed();
-            }
+    @Override
+    public void init(Bundle savedInstanceState) {
 
-            @Override
-            public void onRight(View view) {
-
-            }
-
-            @Override
-            public void onEdit(TextView v, int actionId, KeyEvent event) {
-
-            }
-        });
     }
 
     @Override

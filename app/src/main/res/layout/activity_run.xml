@@ -1,46 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/ic_run_bg"
-    tools:context=".activity.RunActivity">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/app_bar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay"
-            app:elevation="0dp">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:popupTheme="@style/AppTheme.PopupOverlay">
-
-                <com.fei.firstproject.widget.AppHeadView
-                    android:id="@+id/appHeadView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:leftDrawable="@drawable/selector_head_left_arrow"
-                    app:leftPadding="@dimen/size_10"
-                    app:leftStyle="image"
-                    app:leftVisible="visible"
-                    app:middleStyle="text"
-                    app:middleText="@string/run"
-                    app:rightDrawable="@drawable/selector_ic_setting"
-                    app:rightStyle="image"
-                    app:rightVisible="visible"></com.fei.firstproject.widget.AppHeadView>
-            </android.support.v7.widget.Toolbar>
-        </android.support.design.widget.AppBarLayout>
+        android:layout_height="match_parent"
+        android:background="@drawable/ic_run_bg">
 
         <com.aspsine.swipetoloadlayout.SwipeToLoadLayout
             android:id="@+id/swipeLayout"
@@ -276,22 +244,22 @@
 
         </com.aspsine.swipetoloadlayout.SwipeToLoadLayout>
 
-    </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/right_drawer_layout"
-        android:layout_width="240dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="end"
-        android:background="@color/colorPrimary"
-        android:paddingTop="50dp">
+        <RelativeLayout
+            android:id="@+id/right_drawer_layout"
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:background="@color/colorPrimary"
+            android:paddingTop="50dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="右边菜单测试" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="右边菜单测试" />
 
-    </RelativeLayout>
+        </RelativeLayout>
 
-</android.support.v4.widget.DrawerLayout>
+    </android.support.v4.widget.DrawerLayout>
+</FrameLayout>

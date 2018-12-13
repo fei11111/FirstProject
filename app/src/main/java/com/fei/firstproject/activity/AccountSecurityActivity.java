@@ -23,10 +23,6 @@ import butterknife.BindView;
 
 public class AccountSecurityActivity extends BaseActivity {
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.app_bar_layout)
-    AppBarLayout appBarLayout;
     @BindView(R.id.tv_user_name)
     TextView tvUserName;
     @BindView(R.id.phv_phone)
@@ -55,28 +51,13 @@ public class AccountSecurityActivity extends BaseActivity {
     }
 
     @Override
-    public void init(Bundle savedInstanceState) {
-        initInfo();
-        initListener();
+    public void initTitle() {
+        setBackTitle(getString(R.string.account_security));
     }
 
-    private void initListener() {
-        appHeadView.setOnLeftRightClickListener(new AppHeadView.onAppHeadViewListener() {
-            @Override
-            public void onLeft(View view) {
-                onBackPressed();
-            }
-
-            @Override
-            public void onRight(View view) {
-
-            }
-
-            @Override
-            public void onEdit(TextView v, int actionId, KeyEvent event) {
-
-            }
-        });
+    @Override
+    public void init(Bundle savedInstanceState) {
+        initInfo();
     }
 
     private void initInfo() {

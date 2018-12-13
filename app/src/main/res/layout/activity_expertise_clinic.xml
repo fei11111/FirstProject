@@ -1,114 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
     android:orientation="vertical">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar_layout"
+    <include layout="@layout/view_default_bg" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        app:elevation="0dp">
+        android:background="@color/colorPrimary"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/ll_expertise_room"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="@dimen/size_10">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <ImageView
+                android:layout_width="@dimen/size_30"
+                android:layout_height="@dimen/size_30"
+                android:src="@drawable/ic_expertise" />
+
+            <TextView
+                style="@style/Font15Style"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_50"
-                android:fitsSystemWindows="true"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="0.3">
+                android:layout_marginLeft="@dimen/size_5"
+                android:text="@string/expertise_room"
+                android:textColor="@color/selector_color_white_to_gray" />
 
-                <LinearLayout
-                    android:id="@+id/ll_expertise_room"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:padding="@dimen/size_10">
+        </LinearLayout>
 
-                    <ImageView
-                        android:layout_width="@dimen/size_30"
-                        android:layout_height="@dimen/size_30"
-                        android:src="@drawable/ic_expertise" />
+        <LinearLayout
+            android:id="@+id/ll_emergency_room"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="@dimen/size_10">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/size_5"
-                        android:text="@string/expertise_room"
-                        android:textColor="@color/selector_color_white_to_gray"
-                        style="@style/Font15Style"  />
+            <ImageView
+                android:layout_width="@dimen/size_30"
+                android:layout_height="@dimen/size_30"
+                android:src="@drawable/ic_emergency" />
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/ll_emergency_room"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:padding="@dimen/size_10">
-
-                    <ImageView
-                        android:layout_width="@dimen/size_30"
-                        android:layout_height="@dimen/size_30"
-                        android:src="@drawable/ic_emergency" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/emergency_room"
-                        android:textColor="@color/selector_color_white_to_gray"
-                        style="@style/Font15Style" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
+            <TextView
+                style="@style/Font15Style"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay">
+                android:text="@string/emergency_room"
+                android:textColor="@color/selector_color_white_to_gray" />
 
-                <com.fei.firstproject.widget.AppHeadView
-                    android:id="@+id/appHeadView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:leftDrawable="@drawable/selector_head_left_arrow"
-                    app:leftPadding="@dimen/size_10"
-                    app:leftStyle="image"
-                    app:leftVisible="visible"
-                    app:middleSearchHint="@string/hot_question_hint"
-                    app:middleStyle="search"
-                    app:rightStyle="text"
-                    app:rightText="@string/search"
-                    app:rightVisible="visible"></com.fei.firstproject.widget.AppHeadView>
-            </android.support.v7.widget.Toolbar>
+        </LinearLayout>
 
-        </android.support.design.widget.CollapsingToolbarLayout>
-
-    </android.support.design.widget.AppBarLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <include layout="@layout/view_default_bg" />
+        android:orientation="vertical">
 
         <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/refreshLayout"
@@ -239,4 +195,4 @@
 
     </LinearLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>

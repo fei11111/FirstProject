@@ -12,7 +12,6 @@ import com.fei.firstproject.http.BaseObserver;
 import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.inter.OnItemClickListener;
 import com.fei.firstproject.utils.Utils;
-import com.fei.firstproject.web.WebActivity;
 import com.fei.firstproject.widget.AppHeadView;
 
 import java.util.HashMap;

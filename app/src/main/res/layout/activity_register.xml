@@ -1,40 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     tools:context="com.fei.firstproject.activity.RegisterActivity">
-
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        app:elevation="0dp">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
-
-            <com.fei.firstproject.widget.AppHeadView
-                android:id="@+id/appHeadView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:leftDrawable="@drawable/selector_head_left_arrow"
-                app:leftPadding="@dimen/size_10"
-                app:leftStyle="image"
-                app:leftVisible="visible"
-                app:middleStyle="text"
-                app:middleText="@string/register"
-                app:rightVisible="invisible"></com.fei.firstproject.widget.AppHeadView>
-        </android.support.v7.widget.Toolbar>
-
-    </android.support.design.widget.AppBarLayout>
 
     <!-- Login progress -->
     <ProgressBar
@@ -70,7 +40,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_username"
-                    android:imeActionId="@+id/btn_login"
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textEmailAddress"
@@ -89,7 +58,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_password"
-                    android:imeActionId="@+id/login"
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
@@ -113,7 +81,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/prompt_vertify"
-                        android:imeActionId="@+id/btn_login"
                         android:imeActionLabel="@string/action_sign_in_short"
                         android:imeOptions="actionUnspecified"
                         android:inputType="text"

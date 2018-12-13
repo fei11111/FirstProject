@@ -91,6 +91,19 @@ public class RunActivity extends BaseActivity {
     }
 
     @Override
+    public void initTitle() {
+        appHeadView.setFlHeadLeftPadding(getResources().getDimensionPixelSize(R.dimen.size_10));
+        appHeadView.setLeftStyle(AppHeadView.IMAGE);
+        appHeadView.setFlHeadLeftVisible(View.VISIBLE);
+        appHeadView.setLeftDrawable(R.drawable.selector_head_left_arrow);
+        appHeadView.setMiddleStyle(AppHeadView.TEXT);
+        appHeadView.setMiddleText(getString(R.string.run));
+        appHeadView.setFlHeadRightVisible(View.VISIBLE);
+        appHeadView.setRightStyle(AppHeadView.IMAGE);
+        appHeadView.setRightDrawable(R.drawable.selector_ic_setting);
+    }
+
+    @Override
     public void init(Bundle savedInstanceState) {
         initView();
         initListener();
@@ -178,7 +191,7 @@ public class RunActivity extends BaseActivity {
     }
 
     private void initCircleView() {
-        circleView.startAnimator(tvTotal, tvPercent, 3000);
+        circleView.startAnimator(3000, tvTotal, tvPercent, 3000);
     }
 
     private void initListener() {

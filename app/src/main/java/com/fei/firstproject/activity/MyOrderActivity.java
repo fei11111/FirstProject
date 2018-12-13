@@ -69,6 +69,11 @@ public class MyOrderActivity extends BaseActivity {
     }
 
     @Override
+    public void initTitle() {
+        setBackTitle(getString(R.string.my_order));
+    }
+
+    @Override
     public void init(Bundle savedInstanceState) {
         initSetting();
         initListener();
@@ -91,7 +96,6 @@ public class MyOrderActivity extends BaseActivity {
     }
 
     private void initListener() {
-        initAppHeadViewListener();
         initTableLayoutListener();
     }
 
@@ -109,25 +113,6 @@ public class MyOrderActivity extends BaseActivity {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
-    }
-
-    private void initAppHeadViewListener() {
-        appHeadView.setOnLeftRightClickListener(new AppHeadView.onAppHeadViewListener() {
-            @Override
-            public void onLeft(View view) {
-                onBackPressed();
-            }
-
-            @Override
-            public void onRight(View view) {
-
-            }
-
-            @Override
-            public void onEdit(TextView v, int actionId, KeyEvent event) {
-
             }
         });
     }

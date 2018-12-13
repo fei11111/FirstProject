@@ -93,6 +93,11 @@ public abstract class BaseFragment extends RxFragment implements IBase {
     }
 
     @Override
+    public void initTitle(){
+
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();

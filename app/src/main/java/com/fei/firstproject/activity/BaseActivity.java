@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
@@ -19,11 +20,15 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.config.AppConfig;
@@ -80,9 +85,13 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IBase 
     @Nullable
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
-    @Nullable
     @BindView(R.id.appHeadView)
     AppHeadView appHeadView;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.app_bar_layout)
+    AppBarLayout appBarLayout;
+
 
     private Unbinder unbinder;
     protected CustomeProgressDialog progressDialog;
@@ -106,13 +115,22 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IBase 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initTheme();
-        setContentView(getContentViewResId());
-        EventBus.getDefault().register(this);
-        unbinder = ButterKnife.bind(this);
+        initView();
         initProgress();
         initlistener();
+        initTitle();
         init(savedInstanceState);
         initRequest();
+    }
+
+    private void initView() {
+        View view = getLayoutInflater().inflate(R.layout.activity_base, null);
+        FrameLayout flContainer = view.findViewById(R.id.fl_container);
+        View activityView = getLayoutInflater().inflate(getContentViewResId(), null);
+        flContainer.addView(activityView);
+        setContentView(view);
+        EventBus.getDefault().register(this);
+        unbinder = ButterKnife.bind(this);
     }
 
     @Override
@@ -134,6 +152,16 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IBase 
         if (allEvent.getEventType() == EventType.APP_FONT_CHANGE) {
             recreate();
         }
+    }
+
+    protected void setBackTitle(String title){
+        appHeadView.setFlHeadLeftPadding(getResources().getDimensionPixelSize(R.dimen.size_10));
+        appHeadView.setLeftStyle(AppHeadView.IMAGE);
+        appHeadView.setFlHeadLeftVisible(View.VISIBLE);
+        appHeadView.setLeftDrawable(R.drawable.selector_head_left_arrow);
+        appHeadView.setMiddleStyle(AppHeadView.TEXT);
+        appHeadView.setMiddleText(title);
+        appHeadView.setFlHeadRightVisible(View.INVISIBLE);
     }
 
     protected void initTheme() {
@@ -175,6 +203,25 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IBase 
                 @Override
                 public void onRefresh(RefreshLayout refreshlayout) {
                     initRequest();
+                }
+            });
+        }
+
+        if (appHeadView != null) {
+            appHeadView.setOnLeftRightClickListener(new AppHeadView.onAppHeadViewListener() {
+                @Override
+                public void onLeft(View view) {
+                    onBackPressed();
+                }
+
+                @Override
+                public void onRight(View view) {
+
+                }
+
+                @Override
+                public void onEdit(TextView v, int actionId, KeyEvent event) {
+
                 }
             });
         }

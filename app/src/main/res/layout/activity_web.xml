@@ -1,39 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        app:elevation="0dp">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
-
-            <com.fei.firstproject.widget.AppHeadView
-                android:id="@+id/appHeadView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:leftDrawable="@drawable/selector_head_left_arrow"
-                app:leftPadding="@dimen/size_10"
-                app:leftStyle="image"
-                app:leftVisible="visible"
-                app:middleSearchHint="@string/web_search_tip"
-                app:middleStyle="search"
-                app:rightStyle="text"
-                app:rightText="@string/go_to"
-                app:rightVisible="visible"></com.fei.firstproject.widget.AppHeadView>
-        </android.support.v7.widget.Toolbar>
-
-    </android.support.design.widget.AppBarLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"

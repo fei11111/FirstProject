@@ -4,8 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -47,10 +45,7 @@ import okhttp3.ResponseBody;
  */
 
 public class SettingActivity extends BaseActivity {
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.app_bar_layout)
-    AppBarLayout appBarLayout;
+
     @BindView(R.id.btn_logout)
     Button btnLogout;
     @BindView(R.id.phv_self_info)
@@ -95,6 +90,11 @@ public class SettingActivity extends BaseActivity {
     @Override
     public int getContentViewResId() {
         return R.layout.activity_setting;
+    }
+
+    @Override
+    public void initTitle() {
+        setBackTitle(getString(R.string.account_setting));
     }
 
     @Override

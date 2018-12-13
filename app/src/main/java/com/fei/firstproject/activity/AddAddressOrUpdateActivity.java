@@ -44,10 +44,6 @@ public class AddAddressOrUpdateActivity extends BaseActivity {
 
     private static final int REQUEST_PERMISSION_CODE_MAP = 100;
     private static final int REQUEST_ACTIVITY_CODE_MAP = 200;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.app_bar_layout)
-    AppBarLayout appBarLayout;
     @BindView(R.id.btn_add_address)
     Button btnAddAddress;
     @BindView(R.id.et_contacts)
@@ -96,18 +92,16 @@ public class AddAddressOrUpdateActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
-        initTitle();
-        initListener();
     }
 
-    private void initTitle() {
+    public void initTitle() {
         addressEntity = (AddressEntity) getIntent().getSerializableExtra("addressEntity");
         if (addressEntity == null) {
             //新增
-            appHeadView.setMiddleText(getString(R.string.add_address));
+            setBackTitle(getString(R.string.add_address));
         } else {
             //编辑
-            appHeadView.setMiddleText(getString(R.string.edit_address));
+            setBackTitle(getString(R.string.edit_address));
             initData(addressEntity);
         }
     }
@@ -120,25 +114,6 @@ public class AddAddressOrUpdateActivity extends BaseActivity {
         if (split.length == 2) {
             etDetailAddress.setText(split[1]);
         }
-    }
-
-    private void initListener() {
-        appHeadView.setOnLeftRightClickListener(new AppHeadView.onAppHeadViewListener() {
-            @Override
-            public void onLeft(View view) {
-                onBackPressed();
-            }
-
-            @Override
-            public void onRight(View view) {
-
-            }
-
-            @Override
-            public void onEdit(TextView v, int actionId, KeyEvent event) {
-
-            }
-        });
     }
 
     @Override

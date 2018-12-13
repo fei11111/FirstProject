@@ -155,6 +155,11 @@ public class PhotoActivity extends BaseActivity {
     }
 
     @Override
+    public void initTitle() {
+        appHeadView.setVisibility(View.GONE);
+    }
+
+    @Override
     public void init(Bundle savedInstanceState) {
         initData();
         initPage();

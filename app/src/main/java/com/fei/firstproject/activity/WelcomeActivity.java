@@ -43,7 +43,10 @@ public class WelcomeActivity extends BaseActivity {
             int time = msg.arg1;
             time--;
             if (time == 0) {
+                spView.setContent(time + "s");
+                Glide.with(givSplash).onStop();
                 startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
+                Glide.with(givSplash).onDestroy();
                 WelcomeActivity.this.finish();
             } else {
                 spView.setContent(time + "s");
@@ -80,6 +83,11 @@ public class WelcomeActivity extends BaseActivity {
     }
 
     @Override
+    public void initTitle() {
+        appHeadView.setVisibility(View.GONE);
+    }
+
+    @Override
     public void init(Bundle savedInstanceState) {
         initView();
         initListener();
@@ -95,7 +103,9 @@ public class WelcomeActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 mHandler.removeMessages(messageWhat);
+                Glide.with(givSplash).onStop();
                 startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
+                Glide.with(givSplash).onDestroy();
                 WelcomeActivity.this.finish();
             }
         });
@@ -104,7 +114,6 @@ public class WelcomeActivity extends BaseActivity {
     private void initView() {
         Glide.with(this)
                 .load("http://img9.jiwu.com/jiwu_news_pics/20170103/1483428523282_000.gif")
-                .transition(new DrawableTransitionOptions().crossFade(2000))
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {

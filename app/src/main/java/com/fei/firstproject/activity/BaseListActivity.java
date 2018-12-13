@@ -25,10 +25,6 @@ import butterknife.BindView;
 
 public abstract class BaseListActivity extends BaseActivity {
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.app_bar_layout)
-    AppBarLayout appBarLayout;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @Nullable
@@ -40,6 +36,14 @@ public abstract class BaseListActivity extends BaseActivity {
     @Override
     public int getContentViewResId() {
         return R.layout.activity_base_list;
+    }
+
+    @Override
+    public void initTitle() {
+        appHeadView.setFlHeadLeftPadding(getResources().getDimensionPixelSize(R.dimen.size_10));
+        appHeadView.setLeftStyle(AppHeadView.IMAGE);
+        appHeadView.setFlHeadLeftVisible(View.VISIBLE);
+        appHeadView.setLeftDrawable(R.drawable.selector_head_left_arrow);
     }
 
     @Override

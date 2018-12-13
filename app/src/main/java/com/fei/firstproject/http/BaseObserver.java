@@ -1,6 +1,7 @@
 package com.fei.firstproject.http;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.fei.firstproject.entity.BaseEntity;
 import com.fei.firstproject.http.exceptiion.ExceptionEngine;
@@ -40,7 +41,7 @@ public abstract class BaseObserver<T> implements Observer<BaseEntity<T>> {
 
     @Override
     public void onError(Throwable e) {
-        Utils.showToast(mContext, ExceptionEngine.handleException(e).getMessage());
+        onHandleError(ExceptionEngine.handleException(e).getMessage());
     }
 
     @Override
@@ -52,6 +53,8 @@ public abstract class BaseObserver<T> implements Observer<BaseEntity<T>> {
     protected abstract void onHandleSuccess(T t);
 
     protected void onHandleError(String msg) {
-        Utils.showToast(mContext, msg);
+        if (!TextUtils.isEmpty(msg)) {
+            Utils.showToast(mContext, msg);
+        }
     }
 }

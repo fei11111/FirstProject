@@ -82,16 +82,21 @@ public class CircleStrokeView extends View {
         canvas.drawCircle(centerX, centerY, radius, bgPaint);
     }
 
-    public void startAnimator(final TextView tvTotal, final TextView tvPercent, int time) {
-        ValueAnimator animator = ValueAnimator.ofInt(0, 360);
+    public void startAnimator(final int total, final TextView tvTotal, final TextView tvPercent, final int time) {
+        ValueAnimator animator = ValueAnimator.ofInt(0, total);
         animator.setDuration(time);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 sweepAngle = (int) animation.getAnimatedValue();
-                tvTotal.setText(sweepAngle + "");
-                int percent = (int) (sweepAngle / 360 * 100);
-                tvPercent.setText(percent + "");
+                if (tvTotal != null) {
+                    tvTotal.setText(sweepAngle + "");
+                }
+                int percent = (int) (sweepAngle / total * 100);
+                if (tvPercent != null) {
+                    tvPercent.setText(percent + "");
+                }
+                sweepAngle = sweepAngle / total * 360;
                 invalidate();
             }
         });

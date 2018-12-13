@@ -3,11 +3,9 @@ package com.fei.firstproject.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -30,7 +28,6 @@ import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.SPUtils;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.utils.WxApiUtils;
-import com.fei.firstproject.web.WebActivity;
 import com.fei.firstproject.widget.AppHeadView;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
@@ -48,18 +45,12 @@ import io.reactivex.Observable;
 
 public class MainActivity extends BaseActivity {
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
     @BindView(R.id.ll_bottom_main)
     LinearLayout llBottomMain;
     @BindView(R.id.ll_bottom_make)
     LinearLayout llBottomMake;
     @BindView(R.id.ll_bottom_me)
     LinearLayout llBottomMe;
-    @BindView(R.id.appHeadView)
-    AppHeadView appHeadView;
-    @BindView(R.id.app_bar_layout)
-    AppBarLayout appBarLayout;
     @BindView(R.id.bottom_layout)
     LinearLayout bottomLayout;
     @BindView(R.id.fl_main_container)
@@ -102,6 +93,16 @@ public class MainActivity extends BaseActivity {
     @Override
     public int getContentViewResId() {
         return R.layout.activity_main;
+    }
+
+    @Override
+    public void initTitle() {
+        appHeadView.setLeftStyle(AppHeadView.IMAGE);
+        appHeadView.setFlHeadLeftVisible(View.VISIBLE);
+        appHeadView.setMiddleStyle(AppHeadView.SEARCH);
+        appHeadView.setMiddleSearchHint(getResources().getString(R.string.recommend_tip));
+        appHeadView.setRightStyle(AppHeadView.IMAGE);
+        appHeadView.setFlHeadRightVisible(View.VISIBLE);
     }
 
     @Override

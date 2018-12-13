@@ -4,6 +4,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -17,6 +18,7 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.fei.firstproject.R;
 import com.fei.firstproject.utils.LogUtils;
+import com.fei.firstproject.widget.AppHeadView;
 
 import butterknife.BindView;
 
@@ -26,10 +28,6 @@ import butterknife.BindView;
 
 public class MapActivity extends BaseActivity {
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.app_bar_layout)
-    AppBarLayout appBarLayout;
     @BindView(R.id.btn_confirm)
     Button btnConfirm;
     @BindView(R.id.map)
@@ -81,6 +79,11 @@ public class MapActivity extends BaseActivity {
     @Override
     public int getContentViewResId() {
         return R.layout.activity_map;
+    }
+
+    @Override
+    public void initTitle() {
+        setBackTitle(getString(R.string.confirm_address));
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.fei.firstproject.web;
+package com.fei.firstproject.activity;
 
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
@@ -19,7 +19,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
-import com.fei.firstproject.activity.BaseActivity;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.AppHeadView;
 
@@ -32,8 +31,6 @@ import butterknife.OnClick;
 
 public class WebActivity extends BaseActivity {
 
-    @BindView(R.id.appHeadView)
-    AppHeadView appHeadView;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
     @BindView(R.id.webView)
@@ -64,8 +61,20 @@ public class WebActivity extends BaseActivity {
     }
 
     @Override
+    public void initTitle() {
+        appHeadView.setFlHeadLeftPadding(getResources().getDimensionPixelSize(R.dimen.size_10));
+        appHeadView.setLeftStyle(AppHeadView.IMAGE);
+        appHeadView.setFlHeadLeftVisible(View.VISIBLE);
+        appHeadView.setLeftDrawable(R.drawable.selector_head_left_arrow);
+        appHeadView.setMiddleStyle(AppHeadView.SEARCH);
+        appHeadView.setMiddleSearchHint(getString(R.string.web_search_tip));
+        appHeadView.setFlHeadRightVisible(View.VISIBLE);
+        appHeadView.setRightStyle(AppHeadView.TEXT);
+        appHeadView.setRightText(getString(R.string.go_to));
+    }
+
+    @Override
     public void init(Bundle savedInstanceState) {
-        appHeadView.setMiddleSearchDisable();
         initWebView();
         initListener();
         initUrl();

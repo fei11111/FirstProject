@@ -194,6 +194,11 @@ public class VideoPlayerActivity extends BaseActivity {
     }
 
     @Override
+    public void initTitle() {
+        appHeadView.setVisibility(View.GONE);
+    }
+
+    @Override
     public void init(Bundle savedInstanceState) {
         String url = getIntent().getStringExtra("url");
         if (!TextUtils.isEmpty(url)) {

@@ -1,34 +1,24 @@
 package com.fei.firstproject.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
-import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
-import android.widget.TextView;
 
 import com.fei.firstproject.R;
-import com.fei.firstproject.widget.AppHeadView;
 import com.fei.firstproject.widget.VerifyCodeView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Fei on 2017/8/31.
  */
 
 public class RegisterActivity extends BaseActivity {
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.app_bar_layout)
-    AppBarLayout appBarLayout;
+
     @BindView(R.id.login_progress)
     ProgressBar loginProgress;
     @BindView(R.id.et_username)
@@ -67,26 +57,13 @@ public class RegisterActivity extends BaseActivity {
     }
 
     @Override
-    public void init(Bundle savedInstanceState) {
-        initListener();
+    public void initTitle() {
+        setBackTitle(getString(R.string.register));
     }
 
-    private void initListener() {
-        appHeadView.setOnLeftRightClickListener(new AppHeadView.onAppHeadViewListener() {
-            @Override
-            public void onLeft(View view) {
-                onBackPressed();
-            }
+    @Override
+    public void init(Bundle savedInstanceState) {
 
-            @Override
-            public void onRight(View view) {
-            }
-
-            @Override
-            public void onEdit(TextView v, int actionId, KeyEvent event) {
-
-            }
-        });
     }
 
     @Override
@@ -94,10 +71,4 @@ public class RegisterActivity extends BaseActivity {
 
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

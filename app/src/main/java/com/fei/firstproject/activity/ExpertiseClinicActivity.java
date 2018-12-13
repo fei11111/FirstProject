@@ -55,10 +55,6 @@ public class ExpertiseClinicActivity extends BaseActivity {
     LinearLayout llExpertiseRoom;
     @BindView(R.id.ll_emergency_room)
     LinearLayout llEmergencyRoom;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.app_bar_layout)
-    AppBarLayout appBarLayout;
     @BindView(R.id.ll_left)
     LinearLayout llLeft;
     @BindView(R.id.ll_right)
@@ -107,6 +103,19 @@ public class ExpertiseClinicActivity extends BaseActivity {
     @Override
     public int getContentViewResId() {
         return R.layout.activity_expertise_clinic;
+    }
+
+    @Override
+    public void initTitle() {
+        appHeadView.setFlHeadLeftPadding(getResources().getDimensionPixelSize(R.dimen.size_10));
+        appHeadView.setLeftStyle(AppHeadView.IMAGE);
+        appHeadView.setFlHeadLeftVisible(View.VISIBLE);
+        appHeadView.setLeftDrawable(R.drawable.selector_head_left_arrow);
+        appHeadView.setMiddleStyle(AppHeadView.SEARCH);
+        appHeadView.setMiddleSearchHint(getString(R.string.hot_question_hint));
+        appHeadView.setFlHeadRightVisible(View.VISIBLE);
+        appHeadView.setRightStyle(AppHeadView.TEXT);
+        appHeadView.setRightText(getString(R.string.search));
     }
 
     @Override

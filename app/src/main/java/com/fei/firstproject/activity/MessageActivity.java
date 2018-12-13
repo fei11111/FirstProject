@@ -41,6 +41,7 @@ public class MessageActivity extends BaseListActivity {
 
     }
 
+
     @Override
     public void initRequest() {
         getMessage();

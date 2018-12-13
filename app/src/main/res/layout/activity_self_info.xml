@@ -1,40 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
     android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:orientation="vertical">
-
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        app:elevation="0dp">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
-
-            <com.fei.firstproject.widget.AppHeadView
-                android:id="@+id/appHeadView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:leftDrawable="@drawable/selector_head_left_arrow"
-                app:leftPadding="@dimen/size_10"
-                app:leftStyle="image"
-                app:leftVisible="visible"
-                app:middleStyle="text"
-                app:middleText="@string/self_info"
-                app:rightVisible="invisible"></com.fei.firstproject.widget.AppHeadView>
-        </android.support.v7.widget.Toolbar>
-
-    </android.support.design.widget.AppBarLayout>
+    android:focusableInTouchMode="true">
 
     <include layout="@layout/view_default_bg" />
 
@@ -46,7 +16,6 @@
         android:overScrollMode="never"
         android:requiresFadingEdge="none"
         android:visibility="gone"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:srlDisableContentWhenLoading="true"
         app:srlDisableContentWhenRefresh="true"
         app:srlEnableAutoLoadmore="false"
@@ -67,13 +36,13 @@
 
             <Button
                 android:id="@+id/btn_save"
+                style="@style/Font15Style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:background="@drawable/selector_rect_btn_bg"
                 android:text="@string/edit"
-                android:textColor="@color/colorWhite"
-                style="@style/Font15Style" />
+                android:textColor="@color/colorWhite" />
 
             <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
@@ -96,16 +65,16 @@
                         app:showDividers="middle">
 
                         <TextView
+                            style="@style/Font15Style"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:paddingBottom="@dimen/size_10"
                             android:paddingLeft="@dimen/size_16"
-                            android:paddingRight="@dimen/size_16"
                             android:paddingTop="@dimen/size_10"
+                            android:paddingRight="@dimen/size_16"
+                            android:paddingBottom="@dimen/size_10"
                             android:text="@string/base_info"
-                            android:textColor="@color/colorPrimary"
-                            style="@style/Font15Style" />
+                            android:textColor="@color/colorPrimary" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -113,29 +82,29 @@
                             android:background="?attr/selectableItemBackground"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            android:paddingBottom="@dimen/size_10"
                             android:paddingLeft="@dimen/size_16"
+                            android:paddingTop="@dimen/size_10"
                             android:paddingRight="@dimen/size_16"
-                            android:paddingTop="@dimen/size_10">
+                            android:paddingBottom="@dimen/size_10">
 
                             <TextView
+                                style="@style/Font15Style"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="left"
                                 android:text="@string/account"
-                                android:textColor="@color/colorText"
-                                style="@style/Font15Style" />
+                                android:textColor="@color/colorText" />
 
                             <TextView
                                 android:id="@+id/tv_account"
+                                style="@style/Font15Style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/size_16"
                                 android:ellipsize="end"
                                 android:gravity="right"
                                 android:lines="1"
-                                android:textColor="@color/colorTextSub"
-                                style="@style/Font15Style" />
+                                android:textColor="@color/colorTextSub" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -144,29 +113,29 @@
                             android:background="?attr/selectableItemBackground"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            android:paddingBottom="@dimen/size_10"
                             android:paddingLeft="@dimen/size_16"
+                            android:paddingTop="@dimen/size_10"
                             android:paddingRight="@dimen/size_16"
-                            android:paddingTop="@dimen/size_10">
+                            android:paddingBottom="@dimen/size_10">
 
                             <TextView
+                                style="@style/Font15Style"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="left"
                                 android:text="@string/user_name"
-                                android:textColor="@color/colorText"
-                                style="@style/Font15Style" />
+                                android:textColor="@color/colorText" />
 
                             <TextView
                                 android:id="@+id/tv_user_name"
+                                style="@style/Font15Style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/size_16"
                                 android:ellipsize="end"
                                 android:gravity="right"
                                 android:lines="1"
-                                android:textColor="@color/colorTextSub"
-                                style="@style/Font15Style" />
+                                android:textColor="@color/colorTextSub" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -175,29 +144,29 @@
                             android:background="?attr/selectableItemBackground"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            android:paddingBottom="@dimen/size_10"
                             android:paddingLeft="@dimen/size_16"
+                            android:paddingTop="@dimen/size_10"
                             android:paddingRight="@dimen/size_16"
-                            android:paddingTop="@dimen/size_10">
+                            android:paddingBottom="@dimen/size_10">
 
                             <TextView
+                                style="@style/Font15Style"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="left"
                                 android:text="@string/current_role"
-                                android:textColor="@color/colorText"
-                                style="@style/Font15Style" />
+                                android:textColor="@color/colorText" />
 
                             <TextView
                                 android:id="@+id/tv_current_role"
+                                style="@style/Font15Style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/size_16"
                                 android:ellipsize="end"
                                 android:gravity="right"
                                 android:lines="1"
-                                android:textColor="@color/colorTextSub"
-                                style="@style/Font15Style" />
+                                android:textColor="@color/colorTextSub" />
                         </LinearLayout>
 
                         <com.fei.firstproject.widget.PartHeadView
@@ -212,29 +181,29 @@
                             android:background="?attr/selectableItemBackground"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            android:paddingBottom="@dimen/size_10"
                             android:paddingLeft="@dimen/size_16"
+                            android:paddingTop="@dimen/size_10"
                             android:paddingRight="@dimen/size_16"
-                            android:paddingTop="@dimen/size_10">
+                            android:paddingBottom="@dimen/size_10">
 
                             <TextView
+                                style="@style/Font15Style"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="left"
                                 android:text="@string/account_create_time"
-                                android:textColor="@color/colorText"
-                                style="@style/Font15Style" />
+                                android:textColor="@color/colorText" />
 
                             <TextView
                                 android:id="@+id/tv_account_create_time"
+                                style="@style/Font15Style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/size_16"
                                 android:ellipsize="end"
                                 android:gravity="right"
                                 android:lines="1"
-                                android:textColor="@color/colorTextSub"
-                                style="@style/Font15Style"/>
+                                android:textColor="@color/colorTextSub" />
                         </LinearLayout>
                     </android.support.v7.widget.LinearLayoutCompat>
 
@@ -250,16 +219,16 @@
                         app:showDividers="middle">
 
                         <TextView
+                            style="@style/Font15Style"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:paddingBottom="@dimen/size_10"
                             android:paddingLeft="@dimen/size_16"
-                            android:paddingRight="@dimen/size_16"
                             android:paddingTop="@dimen/size_10"
+                            android:paddingRight="@dimen/size_16"
+                            android:paddingBottom="@dimen/size_10"
                             android:text="@string/farmer"
-                            android:textColor="@color/colorPrimary"
-                            style="@style/Font15Style" />
+                            android:textColor="@color/colorPrimary" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -267,29 +236,29 @@
                             android:background="?attr/selectableItemBackground"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            android:paddingBottom="@dimen/size_10"
                             android:paddingLeft="@dimen/size_16"
+                            android:paddingTop="@dimen/size_10"
                             android:paddingRight="@dimen/size_16"
-                            android:paddingTop="@dimen/size_10">
+                            android:paddingBottom="@dimen/size_10">
 
                             <TextView
+                                style="@style/Font15Style"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="left"
                                 android:text="@string/name"
-                                android:textColor="@color/colorText"
-                                style="@style/Font15Style" />
+                                android:textColor="@color/colorText" />
 
                             <TextView
                                 android:id="@+id/tv_farmer_name"
+                                style="@style/Font15Style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/size_16"
                                 android:ellipsize="end"
                                 android:gravity="right"
                                 android:lines="1"
-                                android:textColor="@color/colorTextSub"
-                                style="@style/Font15Style" />
+                                android:textColor="@color/colorTextSub" />
                         </LinearLayout>
 
                         <com.fei.firstproject.widget.PartHeadView
@@ -304,21 +273,22 @@
                             android:background="?attr/selectableItemBackground"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            android:paddingBottom="@dimen/size_10"
                             android:paddingLeft="@dimen/size_16"
+                            android:paddingTop="@dimen/size_10"
                             android:paddingRight="@dimen/size_16"
-                            android:paddingTop="@dimen/size_10">
+                            android:paddingBottom="@dimen/size_10">
 
                             <TextView
+                                style="@style/Font15Style"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="left"
                                 android:text="@string/detail_address"
-                                android:textColor="@color/colorText"
-                                style="@style/Font15Style"/>
+                                android:textColor="@color/colorText" />
 
                             <EditText
                                 android:id="@+id/et_farmer_detail_address"
+                                style="@style/Font15Style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/size_16"
@@ -327,8 +297,7 @@
                                 android:enabled="false"
                                 android:gravity="right"
                                 android:lines="1"
-                                android:textColor="@color/colorTextSub"
-                                style="@style/Font15Style"/>
+                                android:textColor="@color/colorTextSub" />
                         </LinearLayout>
 
                     </android.support.v7.widget.LinearLayoutCompat>
@@ -345,16 +314,16 @@
                         app:showDividers="middle">
 
                         <TextView
+                            style="@style/Font15Style"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:paddingBottom="@dimen/size_10"
                             android:paddingLeft="@dimen/size_16"
-                            android:paddingRight="@dimen/size_16"
                             android:paddingTop="@dimen/size_10"
+                            android:paddingRight="@dimen/size_16"
+                            android:paddingBottom="@dimen/size_10"
                             android:text="@string/service_station"
-                            android:textColor="@color/colorPrimary"
-                            style="@style/Font15Style" />
+                            android:textColor="@color/colorPrimary" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -362,29 +331,29 @@
                             android:background="?attr/selectableItemBackground"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            android:paddingBottom="@dimen/size_10"
                             android:paddingLeft="@dimen/size_16"
+                            android:paddingTop="@dimen/size_10"
                             android:paddingRight="@dimen/size_16"
-                            android:paddingTop="@dimen/size_10">
+                            android:paddingBottom="@dimen/size_10">
 
                             <TextView
+                                style="@style/Font15Style"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="left"
                                 android:text="@string/service_station_name"
-                                android:textColor="@color/colorText"
-                                style="@style/Font15Style" />
+                                android:textColor="@color/colorText" />
 
                             <TextView
                                 android:id="@+id/tv_service_station_name"
+                                style="@style/Font15Style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/size_16"
                                 android:ellipsize="end"
                                 android:gravity="right"
                                 android:lines="1"
-                                android:textColor="@color/colorTextSub"
-                                style="@style/Font15Style"/>
+                                android:textColor="@color/colorTextSub" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -393,29 +362,29 @@
                             android:background="?attr/selectableItemBackground"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            android:paddingBottom="@dimen/size_10"
                             android:paddingLeft="@dimen/size_16"
+                            android:paddingTop="@dimen/size_10"
                             android:paddingRight="@dimen/size_16"
-                            android:paddingTop="@dimen/size_10">
+                            android:paddingBottom="@dimen/size_10">
 
                             <TextView
+                                style="@style/Font15Style"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="left"
                                 android:text="@string/legal_representative"
-                                android:textColor="@color/colorText"
-                                style="@style/Font15Style"/>
+                                android:textColor="@color/colorText" />
 
                             <TextView
                                 android:id="@+id/tv_service_station_legal_representative"
+                                style="@style/Font15Style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/size_16"
                                 android:ellipsize="end"
                                 android:gravity="right"
                                 android:lines="1"
-                                android:textColor="@color/colorTextSub"
-                                style="@style/Font15Style"/>
+                                android:textColor="@color/colorTextSub" />
                         </LinearLayout>
 
                         <com.fei.firstproject.widget.PartHeadView
@@ -430,21 +399,22 @@
                             android:background="?attr/selectableItemBackground"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            android:paddingBottom="@dimen/size_10"
                             android:paddingLeft="@dimen/size_16"
+                            android:paddingTop="@dimen/size_10"
                             android:paddingRight="@dimen/size_16"
-                            android:paddingTop="@dimen/size_10">
+                            android:paddingBottom="@dimen/size_10">
 
                             <TextView
+                                style="@style/Font15Style"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="left"
                                 android:text="@string/detail_address"
-                                android:textColor="@color/colorText"
-                                style="@style/Font15Style" />
+                                android:textColor="@color/colorText" />
 
                             <EditText
                                 android:id="@+id/et_service_station_detail_address"
+                                style="@style/Font15Style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/size_16"
@@ -453,8 +423,7 @@
                                 android:enabled="false"
                                 android:gravity="right"
                                 android:lines="1"
-                                android:textColor="@color/colorTextSub"
-                                style="@style/Font15Style"/>
+                                android:textColor="@color/colorTextSub" />
                         </LinearLayout>
                     </android.support.v7.widget.LinearLayoutCompat>
 
@@ -470,35 +439,35 @@
                         app:showDividers="middle">
 
                         <TextView
+                            style="@style/Font15Style"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:paddingBottom="@dimen/size_10"
                             android:paddingLeft="@dimen/size_16"
-                            android:paddingRight="@dimen/size_16"
                             android:paddingTop="@dimen/size_10"
+                            android:paddingRight="@dimen/size_16"
+                            android:paddingBottom="@dimen/size_10"
                             android:text="@string/expertise"
-                            android:textColor="@color/colorPrimary"
-                            style="@style/Font15Style" />
+                            android:textColor="@color/colorPrimary" />
 
                         <RelativeLayout
                             android:id="@+id/rl_expertise_icon"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="?attr/selectableItemBackground"
-                            android:paddingBottom="@dimen/size_10"
                             android:paddingLeft="@dimen/size_16"
+                            android:paddingTop="@dimen/size_10"
                             android:paddingRight="@dimen/size_16"
-                            android:paddingTop="@dimen/size_10">
+                            android:paddingBottom="@dimen/size_10">
 
                             <TextView
+                                style="@style/Font15Style"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
                                 android:gravity="left"
                                 android:text="@string/expertise_icon"
-                                android:textColor="@color/colorText"
-                                style="@style/Font15Style" />
+                                android:textColor="@color/colorText" />
 
                             <ImageView
                                 android:id="@+id/iv_arrow"
@@ -526,29 +495,29 @@
                             android:background="?attr/selectableItemBackground"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            android:paddingBottom="@dimen/size_10"
                             android:paddingLeft="@dimen/size_16"
+                            android:paddingTop="@dimen/size_10"
                             android:paddingRight="@dimen/size_16"
-                            android:paddingTop="@dimen/size_10">
+                            android:paddingBottom="@dimen/size_10">
 
                             <TextView
+                                style="@style/Font15Style"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="left"
                                 android:text="@string/expertise_name"
-                                android:textColor="@color/colorText"
-                                style="@style/Font15Style"/>
+                                android:textColor="@color/colorText" />
 
                             <TextView
                                 android:id="@+id/tv_expertise_name"
+                                style="@style/Font15Style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/size_16"
                                 android:ellipsize="end"
                                 android:gravity="right"
                                 android:lines="1"
-                                android:textColor="@color/colorTextSub"
-                                style="@style/Font15Style"/>
+                                android:textColor="@color/colorTextSub" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -557,29 +526,29 @@
                             android:background="?attr/selectableItemBackground"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            android:paddingBottom="@dimen/size_10"
                             android:paddingLeft="@dimen/size_16"
+                            android:paddingTop="@dimen/size_10"
                             android:paddingRight="@dimen/size_16"
-                            android:paddingTop="@dimen/size_10">
+                            android:paddingBottom="@dimen/size_10">
 
                             <TextView
+                                style="@style/Font15Style"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="left"
                                 android:text="@string/speciality_skill"
-                                android:textColor="@color/colorText"
-                                style="@style/Font15Style"/>
+                                android:textColor="@color/colorText" />
 
                             <TextView
                                 android:id="@+id/tv_expertise_speciality_skill"
+                                style="@style/Font15Style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/size_16"
                                 android:ellipsize="end"
                                 android:gravity="right"
                                 android:lines="1"
-                                android:textColor="@color/colorTextSub"
-                                style="@style/Font15Style"/>
+                                android:textColor="@color/colorTextSub" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -588,29 +557,29 @@
                             android:background="?attr/selectableItemBackground"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            android:paddingBottom="@dimen/size_10"
                             android:paddingLeft="@dimen/size_16"
+                            android:paddingTop="@dimen/size_10"
                             android:paddingRight="@dimen/size_16"
-                            android:paddingTop="@dimen/size_10">
+                            android:paddingBottom="@dimen/size_10">
 
                             <TextView
+                                style="@style/Font15Style"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="left"
                                 android:text="@string/speciality_crop"
-                                android:textColor="@color/colorText"
-                                style="@style/Font15Style"/>
+                                android:textColor="@color/colorText" />
 
                             <TextView
                                 android:id="@+id/tv_expertise_speciality_crop"
+                                style="@style/Font15Style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/size_16"
                                 android:ellipsize="end"
                                 android:gravity="right"
                                 android:lines="1"
-                                android:textColor="@color/colorTextSub"
-                                style="@style/Font15Style" />
+                                android:textColor="@color/colorTextSub" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -619,29 +588,29 @@
                             android:background="?attr/selectableItemBackground"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            android:paddingBottom="@dimen/size_10"
                             android:paddingLeft="@dimen/size_16"
+                            android:paddingTop="@dimen/size_10"
                             android:paddingRight="@dimen/size_16"
-                            android:paddingTop="@dimen/size_10">
+                            android:paddingBottom="@dimen/size_10">
 
                             <TextView
+                                style="@style/Font15Style"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="left"
                                 android:text="@string/expertise_level"
-                                android:textColor="@color/colorText"
-                                style="@style/Font15Style" />
+                                android:textColor="@color/colorText" />
 
                             <TextView
                                 android:id="@+id/tv_expertise_level"
+                                style="@style/Font15Style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/size_16"
                                 android:ellipsize="end"
                                 android:gravity="right"
                                 android:lines="1"
-                                android:textColor="@color/colorTextSub"
-                                style="@style/Font15Style"/>
+                                android:textColor="@color/colorTextSub" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -650,29 +619,29 @@
                             android:background="?attr/selectableItemBackground"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            android:paddingBottom="@dimen/size_10"
                             android:paddingLeft="@dimen/size_16"
+                            android:paddingTop="@dimen/size_10"
                             android:paddingRight="@dimen/size_16"
-                            android:paddingTop="@dimen/size_10">
+                            android:paddingBottom="@dimen/size_10">
 
                             <TextView
+                                style="@style/Font15Style"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="left"
                                 android:text="@string/working_time"
-                                android:textColor="@color/colorText"
-                                style="@style/Font15Style" />
+                                android:textColor="@color/colorText" />
 
                             <TextView
                                 android:id="@+id/tv_expertise_working_time"
+                                style="@style/Font15Style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/size_16"
                                 android:ellipsize="end"
                                 android:gravity="right"
                                 android:lines="1"
-                                android:textColor="@color/colorTextSub"
-                                style="@style/Font15Style" />
+                                android:textColor="@color/colorTextSub" />
                         </LinearLayout>
 
                         <com.fei.firstproject.widget.PartHeadView
@@ -687,21 +656,22 @@
                             android:background="?attr/selectableItemBackground"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            android:paddingBottom="@dimen/size_10"
                             android:paddingLeft="@dimen/size_16"
+                            android:paddingTop="@dimen/size_10"
                             android:paddingRight="@dimen/size_16"
-                            android:paddingTop="@dimen/size_10">
+                            android:paddingBottom="@dimen/size_10">
 
                             <TextView
+                                style="@style/Font15Style"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="left"
                                 android:text="@string/detail_address"
-                                android:textColor="@color/colorText"
-                                style="@style/Font15Style" />
+                                android:textColor="@color/colorText" />
 
                             <EditText
                                 android:id="@+id/et_expertise_detail_address"
+                                style="@style/Font15Style"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/size_16"
@@ -710,8 +680,7 @@
                                 android:enabled="false"
                                 android:gravity="right"
                                 android:lines="1"
-                                android:textColor="@color/colorTextSub"
-                                style="@style/Font15Style" />
+                                android:textColor="@color/colorTextSub" />
                         </LinearLayout>
 
                         <com.fei.firstproject.widget.PartHeadView
@@ -731,4 +700,4 @@
             </android.support.v4.widget.NestedScrollView>
         </RelativeLayout>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-</LinearLayout>
+</FrameLayout>

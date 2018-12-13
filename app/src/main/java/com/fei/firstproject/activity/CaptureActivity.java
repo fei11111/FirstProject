@@ -65,8 +65,6 @@ public class CaptureActivity extends BaseActivity implements Callback {
     Button btnLight;
     @BindView(R.id.btn_openimg)
     Button btnOpenimg;
-    @BindView(R.id.appHeadView)
-    AppHeadView appHeadView;
 
     private boolean playBeep;
     private boolean vibrate;
@@ -134,35 +132,20 @@ public class CaptureActivity extends BaseActivity implements Callback {
     }
 
     @Override
+    public void initTitle() {
+        setBackTitle(getString(R.string.scan));
+    }
+
+    @Override
     public void init(Bundle savedInstanceState) {
         CameraManager.init(getApplication());
         hasSurface = false;
         inactivityTimer = new InactivityTimer(this);
-        initListener();
     }
 
     @Override
     public void initRequest() {
 
-    }
-
-    private void initListener() {
-        appHeadView.setOnLeftRightClickListener(new AppHeadView.onAppHeadViewListener() {
-            @Override
-            public void onLeft(View view) {
-                onBackPressed();
-            }
-
-            @Override
-            public void onRight(View view) {
-
-            }
-
-            @Override
-            public void onEdit(TextView v, int actionId, KeyEvent event) {
-
-            }
-        });
     }
 
     @Override

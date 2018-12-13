@@ -43,8 +43,6 @@ public class MarketInfoActivity extends BaseActivity {
 
     private static final int REQUEST_ACTIVITY_CODE_PARAMS = 100;
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
     @BindView(R.id.tv_variety)
     TextView tvVariety;
     @BindView(R.id.rl_variety)
@@ -103,6 +101,11 @@ public class MarketInfoActivity extends BaseActivity {
     }
 
     @Override
+    public void initTitle() {
+        setBackTitle(getString(R.string.maket_info));
+    }
+
+    @Override
     public void init(Bundle savedInstanceState) {
         initListener();
         initRecyclerView();
@@ -119,23 +122,6 @@ public class MarketInfoActivity extends BaseActivity {
     }
 
     private void initListener() {
-        appHeadView.setOnLeftRightClickListener(new AppHeadView.onAppHeadViewListener() {
-            @Override
-            public void onLeft(View view) {
-                onBackPressed();
-            }
-
-            @Override
-            public void onRight(View view) {
-
-            }
-
-            @Override
-            public void onEdit(TextView v, int actionId, KeyEvent event) {
-
-            }
-        });
-
         refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {

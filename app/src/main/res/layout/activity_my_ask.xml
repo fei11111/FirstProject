@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_20"
+        android:layout_marginTop="@dimen/size_20"
+        android:text="@string/problem_type" />
+
+    <TextView
+        android:id="@+id/tv_problem_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/size_20"
+        android:background="@drawable/selector_et"
+        android:drawableRight="@drawable/ic_arrow_down"
+        android:gravity="center_vertical"
+        android:lines="1"
+        android:text="@string/problem_type_hint"
+        android:textSize="@dimen/tx_13" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_20"
+        android:layout_marginTop="@dimen/size_20"
+        android:text="@string/problem_content" />
+
+    <EditText
+        android:id="@+id/et_problem_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/size_20"
+        android:background="@drawable/selector_et"
+        android:gravity="left"
+        android:hint="@string/problem_hint"
+        android:maxHeight="@dimen/size_150"
+        android:maxLines="5"
+        android:minHeight="@dimen/size_150"
+        android:textSize="@dimen/tx_13" />
+
+</LinearLayout>

@@ -50,6 +50,7 @@ public class MyAddressActivity extends BaseListActivity {
 
     }
 
+
     @Override
     public void initRequest() {
         getAddress();

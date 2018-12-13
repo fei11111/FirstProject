@@ -2,15 +2,8 @@ package com.fei.firstproject.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.HorizontalScrollView;
@@ -24,7 +17,6 @@ import com.fei.firstproject.adapter.CropAdapter;
 import com.fei.firstproject.adapter.RecommendPlanAdapter;
 import com.fei.firstproject.adapter.ShareAdapter;
 import com.fei.firstproject.config.AppConfig;
-import com.fei.firstproject.decoration.DividerGridItemDecoration;
 import com.fei.firstproject.entity.BaseEntity;
 import com.fei.firstproject.entity.CropEntity;
 import com.fei.firstproject.entity.RecommendEntity;
@@ -34,8 +26,6 @@ import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
 import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.inter.OnItemClickListener;
 import com.fei.firstproject.utils.Utils;
-import com.fei.firstproject.web.WebActivity;
-import com.fei.firstproject.widget.AppHeadView;
 import com.fei.firstproject.widget.NoScrollRecyclerView;
 import com.fei.firstproject.widget.PartHeadView;
 
@@ -59,10 +49,6 @@ import okhttp3.ResponseBody;
 
 public class FieldManageActivity extends BaseActivity {
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.app_bar_layout)
-    AppBarLayout appBarLayout;
     @BindView(R.id.ll_menu)
     LinearLayout llMenu;
     @BindView(R.id.hsv_field_manage)
@@ -111,8 +97,12 @@ public class FieldManageActivity extends BaseActivity {
     }
 
     @Override
+    public void initTitle() {
+        setBackTitle(getString(R.string.tjgl));
+    }
+
+    @Override
     public void init(Bundle savedInstanceState) {
-        initListener();
         initRecyclerView();
         initMenu();
     }
@@ -131,9 +121,9 @@ public class FieldManageActivity extends BaseActivity {
     }
 
     private void initRecyclerView() {
-        setGridRecycleViewSetting(rvCrop,this,2);
-        setLinearRecycleViewSetting(rvRecommendPlan,this);
-        setLinearRecycleViewSetting(rvShare,this);
+        setGridRecycleViewSetting(rvCrop, this, 2);
+        setLinearRecycleViewSetting(rvRecommendPlan, this);
+        setLinearRecycleViewSetting(rvShare, this);
     }
 
     private void initMenu() {
@@ -175,26 +165,6 @@ public class FieldManageActivity extends BaseActivity {
         iv_head_menu.setImageResource(drawable);
         tv_head_menu.setText(menuName);
         return itemView;
-    }
-
-
-    private void initListener() {
-        appHeadView.setOnLeftRightClickListener(new AppHeadView.onAppHeadViewListener() {
-            @Override
-            public void onLeft(View view) {
-                onBackPressed();
-            }
-
-            @Override
-            public void onRight(View view) {
-
-            }
-
-            @Override
-            public void onEdit(TextView v, int actionId, KeyEvent event) {
-
-            }
-        });
     }
 
     public void getRecommendPlan() {

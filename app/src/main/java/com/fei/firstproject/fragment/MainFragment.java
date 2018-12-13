@@ -8,6 +8,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.HorizontalScrollView;
@@ -28,16 +29,13 @@ import com.fei.firstproject.activity.FieldManageActivity;
 import com.fei.firstproject.activity.MarketInfoActivity;
 import com.fei.firstproject.activity.ProductLibActivity;
 import com.fei.firstproject.activity.RecommendPlanActivity;
+import com.fei.firstproject.activity.WebActivity;
 import com.fei.firstproject.adapter.NcwAdapter;
 import com.fei.firstproject.adapter.RecommendPlanAdapter;
 import com.fei.firstproject.config.AppConfig;
-import com.fei.firstproject.entity.BaseEntity;
 import com.fei.firstproject.entity.NcwEntity;
 import com.fei.firstproject.entity.RecommendEntity;
-import com.fei.firstproject.http.BaseObserver;
-import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
 import com.fei.firstproject.http.HttpMgr;
-import com.fei.firstproject.http.HttpUtils;
 import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.http.inter.CallBack;
 import com.fei.firstproject.image.GlideImageLoader;
@@ -45,7 +43,6 @@ import com.fei.firstproject.inter.OnItemClickListener;
 import com.fei.firstproject.utils.LocationUtils;
 import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.Utils;
-import com.fei.firstproject.web.WebActivity;
 import com.fei.firstproject.widget.NoScrollRecyclerView;
 import com.fei.firstproject.widget.PartHeadView;
 import com.fei.firstproject.widget.TextSwitchView;
@@ -58,7 +55,6 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.Observable;
 
 import static android.content.Context.SENSOR_SERVICE;
 
@@ -193,11 +189,13 @@ public class MainFragment extends BaseFragment {
             if (rCode == 1000) {
                 if (weatherLiveResult != null && weatherLiveResult.getLiveResult() != null) {
                     LocalWeatherLive weatherlive = weatherLiveResult.getLiveResult();
-                    String[] resources = {weatherlive.getCity(),
-                            weatherlive.getWeather() + " " + weatherlive.getTemperature() + "℃",
-                            "湿度 " + weatherlive.getHumidity() + "%",
-                            weatherlive.getWindDirection() + "风  " + weatherlive.getWindPower() + "级"};
-                    initSwitch(resources);
+                    if (!TextUtils.isEmpty(weatherlive.getTemperature()) && !TextUtils.isEmpty(weatherlive.getHumidity()) && !TextUtils.isEmpty(weatherlive.getWindDirection()) && !TextUtils.isEmpty(weatherlive.getWindPower())) {
+                        String[] resources = {weatherlive.getCity(),
+                                weatherlive.getWeather() + " " + weatherlive.getTemperature() + "℃",
+                                "湿度 " + weatherlive.getHumidity() + "%",
+                                weatherlive.getWindDirection() + "风  " + weatherlive.getWindPower() + "级"};
+                        initSwitch(resources);
+                    }
                 }
             }
         }

@@ -38,10 +38,6 @@ import okhttp3.ResponseBody;
 
 public class ProductDetailActivity extends BaseActivity {
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.app_bar_layout)
-    AppBarLayout appBarLayout;
     @BindView(R.id.tv_product_detail_title)
     TextView tvProductDetailTitle;
     @BindView(R.id.tv_product_detail_date)
@@ -84,6 +80,19 @@ public class ProductDetailActivity extends BaseActivity {
     @Override
     public int getContentViewResId() {
         return R.layout.activity_product_detail;
+    }
+
+    @Override
+    public void initTitle() {
+        appHeadView.setFlHeadLeftPadding(getResources().getDimensionPixelSize(R.dimen.size_10));
+        appHeadView.setLeftStyle(AppHeadView.IMAGE);
+        appHeadView.setFlHeadLeftVisible(View.VISIBLE);
+        appHeadView.setLeftDrawable(R.drawable.selector_head_left_arrow);
+        appHeadView.setMiddleStyle(AppHeadView.TEXT);
+        appHeadView.setMiddleText(getString(R.string.product_detail));
+        appHeadView.setFlHeadRightVisible(View.VISIBLE);
+        appHeadView.setRightStyle(AppHeadView.IMAGE);
+        appHeadView.setRightDrawable(R.drawable.selector_ic_location);
     }
 
     @Override

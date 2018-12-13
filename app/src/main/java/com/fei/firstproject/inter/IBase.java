@@ -32,6 +32,11 @@ public interface IBase {
     public int getContentViewResId();
 
     /**
+     * 初始化标题
+     * */
+    public void initTitle();
+
+    /**
      * 初始化
      */
     public void init(Bundle savedInstanceState);

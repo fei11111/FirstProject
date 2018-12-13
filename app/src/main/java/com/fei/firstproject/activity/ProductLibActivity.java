@@ -2,15 +2,11 @@ package com.fei.firstproject.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -53,8 +49,6 @@ import static com.fei.firstproject.R.id.tv_type;
 
 public class ProductLibActivity extends BaseActivity {
 
-    @BindView(R.id.app_bar_layout)
-    AppBarLayout appBarLayout;
     @BindView(tv_series)
     TextView tvSeries;
     @BindView(R.id.rl_series)
@@ -93,6 +87,19 @@ public class ProductLibActivity extends BaseActivity {
     @Override
     public int getContentViewResId() {
         return R.layout.activity_product_lib;
+    }
+
+    @Override
+    public void initTitle() {
+        appHeadView.setFlHeadLeftPadding(getResources().getDimensionPixelSize(R.dimen.size_10));
+        appHeadView.setLeftStyle(AppHeadView.IMAGE);
+        appHeadView.setFlHeadLeftVisible(View.VISIBLE);
+        appHeadView.setLeftDrawable(R.drawable.selector_head_left_arrow);
+        appHeadView.setMiddleStyle(AppHeadView.SEARCH);
+        appHeadView.setMiddleSearchHint(getString(R.string.product_lib_search_hint));
+        appHeadView.setRightStyle(AppHeadView.TEXT);
+        appHeadView.setRightText(getString(R.string.search));
+        appHeadView.setFlHeadRightVisible(View.VISIBLE);
     }
 
     @Override

@@ -40,10 +40,6 @@ import butterknife.BindView;
 public class AddressBookActivity extends BaseActivity {
 
     private static final int REQUEST_PERMISSION_CODE_CONTACTS = 100;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.app_bar_layout)
-    AppBarLayout appBarLayout;
     @BindView(R.id.letter)
     LetterView letter;
     @BindView(R.id.recyclerView)
@@ -138,13 +134,17 @@ public class AddressBookActivity extends BaseActivity {
     }
 
     @Override
+    public void initTitle() {
+        setBackTitle(getString(R.string.friends_list));
+    }
+
+    @Override
     public void init(Bundle savedInstanceState) {
         initListener();
         checkPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_PERMISSION_CODE_CONTACTS);
     }
 
     private void initListener() {
-        initAppHeadViewListener();
         initLetterListener();
         initRecycleListener();
     }
@@ -168,31 +168,12 @@ public class AddressBookActivity extends BaseActivity {
                 tvLetterTip.setVisibility(View.VISIBLE);
                 tvLetterTip.setText(letter);
                 int absolutePositionFromSelection = contactsAdapter.getAbsolutePositionFromSelection(letter.charAt(0));
-                manager.scrollToPositionWithOffset(absolutePositionFromSelection,0);
+                manager.scrollToPositionWithOffset(absolutePositionFromSelection, 0);
             }
 
             @Override
             public void onRelease() {
                 tvLetterTip.setVisibility(View.GONE);
-            }
-        });
-    }
-
-    private void initAppHeadViewListener() {
-        appHeadView.setOnLeftRightClickListener(new AppHeadView.onAppHeadViewListener() {
-            @Override
-            public void onLeft(View view) {
-                onBackPressed();
-            }
-
-            @Override
-            public void onRight(View view) {
-
-            }
-
-            @Override
-            public void onEdit(TextView v, int actionId, KeyEvent event) {
-
             }
         });
     }

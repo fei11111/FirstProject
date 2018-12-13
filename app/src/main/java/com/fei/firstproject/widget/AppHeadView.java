@@ -311,6 +311,14 @@ public class AppHeadView extends RelativeLayout {
         ivHeadRight.setImageResource(drawable);
     }
 
+    public void setFlHeadLeftPadding(int padding) {
+        setFrameLayoutPadding(flHeadLeft, padding);
+    }
+
+    public void setFlHeadRightPadding(int padding) {
+        setFrameLayoutPadding(flHeadRight, padding);
+    }
+
     public interface onAppHeadViewListener {
         public void onLeft(View view);
 

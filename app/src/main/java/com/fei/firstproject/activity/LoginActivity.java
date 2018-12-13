@@ -49,14 +49,8 @@ public class LoginActivity extends BaseActivity {
     EditText etPassword;
     @BindView(R.id.btn_login)
     Button rvSignIn;
-    @BindView(R.id.app_bar_layout)
-    AppBarLayout appBarLayout;
     @BindView(R.id.tv_register)
     TextView tvRegister;
-    @BindView(R.id.appHeadView)
-    AppHeadView appHeadView;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
     @BindView(R.id.llweixin)
     LinearLayout llweixin;
     @BindView(R.id.ll_qq)
@@ -94,28 +88,15 @@ public class LoginActivity extends BaseActivity {
     }
 
     @Override
+    public void initTitle() {
+        setBackTitle(getString(R.string.login));
+    }
+
+    @Override
     public void init(Bundle savedInstanceState) {
-        initListener();
+
     }
 
-    private void initListener() {
-        appHeadView.setOnLeftRightClickListener(new AppHeadView.onAppHeadViewListener() {
-            @Override
-            public void onLeft(View view) {
-                onBackPressed();
-            }
-
-            @Override
-            public void onRight(View view) {
-
-            }
-
-            @Override
-            public void onEdit(TextView v, int actionId, KeyEvent event) {
-
-            }
-        });
-    }
 
     @Override
     public void initRequest() {
