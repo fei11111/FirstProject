@@ -10,7 +10,9 @@ import com.fei.firstproject.adapter.MyAddressAdapter;
 import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.entity.AddressEntity;
 import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
+import com.fei.firstproject.http.HttpMgr;
 import com.fei.firstproject.http.factory.RetrofitFactory;
+import com.fei.firstproject.http.inter.CallBack;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.AppHeadView;
 
@@ -89,57 +91,54 @@ public class MyAddressActivity extends BaseListActivity {
     }
 
     public void getAddress() {
-        final Observable<ResponseBody> address = RetrofitFactory.getBigDb().getAddress(AppConfig.user.getId());
-        address.compose(this.<ResponseBody>createTransformer(true))
-                .subscribe(new BaseWithoutBaseEntityObserver<ResponseBody>(this) {
-                    @Override
-                    protected void onHandleSuccess(ResponseBody responseBody) {
-                        dismissLoading();
-                        refreshLayout.finishRefresh();
-                        refreshLayout.finishLoadmore();
-                        try {
-                            String string = responseBody.string();
-                            if (!TextUtils.isEmpty(string)) {
-                                JSONObject json = new JSONObject(string);
-                                String receiptAddress = json.getString("receiptAddress");
-                                if (!TextUtils.isEmpty(receiptAddress)) {
-                                    List<AddressEntity> addressEntities = JSON.parseArray(receiptAddress, AddressEntity.class);
-                                    if (addressEntities != null && addressEntities.size() > 0) {
-                                        refreshLayout.setVisibility(View.VISIBLE);
-                                        if (myAddressAdapter == null) {
-                                            myAddressAdapter = new MyAddressAdapter(MyAddressActivity.this, addressEntities);
-                                            myAddressAdapter.setOnItemContentClickLstener(onItemContentClickLstener);
-                                            recyclerView.setAdapter(myAddressAdapter);
-                                        } else {
-                                            myAddressAdapter.setAddressEntities(addressEntities);
-                                            myAddressAdapter.notifyDataSetChanged();
-                                        }
-                                    } else {
-                                        showNoDataView();
-                                    }
+        HttpMgr.getAddress(this, new CallBack<ResponseBody>() {
+            @Override
+            public void onSuccess(ResponseBody responseBody) {
+                dismissLoading();
+                refreshLayout.finishRefresh();
+                refreshLayout.finishLoadmore();
+                try {
+                    String string = responseBody.string();
+                    if (!TextUtils.isEmpty(string)) {
+                        JSONObject json = new JSONObject(string);
+                        String receiptAddress = json.getString("receiptAddress");
+                        if (!TextUtils.isEmpty(receiptAddress)) {
+                            List<AddressEntity> addressEntities = JSON.parseArray(receiptAddress, AddressEntity.class);
+                            if (addressEntities != null && addressEntities.size() > 0) {
+                                refreshLayout.setVisibility(View.VISIBLE);
+                                if (myAddressAdapter == null) {
+                                    myAddressAdapter = new MyAddressAdapter(MyAddressActivity.this, addressEntities);
+                                    myAddressAdapter.setOnItemContentClickLstener(onItemContentClickLstener);
+                                    recyclerView.setAdapter(myAddressAdapter);
                                 } else {
-                                    showNoDataView();
+                                    myAddressAdapter.setAddressEntities(addressEntities);
+                                    myAddressAdapter.notifyDataSetChanged();
                                 }
                             } else {
                                 showNoDataView();
                             }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            showNoDataView();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        } else {
                             showNoDataView();
                         }
+                    } else {
+                        showNoDataView();
                     }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    showNoDataView();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    showNoDataView();
+                }
+            }
 
-                    @Override
-                    protected void onHandleError(String msg) {
-                        super.onHandleError(msg);
-                        refreshLayout.finishRefresh();
-                        refreshLayout.finishLoadmore();
-                        showRequestErrorView();
-                    }
-                });
+            @Override
+            public void onFail() {
+                refreshLayout.finishRefresh();
+                refreshLayout.finishLoadmore();
+                showRequestErrorView();
+            }
+        });
     }
 
     private MyAddressAdapter.OnItemContentClickLstener onItemContentClickLstener = new MyAddressAdapter.OnItemContentClickLstener() {
@@ -165,66 +164,67 @@ public class MyAddressActivity extends BaseListActivity {
         Map<String, String> map = new HashMap<>();
         map.put("userId", AppConfig.user.getId());
         map.put("receiptAddrId", addressEntity.getReceiptAddrId());
-        Observable<ResponseBody> delAddress = RetrofitFactory.getBigDb().delAddress(map);
-        delAddress.compose(this.<ResponseBody>createTransformer(false))
-                .subscribe(new BaseWithoutBaseEntityObserver<ResponseBody>(this) {
-                    @Override
-                    protected void onHandleSuccess(ResponseBody responseBody) {
-                        try {
-                            String string = responseBody.string();
-                            if (!TextUtils.isEmpty(string)) {
-                                JSONObject json = new JSONObject(string);
-                                if (json.getString("status").equals("1")) {
-                                    myAddressAdapter.getAddressEntities().remove(addressEntity);
-                                    myAddressAdapter.notifyDataSetChanged();
-                                    Utils.showToast(MyAddressActivity.this, "删除成功");
-                                } else {
-                                    Utils.showToast(MyAddressActivity.this, "删除失败");
-                                }
-                            } else {
-                                Utils.showToast(MyAddressActivity.this, "删除失败");
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+        HttpMgr.delAddress(this, map, new CallBack<ResponseBody>() {
+            @Override
+            public void onSuccess(ResponseBody responseBody) {
+                try {
+                    String string = responseBody.string();
+                    if (!TextUtils.isEmpty(string)) {
+                        JSONObject json = new JSONObject(string);
+                        if (json.getString("status").equals("1")) {
+                            myAddressAdapter.getAddressEntities().remove(addressEntity);
+                            myAddressAdapter.notifyDataSetChanged();
+                            Utils.showToast(MyAddressActivity.this, "删除成功");
+                        } else {
+                            Utils.showToast(MyAddressActivity.this, "删除失败");
                         }
+                    } else {
+                        Utils.showToast(MyAddressActivity.this, "删除失败");
                     }
-                });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFail() {
+
+            }
+        });
     }
 
     private void setDefaultAddress(String receiptAddrId, final MyAddressAdapter.OnCallBack onCallBack) {
         Map<String, String> map = new HashMap<>();
         map.put("userId", AppConfig.user.getId());
         map.put("receiptAddrId", receiptAddrId);
-        Observable<ResponseBody> defaultAddress = RetrofitFactory.getBigDb().setDefaultAddress(map);
-        defaultAddress.compose(this.<ResponseBody>createTransformer(false))
-                .subscribe(new BaseWithoutBaseEntityObserver<ResponseBody>(this) {
-                    @Override
-                    protected void onHandleSuccess(ResponseBody responseBody) {
-                        try {
-                            String string = responseBody.string();
-                            if (!TextUtils.isEmpty(string)) {
-                                JSONObject json = new JSONObject(string);
-                                if (json.getString("status").equals("1")) {
-                                    onCallBack.onCallBack();
-                                } else {
-                                    Utils.showToast(MyAddressActivity.this, "设置失败");
-                                }
-                            } else {
-                                Utils.showToast(MyAddressActivity.this, "设置失败");
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+        HttpMgr.setDefaultAddress(this, map, new CallBack<ResponseBody>() {
+            @Override
+            public void onSuccess(ResponseBody responseBody) {
+                try {
+                    String string = responseBody.string();
+                    if (!TextUtils.isEmpty(string)) {
+                        JSONObject json = new JSONObject(string);
+                        if (json.getString("status").equals("1")) {
+                            onCallBack.onCallBack();
+                        } else {
+                            Utils.showToast(MyAddressActivity.this, "设置失败");
                         }
+                    } else {
+                        Utils.showToast(MyAddressActivity.this, "设置失败");
                     }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
-                    @Override
-                    protected void onHandleError(String msg) {
-                        super.onHandleError(msg);
-                    }
-                });
+            @Override
+            public void onFail() {
+
+            }
+        });
     }
 }

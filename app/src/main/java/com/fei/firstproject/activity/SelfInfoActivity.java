@@ -21,14 +21,14 @@ import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.dialog.BottomListDialog;
 import com.fei.firstproject.dialog.CityDialog;
 import com.fei.firstproject.dialog.TipDialog;
-import com.fei.firstproject.entity.BaseEntity;
 import com.fei.firstproject.entity.ChangeRoleEntity;
 import com.fei.firstproject.entity.RoleEntity;
 import com.fei.firstproject.entity.SelfInfoEntity;
 import com.fei.firstproject.entity.UserEntity;
-import com.fei.firstproject.http.BaseObserver;
 import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
+import com.fei.firstproject.http.HttpMgr;
 import com.fei.firstproject.http.factory.RetrofitFactory;
+import com.fei.firstproject.http.inter.CallBack;
 import com.fei.firstproject.utils.GlideUtils;
 import com.fei.firstproject.utils.PictureUtils;
 import com.fei.firstproject.widget.PartHeadView;
@@ -157,35 +157,32 @@ public class SelfInfoActivity extends BaseActivity {
         UserEntity user = AppConfig.user;
         map.put("userId", user.getId());
         map.put("roleId", user.getRoleId());
-        final Observable<BaseEntity<SelfInfoEntity>> selfInfo = RetrofitFactory.getBtWeb().getSelfInfo(map);
-        selfInfo.compose(this.<BaseEntity<SelfInfoEntity>>createTransformer(true))
-                .subscribe(new BaseObserver<SelfInfoEntity>(this) {
-                    @Override
-                    protected void onHandleSuccess(SelfInfoEntity selfInfoEntity) {
-                        dismissLoading();
-                        refreshLayout.finishRefresh();
-                        if (selfInfoEntity != null) {
-                            refreshLayout.setVisibility(View.VISIBLE);
-                            tvAccount.setText(selfInfoEntity.getUserDesc());
-                            tvUserName.setText(selfInfoEntity.getUserName());
-                            tvAccountCreateTime.setText(selfInfoEntity.getCreateTime());
-                            tvCurrentRole.setText(selfInfoEntity.getRoleName());
-                            phvChangeRole.setDesc(selfInfoEntity.getRoleName());
-                            for (int i = 0; i < selfInfoEntity.getRoleList().size(); i++) {
-                                showInfoByRole(selfInfoEntity, selfInfoEntity.getRoleList().get(i));
-                            }
-                        } else {
-                            showRequestErrorView();
-                        }
+        HttpMgr.getSelfInfo(this, map, new CallBack<SelfInfoEntity>() {
+            @Override
+            public void onSuccess(SelfInfoEntity selfInfoEntity) {
+                dismissLoading();
+                refreshLayout.finishRefresh();
+                if (selfInfoEntity != null) {
+                    refreshLayout.setVisibility(View.VISIBLE);
+                    tvAccount.setText(selfInfoEntity.getUserDesc());
+                    tvUserName.setText(selfInfoEntity.getUserName());
+                    tvAccountCreateTime.setText(selfInfoEntity.getCreateTime());
+                    tvCurrentRole.setText(selfInfoEntity.getRoleName());
+                    phvChangeRole.setDesc(selfInfoEntity.getRoleName());
+                    for (int i = 0; i < selfInfoEntity.getRoleList().size(); i++) {
+                        showInfoByRole(selfInfoEntity, selfInfoEntity.getRoleList().get(i));
                     }
+                } else {
+                    showRequestErrorView();
+                }
+            }
 
-                    @Override
-                    protected void onHandleError(String msg) {
-                        super.onHandleError(msg);
-                        refreshLayout.finishRefresh();
-                        showRequestErrorView();
-                    }
-                });
+            @Override
+            public void onFail() {
+                refreshLayout.finishRefresh();
+                showRequestErrorView();
+            }
+        });
     }
 
     private void showInfoByRole(SelfInfoEntity bean, RoleEntity role) {

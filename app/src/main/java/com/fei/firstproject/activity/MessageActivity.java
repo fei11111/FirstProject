@@ -5,18 +5,15 @@ import android.view.View;
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.MyMessageAdapter;
 import com.fei.firstproject.config.AppConfig;
-import com.fei.firstproject.entity.BaseEntity;
 import com.fei.firstproject.entity.MessageEntity;
-import com.fei.firstproject.http.BaseObserver;
-import com.fei.firstproject.http.factory.RetrofitFactory;
+import com.fei.firstproject.http.HttpMgr;
+import com.fei.firstproject.http.inter.CallBack;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.AppHeadView;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import io.reactivex.Observable;
 
 /**
  * Created by Administrator on 2017/8/21.
@@ -60,50 +57,47 @@ public class MessageActivity extends BaseListActivity {
         map.put("currentPage", currentPage + "");
         map.put("pageSize", "10");
         map.put("userId", AppConfig.user.getId());
-        final Observable<BaseEntity<List<MessageEntity>>> message = RetrofitFactory.getBtWeb().getMessage(map);
-        message.compose(this.<BaseEntity<List<MessageEntity>>>createTransformer(true))
-                .subscribe(new BaseObserver<List<MessageEntity>>(this) {
-                    @Override
-                    protected void onHandleSuccess(List<MessageEntity> messageEntities) {
-                        dismissLoading();
-                        refreshLayout.finishRefresh();
-                        refreshLayout.finishLoadmore();
-                        if (messageEntities != null && messageEntities.size() > 0) {
-                            refreshLayout.setVisibility(View.VISIBLE);
-                            if (messageAdapter == null) {
-                                messageEntities.addAll(messageEntities);
-                                messageEntities.addAll(messageEntities);
-                                messageEntities.addAll(messageEntities);
-                                messageEntities.addAll(messageEntities);
-                                messageEntities.addAll(messageEntities);
-                                messageAdapter = new MyMessageAdapter(MessageActivity.this, messageEntities);
-                                recyclerView.setAdapter(messageAdapter);
-                            } else {
-                                if (currentPage == 1) {
-                                    messageAdapter.setMessageEntities(messageEntities);
-                                } else if (currentPage > 1) {
-                                    messageAdapter.addMessageList(messageEntities);
-                                }
-                                messageAdapter.notifyDataSetChanged();
-                            }
-                        } else {
-                            if (currentPage == 1) {
-                                showNoDataView();
-                            } else if (currentPage > 1) {
-                                currentPage--;
-                                Utils.showToast(MessageActivity.this, "没有更多数据");
-                            }
+        HttpMgr.getMessage(this, map, new CallBack<List<MessageEntity>>() {
+            @Override
+            public void onSuccess(List<MessageEntity> messageEntities) {
+                dismissLoading();
+                refreshLayout.finishRefresh();
+                refreshLayout.finishLoadmore();
+                if (messageEntities != null && messageEntities.size() > 0) {
+                    refreshLayout.setVisibility(View.VISIBLE);
+                    if (messageAdapter == null) {
+                        messageEntities.addAll(messageEntities);
+                        messageEntities.addAll(messageEntities);
+                        messageEntities.addAll(messageEntities);
+                        messageEntities.addAll(messageEntities);
+                        messageEntities.addAll(messageEntities);
+                        messageAdapter = new MyMessageAdapter(MessageActivity.this, messageEntities);
+                        recyclerView.setAdapter(messageAdapter);
+                    } else {
+                        if (currentPage == 1) {
+                            messageAdapter.setMessageEntities(messageEntities);
+                        } else if (currentPage > 1) {
+                            messageAdapter.addMessageList(messageEntities);
                         }
+                        messageAdapter.notifyDataSetChanged();
                     }
-
-                    @Override
-                    protected void onHandleError(String msg) {
-                        super.onHandleError(msg);
+                } else {
+                    if (currentPage == 1) {
+                        showNoDataView();
+                    } else if (currentPage > 1) {
                         currentPage--;
-                        refreshLayout.finishRefresh();
-                        refreshLayout.finishLoadmore();
-                        showRequestErrorView();
+                        Utils.showToast(MessageActivity.this, "没有更多数据");
                     }
-                });
+                }
+            }
+
+            @Override
+            public void onFail() {
+                currentPage--;
+                refreshLayout.finishRefresh();
+                refreshLayout.finishLoadmore();
+                showRequestErrorView();
+            }
+        });
     }
 }

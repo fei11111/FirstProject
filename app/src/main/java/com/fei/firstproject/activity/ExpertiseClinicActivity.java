@@ -26,7 +26,9 @@ import com.fei.firstproject.entity.HotQuestionEntity;
 import com.fei.firstproject.entity.UnSolveQuestionEntity;
 import com.fei.firstproject.entity.UrgentExpertEntity;
 import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
+import com.fei.firstproject.http.HttpMgr;
 import com.fei.firstproject.http.factory.RetrofitFactory;
+import com.fei.firstproject.http.inter.CallBack;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.AppHeadView;
 import com.fei.firstproject.widget.NoScrollRecyclerView;
@@ -135,8 +137,8 @@ public class ExpertiseClinicActivity extends BaseActivity {
     }
 
     private void initRecycleView() {
-        setLinearRecycleViewSetting(rvHotQuestion,this);
-        setLinearRecycleViewSetting(rvUnsolveQuestion,this);
+        setLinearRecycleViewSetting(rvHotQuestion, this);
+        setLinearRecycleViewSetting(rvUnsolveQuestion, this);
     }
 
     private void initArrow() {
@@ -203,107 +205,110 @@ public class ExpertiseClinicActivity extends BaseActivity {
         map.put("question", question);
         map.put("currentPage", 1 + "");
         map.put("limit", 5 + "");
-        final Observable<ResponseBody> hotQuestion = RetrofitFactory.getBtWeb().getHotQuestion(map);
-        hotQuestion.compose(this.<ResponseBody>createTransformer(true))
-                .subscribe(new BaseWithoutBaseEntityObserver<ResponseBody>(this) {
-                    @Override
-                    protected void onHandleSuccess(ResponseBody responseBody) {
-                        dismissLoading();
-                        refreshLayout.finishRefresh();
-                        try {
-                            String response = responseBody.string();
-                            List<HotQuestionEntity> hotQuestionEntities = JSON.parseArray(response,
-                                    HotQuestionEntity.class);
-                            if (hotQuestionEntities != null && hotQuestionEntities.size() > 0) {
-                                refreshLayout.setVisibility(View.VISIBLE);
-                                llHotQuestion.setVisibility(View.VISIBLE);
-                                if (hotQuestionAdapter == null) {
-                                    hotQuestionAdapter = new HotQuestionAdapter(ExpertiseClinicActivity.this, hotQuestionEntities);
-                                    rvHotQuestion.setAdapter(hotQuestionAdapter);
-                                } else {
-                                    hotQuestionAdapter.setHotQuestionEntityList(hotQuestionEntities);
-                                    hotQuestionAdapter.notifyDataSetChanged();
-                                }
-                            } else {
-                                showNoDataView();
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            showNoDataView();
+        HttpMgr.getHotQuestion(this, map, new CallBack<ResponseBody>() {
+            @Override
+            public void onSuccess(ResponseBody responseBody) {
+                dismissLoading();
+                refreshLayout.finishRefresh();
+                try {
+                    String response = responseBody.string();
+                    List<HotQuestionEntity> hotQuestionEntities = JSON.parseArray(response,
+                            HotQuestionEntity.class);
+                    if (hotQuestionEntities != null && hotQuestionEntities.size() > 0) {
+                        refreshLayout.setVisibility(View.VISIBLE);
+                        llHotQuestion.setVisibility(View.VISIBLE);
+                        if (hotQuestionAdapter == null) {
+                            hotQuestionAdapter = new HotQuestionAdapter(ExpertiseClinicActivity.this, hotQuestionEntities);
+                            rvHotQuestion.setAdapter(hotQuestionAdapter);
+                        } else {
+                            hotQuestionAdapter.setHotQuestionEntityList(hotQuestionEntities);
+                            hotQuestionAdapter.notifyDataSetChanged();
                         }
+                    } else {
+                        showNoDataView();
                     }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    showNoDataView();
+                }
+            }
 
-                    @Override
-                    protected void onHandleError(String msg) {
-                        super.onHandleError(msg);
-                        refreshLayout.finishRefresh();
-                        showRequestErrorView();
-                    }
-                });
+            @Override
+            public void onFail() {
+                refreshLayout.finishRefresh();
+                showRequestErrorView();
+            }
+        });
     }
 
     private void getUrgentExpertise() {
-        Observable<ResponseBody> urgentExpertEntity = RetrofitFactory.getBtWeb().getUrgentExpertEntity();
-        urgentExpertEntity.compose(this.<ResponseBody>createTransformer(false))
-                .subscribe(new BaseWithoutBaseEntityObserver<ResponseBody>(this) {
-                    @Override
-                    protected void onHandleSuccess(ResponseBody responseBody) {
-                        try {
-                            String response = responseBody.string();
-                            JSONObject json = new JSONObject(response);
-                            String data = json.getString("data");
-                            if (!TextUtils.isEmpty(data)) {
-                                List<UrgentExpertEntity> urgentExpertEntities = JSON.parseArray(data,
-                                        UrgentExpertEntity.class);
-                                if (urgentExpertEntities != null && urgentExpertEntities.size() > 0) {
-                                    llUrgentPro.setVisibility(View.VISIBLE);
-                                    if (urgentExpertiseAdapter == null) {
-                                        urgentExpertiseAdapter = new UrgentExpertisePagerAdapter(ExpertiseClinicActivity.this, urgentExpertEntities, vpPro);
-                                        vpPro.setAdapter(urgentExpertiseAdapter);
-                                    } else {
-                                        urgentExpertiseAdapter.setExpertEntities(urgentExpertEntities);
-                                        urgentExpertiseAdapter.notifyDataSetChanged();
-                                    }
-                                    urgentExpertiseSize = urgentExpertEntities.size();
-                                }
+        HttpMgr.getUrgentExpertise(this, new CallBack<ResponseBody>() {
+            @Override
+            public void onSuccess(ResponseBody responseBody) {
+                try {
+                    String response = responseBody.string();
+                    JSONObject json = new JSONObject(response);
+                    String data = json.getString("data");
+                    if (!TextUtils.isEmpty(data)) {
+                        List<UrgentExpertEntity> urgentExpertEntities = JSON.parseArray(data,
+                                UrgentExpertEntity.class);
+                        if (urgentExpertEntities != null && urgentExpertEntities.size() > 0) {
+                            llUrgentPro.setVisibility(View.VISIBLE);
+                            if (urgentExpertiseAdapter == null) {
+                                urgentExpertiseAdapter = new UrgentExpertisePagerAdapter(ExpertiseClinicActivity.this, urgentExpertEntities, vpPro);
+                                vpPro.setAdapter(urgentExpertiseAdapter);
+                            } else {
+                                urgentExpertiseAdapter.setExpertEntities(urgentExpertEntities);
+                                urgentExpertiseAdapter.notifyDataSetChanged();
                             }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            urgentExpertiseSize = urgentExpertEntities.size();
                         }
                     }
-                });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFail() {
+
+            }
+        });
     }
 
     private void getUnSolveQuestion() {
         Map<String, String> map = new HashMap<>();
         map.put("userId", AppConfig.user.getId());
         map.put("more", "N");
-        Observable<ResponseBody> unSolveQuestion = RetrofitFactory.getBtWeb().getUnSolveQuestion(map);
-        unSolveQuestion.compose(this.<ResponseBody>createTransformer(false))
-                .subscribe(new BaseWithoutBaseEntityObserver<ResponseBody>(this) {
-                    @Override
-                    protected void onHandleSuccess(ResponseBody responseBody) {
-                        try {
-                            String response = responseBody.string();
-                            List<UnSolveQuestionEntity> unSolveQuestionEntities = JSON.parseArray(response,
-                                    UnSolveQuestionEntity.class);
-                            if (unSolveQuestionEntities != null && unSolveQuestionEntities.size() > 0) {
-                                llUnsolveQuestion.setVisibility(View.VISIBLE);
-                                if (unSolveQuestionAdapter == null) {
-                                    unSolveQuestionAdapter = new UnSolveQuestionAdapter(ExpertiseClinicActivity.this, unSolveQuestionEntities);
-                                    rvUnsolveQuestion.setAdapter(unSolveQuestionAdapter);
-                                } else {
-                                    unSolveQuestionAdapter.setUnSolveQuestionEntities(unSolveQuestionEntities);
-                                    urgentExpertiseAdapter.notifyDataSetChanged();
-                                }
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
+        HttpMgr.getUnSolveQuestion(this, map, new CallBack<ResponseBody>() {
+            @Override
+            public void onSuccess(ResponseBody responseBody) {
+                try {
+                    String response = responseBody.string();
+                    List<UnSolveQuestionEntity> unSolveQuestionEntities = JSON.parseArray(response,
+                            UnSolveQuestionEntity.class);
+                    if (unSolveQuestionEntities != null && unSolveQuestionEntities.size() > 0) {
+                        llUnsolveQuestion.setVisibility(View.VISIBLE);
+                        if (unSolveQuestionAdapter == null) {
+                            unSolveQuestionAdapter = new UnSolveQuestionAdapter(ExpertiseClinicActivity.this, unSolveQuestionEntities);
+                            rvUnsolveQuestion.setAdapter(unSolveQuestionAdapter);
+                        } else {
+                            unSolveQuestionAdapter.setUnSolveQuestionEntities(unSolveQuestionEntities);
+                            urgentExpertiseAdapter.notifyDataSetChanged();
                         }
                     }
-                });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFail() {
+
+            }
+        });
     }
 
     @OnClick({R.id.ll_left, R.id.ll_right})

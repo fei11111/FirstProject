@@ -22,8 +22,8 @@ import com.fei.firstproject.fragment.MainFragment;
 import com.fei.firstproject.fragment.MakeFragment;
 import com.fei.firstproject.fragment.MeFragment;
 import com.fei.firstproject.fragment.manager.FragmentInstanceManager;
-import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
-import com.fei.firstproject.http.factory.RetrofitFactory;
+import com.fei.firstproject.http.HttpMgr;
+import com.fei.firstproject.http.inter.CallBack;
 import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.SPUtils;
 import com.fei.firstproject.utils.Utils;
@@ -41,7 +41,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.Observable;
 
 public class MainActivity extends BaseActivity {
 
@@ -148,10 +147,9 @@ public class MainActivity extends BaseActivity {
         Map<String, String> map = new HashMap<>();
         map.put("token", tokenId);
         map.put("deviceID", deviceId);
-        Observable<UserEntity> userInfo = RetrofitFactory.getBigDb().getUserInfo(map);
-        userInfo.compose(this.<UserEntity>createTransformer(false)).subscribe(new BaseWithoutBaseEntityObserver<UserEntity>(this) {
+        HttpMgr.getUserInfo(this, map, new CallBack<UserEntity>() {
             @Override
-            protected void onHandleSuccess(UserEntity userEntity) {
+            public void onSuccess(UserEntity userEntity) {
                 if (userEntity != null) {
                     if (userEntity.getSuccess().equals("YES")) {
                         refreshUserInfoWhenLogin(userEntity);
@@ -164,8 +162,7 @@ public class MainActivity extends BaseActivity {
             }
 
             @Override
-            protected void onHandleError(String msg) {
-                super.onHandleError(msg);
+            public void onFail() {
                 refreshUserInfoWhenLogout();
             }
         });

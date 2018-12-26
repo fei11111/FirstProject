@@ -4,11 +4,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -18,11 +15,10 @@ import android.widget.TextView;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.entity.UserEntity;
-import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
-import com.fei.firstproject.http.factory.RetrofitFactory;
+import com.fei.firstproject.http.HttpMgr;
+import com.fei.firstproject.http.inter.CallBack;
 import com.fei.firstproject.utils.SPUtils;
 import com.fei.firstproject.utils.Utils;
-import com.fei.firstproject.widget.AppHeadView;
 import com.fei.firstproject.widget.VerifyCodeView;
 
 import org.json.JSONException;
@@ -35,7 +31,6 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
-import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 
 /**
@@ -143,45 +138,42 @@ public class LoginActivity extends BaseActivity {
         map.put("deviceId", deviceId);
         map.put("mobile", userNameText);
         proShow();
-        Observable<ResponseBody> login = RetrofitFactory.getBigDb().login(map);
-        login.compose(this.<ResponseBody>createTransformer(false))
-                .subscribe(new BaseWithoutBaseEntityObserver<ResponseBody>(this) {
-                    @Override
-                    protected void onHandleSuccess(ResponseBody responseBody) {
-                        proDisimis();
-                        try {
-                            String response = responseBody.string();
-                            if (!TextUtils.isEmpty(response)) {
-                                JSONObject json = new JSONObject(response);
-                                if (json.has("tokenId")) {
-                                    String tokenId = json.getString("tokenId");
-                                    SPUtils.put(LoginActivity.this, "tokenId", tokenId);
-                                    SPUtils.put(LoginActivity.this, "deviceId", deviceId);
-                                    getUserInfo(tokenId, deviceId);
-                                } else {
-                                    if (json.has("returnMsg")) {
-                                        String returnMsg = json.getString("returnMsg");
-                                        Utils.showToast(LoginActivity.this, returnMsg);
-                                    } else {
-                                        Utils.showToast(LoginActivity.this, getString(R.string.login_fail_and_retry));
-                                    }
-                                }
+        HttpMgr.login(this, map, new CallBack<ResponseBody>() {
+            @Override
+            public void onSuccess(ResponseBody responseBody) {
+                proDisimis();
+                try {
+                    String response = responseBody.string();
+                    if (!TextUtils.isEmpty(response)) {
+                        JSONObject json = new JSONObject(response);
+                        if (json.has("tokenId")) {
+                            String tokenId = json.getString("tokenId");
+                            SPUtils.put(LoginActivity.this, "tokenId", tokenId);
+                            SPUtils.put(LoginActivity.this, "deviceId", deviceId);
+                            getUserInfo(tokenId, deviceId);
+                        } else {
+                            if (json.has("returnMsg")) {
+                                String returnMsg = json.getString("returnMsg");
+                                Utils.showToast(LoginActivity.this, returnMsg);
                             } else {
                                 Utils.showToast(LoginActivity.this, getString(R.string.login_fail_and_retry));
                             }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
+                    } else {
+                        Utils.showToast(LoginActivity.this, getString(R.string.login_fail_and_retry));
                     }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
-                    @Override
-                    protected void onHandleError(String msg) {
-                        super.onHandleError(msg);
-                        proDisimis();
-                    }
-                });
+            @Override
+            public void onFail() {
+                proDisimis();
+            }
+        });
     }
 
 
@@ -190,10 +182,9 @@ public class LoginActivity extends BaseActivity {
         Map<String, String> map = new HashMap<>();
         map.put("token", tokenId);
         map.put("deviceID", deviceId);
-        Observable<UserEntity> userInfo = RetrofitFactory.getBigDb().getUserInfo(map);
-        userInfo.compose(this.<UserEntity>createTransformer(false)).subscribe(new BaseWithoutBaseEntityObserver<UserEntity>(this) {
+        HttpMgr.getUserInfo(this, map, new CallBack<UserEntity>() {
             @Override
-            protected void onHandleSuccess(UserEntity userEntity) {
+            public void onSuccess(UserEntity userEntity) {
                 proDisimis();
                 if (userEntity != null) {
                     Utils.showToast(LoginActivity.this, userEntity.getReturnMsg());
@@ -207,8 +198,7 @@ public class LoginActivity extends BaseActivity {
             }
 
             @Override
-            protected void onHandleError(String msg) {
-                super.onHandleError(msg);
+            public void onFail() {
                 proDisimis();
             }
         });

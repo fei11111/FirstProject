@@ -17,8 +17,9 @@ import com.fei.firstproject.adapter.SingleTextAdapter;
 import com.fei.firstproject.dialog.BottomListDialog;
 import com.fei.firstproject.entity.ProductAssitEntity;
 import com.fei.firstproject.entity.ProductLibEntity;
-import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
+import com.fei.firstproject.http.HttpMgr;
 import com.fei.firstproject.http.factory.RetrofitFactory;
+import com.fei.firstproject.http.inter.CallBack;
 import com.fei.firstproject.inter.OnItemClickListener;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.AppHeadView;
@@ -36,7 +37,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 
 import static com.fei.firstproject.R.id.tv_craft;
@@ -109,7 +109,7 @@ public class ProductLibActivity extends BaseActivity {
     }
 
     private void initRecyclerView() {
-        setLinearRecycleViewSetting(recyclerView,this);
+        setLinearRecycleViewSetting(recyclerView, this);
     }
 
     private void initListener() {
@@ -177,76 +177,73 @@ public class ProductLibActivity extends BaseActivity {
         map.put("series", series);
         map.put("technology", technology);
         map.put("type", type);
-        Observable<ResponseBody> productLib = RetrofitFactory.getBtPlantWeb().getProductLib(map);
-        productLib.compose(this.<ResponseBody>createTransformer(true))
-                .subscribe(new BaseWithoutBaseEntityObserver<ResponseBody>(this) {
-                    @Override
-                    protected void onHandleSuccess(ResponseBody responseBody) {
-                        dismissLoading();
-                        refreshLayout.finishRefresh();
-                        refreshLayout.finishLoadmore();
-                        try {
-                            String string = responseBody.string();
-                            JSONObject json = new JSONObject(string);
-                            String imgHost = json.getString("imgHost");
-                            if (TextUtils.isEmpty(imgHost)) {
-                                imgHost = "";
-                            }
-                            String infos = json.getString("infos");
-                            if (TextUtils.isEmpty(infos)) {
-                                showNoDataView();
+        HttpMgr.getProductLib(this, map, new CallBack<ResponseBody>() {
+            @Override
+            public void onSuccess(ResponseBody responseBody) {
+                dismissLoading();
+                refreshLayout.finishRefresh();
+                refreshLayout.finishLoadmore();
+                try {
+                    String string = responseBody.string();
+                    JSONObject json = new JSONObject(string);
+                    String imgHost = json.getString("imgHost");
+                    if (TextUtils.isEmpty(imgHost)) {
+                        imgHost = "";
+                    }
+                    String infos = json.getString("infos");
+                    if (TextUtils.isEmpty(infos)) {
+                        showNoDataView();
+                    } else {
+                        final JSONObject info = new JSONObject(infos);
+                        String data = info.getString("data");
+                        final List<ProductLibEntity> productLibEntities = JSON.parseArray(data, ProductLibEntity.class);
+                        if (productLibEntities != null && productLibEntities.size() > 0) {
+                            refreshLayout.setVisibility(View.VISIBLE);
+                            if (productLibAdapter == null) {
+                                productLibAdapter = new ProductLibAdapter(ProductLibActivity.this, productLibEntities, imgHost);
+                                productLibAdapter.setOnItemClickListener(new OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(View view) {
+                                        int position = recyclerView.getChildAdapterPosition(view);
+                                        ProductLibEntity productLibEntity = productLibAdapter.getProductLibEntities().get(position);
+                                        Intent intent = new Intent(ProductLibActivity.this, ProductDetailActivity.class);
+                                        intent.putExtra("matieralId", productLibEntity.getMatieralId());
+                                        startActivityWithoutCode(intent);
+                                    }
+                                });
+                                recyclerView.setAdapter(productLibAdapter);
                             } else {
-                                final JSONObject info = new JSONObject(infos);
-                                String data = info.getString("data");
-                                final List<ProductLibEntity> productLibEntities = JSON.parseArray(data, ProductLibEntity.class);
-                                if (productLibEntities != null && productLibEntities.size() > 0) {
-                                    refreshLayout.setVisibility(View.VISIBLE);
-                                    if (productLibAdapter == null) {
-                                        productLibAdapter = new ProductLibAdapter(ProductLibActivity.this, productLibEntities, imgHost);
-                                        productLibAdapter.setOnItemClickListener(new OnItemClickListener() {
-                                            @Override
-                                            public void onItemClick(View view) {
-                                                int position = recyclerView.getChildAdapterPosition(view);
-                                                ProductLibEntity productLibEntity = productLibAdapter.getProductLibEntities().get(position);
-                                                Intent intent = new Intent(ProductLibActivity.this, ProductDetailActivity.class);
-                                                intent.putExtra("matieralId", productLibEntity.getMatieralId());
-                                                startActivityWithoutCode(intent);
-                                            }
-                                        });
-                                        recyclerView.setAdapter(productLibAdapter);
-                                    } else {
-                                        if (currentPage == 1) {
-                                            productLibAdapter.setProductLibEntities(productLibEntities);
-                                        } else if (currentPage > 1) {
-                                            productLibAdapter.addProductLibEntities(productLibEntities);
-                                        }
-                                        productLibAdapter.notifyDataSetChanged();
-                                    }
-                                } else {
-                                    if (currentPage == 1) {
-                                        showNoDataView();
-                                    } else if (currentPage > 1) {
-                                        currentPage--;
-                                        Utils.showToast(ProductLibActivity.this, "没有更多数据");
-                                    }
+                                if (currentPage == 1) {
+                                    productLibAdapter.setProductLibEntities(productLibEntities);
+                                } else if (currentPage > 1) {
+                                    productLibAdapter.addProductLibEntities(productLibEntities);
                                 }
+                                productLibAdapter.notifyDataSetChanged();
                             }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        } else {
+                            if (currentPage == 1) {
+                                showNoDataView();
+                            } else if (currentPage > 1) {
+                                currentPage--;
+                                Utils.showToast(ProductLibActivity.this, "没有更多数据");
+                            }
                         }
                     }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
-                    @Override
-                    protected void onHandleError(String msg) {
-                        super.onHandleError(msg);
-                        currentPage--;
-                        refreshLayout.finishRefresh();
-                        refreshLayout.finishLoadmore();
-                        showRequestErrorView();
-                    }
-                });
+            @Override
+            public void onFail() {
+                currentPage--;
+                refreshLayout.finishRefresh();
+                refreshLayout.finishLoadmore();
+                showRequestErrorView();
+            }
+        });
     }
 
     @OnClick({R.id.rl_series, R.id.rl_craft, R.id.rl_type})
@@ -272,49 +269,46 @@ public class ProductLibActivity extends BaseActivity {
 
     private void getCondition(final TextView tv, String url) {
         proShow();
-        Observable<ResponseBody> condition = RetrofitFactory.getBtPlantWeb().getCondition(url);
-        condition.compose(this.<ResponseBody>createTransformer(false))
-                .subscribe(new BaseWithoutBaseEntityObserver<ResponseBody>(this) {
-                    @Override
-                    protected void onHandleSuccess(ResponseBody responseBody) {
-                        proDisimis();
-                        try {
-                            String response = responseBody.string();
-                            JSONObject json = new JSONObject(response);
-                            if (json.has("infos")) {
-                                String infos = json.getString("infos");
-                                if (TextUtils.isEmpty(infos)) {
-                                    showNoDataView();
-                                    Utils.showToast(ProductLibActivity.this, "没有数据");
-                                } else {
-                                    List<ProductAssitEntity> beans = JSON.parseArray(infos, ProductAssitEntity.class);
-                                    if (beans != null && beans.size() > 0) {
-                                        List<String> list = new ArrayList<>();
-                                        list.add(0, "全部");
-                                        for (ProductAssitEntity bean : beans
-                                                ) {
-                                            list.add(bean.getBNAME());
-                                        }
-                                        showConditionDialog(list, tv);
-                                    } else {
-                                        Utils.showToast(ProductLibActivity.this, "没有数据");
-                                        showNoDataView();
-                                    }
+        HttpMgr.getCondition(this, url, new CallBack<ResponseBody>() {
+            @Override
+            public void onSuccess(ResponseBody responseBody) {
+                proDisimis();
+                try {
+                    String response = responseBody.string();
+                    JSONObject json = new JSONObject(response);
+                    if (json.has("infos")) {
+                        String infos = json.getString("infos");
+                        if (TextUtils.isEmpty(infos)) {
+                            showNoDataView();
+                            Utils.showToast(ProductLibActivity.this, "没有数据");
+                        } else {
+                            List<ProductAssitEntity> beans = JSON.parseArray(infos, ProductAssitEntity.class);
+                            if (beans != null && beans.size() > 0) {
+                                List<String> list = new ArrayList<>();
+                                list.add(0, "全部");
+                                for (ProductAssitEntity bean : beans
+                                        ) {
+                                    list.add(bean.getBNAME());
                                 }
+                                showConditionDialog(list, tv);
+                            } else {
+                                Utils.showToast(ProductLibActivity.this, "没有数据");
+                                showNoDataView();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
                         }
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
 
-                    @Override
-                    protected void onHandleError(String msg) {
-                        super.onHandleError(msg);
-                        proDisimis();
-                    }
-                });
+            @Override
+            public void onFail() {
+                proDisimis();
+            }
+        });
     }
 
     private void showConditionDialog(final List<String> name, final TextView tv) {

@@ -3,10 +3,7 @@ package com.fei.firstproject.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,10 +16,9 @@ import com.fei.firstproject.R;
 import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.dialog.CityDialog;
 import com.fei.firstproject.entity.AddressEntity;
-import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
-import com.fei.firstproject.http.factory.RetrofitFactory;
+import com.fei.firstproject.http.HttpMgr;
+import com.fei.firstproject.http.inter.CallBack;
 import com.fei.firstproject.utils.Utils;
-import com.fei.firstproject.widget.AppHeadView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,7 +29,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 
 /**
@@ -191,29 +186,32 @@ public class AddAddressOrUpdateActivity extends BaseActivity {
     }
 
     private void save(Map<String, String> map) {
-        Observable<ResponseBody> addAddress = RetrofitFactory.getBigDb().addAddress(map);
-        addAddress.compose(this.<ResponseBody>createTransformer(false))
-                .subscribe(new BaseWithoutBaseEntityObserver<ResponseBody>(this) {
-                    @Override
-                    protected void onHandleSuccess(ResponseBody responseBody) {
-                        try {
-                            String string = responseBody.string();
-                            JSONObject result = new JSONObject(string);
-                            String status = result.getString("status");
-                            if (status.equals("1")) {
-                                Utils.showToast(AddAddressOrUpdateActivity.this, "添加成功!");
-                                setResult(RESULT_OK);
-                                finish();
-                            } else {
-                                Utils.showToast(AddAddressOrUpdateActivity.this, "添加失败!");
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+        HttpMgr.addAddress(this, map, new CallBack<ResponseBody>() {
+            @Override
+            public void onSuccess(ResponseBody responseBody) {
+                try {
+                    String string = responseBody.string();
+                    JSONObject result = new JSONObject(string);
+                    String status = result.getString("status");
+                    if (status.equals("1")) {
+                        Utils.showToast(AddAddressOrUpdateActivity.this, "添加成功!");
+                        setResult(RESULT_OK);
+                        finish();
+                    } else {
+                        Utils.showToast(AddAddressOrUpdateActivity.this, "添加失败!");
                     }
-                });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFail() {
+
+            }
+        });
     }
 
     private void edit(AddressEntity addressEntity) {
@@ -223,29 +221,32 @@ public class AddAddressOrUpdateActivity extends BaseActivity {
         map.put("receiptAddr", addressEntity.getReceiptAddr());
         map.put("receiptTel", addressEntity.getReceiptTel());
         map.put("receiptAddrId", addressEntity.getReceiptAddrId());
-        Observable<ResponseBody> editAddress = RetrofitFactory.getBigDb().editAddress(map);
-        editAddress.compose(this.<ResponseBody>createTransformer(false))
-                .subscribe(new BaseWithoutBaseEntityObserver<ResponseBody>(this) {
-                    @Override
-                    protected void onHandleSuccess(ResponseBody responseBody) {
-                        try {
-                            String string = responseBody.string();
-                            JSONObject result = new JSONObject(string);
-                            String status = result.getString("status");
-                            if (status.equals("1")) {
-                                Utils.showToast(AddAddressOrUpdateActivity.this, "修改成功!");
-                                setResult(RESULT_OK);
-                                finish();
-                            } else {
-                                Utils.showToast(AddAddressOrUpdateActivity.this, "修改成功!");
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+        HttpMgr.editAddress(this, map, new CallBack<ResponseBody>() {
+            @Override
+            public void onSuccess(ResponseBody responseBody) {
+                try {
+                    String string = responseBody.string();
+                    JSONObject result = new JSONObject(string);
+                    String status = result.getString("status");
+                    if (status.equals("1")) {
+                        Utils.showToast(AddAddressOrUpdateActivity.this, "修改成功!");
+                        setResult(RESULT_OK);
+                        finish();
+                    } else {
+                        Utils.showToast(AddAddressOrUpdateActivity.this, "修改成功!");
                     }
-                });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFail() {
+
+            }
+        });
     }
 
 }

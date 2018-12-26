@@ -3,28 +3,21 @@ package com.fei.firstproject.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.PriceInfoAdapter;
-import com.fei.firstproject.entity.BaseEntity;
 import com.fei.firstproject.entity.PriceInfoEntity;
-import com.fei.firstproject.http.BaseObserver;
-import com.fei.firstproject.http.factory.RetrofitFactory;
+import com.fei.firstproject.http.HttpMgr;
+import com.fei.firstproject.http.inter.CallBack;
 import com.fei.firstproject.utils.Utils;
-import com.fei.firstproject.widget.AppHeadView;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 
@@ -152,46 +145,43 @@ public class MarketInfoActivity extends BaseActivity {
         map.put("product", product);
         map.put("sortFieldType", "0");
         map.put("sortOrderType", "0");
-        RetrofitFactory.getBtPlantWeb().getPriceInfo(map).
-                compose(this.<BaseEntity<List<PriceInfoEntity>>>createTransformer(true))
-                .subscribe(new BaseObserver<List<PriceInfoEntity>>(this) {
-                    @Override
-                    protected void onHandleSuccess(List<PriceInfoEntity> priceInfoEntities) {
-                        dismissLoading();
-                        refreshLayout.finishRefresh();
-                        refreshLayout.finishLoadmore();
-                        if (priceInfoEntities != null && priceInfoEntities.size() > 0) {
-                            refreshLayout.setVisibility(View.VISIBLE);
-                            if (priceInfoAdapter == null) {
-                                priceInfoAdapter = new PriceInfoAdapter(MarketInfoActivity.this, priceInfoEntities);
-                                recyclerView.setAdapter(priceInfoAdapter);
-                            } else {
-                                if (currentPage == 1) {
-                                    priceInfoAdapter.setPriceInfoEntities(priceInfoEntities);
-                                } else if (currentPage > 1) {
-                                    priceInfoAdapter.addPriceInfoEntities(priceInfoEntities);
-                                }
-                                priceInfoAdapter.notifyDataSetChanged();
-                            }
-                        } else {
-                            if (currentPage == 1) {
-                                showNoDataView();
-                            } else if (currentPage > 1) {
-                                currentPage--;
-                                Utils.showToast(MarketInfoActivity.this, "没有更多数据");
-                            }
+        HttpMgr.getPriceInfo(this, map, new CallBack<List<PriceInfoEntity>>() {
+            @Override
+            public void onSuccess(List<PriceInfoEntity> priceInfoEntities) {
+                dismissLoading();
+                refreshLayout.finishRefresh();
+                refreshLayout.finishLoadmore();
+                if (priceInfoEntities != null && priceInfoEntities.size() > 0) {
+                    refreshLayout.setVisibility(View.VISIBLE);
+                    if (priceInfoAdapter == null) {
+                        priceInfoAdapter = new PriceInfoAdapter(MarketInfoActivity.this, priceInfoEntities);
+                        recyclerView.setAdapter(priceInfoAdapter);
+                    } else {
+                        if (currentPage == 1) {
+                            priceInfoAdapter.setPriceInfoEntities(priceInfoEntities);
+                        } else if (currentPage > 1) {
+                            priceInfoAdapter.addPriceInfoEntities(priceInfoEntities);
                         }
+                        priceInfoAdapter.notifyDataSetChanged();
                     }
-
-                    @Override
-                    protected void onHandleError(String msg) {
-                        super.onHandleError(msg);
+                } else {
+                    if (currentPage == 1) {
+                        showNoDataView();
+                    } else if (currentPage > 1) {
                         currentPage--;
-                        refreshLayout.finishRefresh();
-                        refreshLayout.finishLoadmore();
-                        showRequestErrorView();
+                        Utils.showToast(MarketInfoActivity.this, "没有更多数据");
                     }
-                });
+                }
+            }
+
+            @Override
+            public void onFail() {
+                currentPage--;
+                refreshLayout.finishRefresh();
+                refreshLayout.finishLoadmore();
+                showRequestErrorView();
+            }
+        });
     }
 
     @OnClick({R.id.rl_price, R.id.rl_time, R.id.rl_variety, R.id.rl_gather})

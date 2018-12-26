@@ -17,13 +17,11 @@ import com.fei.firstproject.adapter.CropAdapter;
 import com.fei.firstproject.adapter.RecommendPlanAdapter;
 import com.fei.firstproject.adapter.ShareAdapter;
 import com.fei.firstproject.config.AppConfig;
-import com.fei.firstproject.entity.BaseEntity;
 import com.fei.firstproject.entity.CropEntity;
 import com.fei.firstproject.entity.RecommendEntity;
 import com.fei.firstproject.entity.ShareEntity;
-import com.fei.firstproject.http.BaseObserver;
-import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
-import com.fei.firstproject.http.factory.RetrofitFactory;
+import com.fei.firstproject.http.HttpMgr;
+import com.fei.firstproject.http.inter.CallBack;
 import com.fei.firstproject.inter.OnItemClickListener;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.NoScrollRecyclerView;
@@ -40,7 +38,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 
 /**
@@ -112,7 +109,7 @@ public class FieldManageActivity extends BaseActivity {
         if (AppConfig.ISLOGIN) {
             ivBanner.setVisibility(View.GONE);
             hsvFieldManage.setVisibility(View.VISIBLE);
-            getFieldIndex();
+//            getFieldIndex();
         } else {
             ivBanner.setVisibility(View.VISIBLE);
             getRecommendPlan();
@@ -174,84 +171,83 @@ public class FieldManageActivity extends BaseActivity {
         map.put("searchWord", searchWord);
         map.put("pageSize", "3");
         map.put("currentPage", "1");
-        Observable<BaseEntity<List<RecommendEntity>>> recommendPlan =
-                RetrofitFactory.getBtPlantWeb().getRecommendPlan(map);
-        recommendPlan.compose(this.<BaseEntity<List<RecommendEntity>>>createTransformer(true))
-                .subscribe(new BaseObserver<List<RecommendEntity>>(this) {
-                    @Override
-                    protected void onHandleSuccess(final List<RecommendEntity> recommendEntities) {
-                        refreshLayout.finishRefresh();
-                        if (recommendEntities != null && recommendEntities.size() > 0) {
-                            refreshLayout.setVisibility(View.VISIBLE);
-                            llRecommendPlan.setVisibility(View.VISIBLE);
-                            if (recommendPlanAdapter == null) {
-                                recommendPlanAdapter = new RecommendPlanAdapter(FieldManageActivity.this, recommendEntities, 3);
-                                rvRecommendPlan.setAdapter(recommendPlanAdapter);
-                                recommendPlanAdapter.setOnItemClickListener(new OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(View view) {
-                                        int position = rvRecommendPlan.getChildAdapterPosition(view);
-                                        RecommendEntity recommendEntity = recommendPlanAdapter.getRecommendEntities().get(position);
-                                        String url = AppConfig.PLANT_DESC_URL + "?id=" + recommendEntity.getId() + "&version="
-                                                + recommendEntity.getVersion()
-                                                + "&cropCode=" + recommendEntity.getCropCode()
-                                                + "&categoryCode=" + recommendEntity.getCropCategoryCode()
-                                                + "&title=" + recommendEntity.getTitle();
-                                        Intent intent = new Intent(FieldManageActivity.this, WebActivity.class);
-                                        intent.putExtra("url", url);
-                                        startActivityWithoutCode(intent);
-                                    }
-                                });
-                            } else {
-                                recommendPlanAdapter.setRecommendEntities(recommendEntities);
-                                recommendPlanAdapter.notifyDataSetChanged();
+        HttpMgr.getRecommendPlan(this, map, new CallBack<List<RecommendEntity>>() {
+            @Override
+            public void onSuccess(List<RecommendEntity> recommendEntities) {
+                refreshLayout.finishRefresh();
+                if (recommendEntities != null && recommendEntities.size() > 0) {
+                    refreshLayout.setVisibility(View.VISIBLE);
+                    llRecommendPlan.setVisibility(View.VISIBLE);
+                    if (recommendPlanAdapter == null) {
+                        recommendPlanAdapter = new RecommendPlanAdapter(FieldManageActivity.this, recommendEntities, 3);
+                        rvRecommendPlan.setAdapter(recommendPlanAdapter);
+                        recommendPlanAdapter.setOnItemClickListener(new OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view) {
+                                int position = rvRecommendPlan.getChildAdapterPosition(view);
+                                RecommendEntity recommendEntity = recommendPlanAdapter.getRecommendEntities().get(position);
+                                String url = AppConfig.PLANT_DESC_URL + "?id=" + recommendEntity.getId() + "&version="
+                                        + recommendEntity.getVersion()
+                                        + "&cropCode=" + recommendEntity.getCropCode()
+                                        + "&categoryCode=" + recommendEntity.getCropCategoryCode()
+                                        + "&title=" + recommendEntity.getTitle();
+                                Intent intent = new Intent(FieldManageActivity.this, WebActivity.class);
+                                intent.putExtra("url", url);
+                                startActivityWithoutCode(intent);
                             }
-                        }
+                        });
+                    } else {
+                        recommendPlanAdapter.setRecommendEntities(recommendEntities);
+                        recommendPlanAdapter.notifyDataSetChanged();
                     }
+                }
+            }
 
-                    @Override
-                    protected void onHandleError(String msg) {
-                        super.onHandleError(msg);
-                        refreshLayout.finishRefresh();
-                    }
-                });
+            @Override
+            public void onFail() {
+                refreshLayout.finishRefresh();
+            }
+        });
     }
 
     private void getSharePlan() {
         Map<String, String> map = new HashMap<String, String>();
         map.put("currentPage", "1");
         map.put("pageSize", "5");
-        final Observable<BaseEntity<List<ShareEntity>>> share = RetrofitFactory.getBtPlantWeb().getShare(map);
-        share.compose(this.<BaseEntity<List<ShareEntity>>>createTransformer(false))
-                .subscribe(new BaseObserver<List<ShareEntity>>(this) {
-                    @Override
-                    protected void onHandleSuccess(final List<ShareEntity> shareEntities) {
-                        if (shareEntities != null && shareEntities.size() > 0) {
-                            llShare.setVisibility(View.VISIBLE);
-                            if (shareAdapter == null) {
-                                shareAdapter = new ShareAdapter(FieldManageActivity.this, shareEntities);
-                                shareAdapter.setOnItemClickListener(new OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(View view) {
-                                        int position = rvShare.getChildAdapterPosition(view);
-                                        List<ShareEntity.ImageEntity> list = shareEntities.get(position).getImgPath();
-                                        ArrayList<String> pics = new ArrayList<String>();
-                                        for (ShareEntity.ImageEntity imageEntity : list) {
-                                            pics.add(imageEntity.getPath());
-                                        }
-                                        Intent intent = new Intent(FieldManageActivity.this, PhotoActivity.class);
-                                        intent.putExtra("pics", pics);
-                                        startActivityWithoutCode(intent);
-                                    }
-                                });
-                                rvShare.setAdapter(shareAdapter);
-                            } else {
-                                shareAdapter.setShareEntities(shareEntities);
-                                shareAdapter.notifyDataSetChanged();
+        HttpMgr.getSharePlan(this, map, new CallBack<List<ShareEntity>>() {
+            @Override
+            public void onSuccess(final List<ShareEntity> shareEntities) {
+                if (shareEntities != null && shareEntities.size() > 0) {
+                    llShare.setVisibility(View.VISIBLE);
+                    if (shareAdapter == null) {
+                        shareAdapter = new ShareAdapter(FieldManageActivity.this, shareEntities);
+                        shareAdapter.setOnItemClickListener(new OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view) {
+                                int position = rvShare.getChildAdapterPosition(view);
+                                List<ShareEntity.ImageEntity> list = shareEntities.get(position).getImgPath();
+                                ArrayList<String> pics = new ArrayList<String>();
+                                for (ShareEntity.ImageEntity imageEntity : list) {
+                                    pics.add(imageEntity.getPath());
+                                }
+                                Intent intent = new Intent(FieldManageActivity.this, PhotoActivity.class);
+                                intent.putExtra("pics", pics);
+                                startActivityWithoutCode(intent);
                             }
-                        }
+                        });
+                        rvShare.setAdapter(shareAdapter);
+                    } else {
+                        shareAdapter.setShareEntities(shareEntities);
+                        shareAdapter.notifyDataSetChanged();
                     }
-                });
+                }
+            }
+
+            @Override
+            public void onFail() {
+
+            }
+        });
     }
 
     public void getFieldIndex() {
@@ -259,45 +255,42 @@ public class FieldManageActivity extends BaseActivity {
         map.put("userId", AppConfig.user.getId());
         map.put("roleIds", AppConfig.user.getRoleId());
         map.put("menuId", "82");
-        Observable<ResponseBody> fieldIndex = RetrofitFactory.getBtPlantWeb().getFieldIndex(map);
-        fieldIndex.compose(this.<ResponseBody>createTransformer(false))
-                .subscribe(new BaseWithoutBaseEntityObserver<ResponseBody>(this) {
-                    @Override
-                    protected void onHandleSuccess(ResponseBody responseBody) {
-                        refreshLayout.finishRefresh();
-                        refreshLayout.setVisibility(View.VISIBLE);
-                        llCrop.setVisibility(View.VISIBLE);
-                        try {
-                            String response = responseBody.string();
-                            if (TextUtils.isEmpty(response)) return;
-                            JSONObject json = new JSONObject(response);
-                            String croplist = json.getString("croplist");
-                            List<CropEntity> cropEntities = JSON.parseArray(croplist, CropEntity.class);
-                            if (cropEntities != null && cropEntities.size() > 0) {
-                                if (cropAdapter == null) {
-                                    cropAdapter = new CropAdapter(FieldManageActivity.this, cropEntities);
-                                    rvCrop.setAdapter(cropAdapter);
-                                } else {
-                                    cropAdapter.setCropEntities(cropEntities);
-                                    cropAdapter.notifyDataSetChanged();
-                                }
-                            } else {
-                                cropAdapter = new CropAdapter(FieldManageActivity.this);
-                                rvCrop.setAdapter(cropAdapter);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
+        HttpMgr.getFieldIndex(this, map, new CallBack<ResponseBody>() {
+            @Override
+            public void onSuccess(ResponseBody responseBody) {
+                refreshLayout.finishRefresh();
+                refreshLayout.setVisibility(View.VISIBLE);
+                llCrop.setVisibility(View.VISIBLE);
+                try {
+                    String response = responseBody.string();
+                    if (TextUtils.isEmpty(response)) return;
+                    JSONObject json = new JSONObject(response);
+                    String croplist = json.getString("croplist");
+                    List<CropEntity> cropEntities = JSON.parseArray(croplist, CropEntity.class);
+                    if (cropEntities != null && cropEntities.size() > 0) {
+                        if (cropAdapter == null) {
+                            cropAdapter = new CropAdapter(FieldManageActivity.this, cropEntities);
+                            rvCrop.setAdapter(cropAdapter);
+                        } else {
+                            cropAdapter.setCropEntities(cropEntities);
+                            cropAdapter.notifyDataSetChanged();
                         }
+                    } else {
+                        cropAdapter = new CropAdapter(FieldManageActivity.this);
+                        rvCrop.setAdapter(cropAdapter);
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
 
-                    @Override
-                    protected void onHandleError(String msg) {
-                        super.onHandleError(msg);
-                        refreshLayout.finishRefresh();
-                    }
-                });
+            @Override
+            public void onFail() {
+                refreshLayout.finishRefresh();
+            }
+        });
     }
 
 }

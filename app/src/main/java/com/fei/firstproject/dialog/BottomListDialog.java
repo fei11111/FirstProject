@@ -101,10 +101,7 @@ public class BottomListDialog extends BottomSheetDialog {
     }
 
     private void initLayoutParam() {
-        int screenHeight = mContext.getResources().getDisplayMetrics().heightPixels;
-        int statusBarHeight = Utils.getStatusBarHeight(mContext);
-        int height = screenHeight - statusBarHeight;
-        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, height == 0 ? ViewGroup.LayoutParams.MATCH_PARENT : height);
+        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     }
 
     public void setTitle(String title) {

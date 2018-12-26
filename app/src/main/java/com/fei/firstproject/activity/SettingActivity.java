@@ -20,8 +20,8 @@ import com.fei.firstproject.dialog.BottomListDialog;
 import com.fei.firstproject.dialog.TipDialog;
 import com.fei.firstproject.event.AllEvent;
 import com.fei.firstproject.event.EventType;
-import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
-import com.fei.firstproject.http.factory.RetrofitFactory;
+import com.fei.firstproject.http.HttpMgr;
+import com.fei.firstproject.http.inter.CallBack;
 import com.fei.firstproject.utils.SPUtils;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.AppHeadView;
@@ -37,7 +37,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 
 /**
@@ -224,22 +223,19 @@ public class SettingActivity extends BaseActivity {
             finish();
         } else {
             proShow();
-            Observable<ResponseBody> logout = RetrofitFactory.getBigDb().logout(map);
-            logout.compose(this.<ResponseBody>createTransformer(false))
-                    .subscribe(new BaseWithoutBaseEntityObserver<ResponseBody>(this) {
-                        @Override
-                        protected void onHandleSuccess(ResponseBody responseBody) {
-                            proDisimis();
-                            refreshUserInfoWhenLogout();
-                            finish();
-                        }
+            HttpMgr.logout(this, map, new CallBack<ResponseBody>() {
+                @Override
+                public void onSuccess(ResponseBody responseBody) {
+                    proDisimis();
+                    refreshUserInfoWhenLogout();
+                    finish();
+                }
 
-                        @Override
-                        protected void onHandleError(String msg) {
-                            proDisimis();
-                            super.onHandleError(msg);
-                        }
-                    });
+                @Override
+                public void onFail() {
+                    proDisimis();
+                }
+            });
         }
     }
 

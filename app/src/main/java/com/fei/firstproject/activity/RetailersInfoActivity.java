@@ -11,7 +11,9 @@ import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.RetailerInfoAdapter;
 import com.fei.firstproject.entity.RetailStoresEntity;
 import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
+import com.fei.firstproject.http.HttpMgr;
 import com.fei.firstproject.http.factory.RetrofitFactory;
+import com.fei.firstproject.http.inter.CallBack;
 import com.fei.firstproject.utils.LocationUtils;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.AppHeadView;
@@ -128,103 +130,96 @@ public class RetailersInfoActivity extends BaseListActivity {
         map.put("address1", province);//省
         map.put("address2", city);//市
         map.put("address3", district);//区
-        Observable<ResponseBody> retailStores = RetrofitFactory.getBtPlantWeb().getRetailStores(map);
-        retailStores.compose(this.<ResponseBody>createTransformer(true))
-                .subscribe(new BaseWithoutBaseEntityObserver<ResponseBody>(this) {
-                    @Override
-                    protected void onHandleSuccess(ResponseBody responseBody) {
-                        dismissLoading();
-                        refreshLayout.finishRefresh();
-                        refreshLayout.finishLoadmore();
-                        try {
-                            String response = responseBody.string();
-                            JSONObject json = new JSONObject(response);
-                            String infos = json.getString("infos");
-                            if (!TextUtils.isEmpty(infos)) {
-                                List<RetailStoresEntity> retailStoresEntities = JSON.parseArray(infos, RetailStoresEntity.class);
-                                if (retailStoresEntities != null && retailStoresEntities.size() > 0) {
-                                    refreshLayout.setVisibility(View.VISIBLE);
-                                    if (retailerInfoAdapter == null) {
-                                        retailerInfoAdapter = new RetailerInfoAdapter(RetailersInfoActivity.this, retailStoresEntities);
-                                        retailerInfoAdapter.setOnToHereListener(new RetailerInfoAdapter.OnToHereListener() {
-                                            @Override
-                                            public void onClick(String address) {
-                                                getLocation(address);
-                                            }
-                                        });
-                                        recyclerView.setAdapter(retailerInfoAdapter);
-                                    } else {
-                                        if (currentPage == 1) {
-                                            retailerInfoAdapter.setRetailStoresEntityList(retailStoresEntities);
-                                        } else if (currentPage > 1) {
-                                            retailerInfoAdapter.addRetailStoresEntityList(retailStoresEntities);
-                                        }
-                                        retailerInfoAdapter.notifyDataSetChanged();
+        HttpMgr.getRetailersInfo(this, map, new CallBack<ResponseBody>() {
+            @Override
+            public void onSuccess(ResponseBody responseBody) {
+                dismissLoading();
+                refreshLayout.finishRefresh();
+                refreshLayout.finishLoadmore();
+                try {
+                    String response = responseBody.string();
+                    JSONObject json = new JSONObject(response);
+                    String infos = json.getString("infos");
+                    if (!TextUtils.isEmpty(infos)) {
+                        List<RetailStoresEntity> retailStoresEntities = JSON.parseArray(infos, RetailStoresEntity.class);
+                        if (retailStoresEntities != null && retailStoresEntities.size() > 0) {
+                            refreshLayout.setVisibility(View.VISIBLE);
+                            if (retailerInfoAdapter == null) {
+                                retailerInfoAdapter = new RetailerInfoAdapter(RetailersInfoActivity.this, retailStoresEntities);
+                                retailerInfoAdapter.setOnToHereListener(new RetailerInfoAdapter.OnToHereListener() {
+                                    @Override
+                                    public void onClick(String address) {
+                                        getLocation(address);
                                     }
-                                } else {
-                                    if (currentPage == 1) {
-                                        showNoDataView();
-                                    } else if (currentPage > 1) {
-                                        currentPage--;
-                                        Utils.showToast(RetailersInfoActivity.this, "没有更多数据");
-                                    }
-                                }
+                                });
+                                recyclerView.setAdapter(retailerInfoAdapter);
                             } else {
-                                showNoDataView();
+                                if (currentPage == 1) {
+                                    retailerInfoAdapter.setRetailStoresEntityList(retailStoresEntities);
+                                } else if (currentPage > 1) {
+                                    retailerInfoAdapter.addRetailStoresEntityList(retailStoresEntities);
+                                }
+                                retailerInfoAdapter.notifyDataSetChanged();
                             }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        } else {
+                            if (currentPage == 1) {
+                                showNoDataView();
+                            } else if (currentPage > 1) {
+                                currentPage--;
+                                Utils.showToast(RetailersInfoActivity.this, "没有更多数据");
+                            }
                         }
+                    } else {
+                        showNoDataView();
                     }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
-                    @Override
-                    protected void onHandleError(String msg) {
-                        super.onHandleError(msg);
-                        currentPage--;
-                        refreshLayout.finishRefresh();
-                        refreshLayout.finishLoadmore();
-                        showRequestErrorView();
-                    }
-                });
-
+            @Override
+            public void onFail() {
+                currentPage--;
+                refreshLayout.finishRefresh();
+                refreshLayout.finishLoadmore();
+                showRequestErrorView();
+            }
+        });
     }
 
     private void getLocation(String address) {
         proShow();
-        final Observable<ResponseBody> location = RetrofitFactory.getBtPlantWeb().getLocation(address);
-        location.compose(this.<ResponseBody>createTransformer(false))
-                .subscribe(new BaseWithoutBaseEntityObserver<ResponseBody>(this) {
-                    @Override
-                    protected void onHandleSuccess(ResponseBody responseBody) {
-                        proDisimis();
-                        try {
-                            String response = responseBody.string();
-                            JSONObject result = new JSONObject(response);
-                            boolean message = result.getBoolean("message");
-                            if (message == true) {
-                                String lat = result.getString("lat");
-                                String lng = result.getString("lng");
-                                String[] location = {lat, lng};
-                                if (!TextUtils.isEmpty(lat) && !TextUtils.isEmpty(lng)) {
-                                    Utils.toGaodeMap(RetailersInfoActivity.this, location);
-                                }
-                            } else {
-                                Utils.showToast(RetailersInfoActivity.this, "查询不到该地址");
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
+        HttpMgr.getLocation(this, address, new CallBack<ResponseBody>() {
+            @Override
+            public void onSuccess(ResponseBody responseBody) {
+                proDisimis();
+                try {
+                    String response = responseBody.string();
+                    JSONObject result = new JSONObject(response);
+                    boolean message = result.getBoolean("message");
+                    if (message == true) {
+                        String lat = result.getString("lat");
+                        String lng = result.getString("lng");
+                        String[] location = {lat, lng};
+                        if (!TextUtils.isEmpty(lat) && !TextUtils.isEmpty(lng)) {
+                            Utils.toGaodeMap(RetailersInfoActivity.this, location);
                         }
+                    } else {
+                        Utils.showToast(RetailersInfoActivity.this, "查询不到该地址");
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
 
-                    @Override
-                    protected void onHandleError(String msg) {
-                        super.onHandleError(msg);
-                        proDisimis();
-                    }
-                });
+            @Override
+            public void onFail() {
+                proDisimis();
+            }
+        });
     }
 }
