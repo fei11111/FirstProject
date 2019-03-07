@@ -1,14 +1,9 @@
 package com.fei.firstproject.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
-import android.view.View;
-import android.widget.TextView;
+import android.widget.EditText;
 
 import com.fei.firstproject.R;
-import com.fei.firstproject.widget.AppHeadView;
 
 import butterknife.BindView;
 
@@ -17,6 +12,9 @@ import butterknife.BindView;
  */
 
 public class AboutUsActivity extends BaseActivity {
+
+    @BindView(R.id.et)
+    EditText et;
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {
@@ -45,12 +43,10 @@ public class AboutUsActivity extends BaseActivity {
 
     @Override
     public void init(Bundle savedInstanceState) {
-
     }
 
     @Override
     public void initRequest() {
 
     }
-
 }

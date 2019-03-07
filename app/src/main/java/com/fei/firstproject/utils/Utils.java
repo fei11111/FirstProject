@@ -14,13 +14,19 @@ import android.util.DisplayMetrics;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.fei.firstproject.MyApplication;
 import com.fei.firstproject.toast.ToastCompat;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,8 +49,7 @@ public class Utils {
      * 将px值转换为dip或dp值，保证尺寸大小不变
      *
      * @param pxValue
-     * @param scale
-     *            （DisplayMetrics类中属性density）
+     * @param scale   （DisplayMetrics类中属性density）
      * @return
      */
     public static int px2dip(Context context, float pxValue) {
@@ -56,8 +61,7 @@ public class Utils {
      * 将dip或dp值转换为px值，保证尺寸大小不变
      *
      * @param dipValue
-     * @param scale
-     *            （DisplayMetrics类中属性density）
+     * @param scale    （DisplayMetrics类中属性density）
      * @return
      */
     public static int dip2px(Context context, float dipValue) {
@@ -69,8 +73,7 @@ public class Utils {
      * 将px值转换为sp值，保证文字大小不变
      *
      * @param pxValue
-     * @param fontScale
-     *            （DisplayMetrics类中属性scaledDensity）
+     * @param fontScale （DisplayMetrics类中属性scaledDensity）
      * @return
      */
     public static int px2sp(Context context, float pxValue) {
@@ -82,8 +85,7 @@ public class Utils {
      * 将sp值转换为px值，保证文字大小不变
      *
      * @param spValue
-     * @param fontScale
-     *            （DisplayMetrics类中属性scaledDensity）
+     * @param fontScale （DisplayMetrics类中属性scaledDensity）
      * @return
      */
     public static int sp2px(Context context, float spValue) {
@@ -391,6 +393,27 @@ public class Utils {
         returnValue = filesize.divide(kilobyte, 2, BigDecimal.ROUND_UP)
                 .floatValue();
         return (returnValue + "KB");
+    }
+
+    public static Date getNetDate() {
+        if (!NetUtils.isConnected(MyApplication.getInstance())) {
+            return new Date(System.currentTimeMillis());
+        }
+        URL url;
+        try {
+            url = new URL("http://www.baidu.com");
+            URLConnection connection = url.openConnection();// 生成连接对象
+            connection.connect(); // 发出连接
+            Date date = new Date(connection.getDate());// 取得网站日期时间
+            return date;
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("获取网络时间出错" + e.getMessage());
+            return new Date(System.currentTimeMillis());
+        }
+        return null;
     }
 
 }
