@@ -25,6 +25,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -148,7 +149,7 @@ public class Utils {
 
     //隐藏输入法
     public static void hideKeyBoard(Activity activity) {
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(activity.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(activity.getWindow().getDecorView().getWindowToken(), 0);
     }
 
@@ -165,7 +166,7 @@ public class Utils {
         }
 
         try {
-            String str = new String(paramString.getBytes(), "UTF-8");
+            String str = new String(paramString.getBytes(), StandardCharsets.UTF_8);
             str = URLEncoder.encode(str, "UTF-8");
             return str;
         } catch (Exception localException) {

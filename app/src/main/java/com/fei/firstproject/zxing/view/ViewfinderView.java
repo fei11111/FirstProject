@@ -190,7 +190,7 @@ public final class ViewfinderView extends View {
 			paint.setTypeface(Typeface.DEFAULT_BOLD);
 			String text = getResources().getString(R.string.str_scan_hint);
 			float textWidth = paint.measureText(text);
-			canvas.drawText(text, (width - textWidth)/2, (float) (frame.bottom + (float)TEXT_PADDING_TOP *density), paint);
+			canvas.drawText(text, (width - textWidth)/2, (frame.bottom + (float)TEXT_PADDING_TOP *density), paint);
 
 
 			Collection<ResultPoint> currentPossible = possibleResultPoints;

@@ -37,7 +37,7 @@ public class StatusBarUtils {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
                     && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                 int color = COLOR_DEFAULT;
-                ViewGroup contentView = (ViewGroup) activity
+                ViewGroup contentView = activity
                         .findViewById(android.R.id.content);
                 if (statusColor != COLOR_INVALID_VAL) {
                     color = statusColor;

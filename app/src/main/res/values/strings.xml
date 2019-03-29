@@ -206,6 +206,7 @@
     <string name="day">日</string>
     <string name="week">周</string>
     <string name="month">月</string>
+    <string name="album">相册</string>
 
     <string name="problem_type">问题类型：</string>
     <string name="problem_type_hint">请选择问题类型</string>

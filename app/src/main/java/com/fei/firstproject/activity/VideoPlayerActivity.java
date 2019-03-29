@@ -218,7 +218,7 @@ public class VideoPlayerActivity extends BaseActivity {
     private void initDownloadEntity(String url) {
         //得到url后先生存DownLoadEntity
         int i = url.lastIndexOf("/");
-        String fileName = url.substring(i + 1, url.length());
+        String fileName = url.substring(i + 1);
         //sp里未保存过
         downLoadEntity = new DownLoadEntity();
         downLoadEntity.setDownloadUrl(url);

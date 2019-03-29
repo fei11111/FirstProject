@@ -42,11 +42,7 @@ public class MyApplication extends Application {
     private void initUserInfo() {
         AppConfig.user = (UserEntity) SPUtils.get(this, "user", null);
         AppConfig.notificationId = (int) SPUtils.get(this, "notificationId", 10);
-        if (AppConfig.user == null) {
-            AppConfig.ISLOGIN = false;
-        } else {
-            AppConfig.ISLOGIN = true;
-        }
+        AppConfig.ISLOGIN = AppConfig.user != null;
     }
 
     public static MyApplication getInstance() {

@@ -52,10 +52,10 @@ public class ClassicRefreshHeaderView extends SwipeRefreshHeaderLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        tvRefresh = (TextView) findViewById(R.id.tvRefresh);
-        ivArrow = (ImageView) findViewById(R.id.ivArrow);
-        ivSuccess = (ImageView) findViewById(R.id.ivSuccess);
-        progressBar = (ProgressBar) findViewById(R.id.progressbar);
+        tvRefresh = findViewById(R.id.tvRefresh);
+        ivArrow = findViewById(R.id.ivArrow);
+        ivSuccess = findViewById(R.id.ivSuccess);
+        progressBar = findViewById(R.id.progressbar);
     }
 
     @Override

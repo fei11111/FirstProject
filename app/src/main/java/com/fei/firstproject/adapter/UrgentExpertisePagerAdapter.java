@@ -62,12 +62,12 @@ public class UrgentExpertisePagerAdapter extends PagerAdapter {
             view = views.get(position);
         } else {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_urgent_expertise, null);
-            TextView tvName = (TextView) view.findViewById(R.id.tv_name);
-            TextView tvServiceDuration = (TextView) view.findViewById(R.id.tv_service_duration);
-            TextView tvSpecCrop = (TextView) view.findViewById(R.id.tv_spec_crop);
-            TextView tvSpecSkill = (TextView) view.findViewById(R.id.tv_spec_skill);
-            RatingBar rbStar = (RatingBar) view.findViewById(R.id.rb_star);
-            RoundImageView ivIcon = (RoundImageView) view.findViewById(R.id.iv_icon);
+            TextView tvName = view.findViewById(R.id.tv_name);
+            TextView tvServiceDuration = view.findViewById(R.id.tv_service_duration);
+            TextView tvSpecCrop = view.findViewById(R.id.tv_spec_crop);
+            TextView tvSpecSkill = view.findViewById(R.id.tv_spec_skill);
+            RatingBar rbStar = view.findViewById(R.id.rb_star);
+            RoundImageView ivIcon = view.findViewById(R.id.iv_icon);
             UrgentExpertEntity expertEntity = expertEntities.get(position);
             tvName.setText(expertEntity.getUserName());
             tvServiceDuration.setText(expertEntity.getServiceTime());

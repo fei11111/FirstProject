@@ -71,7 +71,7 @@ public class SystemToast implements IToast {
         View view = mToast.getView();
         if (view != null) {
             view.setBackgroundResource(android.R.color.transparent);
-            TextView message = ((TextView) view.findViewById(android.R.id.message));
+            TextView message = view.findViewById(android.R.id.message);
             message.setBackgroundResource(R.drawable.shape_toast_rect_border_bg);
             message.setTextColor(mContext.getResources().getColor(R.color.colorWhite));
         }

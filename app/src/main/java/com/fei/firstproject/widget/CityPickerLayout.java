@@ -207,9 +207,9 @@ public class CityPickerLayout extends LinearLayout {
 
     private void initView() {
         LayoutInflater.from(getContext()).inflate(R.layout.view_city_picker, this);
-        provincePicker = (ScrollerNumberPickerView) findViewById(R.id.province);
-        cityPicker = (ScrollerNumberPickerView) findViewById(R.id.city);
-        counyPicker = (ScrollerNumberPickerView) findViewById(R.id.couny);
+        provincePicker = findViewById(R.id.province);
+        cityPicker = findViewById(R.id.city);
+        counyPicker = findViewById(R.id.couny);
     }
 
     public static class JSONParser {
@@ -338,6 +338,6 @@ public class CityPickerLayout extends LinearLayout {
 
     public interface OnSelectingListener {
 
-        public void selected(boolean selected);
+        void selected(boolean selected);
     }
 }

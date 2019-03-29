@@ -641,8 +641,8 @@ public class ScrollerNumberPickerView extends View {
 				moveToSelect = moveToSelect > 0 ? moveToSelect : moveToSelect
 						* (-1);
 				// 计算当前字体大小
-				float textSize = (float) normalFont
-						+ ((float) (selectedFont - normalFont) * (1.0f - (float) moveToSelect
+				float textSize = normalFont
+						+ ((selectedFont - normalFont) * (1.0f - moveToSelect
 								/ (float) unitHeight));
 				textPaint.setTextSize(textSize);
 			} else {
@@ -670,10 +670,8 @@ public class ScrollerNumberPickerView extends View {
 		 * @return
 		 */
 		public boolean isInView() {
-			if (y + move > controlHeight
-					|| (y + move + unitHeight / 2 + textRect.height() / 2) < 0)
-				return false;
-			return true;
+			return !(y + move > controlHeight)
+					&& (y + move + unitHeight / 2 + textRect.height() / 2) >= 0;
 		}
 
 		/**
@@ -709,11 +707,9 @@ public class ScrollerNumberPickerView extends View {
 					&& (y + move + unitHeight) <= controlHeight / 2
 							+ unitHeight / 2 - 2)
 				return true;
-			if ((y + move) <= controlHeight / 2 - unitHeight / 2 + 2
+			return (y + move) <= controlHeight / 2 - unitHeight / 2 + 2
 					&& (y + move + unitHeight) >= controlHeight / 2
-							+ unitHeight / 2 - 2)
-				return true;
-			return false;
+					+ unitHeight / 2 - 2;
 		}
 
 		/**
@@ -738,7 +734,7 @@ public class ScrollerNumberPickerView extends View {
 		 * @param id
 		 * @param text
 		 */
-		public void endSelect(int id, String text);
+		void endSelect(int id, String text);
 
 		/**
 		 * 选中的内容
@@ -746,7 +742,7 @@ public class ScrollerNumberPickerView extends View {
 		 * @param id
 		 * @param text
 		 */
-		public void selecting(int id, String text);
+		void selecting(int id, String text);
 
 	}
 }

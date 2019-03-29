@@ -66,7 +66,7 @@ public class PhotoActivity extends BaseActivity {
                 String url = pics.get(position);
                 if (url.contains("/")) {
                     int indexOf = url.lastIndexOf('/');
-                    String fileName = url.substring(indexOf + 1, url.length());
+                    String fileName = url.substring(indexOf + 1);
                     String filePath = PathUtils.getImgPath() + File.separator + fileName;
                     File file = new File(filePath);
                     if (file.exists()) {
@@ -87,7 +87,7 @@ public class PhotoActivity extends BaseActivity {
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
-                    public void accept(Disposable disposable) throws Exception {
+                    public void accept(Disposable disposable) {
                         // 可添加网络连接判断等
                         if (!NetUtils.isConnected(PhotoActivity.this)) {
                             Utils.showToast(PhotoActivity.this, "网络不给力，下载失败");

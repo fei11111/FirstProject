@@ -26,7 +26,7 @@ public class RxSchedulers {
                         .subscribeOn(Schedulers.io())
                         .doOnSubscribe(new Consumer<Disposable>() {
                             @Override
-                            public void accept(Disposable disposable) throws Exception {
+                            public void accept(Disposable disposable) {
                                 // 可添加网络连接判断等
                                 if (!NetUtils.isConnected(mContext)) {
                                     onConnectError.onError();

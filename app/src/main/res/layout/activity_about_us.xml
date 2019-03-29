@@ -59,6 +59,15 @@
             android:textColor="@color/colorWhite"
             style="@style/Font15Style" />
 
+       <EditText
+           android:id="@+id/et"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:inputType="number"
+           android:maxLength="13"
+           android:hint="提示语"/>
+
+
     </LinearLayout>
 
 </LinearLayout>

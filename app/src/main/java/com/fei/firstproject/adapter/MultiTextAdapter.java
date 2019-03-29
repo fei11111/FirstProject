@@ -56,7 +56,7 @@ public class MultiTextAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_multi_text, parent, false);
-            holder.tvName = (CheckedTextView) convertView.findViewById(R.id.tv_name);
+            holder.tvName = convertView.findViewById(R.id.tv_name);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();

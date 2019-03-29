@@ -35,9 +35,9 @@ public class ClassicLoadMoreFooterView extends SwipeLoadMoreFooterLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        tvLoadMore = (TextView) findViewById(R.id.tvLoadMore);
-        ivSuccess = (ImageView) findViewById(R.id.ivSuccess);
-        progressBar = (ProgressBar) findViewById(R.id.progressbar);
+        tvLoadMore = findViewById(R.id.tvLoadMore);
+        ivSuccess = findViewById(R.id.ivSuccess);
+        progressBar = findViewById(R.id.progressbar);
     }
 
     @Override

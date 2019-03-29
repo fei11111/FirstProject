@@ -68,7 +68,6 @@ public class RunActivity extends BaseActivity {
     private List<AxisValue> yValues = new ArrayList<>();//y轴值
     private LineChartData data = new LineChartData();
     private Random ra = new Random();
-    ;
 
     @Override
     public void permissionsDeniedCallBack(int requestCode) {

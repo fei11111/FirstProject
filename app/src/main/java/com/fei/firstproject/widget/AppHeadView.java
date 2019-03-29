@@ -320,11 +320,11 @@ public class AppHeadView extends RelativeLayout {
     }
 
     public interface onAppHeadViewListener {
-        public void onLeft(View view);
+        void onLeft(View view);
 
-        public void onRight(View view);
+        void onRight(View view);
 
-        public void onEdit(TextView v, int actionId,
-                           KeyEvent event);
+        void onEdit(TextView v, int actionId,
+                    KeyEvent event);
     }
 }

@@ -1,5 +1,6 @@
 package com.fei.firstproject.activity;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -133,10 +134,11 @@ public class WebActivity extends BaseActivity {
         webView.loadUrl(url);
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
-        settings.setCacheMode(settings.LOAD_NO_CACHE);
+        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         settings.setJavaScriptCanOpenWindowsAutomatically(true);
     }
 

@@ -205,11 +205,12 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onRight(View view) {
                 if (mainFragment != null && mainFragment.isVisible()) {
-                    if (AppConfig.ISLOGIN) {
-                        startActivityWithoutCode(new Intent(MainActivity.this, MessageActivity.class));
-                    } else {
-                        showDialogWhenUnLogin();
-                    }
+//                    if (AppConfig.ISLOGIN) {
+//                        startActivityWithoutCode(new Intent(MainActivity.this, MessageActivity.class));
+//                    } else {
+//                        showDialogWhenUnLogin();
+//                    }
+                    startActivityWithoutCode(new Intent(MainActivity.this, AlbumActivity.class));
                 } else if (meFragment != null && meFragment.isVisible()) {
                     sendWx();
                 }

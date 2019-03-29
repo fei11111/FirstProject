@@ -52,7 +52,7 @@ public class PhotoPagerAdapter extends PagerAdapter {
             view = views.get(position);
         } else {
             view = LayoutInflater.from(mContext).inflate(R.layout.view_photo, null);
-            PhotoView photoView = (PhotoView) view.findViewById(R.id.photoView);
+            PhotoView photoView = view.findViewById(R.id.photoView);
             photoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
                 @Override
                 public void onPhotoTap(View view, float x, float y) {

@@ -14,51 +14,51 @@ public interface IBase {
     /**
      * 权限被拒返回
      */
-    public void permissionsDeniedCallBack(int requestCode);
+    void permissionsDeniedCallBack(int requestCode);
 
     /**
      * 授权后返回
      */
-    public void permissionsGrantCallBack(int requestCode);
+    void permissionsGrantCallBack(int requestCode);
 
     /**
      * dialog提示被拒返回
      */
-    public void permissionDialogDismiss(int requestCode);
+    void permissionDialogDismiss(int requestCode);
 
     /**
      * 返回布局
      */
-    public int getContentViewResId();
+    int getContentViewResId();
 
     /**
      * 初始化标题
      * */
-    public void initTitle();
+    void initTitle();
 
     /**
      * 初始化
      */
-    public void init(Bundle savedInstanceState);
+    void init(Bundle savedInstanceState);
 
     /**
      * 初始化接口
      */
-    public void initRequest();
+    void initRequest();
 
     /**
      * 没有请求码启动Activity
      */
-    public void startActivityWithoutCode(Intent intent);
+    void startActivityWithoutCode(Intent intent);
 
     /**
      * 有请求码启动Activity
      */
-    public void startActivityWithCode(Intent intent, int requestCode);
+    void startActivityWithCode(Intent intent, int requestCode);
 
     /**
      * 有请求码和共享元素启动Activity
      */
-    public void startActivityWithCodeAndPair(Intent intent, int requestCode, Pair<View, String>... sharedElements);
+    void startActivityWithCodeAndPair(Intent intent, int requestCode, Pair<View, String>... sharedElements);
 
 }

@@ -133,7 +133,7 @@ public class CaptureActivity extends BaseActivity implements Callback {
 
     @Override
     public void initTitle() {
-        setBackTitle(getString(R.string.scan));
+        appHeadView.setMiddleText(getString(R.string.scan));
     }
 
     @Override
@@ -264,7 +264,7 @@ public class CaptureActivity extends BaseActivity implements Callback {
         Result result;
         try {
 
-            result = reader.decode(bitmap1, (Hashtable<DecodeHintType, String>) hints1);
+            result = reader.decode(bitmap1, hints1);
             return result;
         } catch (NotFoundException e) {
             Utils.showToast(this, "解析错误，请选择正确的二维码图片");

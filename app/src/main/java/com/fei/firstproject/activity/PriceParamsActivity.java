@@ -57,7 +57,7 @@ public class PriceParamsActivity extends BaseListActivity {
         if (currentPage < 1) currentPage = 1;
         Map<String, String> map = new HashMap<>();
         map.put("type", type);
-        map.put("keyword", appHeadView.getEtSearchText().toString());
+        map.put("keyword", appHeadView.getEtSearchText());
         map.put("pageSize", "15");
         map.put("currentPage", currentPage + "");
         HttpMgr.getParams(this, map, new CallBack<List<String>>() {
