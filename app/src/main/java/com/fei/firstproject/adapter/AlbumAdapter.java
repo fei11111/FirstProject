@@ -1,5 +1,6 @@
 package com.fei.firstproject.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.utils.LogUtils;
+import com.fei.firstproject.utils.Utils;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -156,13 +158,7 @@ public class AlbumAdapter extends BaseAdapter implements AbsListView.OnScrollLis
             path = strings[0];
             if (isCancelled())
                 return null;
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true;
-            BitmapFactory.decodeFile(path, options);
-            options.inPreferredConfig = Bitmap.Config.RGB_565;
-            options.inJustDecodeBounds = false;
-            Bitmap bitmap = BitmapFactory.decodeFile(path, options);
-            return bitmap;
+            return compressBitmap(path);
         }
 
         @Override
@@ -177,6 +173,27 @@ public class AlbumAdapter extends BaseAdapter implements AbsListView.OnScrollLis
                 }
             }
         }
+    }
+
+    private Bitmap compressBitmap(String path) {
+        int[] screen = Utils.getScreen((Activity) mContext);
+        int screenWidth = screen[0];
+        int imageWidth = screenWidth / 3;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
+        int outWidth = options.outWidth;
+        int outHeight = options.outHeight;
+        if (outWidth > outHeight) {
+            options.inSampleSize = outWidth / imageWidth;
+        } else {
+            options.inSampleSize = outHeight / imageWidth;
+        }
+        options.outWidth = imageWidth;
+        options.outHeight = imageWidth;
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeFile(path, options);
     }
 
 }
