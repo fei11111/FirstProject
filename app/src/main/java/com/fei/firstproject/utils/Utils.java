@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.net.Uri;
@@ -417,4 +418,16 @@ public class Utils {
         return null;
     }
 
+    public static String getSignature(Context context) {
+        PackageManager pm = context.getPackageManager();
+        PackageInfo pi;
+        try {
+            pi = pm.getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
+            Signature[] signatures = pi.signatures;
+            return signatures[0].toCharsString();
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

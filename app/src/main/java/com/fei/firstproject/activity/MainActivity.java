@@ -24,6 +24,7 @@ import com.fei.firstproject.fragment.MeFragment;
 import com.fei.firstproject.fragment.manager.FragmentInstanceManager;
 import com.fei.firstproject.http.HttpMgr;
 import com.fei.firstproject.http.inter.CallBack;
+import com.fei.firstproject.jniTest.SignCheck;
 import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.SPUtils;
 import com.fei.firstproject.utils.Utils;
@@ -102,6 +103,9 @@ public class MainActivity extends BaseActivity {
         appHeadView.setMiddleSearchHint(getResources().getString(R.string.recommend_tip));
         appHeadView.setRightStyle(AppHeadView.IMAGE);
         appHeadView.setFlHeadRightVisible(View.VISIBLE);
+
+//        LogUtils.i("MainActivity",Utils.getSignature(this));
+//        LogUtils.i("MainActivity",SignCheck.isRight(this)+"");
     }
 
     @Override
