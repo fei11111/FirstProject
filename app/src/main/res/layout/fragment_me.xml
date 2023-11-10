@@ -10,7 +10,7 @@
         android:id="@id/swipe_refresh_header"
         layout="@layout/layout_classic_header" />
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@id/swipe_target"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -207,7 +207,7 @@
 
             </RelativeLayout>
 
-            <android.support.v7.widget.LinearLayoutCompat
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_10"
@@ -328,9 +328,9 @@
                             android:textColor="@color/colorText" />
                     </LinearLayout>
                 </LinearLayout>
-            </android.support.v7.widget.LinearLayoutCompat>
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <android.support.v7.widget.LinearLayoutCompat
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_10"
@@ -367,9 +367,9 @@
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"></com.fei.firstproject.widget.NoScrollRecyclerView>
 
-            </android.support.v7.widget.LinearLayoutCompat>
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <android.support.v7.widget.LinearLayoutCompat
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_10"
@@ -405,12 +405,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"></com.fei.firstproject.widget.NoScrollRecyclerView>
-            </android.support.v7.widget.LinearLayoutCompat>
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <include layout="@layout/app_bottom_signature" />
 
         </LinearLayout>
 
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </com.aspsine.swipetoloadlayout.SwipeToLoadLayout>

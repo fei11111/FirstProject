@@ -2,8 +2,6 @@ package com.fei.firstproject.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
@@ -12,12 +10,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.PriceInfoAdapter;
 import com.fei.firstproject.entity.PriceInfoEntity;
 import com.fei.firstproject.http.HttpMgr;
 import com.fei.firstproject.http.inter.CallBack;
 import com.fei.firstproject.utils.Utils;
+import com.google.android.material.appbar.AppBarLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 

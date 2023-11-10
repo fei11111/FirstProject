@@ -8,9 +8,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
+
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.config.AppConfig;

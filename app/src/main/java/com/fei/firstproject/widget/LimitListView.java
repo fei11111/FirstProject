@@ -1,11 +1,12 @@
 package com.fei.firstproject.widget;
 
 import android.content.Context;
-import android.support.annotation.AttrRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.ListView;
+
+import androidx.annotation.AttrRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Created by Administrator on 2017/9/1.

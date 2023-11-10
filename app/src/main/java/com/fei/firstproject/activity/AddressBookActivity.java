@@ -7,15 +7,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.ContactsContract;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.ContactsAdapter;
+import com.fei.firstproject.decoration.DividerItemDecoration;
 import com.fei.firstproject.entity.ContactsEntity;
 import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.widget.LetterView;
@@ -85,8 +86,16 @@ public class AddressBookActivity extends BaseActivity {
                 //这个循环的是data表
                 Cursor cursor = resolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
                 while (cursor.moveToNext()) {
-                    String name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                    String phone = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                    String name = "";
+                    int columnIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
+                    if(columnIndex!=-1) {
+                        name = cursor.getString(columnIndex);
+                    }
+                    String phone = "";
+                    columnIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                    if(columnIndex!=-1) {
+                        phone = cursor.getString(columnIndex);
+                    }
                     ContactsEntity contactsEntity = new ContactsEntity();
                     contactsEntity.setName(name);
                     contactsEntity.setPhone(phone);

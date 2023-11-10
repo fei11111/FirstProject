@@ -18,12 +18,12 @@
             layout="@layout/layout_classic_header" />
 
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@id/swipe_target"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/swipe_target"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/size_45"
-            android:background="@color/colorWhite"></android.support.v7.widget.RecyclerView>
+            android:background="@color/colorWhite"></androidx.recyclerview.widget.RecyclerView>
 
         <include
             android:id="@id/swipe_load_more_footer"

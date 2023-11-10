@@ -44,7 +44,7 @@
                 android:text="@string/edit"
                 android:textColor="@color/colorWhite" />
 
-            <android.support.v4.widget.NestedScrollView
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_above="@id/btn_save"
@@ -56,7 +56,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <android.support.v7.widget.LinearLayoutCompat
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/colorWhite"
@@ -205,7 +205,7 @@
                                 android:lines="1"
                                 android:textColor="@color/colorTextSub" />
                         </LinearLayout>
-                    </android.support.v7.widget.LinearLayoutCompat>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
                     <android.support.v7.widget.LinearLayoutCompat
                         android:id="@+id/ll_farmer"
@@ -302,7 +302,7 @@
 
                     </android.support.v7.widget.LinearLayoutCompat>
 
-                    <android.support.v7.widget.LinearLayoutCompat
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:id="@+id/ll_service_station"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -425,9 +425,9 @@
                                 android:lines="1"
                                 android:textColor="@color/colorTextSub" />
                         </LinearLayout>
-                    </android.support.v7.widget.LinearLayoutCompat>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
-                    <android.support.v7.widget.LinearLayoutCompat
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:id="@+id/ll_expertise"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -695,9 +695,9 @@
                             android:layout_height="wrap_content"
                             app:title="@string/online_setting"></com.fei.firstproject.widget.PartHeadView>
 
-                    </android.support.v7.widget.LinearLayoutCompat>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
                 </LinearLayout>
-            </android.support.v4.widget.NestedScrollView>
+            </androidx.core.widget.NestedScrollView>
         </RelativeLayout>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </FrameLayout>

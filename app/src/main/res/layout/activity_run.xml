@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v4.widget.DrawerLayout
+    <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -56,7 +56,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center"
-                                android:background="@color/transparent"
+                                android:background="@android:color/transparent"
                                 app:bgCircleColor="@color/colorWhite"
                                 app:circleColor="@color/colorBlue"
                                 app:circleWidth="@dimen/size_2" />
@@ -152,7 +152,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_marginTop="@dimen/size_10"
                                 android:layout_marginBottom="@dimen/size_30"
-                                android:background="@color/white" />
+                                android:background="@android:color/white" />
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
@@ -261,5 +261,5 @@
 
         </RelativeLayout>
 
-    </android.support.v4.widget.DrawerLayout>
+    </androidx.drawerlayout.widget.DrawerLayout>
 </FrameLayout>

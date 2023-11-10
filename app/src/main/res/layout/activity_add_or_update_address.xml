@@ -23,12 +23,12 @@
             android:text="@string/confirm"
             android:textColor="@color/colorWhite" />
 
-        <android.support.v4.widget.NestedScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/btn_add_address">
 
-            <android.support.v7.widget.LinearLayoutCompat
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorWhite"
@@ -53,7 +53,7 @@
                         android:text="@string/contacts"
                         android:textColor="@color/colorText" />
 
-                    <android.support.v7.widget.LinearLayoutCompat
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/size_10"
@@ -119,7 +119,7 @@
 
                         </RadioGroup>
 
-                    </android.support.v7.widget.LinearLayoutCompat>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
                 </LinearLayout>
 
@@ -260,8 +260,8 @@
                     </RelativeLayout>
                 </LinearLayout>
 
-            </android.support.v7.widget.LinearLayoutCompat>
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
-        </android.support.v4.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
     </RelativeLayout>
 </LinearLayout>

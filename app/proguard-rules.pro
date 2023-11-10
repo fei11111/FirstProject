@@ -183,8 +183,12 @@
 -keep class com.google.gson.stream.** { *; }
 -keep class com.google.gson.examples.android.model.** { *; }
 
-#PictureSelector 2.0
+#PictureSelector
 -keep class com.luck.picture.lib.** { *; }
+-keep class com.luck.lib.camerax.** { *; }
+-dontwarn com.yalantis.ucrop**
+-keep class com.yalantis.ucrop** { *; }
+-keep interface com.yalantis.ucrop** { *; }
 
  #rxjava
 -dontwarn sun.misc.**

@@ -40,7 +40,7 @@ public class PriceParamsActivity extends BaseListActivity {
 
     @Override
     public void initRequest() {
-        getParams();
+        getRequestParams();
     }
 
     @Override
@@ -52,7 +52,7 @@ public class PriceParamsActivity extends BaseListActivity {
         appHeadView.setMiddleSearchHint(getString(R.string.variety_tip));
     }
 
-    public void getParams() {
+    public void getRequestParams() {
         //type=1&keyword=&currentPage=2&pageSize=10
         if (currentPage < 1) currentPage = 1;
         Map<String, String> map = new HashMap<>();

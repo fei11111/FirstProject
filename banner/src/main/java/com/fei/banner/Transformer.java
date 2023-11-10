@@ -1,6 +1,6 @@
 package com.fei.banner;
 
-import android.support.v4.view.ViewPager.PageTransformer;
+import androidx.viewpager.widget.ViewPager.PageTransformer;
 import com.fei.banner.transformer.AccordionTransformer;
 import com.fei.banner.transformer.BackgroundToForegroundTransformer;
 import com.fei.banner.transformer.CubeInTransformer;

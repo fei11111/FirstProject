@@ -23,3 +23,7 @@
 　10)图片查看：PhotoView<br/>
 
 
+
+6.WeakHandler 替换之前用的Handler
+
+

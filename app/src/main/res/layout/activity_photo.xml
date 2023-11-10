@@ -5,11 +5,11 @@
     android:background="@color/colorBlack"
     android:orientation="vertical">
 
-    <android.support.v4.view.ViewPager
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/vp_photo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:overScrollMode="never"></android.support.v4.view.ViewPager>
+        android:overScrollMode="never"></androidx.viewpager.widget.ViewPager>
 
     <TextView
         android:id="@+id/tv_page"

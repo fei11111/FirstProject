@@ -3,13 +3,14 @@ package com.fei.firstproject.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.LinearLayoutCompat;
 
 import com.alibaba.fastjson.JSON;
 import com.fei.firstproject.R;

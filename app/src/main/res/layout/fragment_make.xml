@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground">
 
-    <android.support.v7.widget.LinearLayoutCompat
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/ll_top_make"
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_220"
@@ -137,9 +137,9 @@
                     style="@style/Font15Style" />
             </LinearLayout>
         </LinearLayout>
-    </android.support.v7.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_shopping_car"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

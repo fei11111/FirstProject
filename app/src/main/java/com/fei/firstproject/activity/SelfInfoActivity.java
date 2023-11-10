@@ -2,7 +2,6 @@ package com.fei.firstproject.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,6 +10,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.LinearLayoutCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
@@ -394,7 +395,7 @@ public class SelfInfoActivity extends BaseActivity {
             switch (requestCode) {
                 case PictureConfig.CHOOSE_REQUEST:
                     // 图片选择结果回调
-                    List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
+//                    List<LocalMedia> selectList = PictureSelector.obtainSelectorList(data);
                     // 例如 LocalMedia 里面返回三种path
                     // 1.media.getPath(); 为原图path
                     // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true

@@ -1,18 +1,13 @@
 package com.fei.firstproject.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.KeyEvent;
-import android.view.View;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.entity.UserEntity;
 import com.fei.firstproject.utils.Utils;
-import com.fei.firstproject.widget.AppHeadView;
 import com.fei.firstproject.widget.PartHeadView;
 
 import butterknife.BindView;

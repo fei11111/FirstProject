@@ -11,7 +11,7 @@
     <item>
         <shape>
             <stroke android:width="@dimen/size_1" android:color="@color/colorWhite" />
-            <solid android:color="@color/transparent" />
+            <solid android:color="@android:color/transparent" />
         </shape>
     </item>
 

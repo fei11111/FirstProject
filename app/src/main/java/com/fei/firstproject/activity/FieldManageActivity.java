@@ -2,7 +2,6 @@ package com.fei.firstproject.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +9,8 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.LinearLayoutCompat;
 
 import com.alibaba.fastjson.JSON;
 import com.fei.firstproject.R;
@@ -37,7 +38,6 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import okhttp3.ResponseBody;
 
 /**
@@ -135,8 +135,8 @@ public class FieldManageActivity extends BaseActivity {
 
     private View createItemView(int tabWidth, final String menuName, int drawable) {
         View itemView = LayoutInflater.from(this).inflate(R.layout.item_head_menu, null);
-        ImageView iv_head_menu = ButterKnife.findById(itemView, R.id.iv_head_menu);
-        TextView tv_head_menu = ButterKnife.findById(itemView, R.id.tv_head_menu);
+        ImageView iv_head_menu = itemView.findViewById(R.id.iv_head_menu);
+        TextView tv_head_menu = itemView.findViewById(R.id.tv_head_menu);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(tabWidth, LinearLayout.LayoutParams.MATCH_PARENT);
         itemView.setLayoutParams(params);
         itemView.setOnClickListener(new View.OnClickListener() {

@@ -7,7 +7,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
+import com.amap.api.services.core.AMapException;
 import com.amap.api.services.weather.LocalWeatherForecastResult;
 import com.amap.api.services.weather.LocalWeatherLive;
 import com.amap.api.services.weather.LocalWeatherLiveResult;
@@ -57,6 +57,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static android.content.Context.SENSOR_SERVICE;
+
+import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.core.util.Pair;
 
 /**
  * Created by Administrator on 2017/7/29.
@@ -169,7 +172,7 @@ public class MainFragment extends BaseFragment {
 
     private LocationUtils.OnLocationCallBackListener onLocationCallBackListener = new LocationUtils.OnLocationCallBackListener() {
         @Override
-        public void onSuccess(AMapLocation aMapLocation) {
+        public void onSuccess(AMapLocation aMapLocation) throws AMapException {
             WeatherSearchQuery mquery = new WeatherSearchQuery(aMapLocation.getCity(), WeatherSearchQuery.WEATHER_TYPE_LIVE);
             WeatherSearch mweathersearch = new WeatherSearch(activity);
             mweathersearch.setOnWeatherSearchListener(onWeatherSearchListener);
@@ -219,6 +222,11 @@ public class MainFragment extends BaseFragment {
         getNcw();
         //推荐方案
         getRecommendPlan();
+    }
+
+    @Override
+    public void startActivityWithCodeAndPair(Intent intent, int requestCode, Pair<View, String>... sharedElements) {
+
     }
 
     public void getRecommendPlan() {
@@ -324,8 +332,8 @@ public class MainFragment extends BaseFragment {
 
     private View createItemView(int tabWidth, final String menuName, int drawable) {
         View itemView = LayoutInflater.from(activity).inflate(R.layout.item_head_menu, null);
-        ImageView iv_head_menu = ButterKnife.findById(itemView, R.id.iv_head_menu);
-        TextView tv_head_menu = ButterKnife.findById(itemView, R.id.tv_head_menu);
+        ImageView iv_head_menu = itemView.findViewById(R.id.iv_head_menu);
+        TextView tv_head_menu = itemView.findViewById(R.id.tv_head_menu);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(tabWidth, LinearLayout.LayoutParams.MATCH_PARENT);
         itemView.setLayoutParams(params);
         itemView.setOnClickListener(new View.OnClickListener() {

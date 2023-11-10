@@ -126,12 +126,12 @@
             android:layout_height="@dimen/size_40" />
 
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/btn_base_list"
-            android:background="@color/colorWhite"></android.support.v7.widget.RecyclerView>
+            android:background="@color/colorWhite"></androidx.recyclerview.widget.RecyclerView>
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 

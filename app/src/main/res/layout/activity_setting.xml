@@ -20,11 +20,11 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/app_bar_layout"
+        android:layout_below="@id/app_bar_layout"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true">
 
-        <android.support.v7.widget.LinearLayoutCompat
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_10"
@@ -150,7 +150,7 @@
                 app:leftIcon="@drawable/ic_about_us"
                 app:title="@string/about_us"></com.fei.firstproject.widget.PartHeadView>
 
-        </android.support.v7.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </ScrollView>
 

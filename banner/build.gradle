@@ -1,11 +1,10 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.2'
+    compileSdkVersion 33
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
 
@@ -18,10 +17,11 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
+    implementation deps.annotation
+    implementation deps.appcompat
+    implementation deps.constraintLayout
+    implementation deps.ktxCore
+    implementation deps.material
     testImplementation 'junit:junit:4.12'
     implementation files('libs/nineoldandroids-2.4.0.jar')
-    implementation 'com.android.support:appcompat-v7:26.1.0'
 }

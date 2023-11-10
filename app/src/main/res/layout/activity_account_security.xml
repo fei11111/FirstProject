@@ -6,7 +6,7 @@
     android:background="@color/colorBackground"
     android:orientation="vertical">
 
-    <android.support.v7.widget.LinearLayoutCompat
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/size_10"
@@ -54,5 +54,5 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:title="@string/update_password"></com.fei.firstproject.widget.PartHeadView>
-    </android.support.v7.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </LinearLayout>

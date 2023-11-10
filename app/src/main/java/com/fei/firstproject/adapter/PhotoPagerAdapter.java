@@ -1,20 +1,20 @@
 package com.fei.firstproject.adapter;
 
 import android.content.Context;
-import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import androidx.viewpager.widget.PagerAdapter;
 
 import com.bumptech.glide.Glide;
 import com.fei.firstproject.R;
+import com.luck.picture.lib.photoview.OnPhotoTapListener;
+import com.luck.picture.lib.photoview.PhotoView;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import uk.co.senab.photoview.PhotoView;
-import uk.co.senab.photoview.PhotoViewAttacher;
-
 /**
  * Created by Administrator on 2017/9/21.
  */
@@ -53,9 +53,9 @@ public class PhotoPagerAdapter extends PagerAdapter {
         } else {
             view = LayoutInflater.from(mContext).inflate(R.layout.view_photo, null);
             PhotoView photoView = view.findViewById(R.id.photoView);
-            photoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+            photoView.setOnPhotoTapListener(new OnPhotoTapListener() {
                 @Override
-                public void onPhotoTap(View view, float x, float y) {
+                public void onPhotoTap(ImageView view, float x, float y) {
                     if (onPhotoTpListener != null) {
                         onPhotoTpListener.onPhotoTap();
                     }

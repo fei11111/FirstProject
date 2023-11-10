@@ -1,14 +1,13 @@
 package com.fei.firstproject.activity;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.utils.Utils;

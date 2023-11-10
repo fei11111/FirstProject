@@ -1,19 +1,15 @@
 package com.fei.firstproject.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.viewpager.widget.ViewPager;
 
 import com.alibaba.fastjson.JSON;
 import com.fei.banner.view.BannerViewPager;
@@ -25,9 +21,7 @@ import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.entity.HotQuestionEntity;
 import com.fei.firstproject.entity.UnSolveQuestionEntity;
 import com.fei.firstproject.entity.UrgentExpertEntity;
-import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
 import com.fei.firstproject.http.HttpMgr;
-import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.http.inter.CallBack;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.AppHeadView;
@@ -44,7 +38,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 
 /**

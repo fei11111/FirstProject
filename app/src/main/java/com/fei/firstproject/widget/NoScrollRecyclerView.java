@@ -1,9 +1,10 @@
 package com.fei.firstproject.widget;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by Administrator on 2017/8/4.

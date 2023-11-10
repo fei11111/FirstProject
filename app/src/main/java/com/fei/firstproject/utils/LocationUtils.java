@@ -6,6 +6,7 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.amap.api.services.core.AMapException;
 
 /**
  * Created by Administrator on 2017/9/12.
@@ -37,7 +38,11 @@ public class LocationUtils {
     }
 
     private void initLocationClient() {
-        mapLocationClient = new AMapLocationClient(mContext);
+        try {
+            mapLocationClient = new AMapLocationClient(mContext);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         mapLocationClient.setLocationOption(mapLocationClientOption);
         mapLocationClient.setLocationListener(aMapLocationListener);
     }
@@ -62,7 +67,11 @@ public class LocationUtils {
                 if (aMapLocation.getErrorCode() == 0) {
                     stopLocation();
                     if (onLocationCallBackListener != null) {
-                        onLocationCallBackListener.onSuccess(aMapLocation);
+                        try {
+                            onLocationCallBackListener.onSuccess(aMapLocation);
+                        } catch (AMapException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 } else {
                     if (onLocationCallBackListener != null) {
@@ -90,7 +99,7 @@ public class LocationUtils {
     }
 
     public interface OnLocationCallBackListener {
-        void onSuccess(AMapLocation aMapLocation);
+        void onSuccess(AMapLocation aMapLocation) throws AMapException;
 
         void onFail();
     }

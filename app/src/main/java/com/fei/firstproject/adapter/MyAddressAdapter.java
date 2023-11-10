@@ -1,12 +1,15 @@
 package com.fei.firstproject.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.v7.widget.AppCompatCheckedTextView;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatCheckedTextView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.entity.AddressEntity;
@@ -49,9 +52,8 @@ public class MyAddressAdapter extends RecyclerView.Adapter<MyAddressAdapter.MyAd
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_my_address, parent, false);
         return new MyAddressViewHolder(view);
     }
-
     @Override
-    public void onBindViewHolder(MyAddressViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull MyAddressViewHolder holder,@SuppressLint("RecyclerView") final int position) {
         final AddressEntity addressEntity = addressEntities.get(position);
         holder.tvAddress.setText(addressEntity.getReceiptAddr());
         holder.tvContrat.setText(addressEntity.getReceiptUserName());

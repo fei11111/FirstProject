@@ -177,7 +177,7 @@
         <!--标题栏右边文字-->
         <item name="picture.right.textColor">@color/white</item>
         <!--图片列表勾选样式-->
-        <item name="picture.checked.style">@drawable/checkbox_selector</item>
+<!--        <item name="picture.checked.style">@drawable/checkbox_selector</item>-->
         <!--开启图片列表勾选数字模式-->
         <item name="picture.style.checkNumMode">false</item>
         <!--选择图片样式0/9-->
@@ -203,7 +203,7 @@
         <!--预览界面返回箭头-->
         <item name="picture.preview.leftBack.icon">@drawable/selector_head_left_arrow</item>
         <!--是否改变预览界面状态栏字体颜色为黑色-->
-        <item name="picture.preview.statusFontColor">false</item>
+<!--        <item name="picture.preview.statusFontColor">false</item>-->
         <!--裁剪页面标题背景色-->
         <item name="picture.crop.toolbar.bg">@color/bar_grey</item>
         <!--裁剪页面状态栏颜色-->

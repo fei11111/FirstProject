@@ -3,7 +3,6 @@ package com.fei.firstproject.fragment;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.NestedScrollView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -47,6 +46,8 @@ import butterknife.OnClick;
 import io.reactivex.Observable;
 
 import static android.app.Activity.RESULT_OK;
+
+import androidx.core.widget.NestedScrollView;
 
 /**
  * Created by Administrator on 2017/7/29.

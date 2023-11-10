@@ -2,11 +2,12 @@ package com.fei.firstproject.wxapi;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.utils.LogUtils;

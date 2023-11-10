@@ -2,7 +2,6 @@ package com.fei.firstproject.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -42,6 +41,8 @@ import okhttp3.ResponseBody;
 import static com.fei.firstproject.R.id.tv_craft;
 import static com.fei.firstproject.R.id.tv_series;
 import static com.fei.firstproject.R.id.tv_type;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by Administrator on 2017/9/8.

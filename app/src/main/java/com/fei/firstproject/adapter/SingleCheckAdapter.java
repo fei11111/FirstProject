@@ -1,11 +1,13 @@
 package com.fei.firstproject.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.fei.firstproject.R;
 
@@ -37,7 +39,7 @@ public class SingleCheckAdapter extends RecyclerView.Adapter<SingleCheckAdapter.
     }
 
     @Override
-    public void onBindViewHolder(SingleViewHolder holder, final int position) {
+    public void onBindViewHolder(SingleViewHolder holder,@SuppressLint("RecyclerView") final int position) {
         holder.ctv.setText(names.get(position));
         holder.ctv.setOnClickListener(new View.OnClickListener() {
             @Override

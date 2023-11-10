@@ -1,13 +1,14 @@
 package com.fei.firstproject.fragment.manager;
 
-import android.support.v4.app.Fragment;
+
+import androidx.fragment.app.Fragment;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /*
  * 管理所有的Fragment，只能通过这个类去构造Fragment
- * 
+ *
  */
 
 public class FragmentInstanceManager {

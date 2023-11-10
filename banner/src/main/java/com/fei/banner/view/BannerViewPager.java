@@ -3,11 +3,12 @@ package com.fei.banner.view;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.nineoldandroids.view.ViewHelper;
 

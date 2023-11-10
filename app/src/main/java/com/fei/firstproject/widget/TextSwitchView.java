@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -12,6 +11,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
+
+import androidx.core.content.ContextCompat;
 
 import com.fei.firstproject.R;
 

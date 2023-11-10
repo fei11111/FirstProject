@@ -2,8 +2,9 @@ package com.fei.firstproject.inter;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.util.Pair;
 import android.view.View;
+
+import androidx.core.util.Pair;
 
 /**
  * Created by Administrator on 2017/7/29.

@@ -2,9 +2,6 @@ package com.fei.firstproject.activity;
 
 import android.location.Location;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -18,7 +15,6 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.fei.firstproject.R;
 import com.fei.firstproject.utils.LogUtils;
-import com.fei.firstproject.widget.AppHeadView;
 
 import butterknife.BindView;
 

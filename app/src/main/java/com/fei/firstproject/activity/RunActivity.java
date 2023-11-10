@@ -1,7 +1,6 @@
 package com.fei.firstproject.activity;
 
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -10,6 +9,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
@@ -202,10 +204,10 @@ public class RunActivity extends BaseActivity {
 
             @Override
             public void onRight(View view) {
-                if (drawerLayout.isDrawerOpen(Gravity.END)) {
-                    drawerLayout.closeDrawer(Gravity.END);
+                if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
+                    drawerLayout.closeDrawer(GravityCompat.END);
                 } else {
-                    drawerLayout.openDrawer(Gravity.END);
+                    drawerLayout.openDrawer(GravityCompat.END);
                 }
             }
 

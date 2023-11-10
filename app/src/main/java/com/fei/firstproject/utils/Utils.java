@@ -9,11 +9,12 @@ import android.content.pm.Signature;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.net.Uri;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.ViewDragHelper;
 import android.util.DisplayMetrics;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
+
+import androidx.customview.widget.ViewDragHelper;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.fei.firstproject.MyApplication;
 import com.fei.firstproject.toast.ToastCompat;

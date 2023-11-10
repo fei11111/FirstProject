@@ -2,8 +2,6 @@ package com.fei.firstproject.dialog;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.BottomSheetDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
-import com.fei.firstproject.utils.Utils;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -148,12 +146,6 @@ public class BottomListDialog extends BottomSheetDialog {
     @Override
     public void dismiss() {
         super.dismiss();
-        View view = getDelegate().findViewById(android.support.design.R.id.design_bottom_sheet);
-        final BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(view);
-        if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
-            //设置BottomSheetBehavior状态为STATE_COLLAPSED
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        }
     }
 
     public interface OnCancleListener {

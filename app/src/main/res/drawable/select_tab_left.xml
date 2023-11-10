@@ -13,7 +13,7 @@
         <shape>
             <corners android:bottomLeftRadius="@dimen/size_5" android:topLeftRadius="@dimen/size_5" />
             <stroke android:width="@dimen/size_1" android:color="@color/colorWhite" />
-            <solid android:color="@color/transparent" />
+            <solid android:color="@android:color/transparent" />
         </shape>
     </item>
 

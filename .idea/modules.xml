@@ -3,8 +3,14 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/FirstProject.iml" filepath="$PROJECT_DIR$/FirstProject.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/banner/banner.iml" filepath="$PROJECT_DIR$/banner/banner.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/FirstProject.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/FirstProject.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/FirstProject.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/FirstProject.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/FirstProject.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/FirstProject.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/FirstProject.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/FirstProject.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/banner/FirstProject.banner.iml" filepath="$PROJECT_DIR$/.idea/modules/banner/FirstProject.banner.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/banner/FirstProject.banner.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/banner/FirstProject.banner.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/banner/FirstProject.banner.main.iml" filepath="$PROJECT_DIR$/.idea/modules/banner/FirstProject.banner.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/banner/FirstProject.banner.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/banner/FirstProject.banner.unitTest.iml" />
     </modules>
   </component>
 </project>

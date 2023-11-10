@@ -9,9 +9,7 @@ import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.MyAddressAdapter;
 import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.entity.AddressEntity;
-import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
 import com.fei.firstproject.http.HttpMgr;
-import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.http.inter.CallBack;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.AppHeadView;
@@ -25,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.OnClick;
-import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 
 /**

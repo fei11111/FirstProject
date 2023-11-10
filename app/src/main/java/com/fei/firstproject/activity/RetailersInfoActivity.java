@@ -10,9 +10,7 @@ import com.amap.api.location.AMapLocation;
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.RetailerInfoAdapter;
 import com.fei.firstproject.entity.RetailStoresEntity;
-import com.fei.firstproject.http.BaseWithoutBaseEntityObserver;
 import com.fei.firstproject.http.HttpMgr;
-import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.http.inter.CallBack;
 import com.fei.firstproject.utils.LocationUtils;
 import com.fei.firstproject.utils.Utils;
@@ -26,7 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 
 /**

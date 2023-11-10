@@ -2,10 +2,11 @@ package com.fei.firstproject.activity;
 
 import android.Manifest;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
+
+import androidx.viewpager.widget.ViewPager;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.PhotoPagerAdapter;

@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.fei.firstproject">
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -36,7 +42,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:allowBackup">
+        tools:replace="android:allowBackup"
+        android:exported="true">
         <meta-data
             android:name="design_width_in_dp"
             android:value="360" />
@@ -51,7 +58,8 @@
             android:name=".activity.WelcomeActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:screenOrientation="portrait"
-            android:theme="@style/WhiteTheme">
+            android:theme="@style/WhiteTheme"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -154,7 +162,7 @@
         <service android:name="com.amap.api.location.APSService" />
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="com.fei.firstproject.provider"
             android:exported="false"
             android:grantUriPermissions="true">

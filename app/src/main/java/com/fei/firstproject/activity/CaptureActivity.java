@@ -14,7 +14,6 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
@@ -24,7 +23,6 @@ import android.widget.TextView;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.utils.Utils;
-import com.fei.firstproject.widget.AppHeadView;
 import com.fei.firstproject.zxing.camera.CameraManager;
 import com.fei.firstproject.zxing.decoding.CaptureActivityHandler;
 import com.fei.firstproject.zxing.decoding.InactivityTimer;
