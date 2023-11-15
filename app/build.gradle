@@ -94,14 +94,17 @@ android {
 
 dependencies {
 
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
     implementation deps.annotation
     implementation deps.appcompat
     implementation deps.constraintLayout
     implementation deps.ktxCore
     implementation deps.material
 
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':banner')
+    implementation project(':common')
+
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'

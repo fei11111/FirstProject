@@ -277,42 +277,45 @@ public class MainFragment extends BaseFragment {
     }
 
     private void getNcw() {
-        HttpMgr.getNcw(this, new CallBack<List<NcwEntity>>() {
-            @Override
-            public void onSuccess(List<NcwEntity> ncwEntities) {
-                refreshLayout.setRefreshing(false);
-                if (ncwEntities != null && ncwEntities.size() > 0) {
-                    dismissLoading();
-                    refreshLayout.setVisibility(View.VISIBLE);
-                    llNcw.setVisibility(View.VISIBLE);
-                    if (ncwAdapter == null) {
-                        activity.setLinearRecycleViewSetting(rvNcw, activity);
-                        ncwAdapter = new NcwAdapter(activity, ncwEntities);
-                        ncwAdapter.setOnItemClickListener(new OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view) {
-                                int position = rvNcw.getChildAdapterPosition(view);
-                                String url = ncwAdapter.getNcwEntities().get(position).getUrl();
-                                Intent intent = new Intent(activity, WebActivity.class);
-                                intent.putExtra("url", url + "&a=show");
-                                startActivityWithoutCode(intent);
-                            }
-                        });
-                        rvNcw.setAdapter(ncwAdapter);
-                    } else {
-                        ncwAdapter.setNcwEntities(ncwEntities);
-                        ncwAdapter.notifyDataSetChanged();
-                    }
-                } else {
-                    showNoDataView();
-                }
-            }
-
-            @Override
-            public void onFail() {
-                refreshLayout.setRefreshing(false);
-            }
-        });
+        dismissLoading();
+        refreshLayout.setVisibility(View.VISIBLE);
+        llNcw.setVisibility(View.VISIBLE);
+//        HttpMgr.getNcw(this, new CallBack<List<NcwEntity>>() {
+//            @Override
+//            public void onSuccess(List<NcwEntity> ncwEntities) {
+//                refreshLayout.setRefreshing(false);
+//                if (ncwEntities != null && ncwEntities.size() > 0) {
+//                    dismissLoading();
+//                    refreshLayout.setVisibility(View.VISIBLE);
+//                    llNcw.setVisibility(View.VISIBLE);
+//                    if (ncwAdapter == null) {
+//                        activity.setLinearRecycleViewSetting(rvNcw, activity);
+//                        ncwAdapter = new NcwAdapter(activity, ncwEntities);
+//                        ncwAdapter.setOnItemClickListener(new OnItemClickListener() {
+//                            @Override
+//                            public void onItemClick(View view) {
+//                                int position = rvNcw.getChildAdapterPosition(view);
+//                                String url = ncwAdapter.getNcwEntities().get(position).getUrl();
+//                                Intent intent = new Intent(activity, WebActivity.class);
+//                                intent.putExtra("url", url + "&a=show");
+//                                startActivityWithoutCode(intent);
+//                            }
+//                        });
+//                        rvNcw.setAdapter(ncwAdapter);
+//                    } else {
+//                        ncwAdapter.setNcwEntities(ncwEntities);
+//                        ncwAdapter.notifyDataSetChanged();
+//                    }
+//                } else {
+//                    showNoDataView();
+//                }
+//            }
+//
+//            @Override
+//            public void onFail() {
+//                refreshLayout.setRefreshing(false);
+//            }
+//        });
     }
 
     private void initSensor() {
@@ -374,8 +377,8 @@ public class MainFragment extends BaseFragment {
         banner.setImageLoader(new GlideImageLoader());
         //设置图片集合
         imageUrls.clear();
-        imageUrls.add("http://imglf0.ph.126.net/1EnYPI5Vzo2fCkyy2GsJKg==/2829667940890114965.jpg");
-        imageUrls.add("http://exp.cdn-hotels.com/hotels/4000000/3900000/3893200/3893187/3893187_25_y.jpg");
+        imageUrls.add("https://pic.lvmama.com/uploads/pc/place2/2019-04-11/30ab0015-3fbc-48a0-a5b6-f8ce8a2d0e59.jpg");
+        imageUrls.add("https://img2.baidu.com/it/u=3727070247,3651383148&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500");
         imageUrls.add("http://s3.lvjs.com.cn/trip/original/20140818131550_1792868513.jpg");
         banner.setImages(imageUrls);
         banner.start();

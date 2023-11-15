@@ -2,6 +2,7 @@ package com.fei.firstproject;
 
 import android.app.Application;
 
+import com.amap.api.location.AMapLocationClient;
 import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.entity.UserEntity;
 import com.fei.firstproject.utils.SPUtils;
@@ -26,6 +27,15 @@ public class MyApplication extends Application {
         initUserInfo();
         initCrashHandler();
         initUm();
+        initAmap();
+    }
+
+    /**
+     * 高德合规协议
+     */
+    private void initAmap() {
+        AMapLocationClient.updatePrivacyAgree(this,true);
+        AMapLocationClient.updatePrivacyShow(this,true,true);
     }
 
     /**

@@ -11,6 +11,10 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/banner/FirstProject.banner.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/banner/FirstProject.banner.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/banner/FirstProject.banner.main.iml" filepath="$PROJECT_DIR$/.idea/modules/banner/FirstProject.banner.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/banner/FirstProject.banner.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/banner/FirstProject.banner.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/FirstProject.common.iml" filepath="$PROJECT_DIR$/.idea/modules/common/FirstProject.common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/FirstProject.common.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/common/FirstProject.common.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/FirstProject.common.main.iml" filepath="$PROJECT_DIR$/.idea/modules/common/FirstProject.common.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/FirstProject.common.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/common/FirstProject.common.unitTest.iml" />
     </modules>
   </component>
 </project>

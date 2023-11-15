@@ -1,0 +1,86 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+
+android {
+    compileSdkVersion Integer.parseInt(project.ANDROID_COMPILE_SDK_VERSION)
+
+    defaultConfig {
+        minSdkVersion Integer.parseInt(project.ANDROID_MIN_SDK_VERSION)
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    api fileTree(dir: 'libs', include: ['*.jar'])
+
+    /**androidx**/
+    api deps.annotation
+    api deps.appcompat
+    api deps.multidex
+    api deps.legacySupport
+    api deps.recyclerview
+    api deps.okio
+    api deps.wire
+    api deps.constraintLayout
+    api deps.lifecycleJava8
+    api deps.lifecycleRuntime
+    api deps.lifecycleProcess
+    api deps.media
+    api deps.kotlinLib
+    api deps.ktxCore
+    api deps.rx3Android
+    api deps.rx3Kt
+    api deps.rx3Java
+    api deps.lottie
+    api deps.cardview
+    api deps.viewmodelKtx
+
+    //gson
+    api deps.gson
+
+    api deps.rxlifecycle
+    api deps.rxlifecycleAndroid
+    api deps.rxlifecycleComponents
+
+    implementation deps.mmkv
+    implementation deps.marsXlog
+
+    //network
+    api deps.okhttp3
+    api deps.retrofit
+    api deps.converterGson
+    api deps.adapterRxjava
+
+    //内存泄漏测试
+    debugImplementation deps.leakcanary
+
+
+    api deps.glide
+    annotationProcessor deps.glidecompiler
+
+}
