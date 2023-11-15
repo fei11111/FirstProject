@@ -83,4 +83,10 @@ dependencies {
     api deps.glide
     annotationProcessor deps.glidecompiler
 
+    api deps.junit4
+    api deps.jnitCore
+    api deps.testRunner
+    api deps.junitExt
+    api deps.espressoCore
+
 }
