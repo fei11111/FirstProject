@@ -1,5 +1,7 @@
 package com.fei.firstproject.activity;
 
+import static android.os.Environment.DIRECTORY_PICTURES;
+
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,7 +27,6 @@ import com.fei.firstproject.fragment.MeFragment;
 import com.fei.firstproject.fragment.manager.FragmentInstanceManager;
 import com.fei.firstproject.http.HttpMgr;
 import com.fei.firstproject.http.inter.CallBack;
-import com.fei.firstproject.jniTest.SignCheck;
 import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.SPUtils;
 import com.fei.firstproject.utils.Utils;

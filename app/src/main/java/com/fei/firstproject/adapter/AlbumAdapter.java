@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.LruCache;
 import android.view.LayoutInflater;
@@ -14,17 +15,19 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.common.utils.FileUtil;
 import com.fei.firstproject.R;
 import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.Utils;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class AlbumAdapter extends BaseAdapter implements AbsListView.OnScrollListener {
 
     private Context mContext;
-    private List<String> list;
+    private List<Uri> list;
     private GridView gridView;
     private LruCache<String, Bitmap> mLruCache;
     private List<ImageLoadAsyTask> tasks;
@@ -32,7 +35,7 @@ public class AlbumAdapter extends BaseAdapter implements AbsListView.OnScrollLis
     private int visibleItemCount;
     private boolean isFirstEnter = true;
 
-    public AlbumAdapter(Context mContext, List<String> list, GridView gridView) {
+    public AlbumAdapter(Context mContext, List<Uri> list, GridView gridView) {
         this.mContext = mContext;
         this.list = list;
         this.gridView = gridView;
@@ -96,9 +99,9 @@ public class AlbumAdapter extends BaseAdapter implements AbsListView.OnScrollLis
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        String path = list.get(position);
-        Bitmap bitmap = getBitmapFromCache(path);
-        viewHolder.ivAlbum.setTag(path);
+        Uri uri = list.get(position);
+        Bitmap bitmap = getBitmapFromCache(uri.toString());
+        viewHolder.ivAlbum.setTag(uri.toString());
         if (bitmap != null) {
             viewHolder.ivAlbum.setImageBitmap(bitmap);
         } else {
@@ -134,14 +137,14 @@ public class AlbumAdapter extends BaseAdapter implements AbsListView.OnScrollLis
 
     private void loadBitmap() {
         for (int i = firstVisibleItem; i < firstVisibleItem + visibleItemCount; i++) {
-            String path = list.get(i);
-            Bitmap bitmap = getBitmapFromCache(path);
+            Uri uri = list.get(i);
+            Bitmap bitmap = getBitmapFromCache(uri.toString());
             if (bitmap == null) {
                 ImageLoadAsyTask task = new ImageLoadAsyTask();
                 tasks.add(task);
-                task.execute(path);
+                task.execute(uri);
             } else {
-                ImageView imageView = gridView.findViewWithTag(path);
+                ImageView imageView = gridView.findViewWithTag(uri.toString());
                 if (imageView != null) {
                     imageView.setImageBitmap(bitmap);
                 }
@@ -149,16 +152,16 @@ public class AlbumAdapter extends BaseAdapter implements AbsListView.OnScrollLis
         }
     }
 
-    class ImageLoadAsyTask extends AsyncTask<String, String, Bitmap> {
+    class ImageLoadAsyTask extends AsyncTask<Uri, String, Bitmap> {
 
-        private String path;
+        private Uri uri;
 
         @Override
-        protected Bitmap doInBackground(String... strings) {
-            path = strings[0];
+        protected Bitmap doInBackground(Uri... strings) {
+            uri = strings[0];
             if (isCancelled())
                 return null;
-            return compressBitmap(path);
+            return compressBitmap(uri);
         }
 
         @Override
@@ -166,34 +169,39 @@ public class AlbumAdapter extends BaseAdapter implements AbsListView.OnScrollLis
             tasks.remove(this);
             if (isCancelled()) return;
             if (bitmap != null) {
-                ImageView imageView = gridView.findViewWithTag(path);
+                ImageView imageView = gridView.findViewWithTag(uri.toString());
                 if (imageView != null) {
                     imageView.setImageBitmap(bitmap);
-                    addBitmapToCache(path, bitmap);
+                    addBitmapToCache(uri.toString(), bitmap);
                 }
             }
         }
     }
 
-    private Bitmap compressBitmap(String path) {
+    private Bitmap compressBitmap(Uri uri) {
         int[] screen = Utils.getScreen((Activity) mContext);
         int screenWidth = screen[0];
         int imageWidth = screenWidth / 3;
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(path, options);
-        int outWidth = options.outWidth;
-        int outHeight = options.outHeight;
-        if (outWidth > outHeight) {
-            options.inSampleSize = outWidth / imageWidth;
-        } else {
-            options.inSampleSize = outHeight / imageWidth;
+        try {
+           FileUtil.getBitmapFromUri(mContext, uri, null, options);
+            int outWidth = options.outWidth;
+            int outHeight = options.outHeight;
+            if (outWidth > outHeight) {
+                options.inSampleSize = outWidth / imageWidth;
+            } else {
+                options.inSampleSize = outHeight / imageWidth;
+            }
+            options.outWidth = imageWidth;
+            options.outHeight = imageWidth;
+            options.inPreferredConfig = Bitmap.Config.RGB_565;
+            options.inJustDecodeBounds = false;
+            return FileUtil.getBitmapFromUri(mContext, uri, null, options);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        options.outWidth = imageWidth;
-        options.outHeight = imageWidth;
-        options.inPreferredConfig = Bitmap.Config.RGB_565;
-        options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeFile(path, options);
+
     }
 
 }

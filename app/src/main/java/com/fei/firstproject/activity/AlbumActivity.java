@@ -1,22 +1,18 @@
 package com.fei.firstproject.activity;
 
 import android.Manifest;
-import android.content.ContentResolver;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.provider.MediaStore;
 import android.widget.GridView;
 
+import com.common.utils.FileUtil;
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.AlbumAdapter;
 import com.fei.firstproject.utils.ThreadPoolFactory;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -35,7 +31,7 @@ public class AlbumActivity extends BaseActivity {
             super.handleMessage(msg);
             if (msg.what == MSG_WHAT) {
                 dismissLoading();
-                List<String> list = (List<String>) msg.obj;
+                List<Uri> list = (List<Uri>) msg.obj;
                 gvAlbum.setAdapter(new AlbumAdapter(AlbumActivity.this, list, gvAlbum));
             }
 
@@ -60,26 +56,12 @@ public class AlbumActivity extends BaseActivity {
         ThreadPoolFactory.getNormalPool().execute(new Runnable() {
             @Override
             public void run() {
-                List<String> result = new ArrayList<String>();
-                Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
-                ContentResolver contentResolver = getContentResolver();
-                Cursor cursor = contentResolver.query(uri, null, null, null, null);
-                if (cursor != null && cursor.getCount() > 0) {
-                    while (cursor.moveToNext()) {
-                        int index = cursor
-                                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                        String path = cursor.getString(index); // 文件地址
-                        File file = new File(path);
-                        if (file.exists()) {
-                            result.add(path);
-                        }
-                    }
-                    Message msg = Message.obtain();
-                    msg.obj = result;
-                    msg.what = MSG_WHAT;
-                    mHandler.sendMessage(msg);
-                }
+                List<Uri> uris = FileUtil.loadPhotoFiles(AlbumActivity.this);
+                Message msg = Message.obtain();
+                msg.obj = uris;
+                msg.what = MSG_WHAT;
+                mHandler.sendMessage(msg);
             }
         });
     }
@@ -96,7 +78,7 @@ public class AlbumActivity extends BaseActivity {
 
     @Override
     public void initTitle() {
-
+        appHeadView.setMiddleText(getString(R.string.album));
     }
 
     @Override
