@@ -59,7 +59,17 @@ getFilesDir()
 getExternalFilesDir(DIRECTORY_PICTURES)
 /storage/emulated/0/Android/data/com.fei.firstproject/files/Pictures
 
-10.android10以上需要将沙盒中的视频或图片文件保存在外部存储时
+10.兼容android10以上需要将沙盒中的视频或图片文件保存在外部存储时
+
+<uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+
+权限
+if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+checkPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES}, PERMISSION_READ_STORAGE);
+} else {
+checkPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_READ_STORAGE);
+}
+
 保存到外部沙盒
 FileUtil.savePictureFile(context,源文件,Environment.DIRECTORY_DCIM(目标路径))
 FileUtil.saveVideoFile(context,源文件,Environment.DIRECTORY_MUSIC(目标路径))
