@@ -98,6 +98,106 @@ throw new RuntimeException(e);
 
 
 11.连接无可访问外网wifi，用移动网访问接口
+
+12.自动连接wifi，断开wifi
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    val builder = WifiNetworkSpecifier.Builder()
+                    builder.setSsid(id!!)
+                    builder.setWpa2Passphrase(password!!)
+        
+                    val wifiNetworkSpecifier = builder.build()
+                    val networkRequestBuilder = NetworkRequest.Builder()
+                    networkRequestBuilder.addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+        //            networkRequestBuilder.addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_RESTRICTED)
+        //            networkRequestBuilder.addCapability(NetworkCapabilities.NET_CAPABILITY_TRUSTED)
+        networkRequestBuilder.setNetworkSpecifier(wifiNetworkSpecifier)
+        var networkRequest = networkRequestBuilder.build()
+        
+                    val manager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+                    if (networkRequest == null) {
+                        networkRequest = NetworkRequest.Builder()
+                            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+        //                    .removeCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+        .build()
+        }
+        
+                    callback = object : ConnectivityManager.NetworkCallback() {
+                        override fun onAvailable(network: Network) {
+                            manager.bindProcessToNetwork(network)
+                            //                    String currentSSID = WifiService.this.getWifiServiceInfo(null);
+        //
+        //                    String ssid = callbackContext.getString("ssid");
+        //                    if (currentSSID.equals(ssid)) {
+        //                        WifiService.this.getConnectedSSID(callbackContext);
+        //                    } else {
+        //                        callbackContext.error("CONNECTED_SSID_DOES_NOT_MATCH_REQUESTED_SSID");
+        //                    }
+        //                    WifiService.this.networkCallback = this;
+        println("******** connectDeviceWifi onAvailable return.")
+        // 连接成功
+        result.success("1")
+        }
+        
+                        override fun onUnavailable() {
+        //                    callbackContext.error("CONNECTION_FAILED");
+        println("******** connectDeviceWifi onUnavailable return.")
+        // 失败
+        result.success("0")
+        }
+        }
+        
+                    manager.registerNetworkCallback(
+                        networkRequest,
+                        callback!!
+                    )
+                    manager.requestNetwork(networkRequest, callback!!)
+        
+                } else {
+                    val wifiManager = getSystemService(
+                        WIFI_SERVICE
+                    ) as WifiManager
+                    val result = wifiManager.addNetwork(conf)
+                    print("result = $result")
+                    val list = wifiManager.configuredNetworks
+                    for (i in list) {
+                        if (i.SSID != null && i.SSID == ssid) {
+                            wifiManager.disconnect()
+                            wifiManager.enableNetwork(i.networkId, true)
+                            wifiManager.reconnect()
+                            break
+                        }
+                    }
+                }
+
+        fun disconnectDeviceWifi(result: MethodChannel.Result) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                val manager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+                manager.bindProcessToNetwork(null)//清除绑定，使用null重新绑定network。不然app进程的所有http请求都将继续在目标network上继续进行，即使断开了连接
+                if (callback != null) {
+                    manager.unregisterNetworkCallback(callback!!)
+                }
+            }
+                val wifiManager = this.getSystemService(
+                    WIFI_SERVICE
+                ) as WifiManager
+                try {
+                    wifiManager.isWifiEnabled = false
+                    result.success(true)
+                } catch (e: Exception) {
+                    println("失败")
+                    println(e)
+                    result.success(true)
+                }
+    
+        }
+
+13.中文转拼音
+
+    implementation 'com.github.promeg:tinypinyin:2.0.3' // TinyPinyin核心包，约80KB
+    implementation 'com.github.promeg:tinypinyin-lexicons-android-cncity:2.0.3'
+    Pinyin.toPinyin("中文", "")
+
         
         
         
