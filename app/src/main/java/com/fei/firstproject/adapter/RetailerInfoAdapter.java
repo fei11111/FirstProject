@@ -14,9 +14,6 @@ import com.fei.firstproject.entity.RetailStoresEntity;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * Created by Fei on 2017/9/11.
  */
@@ -76,20 +73,19 @@ public class RetailerInfoAdapter extends RecyclerView.Adapter<RetailerInfoAdapte
 
     class RetailerInfoViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.btn_to_here)
         Button btnToHere;
-        @BindView(R.id.tv_shop)
         TextView tvShop;
-        @BindView(R.id.tv_name)
         TextView tvName;
-        @BindView(R.id.tv_tel)
         TextView tvTel;
-        @BindView(R.id.tv_address)
         TextView tvAddress;
 
         public RetailerInfoViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            btnToHere = itemView.findViewById(R.id.btn_to_here);
+            tvShop = itemView.findViewById(R.id.tv_shop);
+            tvName = itemView.findViewById(R.id.tv_name);
+            tvTel = itemView.findViewById(R.id.tv_tel);
+            tvAddress = itemView.findViewById(R.id.tv_address);
         }
     }
 

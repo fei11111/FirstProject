@@ -5,15 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
+import com.common.viewmodel.EmptyViewModel;
 import com.fei.firstproject.R;
 import com.fei.firstproject.config.AppConfig;
+import com.fei.firstproject.databinding.ActivityAddOrUpdateAddressBinding;
 import com.fei.firstproject.dialog.CityDialog;
 import com.fei.firstproject.entity.AddressEntity;
 import com.fei.firstproject.http.HttpMgr;
@@ -27,39 +23,16 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.OnClick;
 import okhttp3.ResponseBody;
 
 /**
  * Created by Administrator on 2017/9/4.
  */
 
-public class AddAddressOrUpdateActivity extends BaseActivity {
+public class AddAddressOrUpdateActivity extends BaseProjectActivity<EmptyViewModel, ActivityAddOrUpdateAddressBinding> {
 
     private static final int REQUEST_PERMISSION_CODE_MAP = 100;
     private static final int REQUEST_ACTIVITY_CODE_MAP = 200;
-    @BindView(R.id.btn_add_address)
-    Button btnAddAddress;
-    @BindView(R.id.et_contacts)
-    EditText etContacts;
-    @BindView(R.id.et_phone)
-    EditText etPhone;
-    @BindView(R.id.tv_address_left)
-    TextView tvAddressLeft;
-    @BindView(R.id.iv_arrow)
-    ImageView ivArrow;
-    @BindView(R.id.tv_address)
-    TextView tvAddress;
-    @BindView(R.id.rl_address)
-    RelativeLayout rlAddress;
-    @BindView(R.id.et_detail_address)
-    EditText etDetailAddress;
-    @BindView(R.id.rb_male)
-    RadioButton rbMale;
-    @BindView(R.id.rb_female)
-    RadioButton rbFemale;
-
     private CityDialog cityDialog;
     private AddressEntity addressEntity;
 
@@ -80,15 +53,6 @@ public class AddAddressOrUpdateActivity extends BaseActivity {
         Utils.showToast(this, "获取定位功能失败，无法添加地址");
     }
 
-    @Override
-    public int getContentViewResId() {
-        return R.layout.activity_add_or_update_address;
-    }
-
-    @Override
-    public void init(Bundle savedInstanceState) {
-    }
-
     public void initTitle() {
         addressEntity = (AddressEntity) getIntent().getSerializableExtra("addressEntity");
         if (addressEntity == null) {
@@ -102,12 +66,12 @@ public class AddAddressOrUpdateActivity extends BaseActivity {
     }
 
     private void initData(AddressEntity addressEntity) {
-        etContacts.setText(addressEntity.getReceiptUserName());
-        etPhone.setText(addressEntity.getReceiptTel());
+        mChildBinding.etContacts.setText(addressEntity.getReceiptUserName());
+        mChildBinding.etPhone.setText(addressEntity.getReceiptTel());
         String[] split = addressEntity.getReceiptAddr().split(" ");
-        tvAddress.setText(split[0]);
+        mChildBinding.tvAddress.setText(split[0]);
         if (split.length == 2) {
-            etDetailAddress.setText(split[1]);
+            mChildBinding.etDetailAddress.setText(split[1]);
         }
     }
 
@@ -116,73 +80,63 @@ public class AddAddressOrUpdateActivity extends BaseActivity {
 
     }
 
-    @OnClick(R.id.rl_address)
-    void clickAddress(View view) {
-        checkPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.READ_PHONE_STATE,
-                        Manifest.permission.READ_EXTERNAL_STORAGE},
-                REQUEST_PERMISSION_CODE_MAP);
-
-//        if (cityDialog == null) {
-//            cityDialog = new CityDialog(this);
-//            cityDialog.setOnConfirmListener(new CityDialog.OnConfirmListener() {
-//                @Override
-//                public void onClick(String province, String city, String couny) {
-//                    tvAddress.setText(province + city + couny);
-//                }
-//            });
-//        }
-//        cityDialog.show();
+    void clickAddress() {
+        mChildBinding.rlAddress.setOnClickListener(v -> {
+            checkPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.READ_PHONE_STATE,
+                            Manifest.permission.READ_EXTERNAL_STORAGE},
+                    REQUEST_PERMISSION_CODE_MAP);
+        });
     }
 
-    @OnClick(R.id.btn_add_address)
     void clickAddAddress(View view) {
-        String contrats = etContacts.getText().toString();
-        if (TextUtils.isEmpty(contrats)) {
-            etContacts.setError("联系人不能为空");
-            return;
-        }
-        String phone = etPhone.getText().toString();
-        if (TextUtils.isEmpty(phone)) {
-            etPhone.setError("电话不能为空");
-        } else {
-            if (!Utils.matchCheck(phone, 0)) {
-                etPhone.setError("电话号码根式不对");
+        mChildBinding.btnAddAddress.setOnClickListener(v -> {
+            String contrats = mChildBinding.etContacts.getText().toString();
+            if (TextUtils.isEmpty(contrats)) {
+                mChildBinding.etContacts.setError("联系人不能为空");
                 return;
             }
-        }
-        String address = tvAddress.getText().toString();
-        if (TextUtils.isEmpty(address)) {
-            tvAddress.setError("收货地址不能为空");
-            return;
-        }
-        String detail_address = etDetailAddress.getText().toString();
-        if (TextUtils.isEmpty(detail_address)) {
-            etDetailAddress.setError("详细地址不能为空");
-            return;
-        }
+            String phone = mChildBinding.etPhone.getText().toString();
+            if (TextUtils.isEmpty(phone)) {
+                mChildBinding.etPhone.setError("电话不能为空");
+            } else {
+                if (!Utils.matchCheck(phone, 0)) {
+                    mChildBinding.etPhone.setError("电话号码根式不对");
+                    return;
+                }
+            }
+            String address = mChildBinding.tvAddress.getText().toString();
+            if (TextUtils.isEmpty(address)) {
+                mChildBinding.tvAddress.setError("收货地址不能为空");
+                return;
+            }
+            String detail_address = mChildBinding.etDetailAddress.getText().toString();
+            if (TextUtils.isEmpty(detail_address)) {
+                mChildBinding.etDetailAddress.setError("详细地址不能为空");
+                return;
+            }
 
-        if (rbMale.isChecked()) {
-            contrats += rbMale.getText().toString();
-        } else if (rbFemale.isChecked()) {
-            contrats += rbFemale.getText().toString();
-        }
+            if (mChildBinding.rbMale.isChecked()) {
+                contrats += mChildBinding.rbMale.getText().toString();
+            } else if (mChildBinding.rbFemale.isChecked()) {
+                contrats += mChildBinding.rbFemale.getText().toString();
+            }
 
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("userId", AppConfig.user.getId());
-        map.put("receiptUserName", contrats);
-        map.put("receiptAddr", address + detail_address);
-        map.put("receiptTel", phone);
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("userId", AppConfig.user.getId());
+            map.put("receiptUserName", contrats);
+            map.put("receiptAddr", address + detail_address);
+            map.put("receiptTel", phone);
 
-        if (addressEntity == null) {
-            save(map);
-        } else {
-            addressEntity.setReceiptAddr(address + detail_address);
-            addressEntity.setReceiptUserName(contrats);
-            addressEntity.setReceiptTel(phone);
-            edit(addressEntity);
-        }
-
+            if (addressEntity == null) {
+                save(map);
+            } else {
+                addressEntity.setReceiptAddr(address + detail_address);
+                addressEntity.setReceiptUserName(contrats);
+                addressEntity.setReceiptTel(phone);
+                edit(addressEntity);
+            }
+        });
     }
 
     private void save(Map<String, String> map) {
@@ -249,4 +203,13 @@ public class AddAddressOrUpdateActivity extends BaseActivity {
         });
     }
 
+    @Override
+    public void createObserver() {
+        clickAddress();
+    }
+
+    @Override
+    public void initViewAndData(Bundle savedInstanceState) {
+
+    }
 }

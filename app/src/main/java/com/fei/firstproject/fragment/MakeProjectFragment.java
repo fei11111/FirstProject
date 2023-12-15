@@ -7,21 +7,16 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import com.common.viewmodel.EmptyViewModel;
 import com.fei.firstproject.R;
+import com.fei.firstproject.databinding.FragmentMakeBinding;
 import com.fei.firstproject.utils.LogUtils;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2017/7/29.
  */
 
-public class MakeFragment extends BaseFragment {
-
-    @BindView(R.id.fab_shopping_car)
-    FloatingActionButton fabShoppingCar;
+public class MakeProjectFragment extends BaseProjectFragment<EmptyViewModel, FragmentMakeBinding> {
 
     private boolean isShow = true;
     private Animation inAnimation;
@@ -31,9 +26,9 @@ public class MakeFragment extends BaseFragment {
         @Override
         public void handleMessage(Message msg) {
             if (isShow) {
-                fabShoppingCar.startAnimation(outAnimation);
+                mBinding.fabShoppingCar.startAnimation(outAnimation);
             } else {
-                fabShoppingCar.startAnimation(inAnimation);
+                mBinding.fabShoppingCar.startAnimation(inAnimation);
                 mHandler.sendEmptyMessageDelayed(1, 4000);
             }
             isShow = !isShow;
@@ -67,17 +62,6 @@ public class MakeFragment extends BaseFragment {
 
     }
 
-    @Override
-    public int getContentViewResId() {
-        return R.layout.fragment_make;
-    }
-
-    @Override
-    public void init(Bundle savedInstanceState) {
-        LogUtils.i("tag", "make");
-        initAnimation();
-    }
-
     private void initAnimation() {
         inAnimation = AnimationUtils.loadAnimation(activity, R.anim.actionbutton_in_animation);
         outAnimation = AnimationUtils.loadAnimation(activity, R.anim.actionbutton_out_animation);
@@ -88,36 +72,45 @@ public class MakeFragment extends BaseFragment {
 
     }
 
-    @OnClick(R.id.fab_shopping_car)
-    void clickShoppingCar(View view) {
-        if (isShow) {
-            //点击
-            mHandler.removeMessages(1);
-            mHandler.sendEmptyMessageDelayed(1, 2000);
-        } else {
-            mHandler.sendEmptyMessage(1);
-        }
+    void clickShoppingCar() {
+        mBinding.fabShoppingCar.setOnClickListener(v->{
+            if (isShow) {
+                //点击
+                mHandler.removeMessages(1);
+                mHandler.sendEmptyMessageDelayed(1, 2000);
+            } else {
+                mHandler.sendEmptyMessage(1);
+            }
+        });
+
     }
 
-    @OnClick(R.id.ll_fast_make)
+
     void clickFastMake(View view) {
         //快速定制
 
     }
 
-    @OnClick(R.id.ll_fertilizer)
     void clickFertilizer(View view) {
         //肥料定制
     }
 
-    @OnClick(R.id.ll_plan_make)
     void clickPlanMake(View view) {
         //方案定制
     }
 
-    @OnClick(R.id.ll_plan_search)
     void clickPlanSearch(View view) {
         //方案查询
     }
 
+    @Override
+    public void createObserver() {
+        clickShoppingCar();
+    }
+
+    @Override
+    public void initViewAndData(Bundle savedInstanceState) {
+        LogUtils.i("tag", "make");
+        initAnimation();
+    }
 }

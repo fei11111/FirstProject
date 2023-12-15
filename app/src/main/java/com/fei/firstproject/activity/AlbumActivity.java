@@ -7,21 +7,18 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.widget.GridView;
 
 import com.common.utils.FileUtil;
+import com.common.viewmodel.EmptyViewModel;
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.AlbumAdapter;
+import com.fei.firstproject.databinding.ActivityAlbumBinding;
 import com.fei.firstproject.utils.ThreadPoolFactory;
 
 import java.util.List;
 
-import butterknife.BindView;
 
-public class AlbumActivity extends BaseActivity {
-
-    @BindView(R.id.gv_album)
-    GridView gvAlbum;
+public class AlbumActivity extends BaseProjectActivity<EmptyViewModel, ActivityAlbumBinding> {
 
     private final int PERMISSION_READ_STORAGE = 100;
     private final int MSG_WHAT = 1;
@@ -33,7 +30,7 @@ public class AlbumActivity extends BaseActivity {
             if (msg.what == MSG_WHAT) {
                 dismissLoading();
                 List<Uri> list = (List<Uri>) msg.obj;
-                gvAlbum.setAdapter(new AlbumAdapter(AlbumActivity.this, list, gvAlbum));
+                mChildBinding.gvAlbum.setAdapter(new AlbumAdapter(AlbumActivity.this, list, mChildBinding.gvAlbum));
             }
 
         }
@@ -57,7 +54,6 @@ public class AlbumActivity extends BaseActivity {
         ThreadPoolFactory.getNormalPool().execute(new Runnable() {
             @Override
             public void run() {
-
                 List<Uri> uris = FileUtil.loadPhotoFiles(AlbumActivity.this);
                 Message msg = Message.obtain();
                 msg.obj = uris;
@@ -73,19 +69,10 @@ public class AlbumActivity extends BaseActivity {
     }
 
     @Override
-    public int getContentViewResId() {
-        return R.layout.activity_album;
-    }
-
-    @Override
     public void initTitle() {
         appHeadView.setMiddleText(getString(R.string.album));
     }
 
-    @Override
-    public void init(Bundle savedInstanceState) {
-
-    }
 
     @Override
     public void initRequest() {
@@ -96,4 +83,13 @@ public class AlbumActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void createObserver() {
+
+    }
+
+    @Override
+    public void initViewAndData(Bundle savedInstanceState) {
+
+    }
 }

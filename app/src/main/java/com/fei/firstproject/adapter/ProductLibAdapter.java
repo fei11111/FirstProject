@@ -21,9 +21,6 @@ import com.fei.firstproject.widget.FlowLayout;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * Created by Administrator on 2017/9/11.
  */
@@ -111,16 +108,15 @@ public class ProductLibAdapter extends RecyclerView.Adapter<ProductLibAdapter.Pr
 
     class ProductLibViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @BindView(R.id.iv_product_lib)
         ImageView ivProductLib;
-        @BindView(R.id.tv_product)
         TextView tvProduct;
-        @BindView(R.id.fl_container)
         FlowLayout flContainer;
 
         public ProductLibViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            ivProductLib = itemView.findViewById(R.id.iv_product_lib);
+            tvProduct = itemView.findViewById(R.id.tv_product);
+            flContainer = itemView.findViewById(R.id.fl_container);
             itemView.setOnClickListener(this);
         }
 

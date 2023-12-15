@@ -2,16 +2,24 @@ Android(8.0)  O === 26
 Android(8.1)  O === 27
 Android(9.0)  P === 28
 Android(10.0) Q === 29
+
+
 Android(11.0) R === 30
 1.全屏通知
     @！在Manifest添加USE_FULL_SCREEN_INTENT 权限
     @！Notification.Builder.setFullScreenIntent 发送全屏Intent
+
+
 Android(12.0) S === 31
 1.闹钟权限
     android12之前可以使用setAlarmClock()、setExact()、setExactAndAllowWhileIdle() 等方法设置精确闹钟时间
     @！引入新权限 SCHEDULE_EXACT_ALARM，调用setAlarmClock()、setExact()、setExactAndAllowWhileIdle()等
 Android(12L)  S === 32
+
+
 Android(13.0) T === 33
+
+
 Android(14.0) U === 34
 1.冻结缓存应用，增强杀进程能力
     可用能力：前台服务、JosScheduler、WorkManager
@@ -27,6 +35,7 @@ Android(14.0) U === 34
     @！在Manifest添加DELETE_SCREEN_CAPTURE 权限
     @！在onStart() 注册 registerScreenCaptureCallback(mainExecutor,screenCallback)
     @! 在onStop()取消注册 unregisterScreenCaptureCallback(screenCallback)
+    如果不想应用被系统截图，当前Window窗口加上WindowManager.LayoutParams.FLAG_SECURE标记。
 
 5.显示全屏系统通知
     android14之前可通过在Manifest添加USE_FULL_SCREEN_INTENT 权限，并Notification.Builder.setFullScreenIntent 发送全屏Intent
@@ -58,6 +67,22 @@ Android(14.0) U === 34
 10.API废弃
     @! overidePendingTransition废弃
     @！使用overrideActivityTransition()
+
+11.前台服务
+    @！targetSdkVersion升级到34调用startForeground方法，需要进行适配，说明前台服务的用途
+
+13.registerReceiver需要指定导出行为
+    @！动态注册广播时可指出是否export
+
+14.动态代码加载
+    targetSdkVersion升级到34动态加载文件（jar、dex、apk格式）需设置成可读的，防止应用被入侵
+    @！File jar = new File("xxx.jar");
+    try(FileOutputStream os = new FileOutputStream(jar)){
+        jar.setReadyOnly();
+    }catch(IOException e) {
+
+    }
+
 
 
 

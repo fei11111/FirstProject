@@ -1,23 +1,18 @@
 package com.fei.firstproject.activity;
 
 import android.os.Bundle;
-import android.widget.EditText;
-import android.widget.TextView;
 
+import com.common.viewmodel.EmptyViewModel;
 import com.fei.firstproject.R;
+import com.fei.firstproject.databinding.ActivityMyAskBinding;
 import com.fei.firstproject.entity.ObjectEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 
-public class MyAskActivity extends BaseActivity {
+public class MyAskActivity extends BaseProjectActivity<EmptyViewModel, ActivityMyAskBinding> {
 
-    @BindView(R.id.tv_problem_type)
-    TextView tvProblemType;
-    @BindView(R.id.et_problem_content)
-    EditText etProblemContent;
 
     public String[] groupString = {"射手", "辅助", "坦克", "法师"};
     public String[][] childString = {
@@ -44,19 +39,10 @@ public class MyAskActivity extends BaseActivity {
     }
 
     @Override
-    public int getContentViewResId() {
-        return R.layout.activity_my_ask;
-    }
-
-    @Override
     public void initTitle() {
         setBackTitle(getString(R.string.my_ask));
     }
 
-    @Override
-    public void init(Bundle savedInstanceState) {
-        initData();
-    }
 
     private void initData() {
 
@@ -80,4 +66,13 @@ public class MyAskActivity extends BaseActivity {
 
     }
 
+    @Override
+    public void createObserver() {
+
+    }
+
+    @Override
+    public void initViewAndData(Bundle savedInstanceState) {
+        initData();
+    }
 }

@@ -6,29 +6,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
-import com.fei.firstproject.R;
+import com.common.viewmodel.BaseViewModel;
+import com.fei.firstproject.databinding.FragmentBaseListBinding;
 
-import butterknife.BindView;
 
 /**
  * Created by Administrator on 2017/8/25.
  * 没有头部，只有recyclerView
  */
 
-public abstract class BaseListFragment extends BaseFragment {
+public abstract class BaseListProjectFragment<VM extends BaseViewModel> extends BaseProjectFragment<VM, FragmentBaseListBinding> {
 
-    @BindView(R.id.swipe_target)
     RecyclerView recyclerView;
 
     protected int currentPage = 1;
 
     @Override
-    public int getContentViewResId() {
-        return R.layout.fragment_base_list;
-    }
-
-    @Override
-    public void init(Bundle savedInstanceState) {
+    public void initViewAndData(Bundle savedInstanceState) {
         initListener();
         initData();
     }

@@ -9,13 +9,13 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.common.viewmodel.EmptyViewModel;
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.SingleTextAdapter;
 import com.fei.firstproject.config.AppConfig;
+import com.fei.firstproject.databinding.ActivitySettingBinding;
 import com.fei.firstproject.dialog.BottomListDialog;
 import com.fei.firstproject.dialog.TipDialog;
 import com.fei.firstproject.event.AllEvent;
@@ -25,8 +25,6 @@ import com.fei.firstproject.http.inter.CallBack;
 import com.fei.firstproject.utils.SPUtils;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.AppHeadView;
-import com.fei.firstproject.widget.PartHeadView;
-import com.fei.firstproject.widget.RoundImageView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -35,32 +33,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.OnClick;
 import okhttp3.ResponseBody;
 
 /**
  * Created by Fei on 2017/8/31.
  */
 
-public class SettingActivity extends BaseActivity {
-
-    @BindView(R.id.btn_logout)
-    Button btnLogout;
-    @BindView(R.id.phv_self_info)
-    PartHeadView phvSelfInfo;
-    @BindView(R.id.phv_account_security)
-    PartHeadView phvAccountSecurity;
-    @BindView(R.id.phv_my_address)
-    PartHeadView phvMyAddress;
-    @BindView(R.id.phv_about_us)
-    PartHeadView phvAboutUs;
-    @BindView(R.id.iv_user_head)
-    RoundImageView ivUserHead;
-    @BindView(R.id.tv_name)
-    TextView tvName;
-    @BindView(R.id.iv_vip)
-    ImageView ivVip;
+public class SettingActivity extends BaseProjectActivity<EmptyViewModel, ActivitySettingBinding> {
 
     private TipDialog tipDialog;
     private static final int REQUEST_PERMISSION_TELEPHONE = 100;
@@ -87,23 +66,12 @@ public class SettingActivity extends BaseActivity {
     }
 
     @Override
-    public int getContentViewResId() {
-        return R.layout.activity_setting;
-    }
-
-    @Override
     public void initTitle() {
         setBackTitle(getString(R.string.account_setting));
     }
 
-    @Override
-    public void init(Bundle savedInstanceState) {
-        initInfo();
-        initListener();
-    }
-
     private void initInfo() {
-        tvName.setText(AppConfig.user.getUserName());
+        mChildBinding.tvName.setText(AppConfig.user.getUserName());
     }
 
     @Override
@@ -130,69 +98,93 @@ public class SettingActivity extends BaseActivity {
         });
     }
 
+    @Override
+    public void createObserver() {
+        clickAddreddressBook();
+        clickSelfInfo();
+        clickLogout();
+        clickAccountSecurity();
+        clickMyAddress();
+        clickAboutUs();
+        clickFontSize();
+    }
+
     //通讯录
-    @OnClick(R.id.phv_address_book)
-    void clickAddreddressBook(View view) {
-        startActivityWithoutCode(new Intent(this, AddressBookActivity.class));
+    void clickAddreddressBook() {
+        mChildBinding.phvAddressBook.setOnClickListener(v -> {
+            startActivityWithoutCode(new Intent(this, AddressBookActivity.class));
+        });
+
     }
 
     //个人信息
-    @OnClick(R.id.phv_self_info)
-    void clickSelfInfo(View view) {
-        startActivityWithoutCode(new Intent(this, SelfInfoActivity.class));
+    void clickSelfInfo() {
+        mChildBinding.phvSelfInfo.setOnClickListener(v -> {
+            startActivityWithoutCode(new Intent(this, SelfInfoActivity.class));
+        });
+
     }
 
     //退出
-    @OnClick(R.id.btn_logout)
-    void clickLogout(View view) {
-        checkPermissions(new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_PERMISSION_TELEPHONE);
+    void clickLogout() {
+        mChildBinding.btnLogout.setOnClickListener(v -> {
+            checkPermissions(new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_PERMISSION_TELEPHONE);
+        });
     }
 
     //账户安全
-    @OnClick(R.id.phv_account_security)
-    void clickAccountSecurity(View view) {
-        startActivityWithoutCode(new Intent(this, AccountSecurityActivity.class));
+    void clickAccountSecurity() {
+        mChildBinding.phvAccountSecurity.setOnClickListener(v -> {
+            startActivityWithoutCode(new Intent(this, AccountSecurityActivity.class));
+        });
+
     }
 
     //地址
-    @OnClick(R.id.phv_my_address)
-    void clickMyAddress(View view) {
-        startActivityWithoutCode(new Intent(this, MyAddressActivity.class));
+    void clickMyAddress() {
+        mChildBinding.phvMyAddress.setOnClickListener(v -> {
+            startActivityWithoutCode(new Intent(this, MyAddressActivity.class));
+        });
+
     }
 
     //关于我们
-    @OnClick(R.id.phv_about_us)
-    void clickAboutUs(View view) {
-        startActivityWithoutCode(new Intent(this, AboutUsActivity.class));
+    void clickAboutUs() {
+        mChildBinding.phvAboutUs.setOnClickListener(v -> {
+            startActivityWithoutCode(new Intent(this, AboutUsActivity.class));
+        });
+
     }
 
     //设置字体
-    @OnClick(R.id.phv_font_size)
-    void clickFontSize(View view) {
-        if (bottomListDialog == null) {
-            bottomListDialog = new BottomListDialog(this);
-            bottomListDialog.setTitle("设置字体");
-            List<String> name = new ArrayList<>();
-            name.add("小");
-            name.add("适中(建议)");
-            name.add("大");
-            singleTextAdapter = new SingleTextAdapter(this, name);
-            bottomListDialog.setOnItemClickListener(new BottomListDialog.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    if (position == 0) {
-                        SPUtils.put(SettingActivity.this, "fontMode", 1);//小
-                    } else if (position == 1) {
-                        SPUtils.put(SettingActivity.this, "fontMode", 0);//适中
-                    } else if (position == 2) {
-                        SPUtils.put(SettingActivity.this, "fontMode", 2);//大
+    void clickFontSize() {
+        mChildBinding.phvFontSize.setOnClickListener(v -> {
+            if (bottomListDialog == null) {
+                bottomListDialog = new BottomListDialog(this);
+                bottomListDialog.setTitle("设置字体");
+                List<String> name = new ArrayList<>();
+                name.add("小");
+                name.add("适中(建议)");
+                name.add("大");
+                singleTextAdapter = new SingleTextAdapter(this, name);
+                bottomListDialog.setOnItemClickListener(new BottomListDialog.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        if (position == 0) {
+                            SPUtils.put(SettingActivity.this, "fontMode", 1);//小
+                        } else if (position == 1) {
+                            SPUtils.put(SettingActivity.this, "fontMode", 0);//适中
+                        } else if (position == 2) {
+                            SPUtils.put(SettingActivity.this, "fontMode", 2);//大
+                        }
+                        EventBus.getDefault().post(new AllEvent(EventType.APP_FONT_CHANGE));
                     }
-                    EventBus.getDefault().post(new AllEvent(EventType.APP_FONT_CHANGE));
-                }
-            });
-            bottomListDialog.setAdapter(singleTextAdapter);
-        }
-        bottomListDialog.show();
+                });
+                bottomListDialog.setAdapter(singleTextAdapter);
+            }
+            bottomListDialog.show();
+        });
+
     }
 
     private void showTipDialog() {
@@ -239,4 +231,11 @@ public class SettingActivity extends BaseActivity {
         }
     }
 
+
+
+    @Override
+    public void initViewAndData(Bundle savedInstanceState) {
+        initInfo();
+        initListener();
+    }
 }

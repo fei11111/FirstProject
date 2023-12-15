@@ -6,19 +6,15 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import androidx.recyclerview.widget.RecyclerView;
-
+import com.common.viewmodel.EmptyViewModel;
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.PriceInfoAdapter;
+import com.fei.firstproject.databinding.ActivityMarketInfoBinding;
 import com.fei.firstproject.entity.PriceInfoEntity;
 import com.fei.firstproject.http.HttpMgr;
 import com.fei.firstproject.http.inter.CallBack;
 import com.fei.firstproject.utils.Utils;
-import com.google.android.material.appbar.AppBarLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 
@@ -26,45 +22,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2018/1/15.
  */
 
-public class MarketInfoActivity extends BaseActivity {
+public class MarketInfoActivity extends BaseProjectActivity<EmptyViewModel, ActivityMarketInfoBinding> {
 
     private static final int REQUEST_ACTIVITY_CODE_PARAMS = 100;
-
-    @BindView(R.id.tv_variety)
-    TextView tvVariety;
-    @BindView(R.id.rl_variety)
-    RelativeLayout rlVariety;
-    @BindView(R.id.tv_gather)
-    TextView tvGather;
-    @BindView(R.id.rl_gather)
-    RelativeLayout rlGather;
-    @BindView(R.id.tv_price)
-    TextView tvPrice;
-    @BindView(R.id.rl_price)
-    RelativeLayout rlPrice;
-    @BindView(R.id.tv_time)
-    TextView tvTime;
-    @BindView(R.id.rl_time)
-    RelativeLayout rlTime;
-    @BindView(R.id.app_bar_layout)
-    AppBarLayout appBarLayout;
-    @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
-    @BindView(R.id.iv_variety)
-    ImageView ivVariety;
-    @BindView(R.id.iv_gather)
-    ImageView ivGather;
-    @BindView(R.id.iv_price)
-    ImageView ivPrice;
-    @BindView(R.id.iv_time)
-    ImageView ivTime;
 
     private int currentPage = 1;
     private PriceInfoAdapter priceInfoAdapter;
@@ -90,20 +55,8 @@ public class MarketInfoActivity extends BaseActivity {
     }
 
     @Override
-    public int getContentViewResId() {
-        return R.layout.activity_market_info;
-    }
-
-    @Override
     public void initTitle() {
         setBackTitle(getString(R.string.maket_info));
-    }
-
-    @Override
-    public void init(Bundle savedInstanceState) {
-        initListener();
-        initRecyclerView();
-        initAnimation();
     }
 
     private void initAnimation() {
@@ -112,7 +65,7 @@ public class MarketInfoActivity extends BaseActivity {
     }
 
     private void initRecyclerView() {
-        setLinearRecycleViewSetting(recyclerView, this);
+        setLinearRecycleViewSetting(mChildBinding.recyclerView, this);
     }
 
     private void initListener() {
@@ -156,7 +109,7 @@ public class MarketInfoActivity extends BaseActivity {
                     refreshLayout.setVisibility(View.VISIBLE);
                     if (priceInfoAdapter == null) {
                         priceInfoAdapter = new PriceInfoAdapter(MarketInfoActivity.this, priceInfoEntities);
-                        recyclerView.setAdapter(priceInfoAdapter);
+                        mChildBinding.recyclerView.setAdapter(priceInfoAdapter);
                     } else {
                         if (currentPage == 1) {
                             priceInfoAdapter.setPriceInfoEntities(priceInfoEntities);
@@ -185,25 +138,25 @@ public class MarketInfoActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.rl_price, R.id.rl_time, R.id.rl_variety, R.id.rl_gather})
+
     void clickPriceOrTime(View view) {
         switch (view.getId()) {
             case R.id.rl_price:
-                if (rlPrice.isSelected()) {
-                    ivPrice.startAnimation(downAnimation);
-                    rlPrice.setSelected(false);
+                if (mChildBinding.rlPrice.isSelected()) {
+                    mChildBinding.ivPrice.startAnimation(downAnimation);
+                    mChildBinding.rlPrice.setSelected(false);
                 } else {
-                    ivPrice.startAnimation(upAnimation);
-                    rlPrice.setSelected(true);
+                    mChildBinding.ivPrice.startAnimation(upAnimation);
+                    mChildBinding.rlPrice.setSelected(true);
                 }
                 break;
             case R.id.rl_time:
-                if (rlTime.isSelected()) {
-                    ivTime.startAnimation(downAnimation);
-                    rlTime.setSelected(false);
+                if (mChildBinding.rlTime.isSelected()) {
+                    mChildBinding.ivTime.startAnimation(downAnimation);
+                    mChildBinding.rlTime.setSelected(false);
                 } else {
-                    ivTime.startAnimation(upAnimation);
-                    rlTime.setSelected(true);
+                    mChildBinding.ivTime.startAnimation(upAnimation);
+                    mChildBinding.rlTime.setSelected(true);
                 }
                 break;
             case R.id.rl_variety:
@@ -236,5 +189,20 @@ public class MarketInfoActivity extends BaseActivity {
                 initRequest();
             }
         }
+    }
+
+    @Override
+    public void createObserver() {
+        clickPriceOrTime(mChildBinding.rlPrice);
+        clickPriceOrTime(mChildBinding.rlTime);
+        clickPriceOrTime(mChildBinding.rlVariety);
+        clickPriceOrTime(mChildBinding.rlGather);
+    }
+
+    @Override
+    public void initViewAndData(Bundle savedInstanceState) {
+        initListener();
+        initRecyclerView();
+        initAnimation();
     }
 }

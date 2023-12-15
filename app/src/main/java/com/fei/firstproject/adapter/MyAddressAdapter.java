@@ -16,9 +16,6 @@ import com.fei.firstproject.entity.AddressEntity;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * Created by Administrator on 2017/9/6.
  */
@@ -109,22 +106,21 @@ public class MyAddressAdapter extends RecyclerView.Adapter<MyAddressAdapter.MyAd
 
     class MyAddressViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.tv_address)
         TextView tvAddress;
-        @BindView(R.id.tv_contrat)
         TextView tvContrat;
-        @BindView(R.id.tv_phone)
         TextView tvPhone;
-        @BindView(R.id.tv_default_address)
         AppCompatCheckedTextView tvDefaultAddress;
-        @BindView(R.id.tv_edit)
         TextView tvEdit;
-        @BindView(R.id.tv_del)
         TextView tvDel;
 
         public MyAddressViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            tvAddress = itemView.findViewById(R.id.tv_address);
+            tvContrat = itemView.findViewById(R.id.tv_contrat);
+            tvPhone = itemView.findViewById(R.id.tv_phone);
+            tvDefaultAddress = itemView.findViewById(R.id.tv_default_address);
+            tvEdit = itemView.findViewById(R.id.tv_edit);
+            tvDel = itemView.findViewById(R.id.tv_del);
         }
     }
 

@@ -1,65 +1,32 @@
 package com.fei.firstproject.activity;
 
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
-import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
+import com.common.viewmodel.EmptyViewModel;
 import com.fei.firstproject.R;
+import com.fei.firstproject.databinding.ActivityRunBinding;
 import com.fei.firstproject.widget.AppHeadView;
-import com.fei.firstproject.widget.CircleStrokeView;
 import com.scwang.smartrefresh.layout.util.DelayedRunable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import lecho.lib.hellocharts.gesture.ZoomType;
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PointValue;
-import lecho.lib.hellocharts.view.LineChartView;
 
-public class RunActivity extends BaseActivity {
-
-    @BindView(R.id.swipeLayout)
-    SwipeToLoadLayout swipeLayout;
-    @BindView(R.id.circle_view)
-    CircleStrokeView circleView;
-    @BindView(R.id.tv_total)
-    TextView tvTotal;
-    @BindView(R.id.tv_percent)
-    TextView tvPercent;
-    @BindView(R.id.ll_circle)
-    LinearLayout llCircle;
-    @BindView(R.id.rb_day)
-    RadioButton rbDay;
-    @BindView(R.id.rb_week)
-    RadioButton rbWeek;
-    @BindView(R.id.rb_month)
-    RadioButton rbMonth;
-    @BindView(R.id.chart)
-    LineChartView chart;
-    @BindView(R.id.right_drawer_layout)
-    RelativeLayout rightDrawerLayout;
-    @BindView(R.id.drawerLayout)
-    DrawerLayout drawerLayout;
-    @BindView(R.id.rg_tab)
-    RadioGroup rgTab;
+public class RunActivity extends BaseProjectActivity<EmptyViewModel, ActivityRunBinding> {
 
     private String[] times = {"00:00", "03:00", "06:00", "09:00", "12:00", "15:00", "18:00", "21:00"};
     private String[] weeks = {"周一", "周二", "周三", "周四", "周五", "周六", "周日"};
@@ -87,11 +54,6 @@ public class RunActivity extends BaseActivity {
     }
 
     @Override
-    public int getContentViewResId() {
-        return R.layout.activity_run;
-    }
-
-    @Override
     public void initTitle() {
         appHeadView.setFlHeadLeftPadding(getResources().getDimensionPixelSize(R.dimen.size_10));
         appHeadView.setLeftStyle(AppHeadView.IMAGE);
@@ -104,11 +66,6 @@ public class RunActivity extends BaseActivity {
         appHeadView.setRightDrawable(R.drawable.selector_ic_setting);
     }
 
-    @Override
-    public void init(Bundle savedInstanceState) {
-        initView();
-        initListener();
-    }
 
     private void initView() {
         initCircleView();
@@ -121,8 +78,8 @@ public class RunActivity extends BaseActivity {
         line.setCubic(true);//设置是平滑的还是直的
         List lines = new ArrayList<Line>();
         lines.add(line);
-        chart.setInteractive(true);//设置图表是可以交互的（拖拽，缩放等效果的前提）
-        chart.setZoomType(ZoomType.HORIZONTAL_AND_VERTICAL);//设置缩放方向
+        mChildBinding.chart.setInteractive(true);//设置图表是可以交互的（拖拽，缩放等效果的前提）
+        mChildBinding.chart.setZoomType(ZoomType.HORIZONTAL_AND_VERTICAL);//设置缩放方向
         Axis axisX = new Axis();//x轴
         Axis axisY = new Axis();//y轴
         axisX.setTextSize(12);
@@ -132,9 +89,9 @@ public class RunActivity extends BaseActivity {
         data.setAxisXBottom(axisX);
         data.setAxisYLeft(axisY);
         data.setLines(lines);
-        chart.setZoomEnabled(true);//设置是否支持缩放
-        chart.setInteractive(true);//设置图表是否可以与用户互动
-        chart.setLineChartData(data);//给图表设置数据
+        mChildBinding.chart.setZoomEnabled(true);//设置是否支持缩放
+        mChildBinding.chart.setInteractive(true);//设置图表是否可以与用户互动
+        mChildBinding.chart.setLineChartData(data);//给图表设置数据
     }
 
     private void initDayChart() {
@@ -152,7 +109,7 @@ public class RunActivity extends BaseActivity {
             yValues.add(new AxisValue(i * (100 / times.length)).setLabel(i * (100 / times.length) + ""));
         }
 
-        chart.setLineChartData(data);//给图表设置数据
+        mChildBinding.chart.setLineChartData(data);//给图表设置数据
     }
 
     private void initWeekChart() {
@@ -170,7 +127,7 @@ public class RunActivity extends BaseActivity {
             yValues.add(new AxisValue(i * (100 / weeks.length)).setLabel(i * (100 / weeks.length) + ""));
         }
 
-        chart.setLineChartData(data);//给图表设置数据
+        mChildBinding.chart.setLineChartData(data);//给图表设置数据
     }
 
     private void initMonthChart() {
@@ -188,11 +145,11 @@ public class RunActivity extends BaseActivity {
             yValues.add(new AxisValue(i * (100 / days.length)).setLabel(i * (100 / days.length) + ""));
         }
 
-        chart.setLineChartData(data);//给图表设置数据
+        mChildBinding.chart.setLineChartData(data);//给图表设置数据
     }
 
     private void initCircleView() {
-        circleView.startAnimator(3000, tvTotal, tvPercent, 3000);
+        mChildBinding.circleView.startAnimator(3000, mChildBinding.tvTotal, mChildBinding.tvPercent, 3000);
     }
 
     private void initListener() {
@@ -204,10 +161,10 @@ public class RunActivity extends BaseActivity {
 
             @Override
             public void onRight(View view) {
-                if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
-                    drawerLayout.closeDrawer(GravityCompat.END);
+                if (mChildBinding.drawerLayout.isDrawerOpen(GravityCompat.END)) {
+                    mChildBinding.drawerLayout.closeDrawer(GravityCompat.END);
                 } else {
-                    drawerLayout.openDrawer(GravityCompat.END);
+                    mChildBinding.drawerLayout.openDrawer(GravityCompat.END);
                 }
             }
 
@@ -216,17 +173,17 @@ public class RunActivity extends BaseActivity {
 
             }
         });
-        if (swipeLayout != null) {
-            swipeLayout.setRefreshEnabled(true);
-            swipeLayout.setLoadMoreEnabled(false);
-            swipeLayout.setOnRefreshListener(new OnRefreshListener() {
+        if (mChildBinding.swipeLayout != null) {
+            mChildBinding.swipeLayout.setRefreshEnabled(true);
+            mChildBinding.swipeLayout.setLoadMoreEnabled(false);
+            mChildBinding.swipeLayout.setOnRefreshListener(new OnRefreshListener() {
                 @Override
                 public void onRefresh() {
                     initRequest();
                 }
             });
         }
-        rgTab.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        mChildBinding.rgTab.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
@@ -249,15 +206,19 @@ public class RunActivity extends BaseActivity {
         runOnUiThread(new DelayedRunable(new Runnable() {
             @Override
             public void run() {
-                swipeLayout.setRefreshing(false);
+                mChildBinding.swipeLayout.setRefreshing(false);
             }
         }, 5000));
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+    public void createObserver() {
+
+    }
+
+    @Override
+    public void initViewAndData(Bundle savedInstanceState) {
+        initView();
+        initListener();
     }
 }

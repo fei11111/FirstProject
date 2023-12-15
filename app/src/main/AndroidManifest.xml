@@ -54,6 +54,7 @@
             android:name="com.amap.api.v2.apikey"
             android:value="f8a6721ab93f1ea945ba60b33fde61b5" />
 
+
         <activity
             android:name=".activity.WelcomeActivity"
             android:configChanges="orientation|keyboardHidden|navigation"

@@ -14,7 +14,7 @@ import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -36,19 +36,16 @@ public class RetrofitFactory {
             .writeTimeout(20, TimeUnit.SECONDS)
             .addNetworkInterceptor(new RspNetInterceptor())
             .addInterceptor(new RspNetInterceptor())
-            .addInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-                @Override
-                public void log(String message) {
-                    //打印retrofit日志
-                    LogUtils.i("RetrofitLog", "retrofitBack = " + message);
-                }
+            .addInterceptor(new HttpLoggingInterceptor(message -> {
+                //打印retrofit日志
+                LogUtils.i("RetrofitLog", "retrofitBack = " + message);
             }).setLevel(HttpLoggingInterceptor.Level.BODY))
             .cache(cache).build();
 
     private static Retrofit.Builder builder = new Retrofit.Builder()
             // 添加Gson转换器
             .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .client(httpClient);
 
     private static RequestApi requestBDApi = builder.
@@ -92,7 +89,7 @@ public class RetrofitFactory {
         return new Retrofit.Builder()
                 // 添加Gson转换器
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .client(new OkHttpClient.Builder()
                         .connectTimeout(15, TimeUnit.SECONDS)
                         .readTimeout(20, TimeUnit.SECONDS)

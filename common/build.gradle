@@ -72,6 +72,8 @@ dependencies {
 
     //network
     api deps.okhttp3
+    api deps.interception
+    api deps.adapterRxjava
     api deps.retrofit
     api deps.converterGson
     api deps.adapterRxjava

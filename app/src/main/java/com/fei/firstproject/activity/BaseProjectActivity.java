@@ -1,7 +1,6 @@
 package com.fei.firstproject.activity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,9 +9,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -20,6 +19,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
@@ -28,9 +28,13 @@ import androidx.core.util.Pair;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewbinding.ViewBinding;
 
+import com.common.base.BaseActivity;
+import com.common.viewmodel.BaseViewModel;
 import com.fei.firstproject.R;
 import com.fei.firstproject.config.AppConfig;
+import com.fei.firstproject.databinding.ActivityBaseBinding;
 import com.fei.firstproject.decoration.DividerGridItemDecoration;
 import com.fei.firstproject.decoration.DividerItemDecoration;
 import com.fei.firstproject.dialog.CustomeProgressDialog;
@@ -47,91 +51,100 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
-import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-import io.reactivex.ObservableTransformer;
+import io.reactivex.rxjava3.core.ObservableTransformer;
 
 /**
  * Created by Administrator on 2017/7/27.
  */
 
-public abstract class BaseActivity extends RxAppCompatActivity implements IBase {
+public abstract class BaseProjectActivity<VM extends BaseViewModel, VB extends ViewBinding> extends BaseActivity<VM, ActivityBaseBinding> implements IBase {
 
-    @Nullable
-    @BindView(R.id.pb_loading)
     ProgressBar pbLoading;
-    @Nullable
-    @BindView(R.id.ll_no_data)
     LinearLayout llNoData;
-    @Nullable
-    @BindView(R.id.rl_default)
     RelativeLayout rlDefault;
-    @Nullable
-    @BindView(R.id.btn_request_error)
     Button btnRequestError;
-    @Nullable
-    @BindView(R.id.ll_request_error)
     LinearLayout llRequestError;
-    @Nullable
-    @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
-    @BindView(R.id.appHeadView)
     AppHeadView appHeadView;
-    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.app_bar_layout)
     AppBarLayout appBarLayout;
 
-
-    private Unbinder unbinder;
     protected CustomeProgressDialog progressDialog;
     private TipDialog tipDialog;
+
+    protected VB mChildBinding;
 
     /**
      * @param isShow 是否显示错误的view
      */
     protected <T> ObservableTransformer<T, T> createTransformer(final boolean isShow) {
-        return RxSchedulers.compose(this, this.<T>bindToLifecycle(), new RxSchedulers.OnConnectError() {
-            @Override
-            public void onError() {
-                if (isShow) {
-                    showRequestErrorView();
-                }
+        return RxSchedulers.compose(this, this.<T>bindToLifecycle(), () -> {
+            if (isShow) {
+                showRequestErrorView();
             }
         });
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         initTheme();
-        initView();
+        initBus();
+        super.onCreate(savedInstanceState);
         initProgress();
-        initlistener();
         initTitle();
-        init(savedInstanceState);
         initRequest();
     }
 
-    private void initView() {
-        View view = getLayoutInflater().inflate(R.layout.activity_base, null);
-        FrameLayout flContainer = view.findViewById(R.id.fl_container);
-        View activityView = getLayoutInflater().inflate(getContentViewResId(), null);
-        flContainer.addView(activityView);
-        setContentView(view);
+    private void initBus() {
         EventBus.getDefault().register(this);
-        unbinder = ButterKnife.bind(this);
+    }
+
+    @Override
+    public void setContentView(View view) {
+        super.setContentView(view);
+        mChildBinding = getChildViewBinding();
+        mBinding.flContainer.addView(mChildBinding.getRoot());
+        pbLoading = mChildBinding.getRoot().findViewById(R.id.pb_loading);
+        llNoData = mChildBinding.getRoot().findViewById(R.id.ll_no_data);
+        rlDefault = mChildBinding.getRoot().findViewById(R.id.rl_default);
+        btnRequestError = mChildBinding.getRoot().findViewById(R.id.btn_request_error);
+        llRequestError = mChildBinding.getRoot().findViewById(R.id.ll_request_error);
+        refreshLayout = mChildBinding.getRoot().findViewById(R.id.refreshLayout);
+        appHeadView = mBinding.appHeadView;
+        appBarLayout = mBinding.appBarLayout;
+        toolbar = mBinding.toolbar;
+    }
+
+    private VB getChildViewBinding() {
+        Type type = getClass().getGenericSuperclass();
+        if (type instanceof ParameterizedType) {
+            Type typeArgument = ((ParameterizedType) type).getActualTypeArguments()[1];
+            Class<VB> vbClass = (Class<VB>) typeArgument;
+            try {
+                Method method = vbClass.getMethod("inflate", LayoutInflater.class);
+                return (VB) method.invoke(null, getLayoutInflater());
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
     @Override
@@ -155,7 +168,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IBase 
         }
     }
 
-    protected void setBackTitle(String title){
+    protected void setBackTitle(String title) {
         appHeadView.setFlHeadLeftPadding(getResources().getDimensionPixelSize(R.dimen.size_10));
         appHeadView.setLeftStyle(AppHeadView.IMAGE);
         appHeadView.setFlHeadLeftVisible(View.VISIBLE);
@@ -180,7 +193,6 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IBase 
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        unbinder.unbind();
     }
 
     private void initlistener() {
@@ -421,7 +433,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IBase 
             tipDialog.setOnConfirmListener(new TipDialog.OnConfirmListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity(new Intent(BaseActivity.this, LoginActivity.class));
+                    startActivity(new Intent(BaseProjectActivity.this, LoginActivity.class));
                 }
             });
         }

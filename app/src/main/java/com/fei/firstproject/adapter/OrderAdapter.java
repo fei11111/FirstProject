@@ -15,8 +15,6 @@ import com.fei.firstproject.entity.OrderEntity;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Fei on 2017/8/25.
@@ -302,26 +300,25 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHod
 
     class OrderViewHoder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.tv_service)
         TextView tvService;
-        @BindView(R.id.tv_status)
         TextView tvStatus;
-        @BindView(R.id.iv_order_pic)
         ImageView ivOrderPic;
-        @BindView(R.id.tv_desc)
         TextView tvDesc;
-        @BindView(R.id.tv_count)
         TextView tvCount;
-        @BindView(R.id.tv_money)
         TextView tvMoney;
-        @BindView(R.id.btn_pay)
         Button btnPay;
-        @BindView(R.id.btn_cancle)
         Button btnCancle;
 
         public OrderViewHoder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            tvService = (TextView) itemView.findViewById(R.id.tv_service);
+            tvStatus = (TextView) itemView.findViewById(R.id.tv_status);
+            ivOrderPic = (ImageView) itemView.findViewById(R.id.iv_order_pic);
+            tvDesc = (TextView) itemView.findViewById(R.id.tv_desc);
+            tvCount = (TextView) itemView.findViewById(R.id.tv_count);
+            tvMoney = (TextView) itemView.findViewById(R.id.tv_money);
+            btnPay = (Button) itemView.findViewById(R.id.btn_pay);
+            btnCancle = (Button) itemView.findViewById(R.id.btn_cancle);
         }
     }
 }

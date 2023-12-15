@@ -1,29 +1,27 @@
 package com.fei.firstproject.activity;
 
-import static android.os.Environment.DIRECTORY_PICTURES;
-
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.common.viewmodel.EmptyViewModel;
 import com.fei.firstproject.R;
 import com.fei.firstproject.config.AppConfig;
+import com.fei.firstproject.databinding.ActivityMainBinding;
 import com.fei.firstproject.entity.UserEntity;
 import com.fei.firstproject.event.AllEvent;
 import com.fei.firstproject.event.EventType;
-import com.fei.firstproject.fragment.MainFragment;
-import com.fei.firstproject.fragment.MakeFragment;
-import com.fei.firstproject.fragment.MeFragment;
+import com.fei.firstproject.fragment.MainProjectFragment;
+import com.fei.firstproject.fragment.MakeProjectFragment;
+import com.fei.firstproject.fragment.MeProjectFragment;
 import com.fei.firstproject.fragment.manager.FragmentInstanceManager;
 import com.fei.firstproject.http.HttpMgr;
 import com.fei.firstproject.http.inter.CallBack;
@@ -42,26 +40,13 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity {
-
-    @BindView(R.id.ll_bottom_main)
-    LinearLayout llBottomMain;
-    @BindView(R.id.ll_bottom_make)
-    LinearLayout llBottomMake;
-    @BindView(R.id.ll_bottom_me)
-    LinearLayout llBottomMe;
-    @BindView(R.id.bottom_layout)
-    LinearLayout bottomLayout;
-    @BindView(R.id.fl_main_container)
-    FrameLayout flMainContainer;
+public class MainActivity extends BaseProjectActivity<EmptyViewModel, ActivityMainBinding> {
 
     private FragmentManager mFragmentManager;
-    private MainFragment mainFragment;
-    private MakeFragment makeFragment;
-    private MeFragment meFragment;
+    private MainProjectFragment mainFragment;
+    private MakeProjectFragment makeFragment;
+    private MeProjectFragment meFragment;
 
     //权限请求
     private static final int REQUEST_PERMISSION_CODE_CAMERA = 101;
@@ -93,11 +78,6 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    public int getContentViewResId() {
-        return R.layout.activity_main;
-    }
-
-    @Override
     public void initTitle() {
         appHeadView.setLeftStyle(AppHeadView.IMAGE);
         appHeadView.setFlHeadLeftVisible(View.VISIBLE);
@@ -108,13 +88,6 @@ public class MainActivity extends BaseActivity {
 
 //        LogUtils.i("MainActivity",Utils.getSignature(this));
 //        LogUtils.i("MainActivity",SignCheck.isRight(this)+"");
-    }
-
-    @Override
-    public void init(Bundle savedInstanceState) {
-        initView(savedInstanceState);
-        initToolBar();
-        initListener();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -177,9 +150,9 @@ public class MainActivity extends BaseActivity {
     private void initView(Bundle savedInstanceState) {
         mFragmentManager = getSupportFragmentManager();
         if (savedInstanceState != null) {
-            mainFragment = (MainFragment) mFragmentManager.findFragmentByTag("mainFragment");
-            makeFragment = (MakeFragment) mFragmentManager.findFragmentByTag("makeFragment");
-            meFragment = (MeFragment) mFragmentManager.findFragmentByTag("meFrament");
+            mainFragment = (MainProjectFragment) mFragmentManager.findFragmentByTag("mainFragment");
+            makeFragment = (MakeProjectFragment) mFragmentManager.findFragmentByTag("makeFragment");
+            meFragment = (MeProjectFragment) mFragmentManager.findFragmentByTag("meFrament");
             tagPosition = savedInstanceState.getInt("position");
         }
         setTab(tagPosition);
@@ -232,7 +205,6 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.ll_bottom_main, R.id.ll_bottom_make, R.id.ll_bottom_me})
     void clickBottom(View view) {
         int id = view.getId();
         resetAllState();
@@ -254,9 +226,9 @@ public class MainActivity extends BaseActivity {
         switch (position) {
             case 0:
                 setAppHeadViewSearchMode();
-                llBottomMain.setSelected(true);
+                mChildBinding.getRoot().findViewById(R.id.ll_bottom_main).setSelected(true);
                 if (mainFragment == null) {
-                    mainFragment = (MainFragment) FragmentInstanceManager.getInstance().getFragmet(MainFragment.class);
+                    mainFragment = (MainProjectFragment) FragmentInstanceManager.getInstance().getFragmet(MainProjectFragment.class);
                     switchFragment(mainFragment, true, "mainFragment");
                 } else {
                     switchFragment(mainFragment, false, "mainFragment");
@@ -264,19 +236,19 @@ public class MainActivity extends BaseActivity {
                 break;
             case 1:
                 setAppHeadViewTitleMode();
-                llBottomMake.setSelected(true);
+                mChildBinding.getRoot().findViewById(R.id.ll_bottom_make).setSelected(true);
                 if (makeFragment == null) {
-                    makeFragment = (MakeFragment) FragmentInstanceManager.getInstance().getFragmet(MakeFragment.class);
+                    makeFragment = (MakeProjectFragment) FragmentInstanceManager.getInstance().getFragmet(MakeProjectFragment.class);
                     switchFragment(makeFragment, true, "makeFragment");
                 } else {
                     switchFragment(makeFragment, false, "makeFragment");
                 }
                 break;
             case 2:
-                llBottomMe.setSelected(true);
+                mChildBinding.getRoot().findViewById(R.id.ll_bottom_me).setSelected(true);
                 setAppHeadViewTitleImageMode();
                 if (meFragment == null) {
-                    meFragment = (MeFragment) FragmentInstanceManager.getInstance().getFragmet(MeFragment.class);
+                    meFragment = (MeProjectFragment) FragmentInstanceManager.getInstance().getFragmet(MeProjectFragment.class);
                     switchFragment(meFragment, true, "meFrament");
                 } else {
                     switchFragment(meFragment, false, "meFrament");
@@ -325,9 +297,9 @@ public class MainActivity extends BaseActivity {
     }
 
     private void resetAllState() {
-        llBottomMain.setSelected(false);
-        llBottomMake.setSelected(false);
-        llBottomMe.setSelected(false);
+        mChildBinding.getRoot().findViewById(R.id.ll_bottom_main).setSelected(false);
+        mChildBinding.getRoot().findViewById(R.id.ll_bottom_make).setSelected(false);
+        mChildBinding.getRoot().findViewById(R.id.ll_bottom_me).setSelected(false);
     }
 
     //隐藏所有的fragment
@@ -385,5 +357,19 @@ public class MainActivity extends BaseActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void createObserver() {
+        clickBottom(mChildBinding.getRoot().findViewById(R.id.ll_bottom_main));
+        clickBottom(mChildBinding.getRoot().findViewById(R.id.ll_bottom_make));
+        clickBottom(mChildBinding.getRoot().findViewById(R.id.ll_bottom_me));
+    }
+
+    @Override
+    public void initViewAndData(Bundle savedInstanceState) {
+        initView(savedInstanceState);
+        initToolBar();
+        initListener();
     }
 }

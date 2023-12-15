@@ -13,12 +13,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
+import com.fei.firstproject.databinding.ViewListDialogBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.OnItemClick;
 
 /**
  * Created by Administrator on 2017/8/3.
@@ -26,15 +23,10 @@ import butterknife.OnItemClick;
 
 public class BottomListDialog extends BottomSheetDialog {
 
-    @BindView(R.id.tv_dialog_confirm)
     TextView tvDialogConfirm;
-    @BindView(R.id.tv_dialog_cancle)
     TextView tvDialogCancle;
-    @BindView(R.id.tv_dialog_title)
     TextView tvDialogTitle;
-    @BindView(R.id.lv_dialog)
     ListView lvDialog;
-    @BindView(R.id.rl_dialog_head)
     RelativeLayout rlDialogHead;
 
     private Context mContext;
@@ -69,9 +61,16 @@ public class BottomListDialog extends BottomSheetDialog {
     }
 
     private void init() {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.view_list_dialog, null);
-        setContentView(view);
-        ButterKnife.bind(this, view);
+        ViewListDialogBinding binding = ViewListDialogBinding.inflate(LayoutInflater.from(mContext));
+        setContentView(binding.getRoot());
+        tvDialogConfirm = binding.tvDialogConfirm;
+        tvDialogCancle = binding.tvDialogCancle;
+        tvDialogTitle = binding.tvDialogTitle;
+        lvDialog = binding.lvDialog;
+        rlDialogHead = binding.rlDialogHead;
+        clickCancle(binding.tvDialogCancle);
+        clickConfirm(binding.tvDialogConfirm);
+        clickItem();
 
         if (!TextUtils.isEmpty(title)) {
             tvDialogTitle.setText(title);
@@ -114,7 +113,6 @@ public class BottomListDialog extends BottomSheetDialog {
         rlDialogHeadVisibility = visibility;
     }
 
-    @OnClick(R.id.tv_dialog_cancle)
     void clickCancle(View view) {
         if (onCancleListener != null) {
             onCancleListener.onClick(view);
@@ -122,7 +120,6 @@ public class BottomListDialog extends BottomSheetDialog {
         this.dismiss();
     }
 
-    @OnClick(R.id.tv_dialog_confirm)
     void clickConfirm(View view) {
         if (onConfirmListener != null) {
             onConfirmListener.onClick(view);
@@ -130,12 +127,13 @@ public class BottomListDialog extends BottomSheetDialog {
         this.dismiss();
     }
 
-    @OnItemClick(R.id.lv_dialog)
-    void clickItem(AdapterView<?> parent, View view, int position, long id) {
-        if (onItemClickListener != null) {
-            onItemClickListener.onItemClick(parent, view, position, id);
-            this.dismiss();
-        }
+    void clickItem() {
+        lvDialog.setOnItemClickListener((parent, view, position, id) -> {
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(parent, view, position, id);
+                dismiss();
+            }
+        });
     }
 
     @Override

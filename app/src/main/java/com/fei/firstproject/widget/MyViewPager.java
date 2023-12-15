@@ -9,7 +9,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.fei.firstproject.utils.LogUtils;
 
-import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2017/7/29.
@@ -32,7 +31,6 @@ public class MyViewPager extends ViewPager {
 
     public MyViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
-        ButterKnife.bind(this);
     }
 
     @Override

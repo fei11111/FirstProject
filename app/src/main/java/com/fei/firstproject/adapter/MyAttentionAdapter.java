@@ -21,9 +21,6 @@ import com.fei.firstproject.widget.RoundImageView;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * Created by Administrator on 2017/8/29.
  */
@@ -100,27 +97,26 @@ public class MyAttentionAdapter extends RecyclerView.Adapter<MyAttentionAdapter.
 
     class MyAttentionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @BindView(R.id.iv_icon)
         RoundImageView ivIcon;
-        @BindView(R.id.tv_name)
         TextView tvName;
-        @BindView(R.id.ll_my_attention_left)
         LinearLayout llMyAttentionLeft;
-        @BindView(R.id.btn_attention)
         Button btnAttention;
-        @BindView(R.id.tv_service_duration)
         TextView tvServiceDuration;
-        @BindView(R.id.tv_spec_crop)
         TextView tvSpecCrop;
-        @BindView(R.id.tv_spec_skill)
         TextView tvSpecSkill;
-        @BindView(R.id.rb_star)
         RatingBar rbStar;
 
         public MyAttentionViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
+            ivIcon = (RoundImageView) itemView.findViewById(R.id.iv_icon);
+            tvName = (TextView) itemView.findViewById(R.id.tv_name);
+            llMyAttentionLeft = (LinearLayout) itemView.findViewById(R.id.ll_my_attention_left);
+            btnAttention = (Button) itemView.findViewById(R.id.btn_attention);
+            tvServiceDuration = (TextView) itemView.findViewById(R.id.tv_service_duration);
+            tvSpecCrop = (TextView) itemView.findViewById(R.id.tv_spec_crop);
+            tvSpecSkill = (TextView) itemView.findViewById(R.id.tv_spec_skill);
+            rbStar = (RatingBar) itemView.findViewById(R.id.rb_star);
         }
 
         @Override

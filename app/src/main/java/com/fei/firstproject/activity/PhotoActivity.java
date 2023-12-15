@@ -4,13 +4,14 @@ import android.Manifest;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.TextView;
 
 import androidx.viewpager.widget.ViewPager;
 
+import com.common.viewmodel.EmptyViewModel;
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.PhotoPagerAdapter;
 import com.fei.firstproject.adapter.SingleTextAdapter;
+import com.fei.firstproject.databinding.ActivityPhotoBinding;
 import com.fei.firstproject.dialog.BottomListDialog;
 import com.fei.firstproject.http.factory.RetrofitFactory;
 import com.fei.firstproject.http.inter.RequestApi;
@@ -27,27 +28,21 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
 /**
  * Created by Administrator on 2017/9/21.
  */
 
-public class PhotoActivity extends BaseActivity {
+public class PhotoActivity extends BaseProjectActivity<EmptyViewModel, ActivityPhotoBinding> {
 
     private static final int REQUEST_PERMISSION_CODE_STORAGE = 100;
-
-    @BindView(R.id.vp_photo)
-    ViewPager vpPhoto;
-    @BindView(R.id.tv_page)
-    TextView tvPage;
 
     private List<String> pics;
     private BottomListDialog bottomListDialog;
@@ -86,7 +81,7 @@ public class PhotoActivity extends BaseActivity {
         RequestApi downLoad = RetrofitFactory.getDownLoad(null);
         downLoad.downloadFile(url)
                 .subscribeOn(Schedulers.io())
-                .doOnSubscribe(new Consumer<Disposable>() {
+                .doOnSubscribe(new Consumer<>() {
                     @Override
                     public void accept(Disposable disposable) {
                         // 可添加网络连接判断等
@@ -151,25 +146,14 @@ public class PhotoActivity extends BaseActivity {
     }
 
     @Override
-    public int getContentViewResId() {
-        return R.layout.activity_photo;
-    }
-
-    @Override
     public void initTitle() {
         appHeadView.setVisibility(View.GONE);
     }
 
-    @Override
-    public void init(Bundle savedInstanceState) {
-        initData();
-        initPage();
-        initViewPager();
-    }
 
     private void initViewPager() {
         PhotoPagerAdapter photoPagerAdapter = new PhotoPagerAdapter(this, pics);
-        vpPhoto.setAdapter(photoPagerAdapter);
+        mChildBinding.vpPhoto.setAdapter(photoPagerAdapter);
         initListener(photoPagerAdapter);
     }
 
@@ -203,7 +187,7 @@ public class PhotoActivity extends BaseActivity {
                 bottomListDialog.show();
             }
         });
-        vpPhoto.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mChildBinding.vpPhoto.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -211,7 +195,7 @@ public class PhotoActivity extends BaseActivity {
 
             @Override
             public void onPageSelected(int position) {
-                tvPage.setText((position + 1) + "/" + pics.size());
+                mChildBinding.tvPage.setText((position + 1) + "/" + pics.size());
             }
 
             @Override
@@ -222,7 +206,7 @@ public class PhotoActivity extends BaseActivity {
     }
 
     private void initPage() {
-        tvPage.setText("1/" + pics.size());
+        mChildBinding.tvPage.setText("1/" + pics.size());
     }
 
     private void initData() {
@@ -237,4 +221,15 @@ public class PhotoActivity extends BaseActivity {
 
     }
 
+    @Override
+    public void createObserver() {
+
+    }
+
+    @Override
+    public void initViewAndData(Bundle savedInstanceState) {
+        initData();
+        initPage();
+        initViewPager();
+    }
 }

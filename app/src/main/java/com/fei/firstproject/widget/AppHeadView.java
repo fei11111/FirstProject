@@ -2,10 +2,11 @@ package com.fei.firstproject.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -15,12 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.OnEditorAction;
-import butterknife.OnTextChanged;
+import com.fei.firstproject.databinding.AppHeadViewBinding;
 
 /**
  * Created by Fei on 2017/8/15.
@@ -28,27 +24,16 @@ import butterknife.OnTextChanged;
 
 public class AppHeadView extends RelativeLayout {
 
-    @BindView(R.id.iv_head_left)
     ImageView ivHeadLeft;
-    @BindView(R.id.tv_head_left)
     TextView tvHeadLeft;
-    @BindView(R.id.fl_head_left)
     FrameLayout flHeadLeft;
-    @BindView(R.id.iv_head_right)
     ImageView ivHeadRight;
-    @BindView(R.id.tv_head_right)
     TextView tvHeadRight;
-    @BindView(R.id.fl_head_right)
     FrameLayout flHeadRight;
-    @BindView(R.id.et_search)
     EditText etSearch;
-    @BindView(R.id.rl_search)
     RelativeLayout rlSearch;
-    @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.iv_delete)
     ImageView ivDelete;
-    @BindView(R.id.iv_search)
     ImageView ivSearch;
 
     private Context mContext;
@@ -68,6 +53,8 @@ public class AppHeadView extends RelativeLayout {
     private String middleText;
     private String middleSearchHint;
     private onAppHeadViewListener onAppHeadViewListener;
+
+    private AppHeadViewBinding appHeadViewBinding;
 
     public static final int TEXT = 0;
     public static final int SEARCH = 1;
@@ -116,9 +103,24 @@ public class AppHeadView extends RelativeLayout {
     }
 
     private void initView() {
-        LayoutInflater.from(mContext).inflate(R.layout.app_head_view, this);
-        ButterKnife.bind(this);
+        appHeadViewBinding = AppHeadViewBinding.bind(this);
+        ivHeadLeft = appHeadViewBinding.ivHeadLeft;
+        tvHeadLeft = appHeadViewBinding.tvHeadLeft;
+        flHeadLeft = appHeadViewBinding.flHeadLeft;
+        ivHeadRight = appHeadViewBinding.ivHeadRight;
+        tvHeadRight = appHeadViewBinding.tvHeadRight;
+        flHeadRight = appHeadViewBinding.flHeadRight;
+        etSearch = appHeadViewBinding.etSearch;
+        rlSearch = appHeadViewBinding.rlSearch;
+        tvTitle = appHeadViewBinding.tvTitle;
+        ivDelete = appHeadViewBinding.ivDelete;
+        ivSearch = appHeadViewBinding.ivSearch;
         initContent();
+        onLeftRightClick(appHeadViewBinding.flHeadLeft);
+        onLeftRightClick(appHeadViewBinding.flHeadRight);
+        search();
+        onTextChanged();
+        deleteEtText();
     }
 
     private void initContent() {
@@ -197,7 +199,6 @@ public class AppHeadView extends RelativeLayout {
         }
     }
 
-    @OnClick({R.id.fl_head_left, R.id.fl_head_right})
     void onLeftRightClick(View view) {
         if (onAppHeadViewListener == null) return;
         switch (view.getId()) {
@@ -211,31 +212,50 @@ public class AppHeadView extends RelativeLayout {
         }
     }
 
-    @OnEditorAction(R.id.et_search)
-    boolean search(TextView v, int actionId,
-                   KeyEvent event) {
-        if (onAppHeadViewListener == null) return false;
-        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-            //点击搜索要做的操作
-            etSearch.clearFocus();
-            onAppHeadViewListener.onEdit(v, actionId, event);
-            return true;
-        }
-        return false;
+    void search() {
+        appHeadViewBinding.etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (onAppHeadViewListener == null) return false;
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    //点击搜索要做的操作
+                    etSearch.clearFocus();
+                    onAppHeadViewListener.onEdit(v, actionId, event);
+                    return true;
+                }
+                return false;
+            }
+        });
+
     }
 
-    @OnTextChanged(value = R.id.et_search, callback = OnTextChanged.Callback.TEXT_CHANGED)
-    void onTextChanged(CharSequence s, int start, int before, int count) {
-        if (!TextUtils.isEmpty(s)) {
-            ivDelete.setVisibility(View.VISIBLE);
-        } else {
-            ivDelete.setVisibility(View.GONE);
-        }
+    void onTextChanged() {
+        appHeadViewBinding.etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!TextUtils.isEmpty(s)) {
+                    ivDelete.setVisibility(View.VISIBLE);
+                } else {
+                    ivDelete.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
-    @OnClick(R.id.iv_delete)
-    void delteEtText() {
-        etSearch.setText("");
+    void deleteEtText() {
+        appHeadViewBinding.ivDelete.setOnClickListener(v -> {
+            etSearch.setText("");
+        });
     }
 
     public void setFlHeadLeftVisible(int visible) {

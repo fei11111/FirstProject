@@ -11,18 +11,16 @@ import androidx.annotation.NonNull;
 
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.BottomExpandAdapter;
+import com.fei.firstproject.databinding.ViewExpandListDialogBinding;
 import com.fei.firstproject.entity.ObjectEntity;
 import com.fei.firstproject.utils.Utils;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class BottomExpandListDialog extends BottomSheetDialog {
 
-    @BindView(R.id.elv)
     ExpandableListView elv;
 
     private Context mContext;
@@ -47,9 +45,9 @@ public class BottomExpandListDialog extends BottomSheetDialog {
     }
 
     private void init() {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.view_expand_list_dialog, null);
-        setContentView(view);
-        ButterKnife.bind(this, view);
+        ViewExpandListDialogBinding binding = ViewExpandListDialogBinding.inflate(LayoutInflater.from(mContext));
+        setContentView(binding.getRoot());
+        elv = binding.elv;
 
         if (objectEntityList == null) {
             try {

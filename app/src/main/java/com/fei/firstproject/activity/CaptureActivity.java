@@ -16,12 +16,11 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
-import android.view.SurfaceView;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
+import com.common.viewmodel.EmptyViewModel;
 import com.fei.firstproject.R;
+import com.fei.firstproject.databinding.ActivityCaptureBinding;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.zxing.camera.CameraManager;
 import com.fei.firstproject.zxing.decoding.CaptureActivityHandler;
@@ -43,26 +42,13 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Vector;
 
-import butterknife.BindView;
-
 
 /**
  * Initial the camera
  *
  * @author zhangguoyu
  */
-public class CaptureActivity extends BaseActivity implements Callback {
-
-    @BindView(R.id.preview_view)
-    SurfaceView previewView;
-    @BindView(R.id.viewfinder_view)
-    ViewfinderView viewfinderView;
-    @BindView(R.id.tv_title)
-    TextView tvTitle;
-    @BindView(R.id.btn_light)
-    Button btnLight;
-    @BindView(R.id.btn_openimg)
-    Button btnOpenimg;
+public class CaptureActivity extends BaseProjectActivity<EmptyViewModel, ActivityCaptureBinding> implements Callback {
 
     private boolean playBeep;
     private boolean vibrate;
@@ -78,7 +64,7 @@ public class CaptureActivity extends BaseActivity implements Callback {
     @Override
     protected void onResume() {
         super.onResume();
-        SurfaceHolder surfaceHolder = previewView.getHolder();
+        SurfaceHolder surfaceHolder = mChildBinding.previewView.getHolder();
         if (hasSurface) {
             initCamera(surfaceHolder);
         } else {
@@ -125,21 +111,10 @@ public class CaptureActivity extends BaseActivity implements Callback {
     }
 
     @Override
-    public int getContentViewResId() {
-        return R.layout.activity_capture;
-    }
-
-    @Override
     public void initTitle() {
         appHeadView.setMiddleText(getString(R.string.scan));
     }
 
-    @Override
-    public void init(Bundle savedInstanceState) {
-        CameraManager.init(getApplication());
-        hasSurface = false;
-        inactivityTimer = new InactivityTimer(this);
-    }
 
     @Override
     public void initRequest() {
@@ -285,12 +260,12 @@ public class CaptureActivity extends BaseActivity implements Callback {
             case 0:
                 //关闪光灯
                 CameraManager.get().closeLight();
-                btnLight.setText(getString(R.string.str_open_light));
+                mChildBinding.btnLight.setText(getString(R.string.str_open_light));
                 break;
             case 1:
                 //开闪光灯
                 CameraManager.get().openLight();
-                btnLight.setText(getString(R.string.str_close_light));
+                mChildBinding.btnLight.setText(getString(R.string.str_close_light));
                 break;
             default:
                 break;
@@ -333,7 +308,7 @@ public class CaptureActivity extends BaseActivity implements Callback {
     }
 
     public ViewfinderView getViewfinderView() {
-        return viewfinderView;
+        return mChildBinding.viewfinderView;
     }
 
     public Handler getHandler() {
@@ -341,7 +316,7 @@ public class CaptureActivity extends BaseActivity implements Callback {
     }
 
     public void drawViewfinder() {
-        viewfinderView.drawViewfinder();
+        mChildBinding.viewfinderView.drawViewfinder();
 
     }
 
@@ -387,4 +362,16 @@ public class CaptureActivity extends BaseActivity implements Callback {
             mediaPlayer.seekTo(0);
         }
     };
+
+    @Override
+    public void createObserver() {
+
+    }
+
+    @Override
+    public void initViewAndData(Bundle savedInstanceState) {
+        CameraManager.init(getApplication());
+        hasSurface = false;
+        inactivityTimer = new InactivityTimer(this);
+    }
 }

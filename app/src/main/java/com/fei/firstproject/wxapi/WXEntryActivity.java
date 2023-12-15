@@ -16,21 +16,14 @@ import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * Created by Administrator on 2017/9/1.
  */
 
 public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
-    @BindView(R.id.iv_dialog_cancle)
     ImageView ivDialogCancle;
-    @BindView(R.id.tv_dialog_content)
     TextView tvDialogContent;
-    @BindView(R.id.btn_dialog_confirm)
     Button btnDialogConfirm;
 
     @Override
@@ -64,7 +57,11 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_tip_dialog);
-        ButterKnife.bind(this);
+        ivDialogCancle = findViewById(R.id.iv_dialog_cancle);
+        tvDialogContent = findViewById(R.id.tv_dialog_content);
+        btnDialogConfirm = findViewById(R.id.btn_dialog_confirm);
+        clickCancle(ivDialogCancle);
+        clickCancle(btnDialogConfirm);
         initWx();
     }
 
@@ -72,7 +69,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         WxApiUtils.getInstance(getApplicationContext()).getIwxapi().handleIntent(getIntent(), this);
     }
 
-    @OnClick({R.id.btn_dialog_confirm, R.id.iv_dialog_cancle})
     void clickCancle(View view) {
         finish();
     }

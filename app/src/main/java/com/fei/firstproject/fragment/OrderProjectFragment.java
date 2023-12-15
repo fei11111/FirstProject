@@ -3,6 +3,7 @@ package com.fei.firstproject.fragment;
 import android.os.Bundle;
 import android.view.View;
 
+import com.common.viewmodel.EmptyViewModel;
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.OrderAdapter;
 import com.fei.firstproject.config.AppConfig;
@@ -16,13 +17,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.reactivex.Observable;
+import io.reactivex.rxjava3.core.Observable;
+
 
 /**
  * Created by Administrator on 2017/8/25.
  */
 
-public class OrderFragment extends BaseListFragment {
+public class OrderProjectFragment extends BaseListProjectFragment<EmptyViewModel> {
 
     private static final String INDEX = "index";
     private int index = 0;
@@ -126,10 +128,10 @@ public class OrderFragment extends BaseListFragment {
                 });
     }
 
-    public static OrderFragment newInstance(int position) {
+    public static OrderProjectFragment newInstance(int position) {
         Bundle bundle = new Bundle();
         bundle.putInt(INDEX, position);
-        OrderFragment orderFragment = new OrderFragment();
+        OrderProjectFragment orderFragment = new OrderProjectFragment();
         orderFragment.setArguments(bundle);
         return orderFragment;
     }
@@ -197,4 +199,8 @@ public class OrderFragment extends BaseListFragment {
         tipDialog.show();
     }
 
+    @Override
+    public void createObserver() {
+
+    }
 }

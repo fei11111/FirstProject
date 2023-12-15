@@ -14,6 +14,7 @@ ext {
     deps.amapSearch = 'com.amap.api:search:7.3.0'
     //network
     deps.okhttp3 = "com.squareup.okhttp3:okhttp:3.10.0"
+    deps.interception = 'com.squareup.okhttp3:logging-interceptor:3.8.1'
     deps.retrofit = "com.squareup.retrofit2:retrofit:2.4.0"
     deps.converterGson = "com.squareup.retrofit2:converter-gson:2.4.0"
     deps.adapterRxjava = "com.squareup.retrofit2:adapter-rxjava3:2.9.0"

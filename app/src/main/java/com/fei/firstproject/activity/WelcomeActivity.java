@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
-import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 
@@ -16,24 +15,19 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.common.viewmodel.EmptyViewModel;
 import com.fei.firstproject.R;
+import com.fei.firstproject.databinding.ActivityWelcomeBinding;
 import com.fei.firstproject.utils.Utils;
-import com.fei.firstproject.widget.ReciprocalView;
 
-import butterknife.BindView;
 
 /**
  * Created by Administrator on 2017/12/25.
  */
 
-public class WelcomeActivity extends BaseActivity {
+public class WelcomeActivity extends BaseProjectActivity<EmptyViewModel, ActivityWelcomeBinding> {
 
     private static final int REQUEST_PERMISSION_CODE_STORAGE = 100;
-
-    @BindView(R.id.giv_splash)
-    ImageView givSplash;
-    @BindView(R.id.spView)
-    ReciprocalView spView;
 
     private static final int messageWhat = 1;
 
@@ -43,13 +37,13 @@ public class WelcomeActivity extends BaseActivity {
             int time = msg.arg1;
             time--;
             if (time == 0) {
-                spView.setContent(time + "s");
-                Glide.with(givSplash).onStop();
+                mChildBinding.spView.setContent(time + "s");
+                Glide.with(mChildBinding.givSplash).onStop();
                 startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
-                Glide.with(givSplash).onDestroy();
+                Glide.with(mChildBinding.givSplash).onDestroy();
                 WelcomeActivity.this.finish();
             } else {
-                spView.setContent(time + "s");
+                mChildBinding.spView.setContent(time + "s");
                 Message m = Message.obtain();
                 m.what = messageWhat;
                 m.arg1 = time;
@@ -78,34 +72,23 @@ public class WelcomeActivity extends BaseActivity {
     }
 
     @Override
-    public int getContentViewResId() {
-        return R.layout.activity_welcome;
-    }
-
-    @Override
     public void initTitle() {
         appHeadView.setVisibility(View.GONE);
     }
 
-    @Override
-    public void init(Bundle savedInstanceState) {
-        initView();
-        initListener();
-        initPermission();
-    }
 
     private void initPermission() {
         checkPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION_CODE_STORAGE);
     }
 
     private void initListener() {
-        spView.setOnClickListener(new View.OnClickListener() {
+        mChildBinding.spView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mHandler.removeMessages(messageWhat);
-                Glide.with(givSplash).onStop();
+                Glide.with(mChildBinding.givSplash).onStop();
                 startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
-                Glide.with(givSplash).onDestroy();
+                Glide.with(mChildBinding.givSplash).onDestroy();
                 WelcomeActivity.this.finish();
             }
         });
@@ -124,18 +107,30 @@ public class WelcomeActivity extends BaseActivity {
 
                     @Override
                     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        spView.setContent("3s");
+                        mChildBinding.spView.setContent("3s");
                         Message msg = Message.obtain();
                         msg.what = messageWhat;
                         msg.arg1 = 3;
                         mHandler.sendMessageDelayed(msg, 1000);
                         return false;
                     }
-                }).into(givSplash);
+                }).into(mChildBinding.givSplash);
     }
 
     @Override
     public void initRequest() {
 
+    }
+
+    @Override
+    public void createObserver() {
+
+    }
+
+    @Override
+    public void initViewAndData(Bundle savedInstanceState) {
+        initView();
+        initListener();
+        initPermission();
     }
 }

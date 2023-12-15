@@ -9,9 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -22,83 +20,79 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.util.Pair;
+import androidx.viewbinding.ViewBinding;
 
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
+import com.common.base.BaseFragment;
+import com.common.viewmodel.BaseViewModel;
 import com.fei.firstproject.R;
-import com.fei.firstproject.activity.BaseActivity;
+import com.fei.firstproject.activity.BaseProjectActivity;
 import com.fei.firstproject.http.RxSchedulers;
 import com.fei.firstproject.inter.IBase;
 import com.fei.firstproject.utils.LogUtils;
-import com.trello.rxlifecycle2.components.support.RxFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-import io.reactivex.ObservableTransformer;
+import io.reactivex.rxjava3.core.ObservableTransformer;
+
 
 /**
  * Created by Administrator on 2017/7/27.
  */
 
-public abstract class BaseFragment extends RxFragment implements IBase {
+public abstract class BaseProjectFragment<VM extends BaseViewModel, VB extends ViewBinding> extends BaseFragment<VM, VB> implements IBase {
+
 
     @Nullable
-    @BindView(R.id.pb_loading)
     ProgressBar pbLoading;
     @Nullable
-    @BindView(R.id.ll_no_data)
     LinearLayout llNoData;
     @Nullable
-    @BindView(R.id.rl_default)
     RelativeLayout rlDefault;
     @Nullable
-    @BindView(R.id.btn_request_error)
     Button btnRequestError;
     @Nullable
-    @BindView(R.id.ll_request_error)
     LinearLayout llRequestError;
     @Nullable
-    @BindView(R.id.refreshLayout)
     SwipeToLoadLayout refreshLayout;
 
-    private Unbinder unbinder;
-    protected BaseActivity activity;
+    protected BaseProjectActivity activity;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        activity = (BaseActivity) context;
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(getContentViewResId(), container, false);
-        unbinder = ButterKnife.bind(this, view);
-        return view;
+        activity = (BaseProjectActivity) context;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        btnRequestError = mBinding.getRoot().findViewById(R.id.btn_request_error);
+        refreshLayout = mBinding.getRoot().findViewById(R.id.refreshLayout);
+        pbLoading = mBinding.getRoot().findViewById(R.id.pb_loading);
+        llNoData = mBinding.getRoot().findViewById(R.id.ll_no_data);
+        rlDefault = mBinding.getRoot().findViewById(R.id.rl_default);
+        llRequestError = mBinding.getRoot().findViewById(R.id.ll_request_error);
+
         initlistener();
-        init(savedInstanceState);
+
+    }
+
+    @Override
+    public void lazyLoadData() {
         initRequest();
     }
 
     @Override
-    public void initTitle(){
+    public void initTitle() {
 
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
     }
 
     protected <T> ObservableTransformer<T, T> createTransformer(final boolean isShow) {

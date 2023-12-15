@@ -15,9 +15,6 @@ import com.fei.firstproject.inter.OnItemClickListener;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * Created by Fei on 2017/9/12.
  */
@@ -68,18 +65,17 @@ public class UnSolveQuestionAdapter extends RecyclerView.Adapter<UnSolveQuestion
 
     class HotQuestionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @BindView(R.id.tv_name)
         TextView tvName;
-        @BindView(R.id.tv_title)
         TextView tvTitle;
-        @BindView(R.id.tv_answer)
         TextView tvAnswer;
-        @BindView(R.id.tv_date)
         TextView tvDate;
 
         public HotQuestionViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            tvName = itemView.findViewById(R.id.tv_name);
+            tvTitle = itemView.findViewById(R.id.tv_title);
+            tvAnswer = itemView.findViewById(R.id.tv_answer);
+            tvDate = itemView.findViewById(R.id.tv_date);
             itemView.setOnClickListener(this);
         }
 

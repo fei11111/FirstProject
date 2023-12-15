@@ -13,8 +13,6 @@ import com.fei.firstproject.entity.ContactsEntity;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2017/12/18.
@@ -73,14 +71,13 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
 
     class ContactsViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.tv_first_letter)
         TextView tvFirstLetter;
-        @BindView(R.id.tv_name)
         TextView tvName;
 
         public ContactsViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            tvFirstLetter = itemView.findViewById(R.id.tv_first_letter);
+            tvName = itemView.findViewById(R.id.tv_name);
         }
     }
 

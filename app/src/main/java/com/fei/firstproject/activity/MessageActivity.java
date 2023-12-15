@@ -2,6 +2,7 @@ package com.fei.firstproject.activity;
 
 import android.view.View;
 
+import com.common.viewmodel.EmptyViewModel;
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.MyMessageAdapter;
 import com.fei.firstproject.config.AppConfig;
@@ -19,7 +20,7 @@ import java.util.Map;
  * Created by Administrator on 2017/8/21.
  */
 
-public class MessageActivity extends BaseListActivity {
+public class MessageActivity extends BaseListActivity<EmptyViewModel> {
 
     private MyMessageAdapter messageAdapter;
 
@@ -99,5 +100,10 @@ public class MessageActivity extends BaseListActivity {
                 showRequestErrorView();
             }
         });
+    }
+
+    @Override
+    public void createObserver() {
+
     }
 }

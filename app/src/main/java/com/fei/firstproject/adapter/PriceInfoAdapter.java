@@ -14,8 +14,7 @@ import com.fei.firstproject.entity.PriceInfoEntity;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
 
 /**
  * Created by Administrator on 2018/1/15.
@@ -60,20 +59,19 @@ public class PriceInfoAdapter extends RecyclerView.Adapter<PriceInfoAdapter.Pric
 
     class PriceInfoViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.tv_product)
         TextView tvProduct;
-        @BindView(R.id.tv_province)
         TextView tvProvince;
-        @BindView(R.id.tv_price)
         TextView tvPrice;
-        @BindView(R.id.tv_market)
         TextView tvMarket;
-        @BindView(R.id.tv_time)
         TextView tvTime;
 
         public PriceInfoViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            tvProduct = itemView.findViewById(R.id.tv_product);
+            tvProvince = itemView.findViewById(R.id.tv_province);
+            tvPrice = itemView.findViewById(R.id.tv_price);
+            tvMarket = itemView.findViewById(R.id.tv_market);
+            tvTime = itemView.findViewById(R.id.tv_time);
         }
     }
 

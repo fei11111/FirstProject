@@ -15,29 +15,20 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.common.viewmodel.EmptyViewModel;
 import com.fei.firstproject.R;
+import com.fei.firstproject.databinding.ActivityWebBinding;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.AppHeadView;
 
-import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * Created by Fei on 2017/8/17.
  */
 
-public class WebActivity extends BaseActivity {
-
-    @BindView(R.id.progressBar)
-    ProgressBar progressBar;
-    @BindView(R.id.webView)
-    WebView webView;
-    @BindView(R.id.ll_web_error)
-    LinearLayout ll_web_error;
+public class WebActivity extends BaseProjectActivity<EmptyViewModel, ActivityWebBinding> {
 
     private boolean isNeedClearHistory = false;
 
@@ -57,11 +48,6 @@ public class WebActivity extends BaseActivity {
     }
 
     @Override
-    public int getContentViewResId() {
-        return R.layout.activity_web;
-    }
-
-    @Override
     public void initTitle() {
         appHeadView.setFlHeadLeftPadding(getResources().getDimensionPixelSize(R.dimen.size_10));
         appHeadView.setLeftStyle(AppHeadView.IMAGE);
@@ -75,13 +61,6 @@ public class WebActivity extends BaseActivity {
     }
 
     @Override
-    public void init(Bundle savedInstanceState) {
-        initWebView();
-        initListener();
-        initUrl();
-    }
-
-    @Override
     public void initRequest() {
 
     }
@@ -89,12 +68,12 @@ public class WebActivity extends BaseActivity {
     private void initUrl() {
         String url = getIntent().getStringExtra("url");
         if (TextUtils.isEmpty(url)) finish();
-        webView.loadUrl(url);
+        mChildBinding.webView.loadUrl(url);
     }
 
     private void initListener() {
-        webView.setWebChromeClient(chromeClient);
-        webView.setWebViewClient(viewClient);
+        mChildBinding.webView.setWebChromeClient(chromeClient);
+        mChildBinding.webView.setWebViewClient(viewClient);
         appHeadView.setOnLeftRightClickListener(onAppHeadViewListener);
     }
 
@@ -119,8 +98,8 @@ public class WebActivity extends BaseActivity {
 
     private void enterWebSite(String url) {
         Utils.hideKeyBoard(this);
-        ll_web_error.setVisibility(View.GONE);
-        webView.setVisibility(View.VISIBLE);
+        mChildBinding.llWebError.setVisibility(View.GONE);
+        mChildBinding.webView.setVisibility(View.VISIBLE);
         if (url.contains("www")) {
             if (!url.contains("http")) {
                 url = "http://" + url;
@@ -131,12 +110,12 @@ public class WebActivity extends BaseActivity {
             }
         }
         isNeedClearHistory = true;
-        webView.loadUrl(url);
+        mChildBinding.webView.loadUrl(url);
     }
 
     @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
-        WebSettings settings = webView.getSettings();
+        WebSettings settings = mChildBinding.webView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         settings.setJavaScriptCanOpenWindowsAutomatically(true);
@@ -154,12 +133,12 @@ public class WebActivity extends BaseActivity {
 
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
-            if (progressBar != null) {
-                progressBar.setProgress(newProgress);
+            if (mChildBinding.progressBar != null) {
+                mChildBinding.progressBar.setProgress(newProgress);
                 if (newProgress == 100) {
-                    progressBar.setVisibility(View.GONE);
+                    mChildBinding.progressBar.setVisibility(View.GONE);
                 } else {
-                    progressBar.setVisibility(View.VISIBLE);
+                    mChildBinding.progressBar.setVisibility(View.VISIBLE);
 
                 }
             }
@@ -170,9 +149,9 @@ public class WebActivity extends BaseActivity {
     private WebViewClient viewClient = new WebViewClient() {
 
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            ll_web_error.setVisibility(View.GONE);
-            webView.setVisibility(View.VISIBLE);
-            progressBar.setVisibility(View.VISIBLE);
+            mChildBinding.llWebError.setVisibility(View.GONE);
+            mChildBinding.webView.setVisibility(View.VISIBLE);
+            mChildBinding.progressBar.setVisibility(View.VISIBLE);
             appHeadView.setEtSearchText(url);
             super.onPageStarted(view, url, favicon);
         }
@@ -219,21 +198,34 @@ public class WebActivity extends BaseActivity {
     };
 
     private void showErrView() {
-        ll_web_error.setVisibility(View.VISIBLE);
-        webView.setVisibility(View.GONE);
+        mChildBinding.llWebError.setVisibility(View.VISIBLE);
+        mChildBinding.webView.setVisibility(View.GONE);
     }
 
-    @OnClick(R.id.btn_web_error)
-    void clickWebError(View view) {
-        webView.reload();
+    void clickWebError() {
+        mChildBinding.btnWebError.setOnClickListener(v -> {
+            mChildBinding.webView.reload();
+        });
     }
 
     @Override
     public void onBackPressed() {
-        if (webView.canGoBack()) {
-            webView.goBack();
+        if (mChildBinding.webView.canGoBack()) {
+            mChildBinding.webView.goBack();
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void createObserver() {
+
+    }
+
+    @Override
+    public void initViewAndData(Bundle savedInstanceState) {
+        initWebView();
+        initListener();
+        initUrl();
     }
 }

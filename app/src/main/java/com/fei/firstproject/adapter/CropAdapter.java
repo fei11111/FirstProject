@@ -21,9 +21,6 @@ import com.fei.firstproject.utils.GlideUtils;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 
 /**
  * Created by Administrator on 2017/9/14.
@@ -89,24 +86,23 @@ public class CropAdapter extends RecyclerView.Adapter<CropAdapter.CropViewHolder
 
     class CropViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.iv)
         ImageView iv;
-        @BindView(R.id.tv_crop_name)
         TextView tvCropName;
-        @BindView(R.id.tv_land)
         TextView tvLand;
-        @BindView(R.id.tv_date)
         TextView tvDate;
-        @BindView(R.id.ll_crop)
         LinearLayout llCrop;
-        @BindView(R.id.rl_add)
         RelativeLayout rlAdd;
-        @BindView(R.id.fl_fwt)
         FrameLayout flFwt;
 
         public CropViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            iv = itemView.findViewById(R.id.iv);
+            tvCropName = itemView.findViewById(R.id.tv_crop_name);
+            tvLand = itemView.findViewById(R.id.tv_land);
+            tvDate = itemView.findViewById(R.id.tv_date);
+            llCrop = itemView.findViewById(R.id.ll_crop);
+            rlAdd = itemView.findViewById(R.id.rl_add);
+            flFwt = itemView.findViewById(R.id.fl_fwt);
         }
     }
 

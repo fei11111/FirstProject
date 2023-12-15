@@ -3,6 +3,7 @@ package com.fei.firstproject.activity;
 import android.content.Intent;
 import android.view.View;
 
+import com.common.viewmodel.EmptyViewModel;
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.SingleCheckAdapter;
 import com.fei.firstproject.http.HttpMgr;
@@ -18,7 +19,7 @@ import java.util.Map;
  * Created by Administrator on 2018/1/15.
  */
 
-public class PriceParamsActivity extends BaseListActivity {
+public class PriceParamsActivity extends BaseListActivity<EmptyViewModel> {
 
     private SingleCheckAdapter singleCheckAdapter;
     private String type;
@@ -111,5 +112,10 @@ public class PriceParamsActivity extends BaseListActivity {
                 showRequestErrorView();
             }
         });
+    }
+
+    @Override
+    public void createObserver() {
+
     }
 }

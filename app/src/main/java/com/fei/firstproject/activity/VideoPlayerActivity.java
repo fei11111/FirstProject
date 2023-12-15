@@ -1,5 +1,7 @@
 package com.fei.firstproject.activity;
 
+import static com.fei.firstproject.utils.Utils.formatToDoubleDigit;
+
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -12,17 +14,15 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.TextView;
 
+import com.common.viewmodel.EmptyViewModel;
 import com.fei.firstproject.R;
+import com.fei.firstproject.databinding.ActivityVideoBinding;
 import com.fei.firstproject.dialog.TipDialog;
 import com.fei.firstproject.entity.DownLoadEntity;
 import com.fei.firstproject.service.DownLoadService;
@@ -34,53 +34,16 @@ import com.fei.firstproject.utils.Utils;
 import java.io.File;
 import java.io.IOException;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-import butterknife.OnTouch;
-
-import static com.fei.firstproject.utils.Utils.formatToDoubleDigit;
-
 /**
  * Created by Administrator on 2018/1/2.
  * http://blog.csdn.net/huaxun66/article/details/53333747
  */
 
-public class VideoPlayerActivity extends BaseActivity {
+public class VideoPlayerActivity extends BaseProjectActivity<EmptyViewModel, ActivityVideoBinding> {
 
     private static final int REFRESH_WHAT = 1;
     private static final int HIDE_BOTTOM_PROGRESS = 2;
     private static final int HIDE_CENTER_PROGRESS = 3;
-
-    @BindView(R.id.iv_play)
-    ImageView ivPlay;
-    @BindView(R.id.tv_current_time)
-    TextView tvCurrentTime;
-    @BindView(R.id.iv_full_screen)
-    ImageView ivFullScreen;
-    @BindView(R.id.sb_time)
-    SeekBar sbTime;
-    @BindView(R.id.surfaceView)
-    SurfaceView surfaceView;
-    @BindView(R.id.rl_controller)
-    RelativeLayout rlController;
-    @BindView(R.id.sb_progress)
-    SeekBar sbProgress;
-    @BindView(R.id.ll_left_controller)
-    LinearLayout llLeftController;
-    @BindView(R.id.tv_progress_time)
-    TextView tvProgressTime;
-    @BindView(R.id.ll_progress)
-    LinearLayout llProgress;
-    @BindView(R.id.tv_sound)
-    TextView tvSound;
-    @BindView(R.id.ll_sound)
-    LinearLayout llSound;
-    @BindView(R.id.rl_content)
-    RelativeLayout rlContent;
-    @BindView(R.id.iv_download)
-    ImageView ivDownload;
-    @BindView(R.id.ll_right_controller)
-    LinearLayout llRightController;
 
     private MediaPlayer mediaPlayer;
     private int currentPosition = -1;
@@ -105,21 +68,21 @@ public class VideoPlayerActivity extends BaseActivity {
             if (msg.what == REFRESH_WHAT) {
                 if (mediaPlayer != null) {
                     currentPosition = mediaPlayer.getCurrentPosition();
-                    sbTime.setProgress(currentPosition);
+                    mChildBinding.sbTime.setProgress(currentPosition);
                     int time = currentPosition / 1000;
                     int minute = time / 60;
                     int second = time % 60;
-                    tvCurrentTime.setText(formatToDoubleDigit(minute) + ":" + formatToDoubleDigit(second) + "/" + totalTime);
+                    mChildBinding.tvCurrentTime.setText(formatToDoubleDigit(minute) + ":" + formatToDoubleDigit(second) + "/" + totalTime);
                     mHandler.sendEmptyMessageDelayed(REFRESH_WHAT, 1000);
                 }
             } else if (msg.what == HIDE_BOTTOM_PROGRESS) {
                 //底下进度条,3秒过后没有隐藏就开启动画隐藏
-                rlController.startAnimation(outAnimation);
+                mChildBinding.rlController.startAnimation(outAnimation);
                 isHide = !isHide;
             } else if (msg.what == HIDE_CENTER_PROGRESS) {
                 //中间进度条
-                llProgress.setVisibility(View.GONE);
-                llSound.setVisibility(View.GONE);
+                mChildBinding.llProgress.setVisibility(View.GONE);
+                mChildBinding.llSound.setVisibility(View.GONE);
             }
         }
     };
@@ -134,7 +97,7 @@ public class VideoPlayerActivity extends BaseActivity {
             } else {
                 mediaPlayer.seekTo(currentPosition);
                 mediaPlayer.start();
-                ivPlay.setImageResource(R.drawable.ic_pause);
+                mChildBinding.ivPlay.setImageResource(R.drawable.ic_pause);
                 mHandler.sendEmptyMessageDelayed(REFRESH_WHAT, 1000);
             }
         }
@@ -147,7 +110,7 @@ public class VideoPlayerActivity extends BaseActivity {
         if (mediaPlayer != null) {
             currentPosition = mediaPlayer.getCurrentPosition();
             mediaPlayer.pause();
-            ivPlay.setImageResource(R.drawable.ic_play);
+            mChildBinding.ivPlay.setImageResource(R.drawable.ic_play);
             mHandler.removeMessages(REFRESH_WHAT);
         }
         super.onPause();
@@ -159,8 +122,8 @@ public class VideoPlayerActivity extends BaseActivity {
         isMove = false;
         isHide = true;
         isPrepared = false;
-        llSound.setVisibility(View.GONE);
-        llProgress.setVisibility(View.GONE);
+        mChildBinding.llSound.setVisibility(View.GONE);
+        mChildBinding.llProgress.setVisibility(View.GONE);
         stop();
     }
 
@@ -189,26 +152,10 @@ public class VideoPlayerActivity extends BaseActivity {
     }
 
     @Override
-    public int getContentViewResId() {
-        return R.layout.activity_video;
-    }
-
-    @Override
     public void initTitle() {
         appHeadView.setVisibility(View.GONE);
     }
 
-    @Override
-    public void init(Bundle savedInstanceState) {
-        String url = getIntent().getStringExtra("url");
-        if (!TextUtils.isEmpty(url)) {
-            initDownloadEntity(url);
-            initAnimation();
-            initMediaPlayer();
-            initListener();
-            initSurface();
-        }
-    }
 
     @Override
     public void initRequest() {
@@ -233,12 +180,12 @@ public class VideoPlayerActivity extends BaseActivity {
     }
 
     private void initSurface() {
-        SurfaceHolder holder = surfaceView.getHolder();
+        SurfaceHolder holder = mChildBinding.surfaceView.getHolder();
         holder.addCallback(new MyCallBack());
     }
 
     private void initListener() {
-        sbTime.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        mChildBinding.sbTime.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
@@ -274,18 +221,18 @@ public class VideoPlayerActivity extends BaseActivity {
                     mediaPlayer.seekTo(currentPosition);
                 }
                 mediaPlayer.start();
-                ivPlay.setImageResource(R.drawable.ic_pause);
+                mChildBinding.ivPlay.setImageResource(R.drawable.ic_pause);
                 //进度条
                 int duration = mediaPlayer.getDuration();
-                sbTime.setMax(duration);
-                sbProgress.setMax(duration);
+                mChildBinding.sbTime.setMax(duration);
+                mChildBinding.sbProgress.setMax(duration);
                 //总时长
                 int time = mediaPlayer.getDuration() / 1000;
                 int minute = time / 60;
                 int second = time % 60;
                 totalTime = Utils.formatToDoubleDigit(minute) + ":" + Utils.formatToDoubleDigit(second);
                 //当前时间
-                tvCurrentTime.setText("00:00/" + totalTime);
+                mChildBinding.tvCurrentTime.setText("00:00/" + totalTime);
                 mHandler.sendEmptyMessageDelayed(REFRESH_WHAT, 1000);
                 mHandler.sendEmptyMessageDelayed(HIDE_BOTTOM_PROGRESS, 1000);
             }
@@ -308,7 +255,7 @@ public class VideoPlayerActivity extends BaseActivity {
                 lp.addRule(RelativeLayout.CENTER_IN_PARENT);
                 lp.width = screenWidth;
                 lp.height = screenWidth * height / width;
-                surfaceView.setLayoutParams(lp);
+                mChildBinding.surfaceView.setLayoutParams(lp);
             }
         });
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -345,7 +292,7 @@ public class VideoPlayerActivity extends BaseActivity {
      */
     private void complete() {
         isPrepared = false;
-        ivPlay.setImageResource(R.drawable.ic_play);
+        mChildBinding.ivPlay.setImageResource(R.drawable.ic_play);
         mediaPlayer.stop();
         currentPosition = 0;
         getVideoFromLocal(false);
@@ -365,7 +312,7 @@ public class VideoPlayerActivity extends BaseActivity {
             @Override
             public void onAnimationEnd(Animation animation) {
                 isHide = false;
-                rlController.setVisibility(View.VISIBLE);
+                mChildBinding.rlController.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -383,7 +330,7 @@ public class VideoPlayerActivity extends BaseActivity {
             @Override
             public void onAnimationEnd(Animation animation) {
                 isHide = true;
-                rlController.setVisibility(View.GONE);
+                mChildBinding.rlController.setVisibility(View.GONE);
             }
 
             @Override
@@ -391,6 +338,25 @@ public class VideoPlayerActivity extends BaseActivity {
 
             }
         });
+    }
+
+    @Override
+    public void createObserver() {
+        clickDownLoad();
+        clickPlay();
+        onTouchSurface();
+    }
+
+    @Override
+    public void initViewAndData(Bundle savedInstanceState) {
+        String url = getIntent().getStringExtra("url");
+        if (!TextUtils.isEmpty(url)) {
+            initDownloadEntity(url);
+            initAnimation();
+            initMediaPlayer();
+            initListener();
+            initSurface();
+        }
     }
 
     private class MyCallBack implements SurfaceHolder.Callback {
@@ -431,7 +397,7 @@ public class VideoPlayerActivity extends BaseActivity {
     private void play(boolean isPlay, String path) {
         if (mediaPlayer != null) {
             mediaPlayer.reset();
-            mediaPlayer.setDisplay(surfaceView.getHolder());
+            mediaPlayer.setDisplay(mChildBinding.surfaceView.getHolder());
 
             try {
                 mediaPlayer.setDataSource(path);
@@ -455,12 +421,12 @@ public class VideoPlayerActivity extends BaseActivity {
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.pause();
                 currentPosition = mediaPlayer.getCurrentPosition();
-                ivPlay.setImageResource(R.drawable.ic_play);
+                mChildBinding.ivPlay.setImageResource(R.drawable.ic_play);
                 mHandler.removeMessages(REFRESH_WHAT);
             } else {
                 mediaPlayer.seekTo(currentPosition);
                 mediaPlayer.start();
-                ivPlay.setImageResource(R.drawable.ic_pause);
+                mChildBinding.ivPlay.setImageResource(R.drawable.ic_pause);
                 mHandler.sendEmptyMessageDelayed(REFRESH_WHAT, 1000);
             }
         }
@@ -477,139 +443,145 @@ public class VideoPlayerActivity extends BaseActivity {
     /**
      * 暂停/开始
      */
-    @OnClick(R.id.iv_play)
-    void clickPlay(View view) {
-        if (isPrepared) {
-            pause();
-        } else {
-            if (mediaPlayer != null) {
-                if (mediaPlayer.getDuration() > 0) {
-                    //设置了资源才进入准备状态
-                    proShow();
-                    mediaPlayer.prepareAsync();
+    void clickPlay() {
+        mChildBinding.ivPlay.setOnClickListener(v -> {
+            if (isPrepared) {
+                pause();
+            } else {
+                if (mediaPlayer != null) {
+                    if (mediaPlayer.getDuration() > 0) {
+                        //设置了资源才进入准备状态
+                        proShow();
+                        mediaPlayer.prepareAsync();
+                    }
                 }
             }
-        }
+        });
+
     }
 
     /**
      * 切换横竖屏
      */
-    @OnClick(R.id.iv_full_screen)
-    void clickFullScreen(View view) {
-        if (!isPrepared) return;
-        ScreenRotateUtil.getInstance(this).toggleRotate();
+    void clickFullScreen() {
+        mChildBinding.ivFullScreen.setOnClickListener(v -> {
+            if (!isPrepared) return;
+            ScreenRotateUtil.getInstance(this).toggleRotate();
+        });
+
     }
 
     /**
      * 下载
      */
-    @OnClick(R.id.iv_download)
-    void clickDownLoad(View view) {
-        if (!isPrepared) return;
-        if (downLoadEntity != null) {
-            if (new File(downLoadEntity.getSavePath()).exists()) {
-                //文件存在
-                if (tipDialog == null) {
-                    tipDialog = new TipDialog(this);
-                    tipDialog.setCanceledOnTouchOutside(false);
-                    tipDialog.setContentText(getResources().getString(R.string.file_exit_if_download));
-                    tipDialog.setConfirmButtonText(getResources().getString(R.string.go_to_download));
-                    tipDialog.setOnConfirmListener(new TipDialog.OnConfirmListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent intent = new Intent(VideoPlayerActivity.this, DownLoadService.class);
-                            intent.putExtra("downloadEntity", downLoadEntity);
-                            startService(intent);
-                        }
-                    });
+    void clickDownLoad() {
+        mChildBinding.ivDownload.setOnClickListener(v -> {
+            if (!isPrepared) return;
+            if (downLoadEntity != null) {
+                if (new File(downLoadEntity.getSavePath()).exists()) {
+                    //文件存在
+                    if (tipDialog == null) {
+                        tipDialog = new TipDialog(this);
+                        tipDialog.setCanceledOnTouchOutside(false);
+                        tipDialog.setContentText(getResources().getString(R.string.file_exit_if_download));
+                        tipDialog.setConfirmButtonText(getResources().getString(R.string.go_to_download));
+                        tipDialog.setOnConfirmListener(new TipDialog.OnConfirmListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(VideoPlayerActivity.this, DownLoadService.class);
+                                intent.putExtra("downloadEntity", downLoadEntity);
+                                startService(intent);
+                            }
+                        });
+                    }
+                    tipDialog.show();
+                } else {
+                    Intent intent = new Intent(this, DownLoadService.class);
+                    intent.putExtra("downloadEntity", downLoadEntity);
+                    startService(intent);
                 }
-                tipDialog.show();
-            } else {
-                Intent intent = new Intent(this, DownLoadService.class);
-                intent.putExtra("downloadEntity", downLoadEntity);
-                startService(intent);
             }
-        }
-        mHandler.removeMessages(HIDE_BOTTOM_PROGRESS);
-        rlController.clearAnimation();
-        mHandler.sendEmptyMessage(HIDE_BOTTOM_PROGRESS);
+            mHandler.removeMessages(HIDE_BOTTOM_PROGRESS);
+            mChildBinding.rlController.clearAnimation();
+            mHandler.sendEmptyMessage(HIDE_BOTTOM_PROGRESS);
+        });
     }
 
     /**
      * 触屏
      */
-    @OnTouch(R.id.rl_content)
-    boolean onTouchSurface(View view, MotionEvent motionEvent) {
-        if (!isPrepared || mediaPlayer == null) {
-            return false;
-        } else {
-            switch (motionEvent.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    isMove = false;
-                    downX = motionEvent.getX();
-                    downY = motionEvent.getY();
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    float moveX = motionEvent.getX();
-                    float moveY = motionEvent.getY();
-                    int distanceX = (int) (moveX - downX);
-                    int distanceY = (int) (moveY - downY);
-                    if (Math.abs(distanceX) < 50 && Math.abs(distanceY) > 100) {
-                        mHandler.removeMessages(HIDE_CENTER_PROGRESS);
-                        llProgress.setVisibility(View.GONE);
-                        isMove = true;
-                        //音量
-                        if (distanceY < 0) {
-                            //增大
-                            setVolume(true);
+    void onTouchSurface() {
+        mChildBinding.rlContent.setOnTouchListener((v, motionEvent) -> {
+            if (!isPrepared || mediaPlayer == null) {
+                return false;
+            } else {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        isMove = false;
+                        downX = motionEvent.getX();
+                        downY = motionEvent.getY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        float moveX = motionEvent.getX();
+                        float moveY = motionEvent.getY();
+                        int distanceX = (int) (moveX - downX);
+                        int distanceY = (int) (moveY - downY);
+                        if (Math.abs(distanceX) < 50 && Math.abs(distanceY) > 100) {
+                            mHandler.removeMessages(HIDE_CENTER_PROGRESS);
+                            mChildBinding.llProgress.setVisibility(View.GONE);
+                            isMove = true;
+                            //音量
+                            if (distanceY < 0) {
+                                //增大
+                                setVolume(true);
+                            } else {
+                                //降低
+                                setVolume(false);
+                            }
+                            downX = moveX;
+                            downY = moveY;
+                        } else if (Math.abs(distanceY) < 50 && Math.abs(distanceX) > 100) {
+                            mHandler.removeMessages(HIDE_CENTER_PROGRESS);
+                            mChildBinding.llSound.setVisibility(View.GONE);
+                            isMove = true;
+                            //快进/后退
+                            currentPosition = currentPosition + distanceX * 50;
+                            if (currentPosition < 0) {
+                                currentPosition = 0;
+                            } else if (currentPosition > mediaPlayer.getDuration()) {
+                                currentPosition = mediaPlayer.getDuration();
+                            }
+                            mChildBinding.llProgress.setVisibility(View.VISIBLE);
+                            mChildBinding.sbProgress.setProgress(currentPosition);
+                            int time = currentPosition / 1000;
+                            int minute = time / 60;
+                            int second = time % 60;
+                            mChildBinding.tvProgressTime.setText(formatToDoubleDigit(minute) + ":" + formatToDoubleDigit(second));
+                            refreshView();
+                            downX = moveX;
+                            downY = moveY;
+                        }
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        if (!isMove) {
+                            //未移动
+                            mHandler.removeMessages(HIDE_BOTTOM_PROGRESS);
+                            mChildBinding.rlController.clearAnimation();
+                            if (isHide) {
+                                mChildBinding.rlController.startAnimation(inAnimation);
+                                //出现后3秒后隐藏
+                                mHandler.sendEmptyMessageDelayed(HIDE_BOTTOM_PROGRESS, 3000);
+                            } else {
+                                mChildBinding.rlController.startAnimation(outAnimation);
+                            }
                         } else {
-                            //降低
-                            setVolume(false);
+                            mHandler.sendEmptyMessageDelayed(HIDE_CENTER_PROGRESS, 1000);
                         }
-                        downX = moveX;
-                        downY = moveY;
-                    } else if (Math.abs(distanceY) < 50 && Math.abs(distanceX) > 100) {
-                        mHandler.removeMessages(HIDE_CENTER_PROGRESS);
-                        llSound.setVisibility(View.GONE);
-                        isMove = true;
-                        //快进/后退
-                        currentPosition = currentPosition + distanceX * 50;
-                        if (currentPosition < 0) {
-                            currentPosition = 0;
-                        } else if (currentPosition > mediaPlayer.getDuration()) {
-                            currentPosition = mediaPlayer.getDuration();
-                        }
-                        llProgress.setVisibility(View.VISIBLE);
-                        sbProgress.setProgress(currentPosition);
-                        int time = currentPosition / 1000;
-                        int minute = time / 60;
-                        int second = time % 60;
-                        tvProgressTime.setText(formatToDoubleDigit(minute) + ":" + formatToDoubleDigit(second));
-                        refreshView();
-                        downX = moveX;
-                        downY = moveY;
-                    }
-                    break;
-                case MotionEvent.ACTION_UP:
-                    if (!isMove) {
-                        //未移动
-                        mHandler.removeMessages(HIDE_BOTTOM_PROGRESS);
-                        rlController.clearAnimation();
-                        if (isHide) {
-                            rlController.startAnimation(inAnimation);
-                            //出现后3秒后隐藏
-                            mHandler.sendEmptyMessageDelayed(HIDE_BOTTOM_PROGRESS, 3000);
-                        } else {
-                            rlController.startAnimation(outAnimation);
-                        }
-                    } else {
-                        mHandler.sendEmptyMessageDelayed(HIDE_CENTER_PROGRESS, 1000);
-                    }
-                    break;
+                        break;
+                }
+                return true;
             }
-            return true;
-        }
+        });
     }
 
     /**
@@ -640,9 +612,9 @@ public class VideoPlayerActivity extends BaseActivity {
             //增加音量
             audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND);
         }
-        llSound.setVisibility(View.VISIBLE);
+        mChildBinding.llSound.setVisibility(View.VISIBLE);
         int sound = (int) (curretnV * 1f / streamMaxVolume * 100);
-        tvSound.setText(sound + "%");
+        mChildBinding.tvSound.setText(sound + "%");
         mHandler.sendEmptyMessageDelayed(HIDE_CENTER_PROGRESS, 1000);
         /**
          * 1.AudioManager.STREAM_MUSIC 多媒体 2.AudioManager.STREAM_ALARM 闹钟
@@ -656,13 +628,13 @@ public class VideoPlayerActivity extends BaseActivity {
 
 
     private void refreshView() {
-        sbTime.setProgress(currentPosition);
+        mChildBinding.sbTime.setProgress(currentPosition);
         if (mediaPlayer != null) {
             mediaPlayer.seekTo(currentPosition);
             int time = currentPosition / 1000;
             int minute = time / 60;
             int second = time % 60;
-            tvCurrentTime.setText(formatToDoubleDigit(minute) + ":" + formatToDoubleDigit(second) + "/" + totalTime);
+            mChildBinding.tvCurrentTime.setText(formatToDoubleDigit(minute) + ":" + formatToDoubleDigit(second) + "/" + totalTime);
         }
     }
 
@@ -675,8 +647,8 @@ public class VideoPlayerActivity extends BaseActivity {
             mHandler.removeMessages(HIDE_BOTTOM_PROGRESS);
             mHandler.removeMessages(REFRESH_WHAT);
             mHandler.removeMessages(HIDE_CENTER_PROGRESS);
-            llSound.setVisibility(View.GONE);
-            llProgress.setVisibility(View.GONE);
+            mChildBinding.llSound.setVisibility(View.GONE);
+            mChildBinding.llProgress.setVisibility(View.GONE);
             DisplayMetrics dm = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(dm);
             int screenWidth = dm.widthPixels;
@@ -684,18 +656,18 @@ public class VideoPlayerActivity extends BaseActivity {
 
             if (newConfig.orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
                 //竖屏
-                ivFullScreen.setImageResource(R.drawable.ic_open_full_sreen);
-                RelativeLayout.LayoutParams surfaceParams = (RelativeLayout.LayoutParams) surfaceView.getLayoutParams();
+                mChildBinding.ivFullScreen.setImageResource(R.drawable.ic_open_full_sreen);
+                RelativeLayout.LayoutParams surfaceParams = (RelativeLayout.LayoutParams) mChildBinding.surfaceView.getLayoutParams();
                 surfaceParams.width = screenWidth;
                 surfaceParams.height = screenWidth * videoHeight / videoWidth;
-                surfaceView.setLayoutParams(surfaceParams);
+                mChildBinding.surfaceView.setLayoutParams(surfaceParams);
             } else {
                 //横屏
-                ivFullScreen.setImageResource(R.drawable.ic_close_full_screen);
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) surfaceView.getLayoutParams();
+                mChildBinding.ivFullScreen.setImageResource(R.drawable.ic_close_full_screen);
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mChildBinding.surfaceView.getLayoutParams();
                 layoutParams.width = screenWidth;
                 layoutParams.height = screenHeight - Utils.getStatusBarHeight(this);
-                surfaceView.setLayoutParams(layoutParams);
+                mChildBinding.surfaceView.setLayoutParams(layoutParams);
             }
             //屏幕转化后需要重新启动handler
             mHandler.sendEmptyMessageDelayed(REFRESH_WHAT, 1000);

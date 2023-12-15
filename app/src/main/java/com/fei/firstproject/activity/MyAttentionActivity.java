@@ -2,6 +2,7 @@ package com.fei.firstproject.activity;
 
 import android.view.View;
 
+import com.common.viewmodel.EmptyViewModel;
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.MyAttentionAdapter;
 import com.fei.firstproject.config.AppConfig;
@@ -20,7 +21,7 @@ import java.util.Map;
  * Created by Administrator on 2017/8/29.
  */
 
-public class MyAttentionActivity extends BaseListActivity {
+public class MyAttentionActivity extends BaseListActivity<EmptyViewModel> {
 
     private MyAttentionAdapter myAttentionAdapter;
 
@@ -130,5 +131,10 @@ public class MyAttentionActivity extends BaseListActivity {
                 proDisimis();
             }
         });
+    }
+
+    @Override
+    public void createObserver() {
+
     }
 }

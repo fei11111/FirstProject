@@ -13,8 +13,6 @@ import com.fei.firstproject.R;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2018/1/15.
@@ -64,12 +62,11 @@ public class SingleCheckAdapter extends RecyclerView.Adapter<SingleCheckAdapter.
 
     class SingleViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.ctv)
         CheckedTextView ctv;
 
         public SingleViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            ctv = (CheckedTextView) itemView.findViewById(R.id.ctv);
         }
     }
 

@@ -9,33 +9,27 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.common.viewmodel.BaseViewModel;
 import com.fei.firstproject.R;
+import com.fei.firstproject.databinding.ActivityBaseListBinding;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.AppHeadView;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
-
-import butterknife.BindView;
 
 /**
  * Created by Fei on 2017/8/23.
  * 有头部,内容是RecyclerView
  */
 
-public abstract class BaseListActivity extends BaseActivity {
+public abstract class BaseListActivity<VM extends BaseViewModel> extends BaseProjectActivity<VM, ActivityBaseListBinding> {
 
-    @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @Nullable
-    @BindView(R.id.btn_base_list)
-    Button btn_base_list;
+    Button btnBaseList;
 
     protected int currentPage = 1;
 
-    @Override
-    public int getContentViewResId() {
-        return R.layout.activity_base_list;
-    }
 
     @Override
     public void initTitle() {
@@ -46,7 +40,9 @@ public abstract class BaseListActivity extends BaseActivity {
     }
 
     @Override
-    public void init(Bundle savedInstanceState) {
+    public void initViewAndData(Bundle savedInstanceState) {
+        recyclerView = mChildBinding.recyclerView;
+        btnBaseList = mChildBinding.btnBaseList;
         initListener();
         initView();
         initRecyclerView();

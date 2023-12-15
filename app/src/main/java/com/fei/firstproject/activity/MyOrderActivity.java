@@ -6,21 +6,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.common.viewmodel.EmptyViewModel;
 import com.fei.firstproject.R;
-import com.fei.firstproject.fragment.OrderFragment;
+import com.fei.firstproject.databinding.ActivityMyOrderBinding;
+import com.fei.firstproject.fragment.OrderProjectFragment;
 import com.fei.firstproject.utils.LogUtils;
 import com.google.android.material.tabs.TabLayout;
-
-import butterknife.BindView;
 
 /**
  * Created by Administrator on 2017/8/25.
  */
 
-public class MyOrderActivity extends BaseActivity {
-
-    @BindView(R.id.tableLayout)
-    TabLayout tableLayout;
+public class MyOrderActivity extends BaseProjectActivity<EmptyViewModel, ActivityMyOrderBinding> {
 
     //全部
     //待付款
@@ -28,11 +25,11 @@ public class MyOrderActivity extends BaseActivity {
     //待发货
     //待评价
     private int[] titles = {R.string.all, R.string.wait_obligation, R.string.wait_receive, R.string.wait_post, R.string.wait_evaluate};
-    private OrderFragment allFragment;
-    private OrderFragment obligationFragment;
-    private OrderFragment receiveFragment;
-    private OrderFragment postFragment;
-    private OrderFragment evaluateFragment;
+    private OrderProjectFragment allFragment;
+    private OrderProjectFragment obligationFragment;
+    private OrderProjectFragment receiveFragment;
+    private OrderProjectFragment postFragment;
+    private OrderProjectFragment evaluateFragment;
     private FragmentManager mFragmentManager;
     private int selectPostion = 0;
     public static String SELECT_POSITION_EXTRA = "select_postion_extra";
@@ -53,21 +50,10 @@ public class MyOrderActivity extends BaseActivity {
     }
 
     @Override
-    public int getContentViewResId() {
-        return R.layout.activity_my_order;
-    }
-
-    @Override
     public void initTitle() {
         setBackTitle(getString(R.string.my_order));
     }
 
-    @Override
-    public void init(Bundle savedInstanceState) {
-        initSetting();
-        initListener();
-        initTableLayout();
-    }
 
     private void initSetting() {
         mFragmentManager = getSupportFragmentManager();
@@ -77,9 +63,9 @@ public class MyOrderActivity extends BaseActivity {
     private void initTableLayout() {
         for (int i = 0; i < titles.length; i++) {
             if (i == selectPostion) {
-                tableLayout.addTab(tableLayout.newTab().setText(getString(titles[i])), true);
+                mChildBinding.tableLayout.addTab(mChildBinding.tableLayout.newTab().setText(getString(titles[i])), true);
             } else {
-                tableLayout.addTab(tableLayout.newTab().setText(getString(titles[i])), false);
+                mChildBinding.tableLayout.addTab(mChildBinding.tableLayout.newTab().setText(getString(titles[i])), false);
             }
         }
     }
@@ -89,7 +75,7 @@ public class MyOrderActivity extends BaseActivity {
     }
 
     private void initTableLayoutListener() {
-        tableLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        mChildBinding.tableLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 selectFragment(tab.getPosition());
@@ -111,7 +97,7 @@ public class MyOrderActivity extends BaseActivity {
             case 0:
                 LogUtils.i("tag", "进入tab0");
                 if (allFragment == null) {
-                    allFragment = OrderFragment.newInstance(position);
+                    allFragment = OrderProjectFragment.newInstance(position);
                     switchFragment(allFragment, true);
                 } else {
                     switchFragment(allFragment, false);
@@ -120,7 +106,7 @@ public class MyOrderActivity extends BaseActivity {
             case 1:
                 LogUtils.i("tag", "进入tab1");
                 if (obligationFragment == null) {
-                    obligationFragment = OrderFragment.newInstance(position);
+                    obligationFragment = OrderProjectFragment.newInstance(position);
                     switchFragment(obligationFragment, true);
                 } else {
                     switchFragment(obligationFragment, false);
@@ -129,7 +115,7 @@ public class MyOrderActivity extends BaseActivity {
             case 2:
                 LogUtils.i("tag", "进入tab2");
                 if (receiveFragment == null) {
-                    receiveFragment = OrderFragment.newInstance(position);
+                    receiveFragment = OrderProjectFragment.newInstance(position);
                     switchFragment(receiveFragment, true);
                 } else {
                     switchFragment(receiveFragment, false);
@@ -138,7 +124,7 @@ public class MyOrderActivity extends BaseActivity {
             case 3:
                 LogUtils.i("tag", "进入tab3");
                 if (postFragment == null) {
-                    postFragment = OrderFragment.newInstance(position);
+                    postFragment = OrderProjectFragment.newInstance(position);
                     switchFragment(postFragment, true);
                 } else {
                     switchFragment(postFragment, false);
@@ -147,7 +133,7 @@ public class MyOrderActivity extends BaseActivity {
             case 4:
                 LogUtils.i("tag", "进入tab4");
                 if (evaluateFragment == null) {
-                    evaluateFragment = OrderFragment.newInstance(position);
+                    evaluateFragment = OrderProjectFragment.newInstance(position);
                     switchFragment(evaluateFragment, true);
                 } else {
                     switchFragment(evaluateFragment, false);
@@ -197,4 +183,15 @@ public class MyOrderActivity extends BaseActivity {
     public void initRequest() {
     }
 
+    @Override
+    public void createObserver() {
+
+    }
+
+    @Override
+    public void initViewAndData(Bundle savedInstanceState) {
+        initSetting();
+        initListener();
+        initTableLayout();
+    }
 }

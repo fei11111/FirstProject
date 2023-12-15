@@ -4,7 +4,7 @@ package com.fei.firstproject.http;
 import android.content.Context;
 
 import com.fei.firstproject.activity.BaseActivity;
-import com.fei.firstproject.fragment.BaseFragment;
+import com.fei.firstproject.fragment.BaseProjectFragment;
 import com.fei.firstproject.http.inter.CallBack;
 import com.fei.firstproject.inter.IBase;
 
@@ -40,7 +40,7 @@ public class HttpUtils<T> {
 
         ObservableTransformer<T, T> transformer = null;
         BaseActivity activity = null;
-        BaseFragment fragment = null;
+        BaseProjectFragment fragment = null;
         Context context = null;
         Observer<T> observer = null;
 
@@ -48,8 +48,8 @@ public class HttpUtils<T> {
             activity = (BaseActivity) iBase;
             context = activity;
             transformer = createTransformer(activity, isShowErrorView);
-        } else if(iBase instanceof BaseFragment){
-            fragment = (BaseFragment) iBase;
+        } else if(iBase instanceof BaseProjectFragment){
+            fragment = (BaseProjectFragment) iBase;
             context = fragment.getActivity();
             transformer = createTransformer(fragment, isShowErrorView);
         }
@@ -104,7 +104,7 @@ public class HttpUtils<T> {
         });
     }
 
-    private <T> ObservableTransformer<T, T> createTransformer(final BaseFragment fragment, final boolean isShow) {
+    private <T> ObservableTransformer<T, T> createTransformer(final BaseProjectFragment fragment, final boolean isShow) {
         return RxSchedulers.compose(fragment.getActivity(), fragment.<T>bindToLifecycle(), new RxSchedulers.OnConnectError() {
             @Override
             public void onError() {

@@ -3,6 +3,7 @@ package com.fei.firstproject.activity;
 import android.content.Intent;
 import android.view.View;
 
+import com.common.viewmodel.EmptyViewModel;
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.RecommendPlanAdapter;
 import com.fei.firstproject.config.AppConfig;
@@ -21,7 +22,7 @@ import java.util.Map;
  * Created by Fei on 2017/8/23.
  */
 
-public class RecommendPlanActivity extends BaseListActivity {
+public class RecommendPlanActivity extends BaseListActivity<EmptyViewModel> {
 
     private RecommendPlanAdapter recommendPlanAdapter;
 
@@ -112,5 +113,10 @@ public class RecommendPlanActivity extends BaseListActivity {
                 showRequestErrorView();
             }
         });
+    }
+
+    @Override
+    public void createObserver() {
+
     }
 }

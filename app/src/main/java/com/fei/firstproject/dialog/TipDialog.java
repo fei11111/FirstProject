@@ -9,12 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.fei.firstproject.R;
+import com.fei.firstproject.databinding.ViewTipDialogBinding;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2017/8/3.
@@ -22,11 +19,8 @@ import butterknife.OnClick;
 
 public class TipDialog extends Dialog {
 
-    @BindView(R.id.iv_dialog_cancle)
     ImageView ivDialogCancle;
-    @BindView(R.id.tv_dialog_content)
     TextView tvDialogContent;
-    @BindView(R.id.btn_dialog_confirm)
     Button btnDialogConfirm;
 
     private Context mContext;
@@ -55,9 +49,15 @@ public class TipDialog extends Dialog {
     }
 
     private void init() {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.view_tip_dialog, null);
-        setContentView(view);
-        ButterKnife.bind(this, view);
+        ViewTipDialogBinding binding = ViewTipDialogBinding.inflate(LayoutInflater.from(mContext));
+        setContentView(binding.getRoot());
+
+        ivDialogCancle = binding.ivDialogCancle;
+        tvDialogContent = binding.tvDialogContent;
+        btnDialogConfirm = binding.btnDialogConfirm;
+
+        clickCancle(binding.ivDialogCancle);
+        clickConfirm(binding.btnDialogConfirm);
 
         if (!TextUtils.isEmpty(contentText)) {
             tvDialogContent.setText(contentText);
@@ -82,12 +82,10 @@ public class TipDialog extends Dialog {
         }
     }
 
-    @OnClick(R.id.iv_dialog_cancle)
     void clickCancle(View view) {
         this.dismiss();
     }
 
-    @OnClick(R.id.btn_dialog_confirm)
     void clickConfirm(View view) {
         if (onConfirmListener != null) {
             onConfirmListener.onClick(view);

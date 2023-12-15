@@ -12,10 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fei.firstproject.R;
 import com.fei.firstproject.inter.OnItemClickListener;
 import com.fei.firstproject.utils.Utils;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * Created by Administrator on 2017/8/4.
  */
@@ -57,14 +53,13 @@ public class MeFragmentAdapter extends RecyclerView.Adapter<MeFragmentAdapter.My
 
     class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @BindView(R.id.iv_icon)
         ImageView ivIcon;
-        @BindView(R.id.tv_desc)
         TextView tvDesc;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            ivIcon = itemView.findViewById(R.id.iv_icon);
+            tvDesc = itemView.findViewById(R.id.tv_desc);
             itemView.setOnClickListener(this);
         }
 

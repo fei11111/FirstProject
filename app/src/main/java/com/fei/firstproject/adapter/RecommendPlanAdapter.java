@@ -18,8 +18,6 @@ import com.fei.firstproject.utils.GlideUtils;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2017/8/14.
@@ -93,18 +91,17 @@ public class RecommendPlanAdapter extends RecyclerView.Adapter<RecommendPlanAdap
 
     class RecommendViewHoder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @BindView(R.id.iv_recommend_plan)
         ImageView ivRecommendPlan;
-        @BindView(R.id.iv_recommend_plan_arrow)
         ImageView ivRecommendPlanArrow;
-        @BindView(R.id.tv_recommend_plan_title)
         TextView tvRecommendPlanTitle;
-        @BindView(R.id.tv_recommend_plan_desp)
         TextView tvRecommendPlanDesp;
 
         public RecommendViewHoder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            ivRecommendPlan = itemView.findViewById(R.id.iv_recommend_plan);
+            ivRecommendPlanArrow = itemView.findViewById(R.id.iv_recommend_plan_arrow);
+            tvRecommendPlanTitle = itemView.findViewById(R.id.tv_recommend_plan_title);
+            tvRecommendPlanDesp = itemView.findViewById(R.id.tv_recommend_plan_desp);
             itemView.setOnClickListener(this);
         }
 

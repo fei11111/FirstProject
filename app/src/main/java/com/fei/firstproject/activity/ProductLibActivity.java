@@ -6,13 +6,14 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.common.viewmodel.EmptyViewModel;
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.ProductLibAdapter;
 import com.fei.firstproject.adapter.SingleTextAdapter;
+import com.fei.firstproject.databinding.ActivityProductLibBinding;
 import com.fei.firstproject.dialog.BottomListDialog;
 import com.fei.firstproject.entity.ProductAssitEntity;
 import com.fei.firstproject.entity.ProductLibEntity;
@@ -34,36 +35,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.OnClick;
 import okhttp3.ResponseBody;
-
-import static com.fei.firstproject.R.id.tv_craft;
-import static com.fei.firstproject.R.id.tv_series;
-import static com.fei.firstproject.R.id.tv_type;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by Administrator on 2017/9/8.
  */
 
-public class ProductLibActivity extends BaseActivity {
-
-    @BindView(tv_series)
-    TextView tvSeries;
-    @BindView(R.id.rl_series)
-    RelativeLayout rlSeries;
-    @BindView(tv_craft)
-    TextView tvCraft;
-    @BindView(R.id.rl_craft)
-    RelativeLayout rlCraft;
-    @BindView(tv_type)
-    TextView tvType;
-    @BindView(R.id.rl_type)
-    RelativeLayout rlType;
-    @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
+public class ProductLibActivity extends BaseProjectActivity<EmptyViewModel, ActivityProductLibBinding> {
 
     private int currentPage = 1;
     private BottomListDialog bottomListDialog;
@@ -86,11 +64,6 @@ public class ProductLibActivity extends BaseActivity {
     }
 
     @Override
-    public int getContentViewResId() {
-        return R.layout.activity_product_lib;
-    }
-
-    @Override
     public void initTitle() {
         appHeadView.setFlHeadLeftPadding(getResources().getDimensionPixelSize(R.dimen.size_10));
         appHeadView.setLeftStyle(AppHeadView.IMAGE);
@@ -103,14 +76,8 @@ public class ProductLibActivity extends BaseActivity {
         appHeadView.setFlHeadRightVisible(View.VISIBLE);
     }
 
-    @Override
-    public void init(Bundle savedInstanceState) {
-        initListener();
-        initRecyclerView();
-    }
-
     private void initRecyclerView() {
-        setLinearRecycleViewSetting(recyclerView, this);
+        setLinearRecycleViewSetting(mChildBinding.recyclerView, this);
     }
 
     private void initListener() {
@@ -162,14 +129,14 @@ public class ProductLibActivity extends BaseActivity {
         String series = "";
         String technology = "";
         String type = "";
-        if (tvSeries.getTag() != null) {
-            series = (String) tvSeries.getTag();
+        if (mChildBinding.tvSeries.getTag() != null) {
+            series = (String) mChildBinding.tvSeries.getTag();
         }
-        if (tvCraft.getTag() != null) {
-            technology = (String) tvCraft.getTag();
+        if (mChildBinding.tvCraft.getTag() != null) {
+            technology = (String) mChildBinding.tvCraft.getTag();
         }
-        if (tvType.getTag() != null) {
-            type = (String) tvType.getTag();
+        if (mChildBinding.tvType.getTag() != null) {
+            type = (String) mChildBinding.tvType.getTag();
         }
         Map<String, String> map = new HashMap<>();
         map.put("searchWord", appHeadView.getEtSearchText());
@@ -205,14 +172,14 @@ public class ProductLibActivity extends BaseActivity {
                                 productLibAdapter.setOnItemClickListener(new OnItemClickListener() {
                                     @Override
                                     public void onItemClick(View view) {
-                                        int position = recyclerView.getChildAdapterPosition(view);
+                                        int position = mChildBinding.recyclerView.getChildAdapterPosition(view);
                                         ProductLibEntity productLibEntity = productLibAdapter.getProductLibEntities().get(position);
                                         Intent intent = new Intent(ProductLibActivity.this, ProductDetailActivity.class);
                                         intent.putExtra("matieralId", productLibEntity.getMatieralId());
                                         startActivityWithoutCode(intent);
                                     }
                                 });
-                                recyclerView.setAdapter(productLibAdapter);
+                                mChildBinding.recyclerView.setAdapter(productLibAdapter);
                             } else {
                                 if (currentPage == 1) {
                                     productLibAdapter.setProductLibEntities(productLibEntities);
@@ -247,22 +214,21 @@ public class ProductLibActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.rl_series, R.id.rl_craft, R.id.rl_type})
     void clickCondition(View view) {
         String url = "";
         TextView tv = null;
         switch (view.getId()) {
             case R.id.rl_series:
                 url = RetrofitFactory.BT_PLANT_WEB_URL + "productKnowledge/app/findSeriesList";
-                tv = tvSeries;
+                tv = mChildBinding.tvSeries;
                 break;
             case R.id.rl_craft:
                 url = RetrofitFactory.BT_PLANT_WEB_URL + "productKnowledge/app/findTechnologyList";
-                tv = tvCraft;
+                tv = mChildBinding.tvCraft;
                 break;
             case R.id.rl_type:
                 url = RetrofitFactory.BT_PLANT_WEB_URL + "productKnowledge/app/findTypeList";
-                tv = tvType;
+                tv = mChildBinding.tvType;
                 break;
         }
         getCondition(tv, url);
@@ -288,7 +254,7 @@ public class ProductLibActivity extends BaseActivity {
                                 List<String> list = new ArrayList<>();
                                 list.add(0, "全部");
                                 for (ProductAssitEntity bean : beans
-                                        ) {
+                                ) {
                                     list.add(bean.getBNAME());
                                 }
                                 showConditionDialog(list, tv);
@@ -349,4 +315,16 @@ public class ProductLibActivity extends BaseActivity {
 //        bottomListDialog.setListViewHeightBasedOnChildren();
     }
 
+    @Override
+    public void createObserver() {
+        clickCondition(mChildBinding.rlSeries);
+        clickCondition(mChildBinding.rlCraft);
+        clickCondition(mChildBinding.rlType);
+    }
+
+    @Override
+    public void initViewAndData(Bundle savedInstanceState) {
+        initListener();
+        initRecyclerView();
+    }
 }

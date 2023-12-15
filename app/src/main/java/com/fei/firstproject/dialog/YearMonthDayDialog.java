@@ -16,24 +16,18 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.fei.firstproject.R;
+import com.fei.firstproject.databinding.ViewDateDialogBinding;
 
 import java.lang.reflect.Field;
 import java.util.Calendar;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 
 public class YearMonthDayDialog extends Dialog {
 
-    @BindView(R.id.tv_dialog_confirm)
+
     TextView tvDialogConfirm;
-    @BindView(R.id.tv_dialog_cancle)
     TextView tvDialogCancle;
-    @BindView(R.id.tv_dialog_title)
     TextView tvDialogTitle;
-    @BindView(R.id.datePicker)
     DatePicker datePicker;
 
     private Context mContext;
@@ -96,9 +90,14 @@ public class YearMonthDayDialog extends Dialog {
     }
 
     private void initView() {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.view_date_dialog, null);
-        setContentView(view);
-        ButterKnife.bind(this, view);
+        ViewDateDialogBinding binding = ViewDateDialogBinding.inflate(LayoutInflater.from(mContext));
+        setContentView(binding.getRoot());
+        datePicker = binding.datePicker;
+        tvDialogConfirm = binding.tvDialogConfirm;
+        tvDialogCancle = binding.tvDialogCancle;
+        tvDialogTitle = binding.tvDialogTitle;
+        clickCancle(binding.tvDialogCancle);
+        clickConfirm(binding.tvDialogConfirm);
     }
 
     @SuppressLint("NewApi")
@@ -133,7 +132,6 @@ public class YearMonthDayDialog extends Dialog {
         }
     }
 
-    @OnClick(R.id.tv_dialog_confirm)
     void clickConfirm(View view) {
         if (onComfirmListener != null) {
             onComfirmListener.onConfirm(datePicker.getYear(), datePicker.getMonth() + 1, datePicker.getDayOfMonth());
@@ -141,7 +139,6 @@ public class YearMonthDayDialog extends Dialog {
         dismiss();
     }
 
-    @OnClick(R.id.tv_dialog_cancle)
     void clickCancle(View view) {
         dismiss();
     }

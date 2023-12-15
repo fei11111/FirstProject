@@ -6,50 +6,30 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
-import android.webkit.WebView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.LinearLayoutCompat;
-
 import com.alibaba.fastjson.JSON;
+import com.common.viewmodel.EmptyViewModel;
 import com.fei.firstproject.R;
+import com.fei.firstproject.databinding.ActivityProductDetailBinding;
 import com.fei.firstproject.entity.ProductDetailEntity;
 import com.fei.firstproject.http.HttpMgr;
 import com.fei.firstproject.http.inter.CallBack;
 import com.fei.firstproject.utils.Utils;
 import com.fei.firstproject.widget.AppHeadView;
-import com.fei.firstproject.widget.NoScrollRecyclerView;
-import com.fei.firstproject.widget.PartHeadView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 
-import butterknife.BindView;
 import okhttp3.ResponseBody;
 
 /**
  * Created by Administrator on 2017/9/11.
  */
 
-public class ProductDetailActivity extends BaseActivity {
-
-    @BindView(R.id.tv_product_detail_title)
-    TextView tvProductDetailTitle;
-    @BindView(R.id.tv_product_detail_date)
-    TextView tvProductDetailDate;
-    @BindView(R.id.ll_product_detail_head)
-    LinearLayout llProductDetailHead;
-    @BindView(R.id.wv_product_detail)
-    WebView wvProductDetail;
-    @BindView(R.id.phv_product_case)
-    PartHeadView phvProductCase;
-    @BindView(R.id.rv_product_case)
-    NoScrollRecyclerView rvProductCase;
-    @BindView(R.id.ll_product_case)
-    LinearLayoutCompat llProductCase;
+public class ProductDetailActivity extends BaseProjectActivity<EmptyViewModel, ActivityProductDetailBinding> {
 
     private String matieralId;
     private static final int REQUEST_PERMISSION_CODE_LOCATION = 100;
@@ -76,11 +56,6 @@ public class ProductDetailActivity extends BaseActivity {
     }
 
     @Override
-    public int getContentViewResId() {
-        return R.layout.activity_product_detail;
-    }
-
-    @Override
     public void initTitle() {
         appHeadView.setFlHeadLeftPadding(getResources().getDimensionPixelSize(R.dimen.size_10));
         appHeadView.setLeftStyle(AppHeadView.IMAGE);
@@ -91,12 +66,6 @@ public class ProductDetailActivity extends BaseActivity {
         appHeadView.setFlHeadRightVisible(View.VISIBLE);
         appHeadView.setRightStyle(AppHeadView.IMAGE);
         appHeadView.setRightDrawable(R.drawable.selector_ic_location);
-    }
-
-    @Override
-    public void init(Bundle savedInstanceState) {
-        initData();
-        initListener();
     }
 
     private void initListener() {
@@ -153,22 +122,22 @@ public class ProductDetailActivity extends BaseActivity {
                             ProductDetailEntity productDetailEntity = JSON.parseObject(infos, ProductDetailEntity.class);
                             String reserve1 = productDetailEntity.getReserve1();
                             if (!TextUtils.isEmpty(reserve1)) {
-                                llProductDetailHead.setVisibility(View.VISIBLE);
-                                tvProductDetailTitle.setText(reserve1);
+                                mChildBinding.llProductDetailHead.setVisibility(View.VISIBLE);
+                                mChildBinding.tvProductDetailTitle.setText(reserve1);
                             } else {
-                                llProductDetailHead.setVisibility(View.GONE);
+                                mChildBinding.llProductDetailHead.setVisibility(View.GONE);
                             }
                             String reserve2 = productDetailEntity.getReserve2();
                             if (!TextUtils.isEmpty(reserve2)) {
                                 if (reserve2.length() > 10) {
                                     reserve2 = reserve2.substring(0, 10);
                                 }
-                                tvProductDetailDate.setText(reserve2);
+                                mChildBinding.tvProductDetailDate.setText(reserve2);
                             }
                             String content = productDetailEntity.getContent();
                             if (!TextUtils.isEmpty(content)) {
                                 refreshLayout.setVisibility(View.VISIBLE);
-                                wvProductDetail.loadDataWithBaseURL(null, productDetailEntity.getContent(), "text/html", "UTF-8", null);
+                                mChildBinding.wvProductDetail.loadDataWithBaseURL(null, productDetailEntity.getContent(), "text/html", "UTF-8", null);
                             } else {
                                 showNoDataView();
                             }
@@ -190,5 +159,16 @@ public class ProductDetailActivity extends BaseActivity {
                 showRequestErrorView();
             }
         });
+    }
+
+    @Override
+    public void createObserver() {
+
+    }
+
+    @Override
+    public void initViewAndData(Bundle savedInstanceState) {
+        initData();
+        initListener();
     }
 }

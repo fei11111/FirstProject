@@ -207,7 +207,7 @@
                         </LinearLayout>
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
-                    <android.support.v7.widget.LinearLayoutCompat
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:id="@+id/ll_farmer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -300,7 +300,7 @@
                                 android:textColor="@color/colorTextSub" />
                         </LinearLayout>
 
-                    </android.support.v7.widget.LinearLayoutCompat>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:id="@+id/ll_service_station"

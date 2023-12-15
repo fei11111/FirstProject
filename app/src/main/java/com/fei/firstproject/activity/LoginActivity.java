@@ -5,21 +5,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.text.Editable;
 import android.text.TextUtils;
-import android.view.View;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
+import android.text.TextWatcher;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
+import com.common.viewmodel.EmptyViewModel;
 import com.fei.firstproject.R;
+import com.fei.firstproject.databinding.ActivityLoginBinding;
 import com.fei.firstproject.entity.UserEntity;
 import com.fei.firstproject.http.HttpMgr;
 import com.fei.firstproject.http.inter.CallBack;
 import com.fei.firstproject.utils.SPUtils;
 import com.fei.firstproject.utils.Utils;
-import com.fei.firstproject.widget.VerifyCodeView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,32 +26,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-import butterknife.OnTextChanged;
 import okhttp3.ResponseBody;
+
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends BaseActivity {
-
-    @BindView(R.id.et_username)
-    AutoCompleteTextView etUsername;
-    @BindView(R.id.et_password)
-    EditText etPassword;
-    @BindView(R.id.btn_login)
-    Button rvSignIn;
-    @BindView(R.id.tv_register)
-    TextView tvRegister;
-    @BindView(R.id.llweixin)
-    LinearLayout llweixin;
-    @BindView(R.id.ll_qq)
-    LinearLayout llQq;
-    @BindView(R.id.et_vertify_code)
-    EditText etVertifyCode;
-    @BindView(R.id.tv_code)
-    VerifyCodeView tvCode;
+public class LoginActivity extends BaseProjectActivity<EmptyViewModel, ActivityLoginBinding> {
 
     private static final int REQUEST_PERMISSION_TELEPHONE = 100;
 
@@ -78,59 +57,67 @@ public class LoginActivity extends BaseActivity {
     }
 
     @Override
-    public int getContentViewResId() {
-        return R.layout.activity_login;
-    }
-
-    @Override
     public void initTitle() {
         setBackTitle(getString(R.string.login));
     }
-
-    @Override
-    public void init(Bundle savedInstanceState) {
-
-    }
-
 
     @Override
     public void initRequest() {
 
     }
 
-    @OnTextChanged(value = {R.id.et_password, R.id.et_username, R.id.et_vertify_code}, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
-    void textChanged() {
-        String userNameText = etUsername.getText().toString();
-        String passwordText = etPassword.getText().toString();
-        String code = etVertifyCode.getText().toString();
-        if (!TextUtils.isEmpty(userNameText) && !TextUtils.isEmpty(passwordText) && !TextUtils.isEmpty(code)) {
-            rvSignIn.setEnabled(true);
-        } else {
-            rvSignIn.setEnabled(false);
-        }
+    void textChanged(EditText et) {
+        et.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String userNameText = mChildBinding.etUsername.getText().toString();
+                String passwordText = mChildBinding.etPassword.getText().toString();
+                String code = mChildBinding.etVertifyCode.getText().toString();
+                if (!TextUtils.isEmpty(userNameText) && !TextUtils.isEmpty(passwordText) && !TextUtils.isEmpty(code)) {
+                    mChildBinding.btnLogin.setEnabled(true);
+                } else {
+                    mChildBinding.btnLogin.setEnabled(false);
+                }
+            }
+        });
+
     }
 
-    @OnClick(R.id.btn_login)
-    void clickSignIn(View view) {
-        String code = tvCode.getCode().toLowerCase();
-        String inputCode = etVertifyCode.getText().toString().toLowerCase();
-        if (code.equals(inputCode)) {
-            checkPermissions(new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_PERMISSION_TELEPHONE);
-        } else {
-            etVertifyCode.setError(getString(R.string.vertify_code_error));
-            tvCode.refreshCode();
-        }
+    void clickSignIn() {
+        mChildBinding.btnLogin.setOnClickListener(v -> {
+            String code = mChildBinding.tvCode.getCode().toLowerCase();
+            String inputCode = mChildBinding.etVertifyCode.getText().toString().toLowerCase();
+            if (code.equals(inputCode)) {
+                checkPermissions(new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_PERMISSION_TELEPHONE);
+            } else {
+                mChildBinding.etVertifyCode.setError(getString(R.string.vertify_code_error));
+                mChildBinding.tvCode.refreshCode();
+            }
+        });
+
     }
 
-    @OnClick(R.id.tv_register)
-    void clickRegister(View view) {
-        startActivityWithoutCode(new Intent(this, RegisterActivity.class));
+    void clickRegister() {
+        mChildBinding.tvRegister.setOnClickListener(v -> {
+            startActivityWithoutCode(new Intent(this, RegisterActivity.class));
+        });
+
     }
 
     private void attemptLogin() {
         Utils.hideKeyBoard(this);
-        final String userNameText = etUsername.getText().toString();
-        String passwordText = etPassword.getText().toString();
+        final String userNameText = mChildBinding.etUsername.getText().toString();
+        String passwordText = mChildBinding.etPassword.getText().toString();
         TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         final String deviceId = tm.getDeviceId();
         Map<String, String> map = new HashMap<>();
@@ -210,5 +197,18 @@ public class LoginActivity extends BaseActivity {
         overridePendingTransition(R.anim.activity_close_in_animation, R.anim.activity_close_out_animation);
     }
 
+    @Override
+    public void createObserver() {
+        textChanged(mChildBinding.etPassword);
+        textChanged(mChildBinding.etUsername);
+        textChanged(mChildBinding.etVertifyCode);
+        clickSignIn();
+        clickRegister();
+    }
+
+    @Override
+    public void initViewAndData(Bundle savedInstanceState) {
+
+    }
 }
 

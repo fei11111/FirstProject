@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.alibaba.fastjson.JSON;
+import com.common.viewmodel.EmptyViewModel;
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.MyAddressAdapter;
 import com.fei.firstproject.config.AppConfig;
@@ -22,14 +23,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.OnClick;
 import okhttp3.ResponseBody;
 
 /**
  * Created by Administrator on 2017/9/4.
  */
 
-public class MyAddressActivity extends BaseListActivity {
+public class MyAddressActivity extends BaseListActivity<EmptyViewModel> {
 
     private static final int REQUEST_ACTIVITY_CODE_ADD_OR_UPDATE = 200;
     private MyAddressAdapter myAddressAdapter;
@@ -68,13 +68,15 @@ public class MyAddressActivity extends BaseListActivity {
     }
 
     private void initBaseListButton() {
-        btn_base_list.setVisibility(View.VISIBLE);
-        btn_base_list.setText(R.string.add_address);
+        mChildBinding.btnBaseList.setVisibility(View.VISIBLE);
+        mChildBinding.btnBaseList.setText(R.string.add_address);
     }
 
-    @OnClick(R.id.btn_base_list)
-    void clickAddAddress(View view) {
-        startActivityWithCode(new Intent(this, AddAddressOrUpdateActivity.class), REQUEST_ACTIVITY_CODE_ADD_OR_UPDATE);
+    void clickAddAddress() {
+        mChildBinding.btnBaseList.setOnClickListener(v -> {
+            startActivityWithCode(new Intent(this, AddAddressOrUpdateActivity.class), REQUEST_ACTIVITY_CODE_ADD_OR_UPDATE);
+        });
+
     }
 
     @Override
@@ -223,5 +225,10 @@ public class MyAddressActivity extends BaseListActivity {
 
             }
         });
+    }
+
+    @Override
+    public void createObserver() {
+        clickAddAddress();
     }
 }

@@ -18,8 +18,6 @@ import com.fei.firstproject.utils.GlideUtils;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2017/8/14.
@@ -78,16 +76,15 @@ public class NcwAdapter extends RecyclerView.Adapter<NcwAdapter.NcwViewHolder> {
 
     class NcwViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @BindView(R.id.iv_ncw)
         ImageView ivNcw;
-        @BindView(R.id.tv_ncw_title)
         TextView tvNcwTitle;
-        @BindView(R.id.tv_nwc_desp)
         TextView tvNwcDesp;
 
         public NcwViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            ivNcw = itemView.findViewById(R.id.iv_ncw);
+            tvNcwTitle = itemView.findViewById(R.id.tv_ncw_title);
+            tvNwcDesp = itemView.findViewById(R.id.tv_nwc_desp);
             itemView.setOnClickListener(this);
         }
 

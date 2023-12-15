@@ -15,10 +15,6 @@ import com.fei.firstproject.entity.MessageEntity;
 import com.fei.firstproject.inter.OnItemClickListener;
 
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * Created by Administrator on 2017/8/21.
  */
@@ -85,21 +81,21 @@ public class MyMessageAdapter extends RecyclerView.Adapter<MyMessageAdapter.MyMe
 
     class MyMessageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @BindView(R.id.tv_time)
         TextView tvTime;
-        @BindView(R.id.iv_right_arrow)
         ImageView ivRightArrow;
-        @BindView(R.id.ll_right_time)
         LinearLayout llRightTime;
-        @BindView(R.id.tv_title)
         TextView tvTitle;
-        @BindView(R.id.tv_content)
         TextView tvContent;
 
         public MyMessageViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
+            tvTime = itemView.findViewById(R.id.tv_time);
+            ivRightArrow = itemView.findViewById(R.id.iv_right_arrow);
+            llRightTime = itemView.findViewById(R.id.ll_right_time);
+            tvTitle = itemView.findViewById(R.id.tv_title);
+            tvContent = itemView.findViewById(R.id.tv_content);
+
         }
 
         @Override

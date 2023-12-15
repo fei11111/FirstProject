@@ -1,7 +1,6 @@
 package com.fei.firstproject.inter;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 
 import androidx.core.util.Pair;
@@ -27,20 +26,11 @@ public interface IBase {
      */
     void permissionDialogDismiss(int requestCode);
 
-    /**
-     * 返回布局
-     */
-    int getContentViewResId();
 
     /**
      * 初始化标题
-     * */
-    void initTitle();
-
-    /**
-     * 初始化
      */
-    void init(Bundle savedInstanceState);
+    void initTitle();
 
     /**
      * 初始化接口

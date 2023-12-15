@@ -12,9 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.fei.firstproject.R;
+import com.fei.firstproject.databinding.ViewPartHeadBinding;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2017/8/3.
@@ -22,13 +21,9 @@ import butterknife.ButterKnife;
 
 public class PartHeadView extends RelativeLayout {
 
-    @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.iv_arrow)
     ImageView ivArrow;
-    @BindView(R.id.tv_desc)
     TextView tvDesc;
-    @BindView(R.id.iv_left_view)
     ImageView ivLeftView;
     private Context mContext;
     private String title;
@@ -65,8 +60,11 @@ public class PartHeadView extends RelativeLayout {
 
     private void initView() {
         setClickable(true);
-        LayoutInflater.from(mContext).inflate(R.layout.view_part_head, this);
-        ButterKnife.bind(this);
+        ViewPartHeadBinding binding = ViewPartHeadBinding.bind(this);
+        tvTitle = binding.tvTitle;
+        ivArrow = binding.ivArrow;
+        tvDesc = binding.tvDesc;
+        ivLeftView = binding.ivLeftView;
         initContent();
     }
 

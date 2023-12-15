@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.amap.api.location.AMapLocation;
+import com.common.viewmodel.EmptyViewModel;
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.RetailerInfoAdapter;
 import com.fei.firstproject.entity.RetailStoresEntity;
@@ -30,7 +31,7 @@ import okhttp3.ResponseBody;
  * Created by Administrator on 2017/9/11.
  */
 
-public class RetailersInfoActivity extends BaseListActivity {
+public class RetailersInfoActivity extends BaseListActivity<EmptyViewModel> {
 
     private String province;
     private String city;
@@ -218,5 +219,10 @@ public class RetailersInfoActivity extends BaseListActivity {
                 proDisimis();
             }
         });
+    }
+
+    @Override
+    public void createObserver() {
+
     }
 }

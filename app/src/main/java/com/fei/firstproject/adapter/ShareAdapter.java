@@ -20,8 +20,6 @@ import com.fei.firstproject.widget.RoundImageView;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2017/9/14.
@@ -87,18 +85,17 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
 
     class ShareViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @BindView(R.id.tv_date)
         TextView tvDate;
-        @BindView(R.id.tv_title)
         TextView tvTitle;
-        @BindView(R.id.tv_content)
         TextView tvContent;
-        @BindView(R.id.fl_pic)
         FlowLayout flPic;
 
         public ShareViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            tvDate = (TextView) itemView.findViewById(R.id.tv_date);
+            tvTitle = (TextView) itemView.findViewById(R.id.tv_title);
+            tvContent = (TextView) itemView.findViewById(R.id.tv_content);
+            flPic = (FlowLayout) itemView.findViewById(R.id.fl_pic);
             itemView.setOnClickListener(this);
         }
 

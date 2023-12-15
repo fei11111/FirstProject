@@ -1,60 +1,50 @@
 package com.fei.firstproject.activity;
 
-import android.location.Location;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapOptions;
 import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
-import com.amap.api.maps.MapView;
 import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MyLocationStyle;
+import com.common.viewmodel.EmptyViewModel;
 import com.fei.firstproject.R;
+import com.fei.firstproject.databinding.ActivityMapBinding;
 import com.fei.firstproject.utils.LogUtils;
 
-import butterknife.BindView;
 
 /**
  * Created by Fei on 2017/9/4.
  */
 
-public class MapActivity extends BaseActivity {
-
-    @BindView(R.id.btn_confirm)
-    Button btnConfirm;
-    @BindView(R.id.map)
-    MapView mMapView;
-    @BindView(R.id.tv_address)
-    TextView tvAddress;
+public class MapActivity extends BaseProjectActivity<EmptyViewModel, ActivityMapBinding> {
 
     private AMap aMap;
 
     @Override
     protected void onResume() {
-        mMapView.onResume();
+        mChildBinding.map.onResume();
         super.onResume();
     }
 
     @Override
     protected void onPause() {
-        mMapView.onPause();
+        mChildBinding.map.onPause();
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        mMapView.onDestroy();
+        mChildBinding.map.onDestroy();
         super.onDestroy();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        mMapView.onSaveInstanceState(outState);
+        mChildBinding.map.onSaveInstanceState(outState);
     }
 
     @Override
@@ -73,20 +63,8 @@ public class MapActivity extends BaseActivity {
     }
 
     @Override
-    public int getContentViewResId() {
-        return R.layout.activity_map;
-    }
-
-    @Override
     public void initTitle() {
         setBackTitle(getString(R.string.confirm_address));
-    }
-
-    @Override
-    public void init(Bundle savedInstanceState) {
-        mMapView.onCreate(savedInstanceState);
-        initMap();
-        initListener();
     }
 
     @Override
@@ -95,22 +73,19 @@ public class MapActivity extends BaseActivity {
     }
 
     private void initListener() {
-        aMap.setOnMyLocationChangeListener(new AMap.OnMyLocationChangeListener() {
-            @Override
-            public void onMyLocationChange(Location location) {
-                Bundle extras = location.getExtras();
-                String address = extras.getString("Address", "");
-                LogUtils.i("tag", location.toString());
-                final LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(latLng);
-                aMap.moveCamera(cameraUpdate);
-                tvAddress.setText(address);
-            }
+        aMap.setOnMyLocationChangeListener(location -> {
+            Bundle extras = location.getExtras();
+            String address = extras.getString("Address", "");
+            LogUtils.i("tag", location.toString());
+            final LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(latLng);
+            aMap.moveCamera(cameraUpdate);
+            mChildBinding.tvAddress.setText(address);
         });
     }
 
     private void initMap() {
-        aMap = mMapView.getMap();
+        aMap = mChildBinding.map.getMap();
         UiSettings uiSettings = aMap.getUiSettings();
         uiSettings.setZoomControlsEnabled(false);
         uiSettings.setMyLocationButtonEnabled(true);
@@ -125,5 +100,17 @@ public class MapActivity extends BaseActivity {
         aMap.setMyLocationStyle(myLocationStyle);//设置定位蓝点的Style
         aMap.moveCamera(CameraUpdateFactory.zoomTo(17));
         aMap.setMyLocationEnabled(true);// 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false。
+    }
+
+    @Override
+    public void createObserver() {
+
+    }
+
+    @Override
+    public void initViewAndData(Bundle savedInstanceState) {
+        mChildBinding.map.onCreate(savedInstanceState);
+        initMap();
+        initListener();
     }
 }

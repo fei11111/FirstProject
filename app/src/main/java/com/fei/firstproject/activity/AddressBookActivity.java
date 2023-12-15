@@ -5,17 +5,19 @@ import android.content.ContentResolver;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.common.viewmodel.EmptyViewModel;
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.ContactsAdapter;
+import com.fei.firstproject.databinding.ActivityAddressBookBinding;
 import com.fei.firstproject.decoration.DividerItemDecoration;
 import com.fei.firstproject.entity.ContactsEntity;
 import com.fei.firstproject.utils.LogUtils;
@@ -27,36 +29,31 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import butterknife.BindView;
-
 /**
  * Created by Administrator on 2017/12/18.
  * 参考：http://blog.csdn.net/u012702547/article/details/51234227
  */
 
-public class AddressBookActivity extends BaseActivity {
+/**
+ * 通讯录
+ */
+public class AddressBookActivity extends BaseProjectActivity<EmptyViewModel, ActivityAddressBookBinding> {
 
     private static final int REQUEST_PERMISSION_CODE_CONTACTS = 100;
-    @BindView(R.id.letter)
-    LetterView letter;
-    @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
-    @BindView(R.id.tv_letter_tip)
-    TextView tvLetterTip;
 
     private List<ContactsEntity> contactsEntities = new ArrayList<>();
     private LinearLayoutManager manager;
     private ContactsAdapter contactsAdapter;
-    private Handler mHandler = new Handler() {
+    private Handler mHandler = new Handler(Looper.myLooper()) {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (contactsEntities.size() > 0) {
                 dismissLoading();
-                setRecycleViewSetting(recyclerView);
+                setRecycleViewSetting(mChildBinding.recyclerView);
                 if (contactsAdapter == null) {
                     contactsAdapter = new ContactsAdapter(AddressBookActivity.this, contactsEntities);
-                    recyclerView.setAdapter(contactsAdapter);
+                    mChildBinding.recyclerView.setAdapter(contactsAdapter);
                 }
             } else {
                 showNoDataView();
@@ -88,12 +85,12 @@ public class AddressBookActivity extends BaseActivity {
                 while (cursor.moveToNext()) {
                     String name = "";
                     int columnIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
-                    if(columnIndex!=-1) {
+                    if (columnIndex != -1) {
                         name = cursor.getString(columnIndex);
                     }
                     String phone = "";
                     columnIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-                    if(columnIndex!=-1) {
+                    if (columnIndex != -1) {
                         phone = cursor.getString(columnIndex);
                     }
                     ContactsEntity contactsEntity = new ContactsEntity();
@@ -134,20 +131,10 @@ public class AddressBookActivity extends BaseActivity {
     }
 
     @Override
-    public int getContentViewResId() {
-        return R.layout.activity_address_book;
-    }
-
-    @Override
     public void initTitle() {
         setBackTitle(getString(R.string.friends_list));
     }
 
-    @Override
-    public void init(Bundle savedInstanceState) {
-        initListener();
-        checkPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_PERMISSION_CODE_CONTACTS);
-    }
 
     private void initListener() {
         initLetterListener();
@@ -155,30 +142,30 @@ public class AddressBookActivity extends BaseActivity {
     }
 
     private void initRecycleListener() {
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        mChildBinding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 int firstVisibleItemPosition = manager.findFirstVisibleItemPosition();
                 int selectionFromPosition = contactsAdapter.getSelectionFromPosition(firstVisibleItemPosition);
-                letter.updateViewByLetter(selectionFromPosition);
+                mChildBinding.letter.updateViewByLetter(selectionFromPosition);
             }
         });
     }
 
     private void initLetterListener() {
-        letter.setOnLetterListener(new LetterView.onLetterListener() {
+        mChildBinding.letter.setOnLetterListener(new LetterView.onLetterListener() {
             @Override
             public void onLetterCallBack(String letter) {
-                tvLetterTip.setVisibility(View.VISIBLE);
-                tvLetterTip.setText(letter);
+                mChildBinding.tvLetterTip.setVisibility(View.VISIBLE);
+                mChildBinding.tvLetterTip.setText(letter);
                 int absolutePositionFromSelection = contactsAdapter.getAbsolutePositionFromSelection(letter.charAt(0));
                 manager.scrollToPositionWithOffset(absolutePositionFromSelection, 0);
             }
 
             @Override
             public void onRelease() {
-                tvLetterTip.setVisibility(View.GONE);
+                mChildBinding.tvLetterTip.setVisibility(View.GONE);
             }
         });
     }
@@ -194,4 +181,13 @@ public class AddressBookActivity extends BaseActivity {
     public void initRequest() {
     }
 
+    @Override
+    public void createObserver() {
+        initListener();
+    }
+
+    @Override
+    public void initViewAndData(Bundle savedInstanceState) {
+        checkPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_PERMISSION_CODE_CONTACTS);
+    }
 }

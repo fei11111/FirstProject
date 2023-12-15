@@ -4,21 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import androidx.appcompat.widget.LinearLayoutCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.common.viewmodel.EmptyViewModel;
 import com.fei.firstproject.R;
 import com.fei.firstproject.adapter.MultiTextAdapter;
 import com.fei.firstproject.adapter.SingleTextAdapter;
 import com.fei.firstproject.config.AppConfig;
+import com.fei.firstproject.databinding.ActivitySelfInfoBinding;
 import com.fei.firstproject.dialog.BottomListDialog;
 import com.fei.firstproject.dialog.CityDialog;
 import com.fei.firstproject.dialog.TipDialog;
@@ -33,83 +29,20 @@ import com.fei.firstproject.http.inter.CallBack;
 import com.fei.firstproject.utils.GlideUtils;
 import com.fei.firstproject.utils.PictureUtils;
 import com.fei.firstproject.widget.PartHeadView;
-import com.fei.firstproject.widget.RoundImageView;
-import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
-import com.luck.picture.lib.entity.LocalMedia;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import butterknife.BindView;
-import butterknife.OnClick;
-import io.reactivex.Observable;
+import io.reactivex.rxjava3.core.Observable;
 
 /**
  * Created by Administrator on 2017/8/31.
  */
 
-public class SelfInfoActivity extends BaseActivity {
-
-    @BindView(R.id.btn_save)
-    Button btnSave;
-    @BindView(R.id.tv_account)
-    TextView tvAccount;
-    @BindView(R.id.tv_user_name)
-    TextView tvUserName;
-    @BindView(R.id.tv_current_role)
-    TextView tvCurrentRole;
-    @BindView(R.id.phv_change_role)
-    PartHeadView phvChangeRole;
-    @BindView(R.id.tv_account_create_time)
-    TextView tvAccountCreateTime;
-    @BindView(R.id.tv_farmer_name)
-    TextView tvFarmerName;
-    @BindView(R.id.phv_farmer_location)
-    PartHeadView phvFarmerLocation;
-    @BindView(R.id.et_farmer_detail_address)
-    EditText etFarmerDetailAddress;
-    @BindView(R.id.ll_farmer)
-    LinearLayoutCompat llFarmer;
-    @BindView(R.id.tv_service_station_name)
-    TextView tvServiceStationName;
-    @BindView(R.id.tv_service_station_legal_representative)
-    TextView tvServiceStationLegalRepresentative;
-    @BindView(R.id.phv_service_station_location)
-    PartHeadView phvServiceStationLocation;
-    @BindView(R.id.et_service_station_detail_address)
-    EditText etServiceStationDetailAddress;
-    @BindView(R.id.ll_service_station)
-    LinearLayoutCompat llServiceStation;
-    @BindView(R.id.iv_arrow)
-    ImageView ivArrow;
-    @BindView(R.id.iv_expertise_icon)
-    RoundImageView ivExpertiseIcon;
-    @BindView(R.id.tv_expertise_name)
-    TextView tvExpertiseName;
-    @BindView(R.id.tv_expertise_speciality_skill)
-    TextView tvExpertiseSpecialitySkill;
-    @BindView(R.id.tv_expertise_speciality_crop)
-    TextView tvExpertiseSpecialityCrop;
-    @BindView(R.id.tv_expertise_level)
-    TextView tvExpertiseLevel;
-    @BindView(R.id.tv_expertise_working_time)
-    TextView tvExpertiseWorkingTime;
-    @BindView(R.id.phv_expertise_location)
-    PartHeadView phvExpertiseLocation;
-    @BindView(R.id.et_expertise_detail_address)
-    EditText etExpertiseDetailAddress;
-    @BindView(R.id.phv_consultation_way)
-    PartHeadView phvConsultationWay;
-    @BindView(R.id.phv_online_setting)
-    PartHeadView phvOnlineSetting;
-    @BindView(R.id.ll_expertise)
-    LinearLayoutCompat llExpertise;
-    @BindView(R.id.rl_content)
-    RelativeLayout rlContent;
+public class SelfInfoActivity extends BaseProjectActivity<EmptyViewModel, ActivitySelfInfoBinding> {
 
     private boolean isEdit = true;
     private CityDialog cityDialog;
@@ -135,17 +68,8 @@ public class SelfInfoActivity extends BaseActivity {
     }
 
     @Override
-    public int getContentViewResId() {
-        return R.layout.activity_self_info;
-    }
-
-    @Override
     public void initTitle() {
         setBackTitle(getString(R.string.self_info));
-    }
-
-    @Override
-    public void init(Bundle savedInstanceState) {
     }
 
     @Override
@@ -165,11 +89,11 @@ public class SelfInfoActivity extends BaseActivity {
                 refreshLayout.finishRefresh();
                 if (selfInfoEntity != null) {
                     refreshLayout.setVisibility(View.VISIBLE);
-                    tvAccount.setText(selfInfoEntity.getUserDesc());
-                    tvUserName.setText(selfInfoEntity.getUserName());
-                    tvAccountCreateTime.setText(selfInfoEntity.getCreateTime());
-                    tvCurrentRole.setText(selfInfoEntity.getRoleName());
-                    phvChangeRole.setDesc(selfInfoEntity.getRoleName());
+                    mChildBinding.tvAccount.setText(selfInfoEntity.getUserDesc());
+                    mChildBinding.tvUserName.setText(selfInfoEntity.getUserName());
+                    mChildBinding.tvAccountCreateTime.setText(selfInfoEntity.getCreateTime());
+                    mChildBinding.tvCurrentRole.setText(selfInfoEntity.getRoleName());
+                    mChildBinding.phvChangeRole.setDesc(selfInfoEntity.getRoleName());
                     for (int i = 0; i < selfInfoEntity.getRoleList().size(); i++) {
                         showInfoByRole(selfInfoEntity, selfInfoEntity.getRoleList().get(i));
                     }
@@ -189,61 +113,62 @@ public class SelfInfoActivity extends BaseActivity {
     private void showInfoByRole(SelfInfoEntity bean, RoleEntity role) {
         String roleId = role.getRoleId();
         if (roleId.equals("20")) {
-            llFarmer.setVisibility(View.VISIBLE);
-            tvFarmerName.setText(role.getGrownName());
-            phvFarmerLocation.setDesc(role.getAddress());
-            etFarmerDetailAddress.setText(role.getAddr());
+            mChildBinding.llFarmer.setVisibility(View.VISIBLE);
+            mChildBinding.tvFarmerName.setText(role.getGrownName());
+            mChildBinding.phvFarmerLocation.setDesc(role.getAddress());
+            mChildBinding.etFarmerDetailAddress.setText(role.getAddr());
         } else if (roleId.equals("30")) {
-            llServiceStation.setVisibility(View.VISIBLE);
-            tvServiceStationName.setText(role.getServiceName());
-            tvServiceStationLegalRepresentative.setText(role.getLegalRepresentative());
-            phvServiceStationLocation.setDesc(role.getAddress());
-            etServiceStationDetailAddress.setText(role.getAddr());
+            mChildBinding.llServiceStation.setVisibility(View.VISIBLE);
+            mChildBinding.tvServiceStationName.setText(role.getServiceName());
+            mChildBinding.tvServiceStationLegalRepresentative.setText(role.getLegalRepresentative());
+            mChildBinding.phvServiceStationLocation.setDesc(role.getAddress());
+            mChildBinding.etServiceStationDetailAddress.setText(role.getAddr());
         } else if (roleId.equals("40")) {
-            llExpertise.setVisibility(View.VISIBLE);
+            mChildBinding.llExpertise.setVisibility(View.VISIBLE);
             String path = bean.getJpgPath();
             if (!TextUtils.isEmpty(path)) {
                 Glide.with(this)
                         .load("http://218.18.114.97:3392/btFile" + path)
                         .transition(new DrawableTransitionOptions().crossFade(2000))
                         .apply(GlideUtils.getOptions())
-                        .into(ivExpertiseIcon);
+                        .into(mChildBinding.ivExpertiseIcon);
             }
-            tvExpertiseName.setText(role.getExpertName());
-            tvExpertiseSpecialitySkill.setText(role.getExpertise());
-            tvExpertiseLevel.setText(role.getExpertLevelDesc());
-            tvExpertiseSpecialityCrop.setText(role.getPlantCrop());
-            tvExpertiseWorkingTime.setText(role.getServiceTime());
-            phvExpertiseLocation.setDesc(role.getAddress());
-            etExpertiseDetailAddress.setText(role.getAddr());
-            phvConsultationWay.setDesc(role.getReserve1());
+            mChildBinding.tvExpertiseName.setText(role.getExpertName());
+            mChildBinding.tvExpertiseSpecialitySkill.setText(role.getExpertise());
+            mChildBinding.tvExpertiseLevel.setText(role.getExpertLevelDesc());
+            mChildBinding.tvExpertiseSpecialityCrop.setText(role.getPlantCrop());
+            mChildBinding.tvExpertiseWorkingTime.setText(role.getServiceTime());
+            mChildBinding.phvExpertiseLocation.setDesc(role.getAddress());
+            mChildBinding.etExpertiseDetailAddress.setText(role.getAddr());
+            mChildBinding.phvConsultationWay.setDesc(role.getReserve1());
             if (role.isonline()) {
-                phvOnlineSetting.setDesc("在线");
+                mChildBinding.phvOnlineSetting.setDesc("在线");
             } else {
-                phvOnlineSetting.setDesc("离线");
+                mChildBinding.phvOnlineSetting.setDesc("离线");
             }
         }
     }
 
-    @OnClick(R.id.btn_save)
-    void clickSave(View view) {
-        if (isEdit) {
-            //编辑
-            btnSave.setText(getString(R.string.save));
-            etExpertiseDetailAddress.setEnabled(true);
-            etFarmerDetailAddress.setEnabled(true);
-            etServiceStationDetailAddress.setEnabled(true);
-            phvChangeRole.setClickable(true);
-            phvConsultationWay.setClickable(true);
-            phvExpertiseLocation.setClickable(true);
-            phvFarmerLocation.setClickable(true);
-            phvOnlineSetting.setClickable(true);
-            phvServiceStationLocation.setClickable(true);
-        } else {
-            //保存
-            showSaveTipDialog();
-        }
-        isEdit = !isEdit;
+    void clickSave() {
+        mChildBinding.btnSave.setOnClickListener(v -> {
+            if (isEdit) {
+                //编辑
+                mChildBinding.btnSave.setText(getString(R.string.save));
+                mChildBinding.etExpertiseDetailAddress.setEnabled(true);
+                mChildBinding.etFarmerDetailAddress.setEnabled(true);
+                mChildBinding.etServiceStationDetailAddress.setEnabled(true);
+                mChildBinding.phvChangeRole.setClickable(true);
+                mChildBinding.phvConsultationWay.setClickable(true);
+                mChildBinding.phvExpertiseLocation.setClickable(true);
+                mChildBinding.phvFarmerLocation.setClickable(true);
+                mChildBinding.phvOnlineSetting.setClickable(true);
+                mChildBinding.phvServiceStationLocation.setClickable(true);
+            } else {
+                //保存
+                showSaveTipDialog();
+            }
+            isEdit = !isEdit;
+        });
     }
 
     private void showSaveTipDialog() {
@@ -264,8 +189,19 @@ public class SelfInfoActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.phv_expertise_location, R.id.phv_farmer_location, R.id.phv_service_station_location})
-    void clickLocation(final View view) {
+    void clickLocation() {
+        mChildBinding.phvExpertiseLocation.setOnClickListener(v->{
+            showCityDialog(mChildBinding.phvExpertiseLocation);
+        });
+        mChildBinding.phvFarmerLocation.setOnClickListener(v->{
+            showCityDialog(mChildBinding.phvFarmerLocation);
+        });
+        mChildBinding.phvServiceStationLocation.setOnClickListener(v->{
+            showCityDialog(mChildBinding.phvServiceStationLocation);
+        });
+    }
+
+    private void showCityDialog(View view){
         if (isEdit) return;
         if (cityDialog == null) {
             cityDialog = new CityDialog(SelfInfoActivity.this);
@@ -275,13 +211,13 @@ public class SelfInfoActivity extends BaseActivity {
                     String address = province + city + couny;
                     switch (view.getId()) {
                         case R.id.phv_expertise_location:
-                            phvExpertiseLocation.setDesc(address);
+                            mChildBinding.phvExpertiseLocation.setDesc(address);
                             break;
                         case R.id.phv_farmer_location:
-                            phvFarmerLocation.setDesc(address);
+                            mChildBinding.phvFarmerLocation.setDesc(address);
                             break;
                         case R.id.phv_service_station_location:
-                            phvServiceStationLocation.setDesc(address);
+                            mChildBinding.phvServiceStationLocation.setDesc(address);
                             break;
                     }
                 }
@@ -290,55 +226,66 @@ public class SelfInfoActivity extends BaseActivity {
         cityDialog.show();
     }
 
-    @OnClick(R.id.phv_change_role)
-    void clickChangeRole(View view) {
+    void clickChangeRole() {
         if (isEdit) return;
-        Observable<List<ChangeRoleEntity>> role = RetrofitFactory.getBtWeb().changeRole(AppConfig.user.getId());
-        role.compose(this.<List<ChangeRoleEntity>>createTransformer(false))
-                .subscribe(new BaseWithoutBaseEntityObserver<List<ChangeRoleEntity>>(this) {
-                    @Override
-                    protected void onHandleSuccess(List<ChangeRoleEntity> changeRoleEntities) {
-                        List<String> names = new ArrayList<String>();
-                        for (ChangeRoleEntity entity :
-                                changeRoleEntities) {
-                            names.add(entity.getROLE_NAME());
-                        }
-                        showListDialog(getString(R.string.change_role), names, phvChangeRole);
-                    }
-                });
+        mChildBinding.phvChangeRole.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Observable<List<ChangeRoleEntity>> role = RetrofitFactory.getBtWeb().changeRole(AppConfig.user.getId());
+                role.compose(createTransformer(false))
+                        .subscribe(new BaseWithoutBaseEntityObserver<List<ChangeRoleEntity>>(mContext) {
+                            @Override
+                            protected void onHandleSuccess(List<ChangeRoleEntity> changeRoleEntities) {
+                                List<String> names = new ArrayList<String>();
+                                for (ChangeRoleEntity entity :
+                                        changeRoleEntities) {
+                                    names.add(entity.getROLE_NAME());
+                                }
+                                showListDialog(getString(R.string.change_role), names, mChildBinding.phvChangeRole);
+                            }
+                        });
+            }
+        });
     }
 
-    @OnClick(R.id.phv_online_setting)
-    void clickOnlineSetting(View view) {
-        if (isEdit) return;
-        List<String> names = new ArrayList<>();
-        names.add("在线");
-        names.add("离线");
-        showListDialog(getString(R.string.online_setting), names, phvOnlineSetting);
+    void clickOnlineSetting() {
+        mChildBinding.phvOnlineSetting.setOnClickListener(v -> {
+            if (isEdit) return;
+            List<String> names = new ArrayList<>();
+            names.add("在线");
+            names.add("离线");
+            showListDialog(getString(R.string.online_setting), names, mChildBinding.phvOnlineSetting);
+        });
     }
 
-    @OnClick(R.id.phv_consultation_way)
-    void clickConsultationWay(View view) {
-        if (isEdit) return;
-        List<String> names = new ArrayList<String>();
-        List<String> checkNames = new ArrayList<String>();
-        names.add("在线咨询");
-        names.add("电话咨询");
-        names.add("视频咨询");
-        String desc = phvConsultationWay.getDesc();
-        if (!TextUtils.isEmpty(desc)) {
-            String[] split = desc.split("/");
-            List<String> list = Arrays.asList(split);
-            checkNames.addAll(list);
-        }
-        showConsultationWayDialog(names, checkNames);
+    void clickConsultationWay() {
+        mChildBinding.phvConsultationWay.setOnClickListener(v -> {
+            if (isEdit) return;
+            List<String> names = new ArrayList<String>();
+            List<String> checkNames = new ArrayList<String>();
+            names.add("在线咨询");
+            names.add("电话咨询");
+            names.add("视频咨询");
+            String desc = mChildBinding.phvConsultationWay.getDesc();
+            if (!TextUtils.isEmpty(desc)) {
+                String[] split = desc.split("/");
+                List<String> list = Arrays.asList(split);
+                checkNames.addAll(list);
+            }
+            showConsultationWayDialog(names, checkNames);
+        });
     }
 
-    @OnClick(R.id.rl_expertise_icon)
-    void clickExpertiseIcon(View view) {
+    void clickExpertiseIcon() {
         //头像
-        if (isEdit) return;
-        PictureUtils.getCirclePicture(this);
+        mChildBinding.rlExpertiseIcon.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isEdit) return;
+                PictureUtils.getCirclePicture(SelfInfoActivity.this);
+            }
+        });
+
     }
 
     private void showConsultationWayDialog(List<String> names, List<String> checkNames) {
@@ -359,7 +306,7 @@ public class SelfInfoActivity extends BaseActivity {
                     if (!TextUtils.isEmpty(str)) {
                         str = str.substring(0, str.length() - 1);
                     }
-                    phvConsultationWay.setDesc(str);
+                    mChildBinding.phvConsultationWay.setDesc(str);
                 }
             });
         } else {
@@ -404,5 +351,20 @@ public class SelfInfoActivity extends BaseActivity {
                     break;
             }
         }
+    }
+
+    @Override
+    public void createObserver() {
+        clickChangeRole();
+        clickExpertiseIcon();
+        clickConsultationWay();
+        clickOnlineSetting();
+        clickLocation();
+        clickSave();
+    }
+
+    @Override
+    public void initViewAndData(Bundle savedInstanceState) {
+
     }
 }
