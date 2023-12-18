@@ -3,14 +3,14 @@ package com.fei.firstproject.http;
 
 import android.content.Context;
 
-import com.fei.firstproject.activity.BaseActivity;
+import com.fei.firstproject.activity.BaseProjectActivity;
 import com.fei.firstproject.fragment.BaseProjectFragment;
 import com.fei.firstproject.http.inter.CallBack;
 import com.fei.firstproject.inter.IBase;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableTransformer;
-import io.reactivex.Observer;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableTransformer;
+import io.reactivex.rxjava3.core.Observer;
 
 
 public class HttpUtils<T> {
@@ -39,16 +39,16 @@ public class HttpUtils<T> {
     public void request(IBase iBase, Observable<T> observable, boolean isBaseEntity, boolean isShowErrorView, final CallBack<T> callBack) {
 
         ObservableTransformer<T, T> transformer = null;
-        BaseActivity activity = null;
+        BaseProjectActivity activity = null;
         BaseProjectFragment fragment = null;
         Context context = null;
         Observer<T> observer = null;
 
-        if (iBase instanceof BaseActivity) {
-            activity = (BaseActivity) iBase;
+        if (iBase instanceof BaseProjectActivity) {
+            activity = (BaseProjectActivity) iBase;
             context = activity;
             transformer = createTransformer(activity, isShowErrorView);
-        } else if(iBase instanceof BaseProjectFragment){
+        } else if (iBase instanceof BaseProjectFragment) {
             fragment = (BaseProjectFragment) iBase;
             context = fragment.getActivity();
             transformer = createTransformer(fragment, isShowErrorView);
@@ -93,7 +93,7 @@ public class HttpUtils<T> {
     }
 
 
-    private <T> ObservableTransformer<T, T> createTransformer(final BaseActivity activity, final boolean isShow) {
+    private <T> ObservableTransformer<T, T> createTransformer(final BaseProjectActivity activity, final boolean isShow) {
         return RxSchedulers.compose(activity, activity.<T>bindToLifecycle(), new RxSchedulers.OnConnectError() {
             @Override
             public void onError() {

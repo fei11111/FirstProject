@@ -36,7 +36,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding> : RxFragment()
         savedInstanceState: Bundle?
     ): View? {
         mBinding = inflateBindingWithGeneric(layoutInflater, container, false)
-        return mBinding?.root
+        return mBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

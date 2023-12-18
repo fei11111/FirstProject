@@ -60,7 +60,7 @@ public class PartHeadView extends RelativeLayout {
 
     private void initView() {
         setClickable(true);
-        ViewPartHeadBinding binding = ViewPartHeadBinding.bind(this);
+        ViewPartHeadBinding binding = ViewPartHeadBinding.inflate(LayoutInflater.from(getContext()),this,true);
         tvTitle = binding.tvTitle;
         ivArrow = binding.ivArrow;
         tvDesc = binding.tvDesc;

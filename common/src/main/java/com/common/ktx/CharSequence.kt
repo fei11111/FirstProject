@@ -18,7 +18,7 @@ fun CharSequence?.isNotNullAndEmpty(): Boolean {
 /** 字符串中是否包含 Emoji */
 fun CharSequence.containsEmoji(): Boolean {
     return (this.indices)
-            .map { this[it].toInt() }
+            .map { this[it].code }
             .none {
                 (it == 0x0) || (it == 0x9) || (it == 0xA) || (it == 0xD)
                         || (it in 0x20..0xD7FF)

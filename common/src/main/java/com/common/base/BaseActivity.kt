@@ -34,7 +34,7 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding> : RxAppCompatA
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         mContext = this
-        mBinding = inflateBindingWithGeneric(layoutInflater)
+        mBinding = inflateBindingWithGeneric(layoutInflater,true)
         setContentView(mBinding.root)
         init(savedInstanceState)
     }

@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -103,7 +104,7 @@ public class AppHeadView extends RelativeLayout {
     }
 
     private void initView() {
-        appHeadViewBinding = AppHeadViewBinding.bind(this);
+        appHeadViewBinding = AppHeadViewBinding.inflate(LayoutInflater.from(getContext()), this, true);
         ivHeadLeft = appHeadViewBinding.ivHeadLeft;
         tvHeadLeft = appHeadViewBinding.tvHeadLeft;
         flHeadLeft = appHeadViewBinding.flHeadLeft;
@@ -116,11 +117,12 @@ public class AppHeadView extends RelativeLayout {
         ivDelete = appHeadViewBinding.ivDelete;
         ivSearch = appHeadViewBinding.ivSearch;
         initContent();
-        onLeftRightClick(appHeadViewBinding.flHeadLeft);
-        onLeftRightClick(appHeadViewBinding.flHeadRight);
         search();
         onTextChanged();
         deleteEtText();
+
+        appHeadViewBinding.flHeadLeft.setOnClickListener(v -> onLeftRightClick(appHeadViewBinding.flHeadLeft));
+        appHeadViewBinding.flHeadRight.setOnClickListener(v -> onLeftRightClick(appHeadViewBinding.flHeadRight));
     }
 
     private void initContent() {

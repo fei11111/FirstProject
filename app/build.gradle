@@ -4,13 +4,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion 33
+    compileSdk Integer.parseInt(project.ANDROID_COMPILE_SDK_VERSION)
     defaultConfig {
-        applicationId "com.fei.firstproject"
-        minSdkVersion 21
-        targetSdkVersion 33
-        versionCode 1
-        versionName "1.0"
+        applicationId project.APPLICATION_ID
+        minSdk Integer.parseInt(project.ANDROID_MIN_SDK_VERSION)
+        targetSdk Integer.parseInt(project.ANDROID_TARGET_SDK_VERSION)
+        versionCode Integer.parseInt(project.VERSION_CODE)
+        versionName project.VERSION_NAME
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         ndk {
@@ -88,8 +88,13 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions{
+        jvmTarget = JavaVersion.VERSION_1_8
+        freeCompilerArgs += ["-Xjvm-default=all"]
     }
 
     sourceSets {
@@ -130,7 +135,7 @@ dependencies {
     //https://github.com/koral--/android-gif-drawable
     implementation 'io.github.lucksiege:pictureselector:v2.2.3'
     implementation files('libs/zxing.jar')
-    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.4.0'
     implementation 'com.amap.api:3dmap:7.3.0'
     implementation 'com.amap.api:location:6.4.0'
     implementation 'com.amap.api:search:7.3.0'
@@ -143,4 +148,7 @@ dependencies {
     implementation 'com.github.lecho:hellocharts-library:1.5.8@aar'
     implementation 'com.umeng.umsdk:analytics:7.5.4'
     implementation 'com.umeng.umsdk:common:1.5.4'
+
+    configurations.all { resolutionStrategy { force "org.jetbrains.kotlin:kotlin-stdlib:$project.KOTLIN_VERSION" } }
+    configurations.all { resolutionStrategy { force "org.jetbrains.kotlin:kotlin-stdlib-common:$project.KOTLIN_VERSION" } }
 }

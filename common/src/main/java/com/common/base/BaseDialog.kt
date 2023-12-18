@@ -1,5 +1,6 @@
 package com.common.base
 
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.Gravity
@@ -8,11 +9,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
+import androidx.annotation.NonNull
 import androidx.annotation.StyleRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import com.common.R
 import com.trello.rxlifecycle4.components.support.RxAppCompatDialogFragment
+import org.jetbrains.annotations.NotNull
+
 
 /**
  * Dialog 弹窗基类
@@ -72,15 +79,21 @@ abstract class BaseDialog
         return mRootView
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        // 配置 Dialog 宽高、重心
-        val layoutParams = dialog?.window?.attributes
-        layoutParams?.width = dialogWidth
-        layoutParams?.height = dialogHeight
-        layoutParams?.gravity = gravity
-        dialog?.window?.attributes = layoutParams
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        requireActivity().lifecycle.addObserver(object:LifecycleEventObserver {
+            override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+                if(event.targetState == Lifecycle.State.CREATED) {
+                    // 配置 Dialog 宽高、重心
+                    val layoutParams = dialog?.window?.attributes
+                    layoutParams?.width = dialogWidth
+                    layoutParams?.height = dialogHeight
+                    layoutParams?.gravity = gravity
+                    dialog?.window?.attributes = layoutParams
+                    requireActivity().lifecycle.removeObserver(this)
+                }
+            }
+        })
     }
 
     override fun onDismiss(dialog: DialogInterface) {

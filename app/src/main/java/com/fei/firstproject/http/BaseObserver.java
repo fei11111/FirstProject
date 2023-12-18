@@ -8,8 +8,9 @@ import com.fei.firstproject.http.exceptiion.ExceptionEngine;
 import com.fei.firstproject.utils.LogUtils;
 import com.fei.firstproject.utils.Utils;
 
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+
 
 /**
  * Created by Administrator on 2017/8/12.

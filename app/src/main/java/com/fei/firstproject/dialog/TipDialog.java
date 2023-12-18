@@ -56,8 +56,10 @@ public class TipDialog extends Dialog {
         tvDialogContent = binding.tvDialogContent;
         btnDialogConfirm = binding.btnDialogConfirm;
 
-        clickCancle(binding.ivDialogCancle);
-        clickConfirm(binding.btnDialogConfirm);
+        binding.ivDialogCancle.setOnClickListener(v -> clickCancle(binding.ivDialogCancle));
+        binding.btnDialogConfirm.setOnClickListener(v -> {
+            clickConfirm(binding.btnDialogConfirm);
+        });
 
         if (!TextUtils.isEmpty(contentText)) {
             tvDialogContent.setText(contentText);

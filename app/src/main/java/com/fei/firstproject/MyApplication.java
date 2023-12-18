@@ -3,6 +3,7 @@ package com.fei.firstproject;
 import android.app.Application;
 
 import com.amap.api.location.AMapLocationClient;
+import com.common.base.BaseApplication;
 import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.entity.UserEntity;
 import com.fei.firstproject.utils.SPUtils;
@@ -12,7 +13,7 @@ import com.umeng.commonsdk.UMConfigure;
  * Created by Administrator on 2017/7/28.
  */
 
-public class MyApplication extends Application {
+public class MyApplication extends BaseApplication {
 
     private static MyApplication instance;
 

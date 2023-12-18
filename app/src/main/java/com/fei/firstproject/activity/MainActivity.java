@@ -361,9 +361,10 @@ public class MainActivity extends BaseProjectActivity<EmptyViewModel, ActivityMa
 
     @Override
     public void createObserver() {
-        clickBottom(mChildBinding.getRoot().findViewById(R.id.ll_bottom_main));
-        clickBottom(mChildBinding.getRoot().findViewById(R.id.ll_bottom_make));
-        clickBottom(mChildBinding.getRoot().findViewById(R.id.ll_bottom_me));
+        mChildBinding.getRoot().findViewById(R.id.ll_bottom_main).setOnClickListener(v -> clickBottom(mChildBinding.getRoot().findViewById(R.id.ll_bottom_main)));
+        mChildBinding.getRoot().findViewById(R.id.ll_bottom_make).setOnClickListener(v -> clickBottom(mChildBinding.getRoot().findViewById(R.id.ll_bottom_make)));
+        mChildBinding.getRoot().findViewById(R.id.ll_bottom_me).setOnClickListener(v -> clickBottom( mChildBinding.getRoot().findViewById(R.id.ll_bottom_me)));
+
     }
 
     @Override

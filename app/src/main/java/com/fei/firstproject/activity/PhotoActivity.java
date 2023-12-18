@@ -81,7 +81,7 @@ public class PhotoActivity extends BaseProjectActivity<EmptyViewModel, ActivityP
         RequestApi downLoad = RetrofitFactory.getDownLoad(null);
         downLoad.downloadFile(url)
                 .subscribeOn(Schedulers.io())
-                .doOnSubscribe(new Consumer<>() {
+                .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(Disposable disposable) {
                         // 可添加网络连接判断等

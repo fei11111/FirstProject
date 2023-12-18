@@ -106,6 +106,7 @@ public abstract class BaseProjectActivity<VM extends BaseViewModel, VB extends V
         initProgress();
         initTitle();
         initRequest();
+        initlistener();
     }
 
     private void initBus() {
