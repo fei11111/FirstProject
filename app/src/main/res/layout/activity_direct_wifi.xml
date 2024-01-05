@@ -1,0 +1,68 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <Button
+        android:id="@+id/btnCreateGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create Group"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnConnectGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Connect Group"
+        android:layout_below="@id/btnCreateGroup"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnRemoveGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remove Group"
+        android:layout_below="@id/btnConnectGroup"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnJoinGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Discover"
+        android:layout_below="@id/btnRemoveGroup"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnConnect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Connect"
+        android:layout_below="@id/btnJoinGroup"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnSend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send"
+        android:layout_below="@id/btnConnect"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="cancelConnect"
+        android:layout_below="@id/btnSend"
+        android:layout_marginBottom="16dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/btnCancel"/>
+
+</RelativeLayout>
