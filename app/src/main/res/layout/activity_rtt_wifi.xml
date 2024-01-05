@@ -5,11 +5,6 @@
     android:background="@color/colorBackground"
     android:orientation="vertical">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="scan"
-        android:id="@+id/btn_scan"/>
 
 
 

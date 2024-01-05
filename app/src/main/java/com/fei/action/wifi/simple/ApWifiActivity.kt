@@ -1,8 +1,10 @@
-package com.fei.action.wifi
+package com.fei.action.wifi.simple
 
 import android.Manifest
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.Network
@@ -15,21 +17,166 @@ import android.net.wifi.WifiNetworkSuggestion
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.text.TextUtils
 import android.util.Log
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.common.base.BaseActivity
 import com.common.viewmodel.EmptyViewModel
 import com.fei.firstproject.databinding.ActivityApWifiBinding
 
+/**
+ * 普通wifi
+ */
 class ApWifiActivity : BaseActivity<EmptyViewModel, ActivityApWifiBinding>() {
 
-    private final val WIFI_REQUEST = 0X100
+    private var wifiManager: WifiManager? = null
+    private var wifiScanReceiver: BroadcastReceiver? = null
 
     override fun createObserver() {
     }
 
     override fun initViewAndData(savedInstanceState: Bundle?) {
+        mBinding.btnScan.setOnClickListener { scanWifi() }
+    }
 
+    /**
+     * 扫码wifi
+     */
+    private fun scanWifi() {
+        wifiManager =
+            applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        wifiScanReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                val success = intent?.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false)
+                Log.i("tag", "onReceive:$success")
+                if (success == true) {
+                    scanSuccess()
+                } else {
+                    scanFail()
+                }
+
+            }
+        }
+
+        val intentFilter = IntentFilter()
+        intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
+        registerReceiver(wifiScanReceiver, intentFilter)
+
+        /**
+         *
+         * 使用 WifiManager.startScan() 扫描的频率适用以下限制。
+         *
+         * Android 8.0 和 Android 8.1：
+         *
+         * 每个后台应用可以在 30 分钟内扫描一次。
+         *
+         * Android 9：
+         *
+         * 每个前台应用可以在 2 分钟内扫描四次。这样便可在短时间内进行多次扫描。
+         *
+         * 所有后台应用总共可以在 30 分钟内扫描一次。
+         *
+         * Android 10 及更高版本：
+         *
+         * 适用 Android 9 的节流限制。新增一个开发者选项，用户可以关闭节流功能以便进行本地测试（位于开发者选项 > 网络 > WLAN 扫描调节下）。
+         *
+         */
+        if (!openWifi()) return
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P){
+            //9.0开始要开定位
+            if (!isLocationEnabled()) {
+                Toast.makeText(this@ApWifiActivity, "Please enable Location", Toast.LENGTH_SHORT)
+                    .show()
+                startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+                return
+            }
+        }
+
+        Log.i("tag","wifi已打开")
+
+        val success = wifiManager!!.startScan()
+        if (!success) {
+            // scan failure handling
+            Log.i("tag", "开启扫描wifi失败")
+            scanFail()
+        }
+
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P){
+//            Log.i("tag","android p 直接获取wifi列表")
+//            scanSuccess()
+//        }else {
+//            val success = wifiManager!!.startScan()
+//            if (!success) {
+//                // scan failure handling
+//                Log.i("tag", "开启扫描wifi失败")
+//                scanFail()
+//            }
+//        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (wifiScanReceiver != null) {
+            unregisterReceiver(wifiScanReceiver)
+        }
+    }
+
+    private fun scanFail() {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
+        val wifiList = wifiManager?.scanResults
+        if (wifiList != null) {
+            for (scanResult in wifiList) {
+                Log.i("scanResult历史", scanResult.toString())
+            }
+        }else {
+            Log.i("scanResult历史","wifiList is null")
+        }
+        // potentially use older scan results ...
+    }
+
+    private fun scanSuccess() {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
+        val wifiList = wifiManager?.scanResults
+        if (wifiList != null) {
+            for (scanResult in wifiList) {
+                Log.i("scanResult", scanResult.toString())
+            }
+        }else {
+            Log.i("scanResult","wifiList is null")
+        }
+    }
+
+    private fun isLocationEnabled(): Boolean {
+        val locationMode: Int
+        val locationProviders: String
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            locationMode = Settings.Secure.getInt(
+                contentResolver,
+                Settings.Secure.LOCATION_MODE,
+                Settings.Secure.LOCATION_MODE_OFF
+            )
+            locationMode != Settings.Secure.LOCATION_MODE_OFF
+        } else {
+            locationProviders = Settings.Secure.getString(
+                contentResolver,
+                Settings.Secure.LOCATION_PROVIDERS_ALLOWED
+            )
+            !TextUtils.isEmpty(locationProviders)
+        }
     }
 
     fun disconnectDeviceWifi() {
@@ -127,7 +274,7 @@ class ApWifiActivity : BaseActivity<EmptyViewModel, ActivityApWifiBinding>() {
         }
     }
 
-    fun openWifi() {
+    fun openWifi(): Boolean {
         val wifiManager = applicationContext.getSystemService(
             WIFI_SERVICE
         ) as WifiManager
@@ -135,25 +282,28 @@ class ApWifiActivity : BaseActivity<EmptyViewModel, ActivityApWifiBinding>() {
             val panelIntent = Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY)
             val componentName = panelIntent.resolveActivity(packageManager)
             if (componentName != null) {
-                startActivityForResult(panelIntent, WIFI_REQUEST)
+                startActivity(panelIntent)
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                startActivity(Intent(Settings.ACTION_WIFI_SETTINGS))
             } else {
-                wifiManager.setWifiEnabled(true)//android Q 默认返回false
+                return wifiManager.setWifiEnabled(true)//android Q 默认返回false
             }
 
         } else {
-            println("wifi已经打开")
+            return true;
         }
+        return false
     }
 
-    private fun isOpenWifi():Boolean {
+    private fun isOpenWifi(): Boolean {
         val wifiManager = applicationContext.getSystemService(
             WIFI_SERVICE
         ) as WifiManager
-       return wifiManager.isWifiEnabled
+        return wifiManager.isWifiEnabled
     }
 
 
-    fun setMobileNetworkEnabled(result: MethodChannel.Result) {
+    fun setMobileNetworkEnabled() {
 //        if (mobileDataEnabling) return
 //        if (wifiEnabling) return
 //        mobileDataEnabling = true
@@ -172,7 +322,6 @@ class ApWifiActivity : BaseActivity<EmptyViewModel, ActivityApWifiBinding>() {
                 object : ConnectivityManager.NetworkCallback() {
                     override fun onAvailable(network: Network) {
                         super.onAvailable(network)
-                        mobileDataEnabling = false
                         println("onAvailable")
                         println(network) // 29 移动数据 100 wifi;
                         if (Build.VERSION.SDK_INT >= 23) {
@@ -180,7 +329,6 @@ class ApWifiActivity : BaseActivity<EmptyViewModel, ActivityApWifiBinding>() {
                         } else {
                             ConnectivityManager.setProcessDefaultNetwork(network)
                         }
-                        result.success("MobileNetworkEnabled")
                     }
                 }
             connectivityManager.requestNetwork(request, callback)
@@ -188,7 +336,7 @@ class ApWifiActivity : BaseActivity<EmptyViewModel, ActivityApWifiBinding>() {
     }
 
     var net: Network? = null
-    fun setWifiNetworkEnabled(result: MethodChannel.Result, isSave: Boolean) {
+    fun setWifiNetworkEnabled(isSave: Boolean) {
         println("WIFI 测试")
         var requestCount = 0
         if (Build.VERSION.SDK_INT >= 21) {
@@ -210,7 +358,6 @@ class ApWifiActivity : BaseActivity<EmptyViewModel, ActivityApWifiBinding>() {
                             return
                         }
                         net = network
-                        wifiEnabling = false
                         super.onAvailable(network)
                         println("onAvailable")
                         println("network 结果 = $network") // 29 移动数据 100 wifi;
@@ -219,7 +366,6 @@ class ApWifiActivity : BaseActivity<EmptyViewModel, ActivityApWifiBinding>() {
                         } else {
                             ConnectivityManager.setProcessDefaultNetwork(network)
                         }
-                        result.success("WifiNetworkEnabled")
                     }
                 }
             try {
@@ -232,7 +378,8 @@ class ApWifiActivity : BaseActivity<EmptyViewModel, ActivityApWifiBinding>() {
     var wifiLock: WifiManager.WifiLock? = null
     private fun bindWifi(id: String, password: String) {
         Log.i("aa", "bindWifi")
-        val wifiManager = getSystemService(Context.WIFI_SERVICE) as WifiManager
+        val wifiManager =
+            getApplicationContext().getSystemService(Context.WIFI_SERVICE) as WifiManager
 
         if (wifiManager.isWifiEnabled) {
             wifiLock =

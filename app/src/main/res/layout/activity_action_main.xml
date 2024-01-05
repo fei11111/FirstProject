@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btn_ap_wifi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="普通wifi" />
+
+    <Button
+        android:id="@+id/btn_direct_wifi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="直连wifi" />
+
+    <Button
+        android:id="@+id/btn_aware_wifi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="感知wifi 8.0以后" />
+
+    <Button
+        android:id="@+id/btn_rtt_wifi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="rtt 9.0以后" />
+
+
+</LinearLayout>

@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackground"
     android:padding="16dp">
 
     <Button
@@ -20,15 +21,23 @@
         android:layout_marginBottom="16dp"/>
 
     <Button
-        android:id="@+id/btnRemoveGroup"
+        android:id="@+id/btnRequestGroupInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Remove Group"
+        android:text="group info"
         android:layout_below="@id/btnConnectGroup"
         android:layout_marginBottom="16dp"/>
 
     <Button
-        android:id="@+id/btnJoinGroup"
+        android:id="@+id/btnRemoveGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remove Group"
+        android:layout_below="@id/btnRequestGroupInfo"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnDiscover"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Discover"
@@ -40,7 +49,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Connect"
-        android:layout_below="@id/btnJoinGroup"
+        android:layout_below="@id/btnDiscover"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnConnectInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="connectionInfo"
+        android:layout_below="@id/btnConnect"
         android:layout_marginBottom="16dp"/>
 
     <Button
@@ -48,7 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Send"
-        android:layout_below="@id/btnConnect"
+        android:layout_below="@id/btnConnectInfo"
         android:layout_marginBottom="16dp"/>
 
     <Button

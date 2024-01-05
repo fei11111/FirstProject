@@ -1,8 +1,9 @@
-package com.fei.action.direct_wifi
+package com.fei.action.wifi.direct
 
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
@@ -18,6 +19,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.common.base.BaseActivity
 import com.common.viewmodel.EmptyViewModel
 import com.fei.firstproject.databinding.ActivityDirectWifiBinding
@@ -29,24 +31,177 @@ import java.io.OutputStreamWriter
 import java.net.InetSocketAddress
 import java.net.ServerSocket
 import java.net.Socket
+import kotlin.random.Random
 
+/***
+ *
+ *  点对点wifi
+ * 以下 API 还需要启用位置信息模式：
+ *
+ * discoverPeers()
+ * discoverServices()
+ * requestPeers()
+ *
+ */
 class DirectWifiActivity : BaseActivity<EmptyViewModel, ActivityDirectWifiBinding>() {
 
     private val PERMISSION_REQUEST_CODE = 1
-
-    private var wifiManager: WifiManager? = null
-    private var wifiP2pManager: WifiP2pManager? = null
+    private val wifiManager: WifiManager? by lazy(LazyThreadSafetyMode.NONE) {
+        applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+    }
+    private val wifiP2pManager: WifiP2pManager? by lazy(LazyThreadSafetyMode.NONE) {
+        getSystemService(Context.WIFI_P2P_SERVICE) as WifiP2pManager?
+    }
     private var channel: WifiP2pManager.Channel? = null
     private var wifiP2pReceiver: BroadcastReceiver? = null
     private var intentFilter: IntentFilter? = null
     private var connectDevice: WifiP2pDevice? = null
     private var deviceListAdapter: DeviceListAdapter? = null
+    private var isDiscover = false
+    private var isRequestPeer = false //防止多次request
+
     override fun createObserver() {
 
     }
 
     override fun initViewAndData(savedInstanceState: Bundle?) {
+        mBinding.btnCreateGroup.setOnClickListener {
+            createGroup()
+        }
+        mBinding.btnConnectGroup.setOnClickListener {
+            connectDevice?.let { connectGroup(it) }
+        }
+        mBinding.btnRemoveGroup.setOnClickListener {
+            removeGroup()
+        }
+        mBinding.btnDiscover.setOnClickListener {
+            discoverPeers()
+        }
+        mBinding.btnConnect.setOnClickListener {
+            connectDevice?.let { connect(it) }
+        }
+        mBinding.btnSend.setOnClickListener {
+            sendMessage()
+        }
+        mBinding.btnCancel.setOnClickListener {
+            cancelConnect()
+        }
+        mBinding.btnRequestGroupInfo.setOnClickListener {
+            requestGroupInfo()
+        }
+        mBinding.btnConnectInfo.setOnClickListener {
+            requestConnectionInfo()
+        }
 
+        if (initP2p()) {
+            receiveReigst()
+        }
+    }
+
+    private fun receiveReigst() {
+        intentFilter = IntentFilter()
+        intentFilter!!.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION)
+        intentFilter!!.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION)
+        intentFilter!!.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION)
+        intentFilter!!.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION)
+
+        wifiP2pReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                val action = intent.action
+                if (WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION == action) {
+                    Log.i("tag", "当在设备上启用或停用 Wi-Fi 点对点时广播。")
+                    val state = intent.getIntExtra(WifiP2pManager.EXTRA_WIFI_STATE, -1)
+                    if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
+                        // WiFi P2P is enabled
+                        Log.i("tag", "状态改变 WiFi P2P is enabled")
+
+                        //todo
+                        //可搜索周围P2P设备 discoverPeers
+
+                    } else {
+                        // WiFi P2P is not enabled
+                        Log.i("tag", "状态改变 WiFi P2P is not enabled");
+                    }
+                } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION == action) {
+                    Log.i(
+                        "tag",
+                        "当您调用 discoverPeers() 时广播。如果您在应用中处理此 intent，则通常需要调用 requestPeers() 来获取更新后的对等设备列表。"
+                    );
+                    // Request available peers from the WifiP2pManager
+
+                    if (isDiscover && !isRequestPeer) {
+                        Log.i("tag", "发起requestPeers");
+                        isRequestPeer = true
+                        requestPeers()
+                    }
+                } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION == action) {
+                    Log.i(
+                        "tag",
+                        "表明Wi-Fi对等网络的连接状态发生了改变,应用可以使用 requestConnectionInfo()、requestNetworkInfo() 或 requestGroupInfo() 来检索当前连接信息。    "
+                    );
+                    // Respond to new connection or disconnections
+                    requestConnectionInfo()
+                } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION == action) {
+                    Log.i("tag", "表明该设备的配置信息发生了改变");
+                    val device: WifiP2pDevice? =
+                        intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_DEVICE)
+                    Log.i(
+                        "tag",
+                        "本设备信息发生变化：" + device!!.deviceName + ", " + device.deviceAddress
+                    )
+                    requestDeviceInfo()
+                    // Respond to this device's wifi state changing
+                }
+            }
+        }
+        registerReceiver(wifiP2pReceiver, intentFilter)
+    }
+
+    private fun requestDeviceInfo() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.NEARBY_WIFI_DEVICES
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+
+                return
+            }
+            wifiP2pManager!!.requestDeviceInfo(channel!!,
+                object : WifiP2pManager.DeviceInfoListener {
+                    override fun onDeviceInfoAvailable(p0: WifiP2pDevice?) {
+                        Log.i("tag", p0!!.toString())
+                    }
+                })
+
+        }
+    }
+
+
+    private fun requestPeers() {
+        if (ActivityCompat.checkSelfPermission(
+                this@DirectWifiActivity,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this@DirectWifiActivity,
+                arrayOf<String>(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                PERMISSION_REQUEST_CODE
+            )
+            return
+        }
+        wifiP2pManager!!.requestPeers(channel, peerListListener)
+    }
+
+    private fun requestConnectionInfo() {
+        wifiP2pManager!!.requestConnectionInfo(
+            channel,
+            connectionInfoListener
+        )
     }
 
     private fun connectGroup(
@@ -54,35 +209,7 @@ class DirectWifiActivity : BaseActivity<EmptyViewModel, ActivityDirectWifiBindin
     ) {
         // 如果连接对象为群组GroupOwner
         if (wifiP2pDevice.isGroupOwner) {
-            Log.d("TAG", "connectWiFiP2P: " + wifiP2pDevice.deviceName)
-            val config: WifiP2pConfig = WifiP2pConfig()
-            config.deviceAddress = wifiP2pDevice.deviceAddress
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                return
-            }
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                if (ActivityCompat.checkSelfPermission(
-                        this@DirectWifiActivity,
-                        android.Manifest.permission.NEARBY_WIFI_DEVICES
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    return
-                }
-            }
-            wifiP2pManager!!.connect(channel, config, object : WifiP2pManager.ActionListener {
-                override fun onSuccess() {
-                    Log.i("TAG", "onSuccess: connect")
-                }
-
-                override fun onFailure(i: Int) {
-                    Log.i("TAG", "onFailure: connect $i")
-                }
-            })
+            connect(wifiP2pDevice)
         } else {
             Log.i("TAG", "对方设备不是群组")
         }
@@ -148,33 +275,39 @@ class DirectWifiActivity : BaseActivity<EmptyViewModel, ActivityDirectWifiBindin
         }
         try {
             serverSocket = ServerSocket(8888)
-            Log.d("Server", "服务器 Socket 已创建")
+            Toast.makeText(this@DirectWifiActivity,"服务器 Socket 已创建",Toast.LENGTH_LONG).show()
         } catch (e: IOException) {
             e.printStackTrace()
         }
 
         // 开启接收线程监听客户端连接
         val acceptThread = Thread {
-            while (true) {
+
                 try {
                     // 等待客户端连接
                     val socket: Socket = serverSocket!!.accept()
-                    Log.d("Server", "客户端已连接：" + socket.inetAddress)
+                    Toast.makeText(this@DirectWifiActivity,"客户端已连接",Toast.LENGTH_LONG).show()
 
-                    // 读取客户端发送的数据
-                    val reader = BufferedReader(InputStreamReader(socket.getInputStream()))
-                    val data = reader.readLine()
+                    while (true) {
+                        // 读取客户端发送的数据
+                        val reader = BufferedReader(InputStreamReader(socket.getInputStream()))
+                        val data = reader.readLine()
 
-                    // 发送响应给客户端
-                    val writer =
-                        BufferedWriter(OutputStreamWriter(socket.getOutputStream()))
-                    writer.write("服务端收到了数据[$data]")
-                    writer.newLine()
-                    writer.flush()
+                        runOnUiThread {
+                            Toast.makeText(this@DirectWifiActivity,"收到数据$data",Toast.LENGTH_LONG).show()
+                        }
+
+                        // 发送响应给客户端
+                        val writer =
+                            BufferedWriter(OutputStreamWriter(socket.getOutputStream()))
+                        writer.write(Random.nextInt(1000).toString())
+                        writer.newLine()
+                        writer.flush()
+                    }
+
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }
-            }
         }
         acceptThread.start()
     }
@@ -191,16 +324,23 @@ class DirectWifiActivity : BaseActivity<EmptyViewModel, ActivityDirectWifiBindin
             try {
                 // 向服务端发送数据
                 val writer = BufferedWriter(OutputStreamWriter(clientSocket!!.getOutputStream()))
-                writer.write("Hello, World!")
+                writer.write(Random.nextInt(1000).toString())
                 writer.newLine()
                 writer.flush()
 
                 // 读取服务端响应数据
                 val reader = BufferedReader(InputStreamReader(clientSocket!!.getInputStream()))
                 val data = reader.readLine()
+
+                runOnUiThread {
+                    Toast.makeText(this@DirectWifiActivity,"收到数据$data",Toast.LENGTH_LONG).show()
+                }
+
                 Log.d("Client", "服务端返回的响应：$data")
             } catch (e: IOException) {
                 e.printStackTrace()
+                clientSocket!!.close()
+                clientSocket = null
             }
         }
         thread.start()
@@ -268,16 +408,18 @@ class DirectWifiActivity : BaseActivity<EmptyViewModel, ActivityDirectWifiBindin
 
             WifiP2pDevice.CONNECTED -> {
                 // 断开连接
-                wifiP2pManager!!.removeGroup(channel, object : WifiP2pManager.ActionListener {
-                    override fun onSuccess() {
-                        Log.i("tag", "断开成功")
-                    }
-
-                    override fun onFailure(p0: Int) {
-                        Log.i("tag", "断开失败")
-                    }
-
-                })
+//                wifiP2pManager!!.removeGroup(channel, object : WifiP2pManager.ActionListener {
+//                    override fun onSuccess() {
+//                        Log.i("tag", "断开成功")
+//                    }
+//
+//                    override fun onFailure(p0: Int) {
+//                        Log.i("tag", "断开失败")
+//                    }
+//
+//                })
+                Log.i("tag","已经连接")
+                requestConnectionInfo()
             }
 
             WifiP2pDevice.INVITED -> {
@@ -307,6 +449,11 @@ class DirectWifiActivity : BaseActivity<EmptyViewModel, ActivityDirectWifiBindin
     }
 
     private fun createGroup() {
+
+        if(serverSocket!=null) {
+            return
+        }
+
         // Check if location permission is granted
         if (ActivityCompat.checkSelfPermission(
                 this,
@@ -333,10 +480,48 @@ class DirectWifiActivity : BaseActivity<EmptyViewModel, ActivityDirectWifiBindin
             }
 
             override fun onFailure(reason: Int) {
-                Toast.makeText(this@DirectWifiActivity, "Failed to create group", Toast.LENGTH_SHORT)
+                Toast.makeText(
+                    this@DirectWifiActivity,
+                    "Failed to create group",
+                    Toast.LENGTH_SHORT
+                )
                     .show()
             }
         })
+    }
+
+    /**
+     * 初始化
+     */
+    private fun initP2p(): Boolean {
+        // Device capability definition check
+        if (!packageManager.hasSystemFeature(PackageManager.FEATURE_WIFI_DIRECT)) {
+            Log.e("TAG", "Wi-Fi Direct is not supported by this device.")
+            return false
+        }
+
+        // Hardware capability check
+        if (wifiManager == null) {
+            Log.e("TAG", "Cannot get Wi-Fi system service.")
+            return false
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (!wifiManager!!.isP2pSupported) {
+                Log.e("TAG", "Wi-Fi Direct is not supported by the hardware or Wi-Fi is off.")
+                return false
+            }
+        }
+
+        if (wifiP2pManager == null) {
+            Log.e("TAG", "Cannot get Wi-Fi Direct system service.")
+            return false
+        }
+        channel = wifiP2pManager!!.initialize(this@DirectWifiActivity, mainLooper, null)
+        if (channel == null) {
+            Log.e("TAG", "Cannot initialize Wi-Fi Direct.")
+            return false
+        }
+        return true
     }
 
     private fun isLocationEnabled(): Boolean {
@@ -359,7 +544,7 @@ class DirectWifiActivity : BaseActivity<EmptyViewModel, ActivityDirectWifiBindin
     }
 
 
-    private fun joinGroup() {
+    private fun discoverPeers() {
         // Check if location permission is granted
         if (ActivityCompat.checkSelfPermission(
                 this,
@@ -378,12 +563,12 @@ class DirectWifiActivity : BaseActivity<EmptyViewModel, ActivityDirectWifiBindin
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ActivityCompat.checkSelfPermission(
-                    this,
+                    this@DirectWifiActivity,
                     android.Manifest.permission.NEARBY_WIFI_DEVICES
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
                 ActivityCompat.requestPermissions(
-                    this,
+                    this@DirectWifiActivity,
                     arrayOf<String>(
                         android.Manifest.permission.NEARBY_WIFI_DEVICES
                     ),
@@ -395,13 +580,24 @@ class DirectWifiActivity : BaseActivity<EmptyViewModel, ActivityDirectWifiBindin
 
         // Check if location service is enabled
         if (!wifiManager!!.isWifiEnabled) {
-            Toast.makeText(this, "Please enable WiFi", Toast.LENGTH_SHORT).show()
-            startActivity(Intent(Settings.ACTION_WIFI_SETTINGS))
+            Toast.makeText(this@DirectWifiActivity, "Please enable WiFi", Toast.LENGTH_SHORT).show()
+
+            val panelIntent = Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY)
+            val componentName = panelIntent.resolveActivity(packageManager)
+            if (componentName != null) {
+                startActivity(panelIntent)
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                startActivity(Intent(Settings.ACTION_WIFI_SETTINGS))
+            } else {
+                wifiManager!!.setWifiEnabled(true)//android Q 默认返回false
+            }
+
             return
         }
 
         if (!isLocationEnabled()) {
-            Toast.makeText(this, "Please enable Location", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@DirectWifiActivity, "Please enable Location", Toast.LENGTH_SHORT)
+                .show()
             startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
             return
         }
@@ -409,11 +605,13 @@ class DirectWifiActivity : BaseActivity<EmptyViewModel, ActivityDirectWifiBindin
         wifiP2pManager!!.discoverPeers(channel, object : WifiP2pManager.ActionListener {
             override fun onSuccess() {
                 // Peers discovery initiated
+                isDiscover = true
                 Toast.makeText(this@DirectWifiActivity, "Discovering peers", Toast.LENGTH_SHORT)
                     .show()
             }
 
             override fun onFailure(reason: Int) {
+                isDiscover = false
                 Toast.makeText(
                     this@DirectWifiActivity,
                     "Failed to discover peers $reason",
@@ -447,6 +645,7 @@ class DirectWifiActivity : BaseActivity<EmptyViewModel, ActivityDirectWifiBindin
                 try {
                     clientSocket = Socket()
                     val inetSocketAddress = InetSocketAddress(address, 8888)
+                    clientSocket!!.bind(null)
                     clientSocket!!.connect(inetSocketAddress, 5000)
                     Log.d("Client", "连接服务器成功：" + clientSocket!!.inetAddress)
                 } catch (e: Exception) {
@@ -480,31 +679,54 @@ class DirectWifiActivity : BaseActivity<EmptyViewModel, ActivityDirectWifiBindin
         override fun onPeersAvailable(peers: WifiP2pDeviceList?) {
             if (peers != null) {
                 val peerList = peers.deviceList
+                Log.i("tag",peerList.toString())
                 if (peerList.isNotEmpty()) {
-                    Log.i("tag", peerList.toString())
                     if (deviceListAdapter == null) {
-                        deviceListAdapter = DeviceListAdapter(this@DirectWifiActivity, peerList.toList())
+                        deviceListAdapter =
+                            DeviceListAdapter(this@DirectWifiActivity, peerList.toList())
+                        mBinding.recyclerView.layoutManager = LinearLayoutManager(this@DirectWifiActivity, LinearLayoutManager.VERTICAL, false)
                         mBinding.recyclerView.adapter = deviceListAdapter
                     } else {
                         deviceListAdapter?.setList(peerList.toList())
                         deviceListAdapter?.notifyDataSetChanged()
                     }
                     peerList.forEach {
-                        if (it.deviceName == "P6PRO_DEVICE") {
+                        if (it.deviceName == "Android_79b2") {
                             connectDevice = it
+                            isDiscover = false
                             Log.i("tag", "找到设备了")
                             return@forEach
                         }
                     }
 
+                    if (isDiscover) {
+                        //未发现
+                        Log.i("tag", "未找到设备")
+                        isDiscover = false
+                    }
+
                 } else {
+                    Log.i("tag", "未找到设备")
+                    isDiscover = false
                 }
+            } else {
+                Log.i("tag", "未找到设备")
+                isDiscover = false
             }
+            isRequestPeer = false
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        unregisterReceiver(wifiP2pReceiver)
+        if (wifiP2pReceiver != null) {
+            unregisterReceiver(wifiP2pReceiver)
+        }
+        if(clientSocket!=null) {
+            clientSocket!!.close()
+        }
+        if(serverSocket!=null) {
+            serverSocket!!.close()
+        }
     }
 }

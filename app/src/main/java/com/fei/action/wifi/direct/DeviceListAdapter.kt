@@ -1,4 +1,4 @@
-package com.fei.action.direct_wifi
+package com.fei.action.wifi.direct
 
 import android.content.Context
 import android.net.wifi.p2p.WifiP2pDevice
@@ -29,7 +29,7 @@ class DeviceListAdapter(private val context: Context, private var list: List<Wif
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DeviceListHolder {
         val view =
-            LayoutInflater.from(context).inflate(R.layout.activity_direct_wifi, parent, false)
+            LayoutInflater.from(context).inflate(R.layout.item_direct_wifi, parent, false)
         return DeviceListHolder(view)
     }
 

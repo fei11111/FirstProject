@@ -35,6 +35,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
     <application
         android:name=".MyApplication"
@@ -58,7 +59,7 @@
 
 
         <activity
-            android:name=".activity.WelcomeActivity"
+            android:name="com.fei.action.ActionMainActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:screenOrientation="portrait"
             android:theme="@style/WhiteTheme"
@@ -210,10 +211,16 @@
             android:name=".activity.AlbumActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:screenOrientation="portrait"></activity>
-        <activity android:name="com.fei.action.wifi.ApWifiActivity"
+        <activity android:name="com.fei.action.wifi.simple.ApWifiActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:screenOrientation="portrait"/>
-        <activity android:name="com.fei.action.direct_wifi.DirectWifiActivity"
+        <activity android:name="com.fei.action.wifi.direct.DirectWifiActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.fei.action.wifi.aware.AwareWifiActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.fei.action.wifi.rtt.RttWifiActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:screenOrientation="portrait"/>
     </application>

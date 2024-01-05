@@ -306,7 +306,7 @@ throw new RuntimeException(e);
         }
     }
 
-15.直连WiFi
+15.直连WiFi（以 Android 13（API 级别 33）或更高版本为目标平台且管理 Wi-Fi 连接，则应请求 NEARBY_WIFI_DEVICES 运行时权限）
 
         wifiManager = applicationContext.getSystemService(WIFI_SERVICE) as WifiManager
         wifiP2pManager = getSystemService(WIFI_P2P_SERVICE) as WifiP2pManager

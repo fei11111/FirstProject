@@ -26,13 +26,15 @@ import androidx.activity.ComponentActivity
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import java.lang.ClassCastException
 import java.lang.reflect.ParameterizedType
 
 
 @JvmName("inflateWithGeneric")
-fun <VB : ViewBinding> Any.inflateBindingWithGeneric(layoutInflater: LayoutInflater,hasLayout:Boolean = false): VB =
-    withGenericBindingClass<VB>(this,hasLayout) { clazz ->
+fun <VB : ViewBinding> Any.inflateBindingWithGeneric(
+    layoutInflater: LayoutInflater,
+    hasLayout: Boolean = false
+): VB =
+    withGenericBindingClass<VB>(this, hasLayout) { clazz ->
         clazz.getMethod("inflate", LayoutInflater::class.java).invoke(null, layoutInflater) as VB
     }.also { binding ->
         if (this is ComponentActivity && binding is ViewDataBinding) {
@@ -73,10 +75,14 @@ fun <VB : ViewBinding> Any.bindViewWithGeneric(view: View): VB =
         }
     }
 
-private fun <VB : ViewBinding> withGenericBindingClass(any: Any, hasLayout:Boolean = false,block: (Class<VB>) -> VB): VB {
-    if(hasLayout) {
+private fun <VB : ViewBinding> withGenericBindingClass(
+    any: Any,
+    hasLayout: Boolean = false,
+    block: (Class<VB>) -> VB
+): VB {
+    if (hasLayout && any.allParameterizedType.size > 1) {
         return block.invoke(any.allParameterizedType[1].actualTypeArguments[1] as Class<VB>)
-    }else {
+    } else {
         any.allParameterizedType.forEach { parameterizedType ->
             parameterizedType.actualTypeArguments.forEach {
                 try {
