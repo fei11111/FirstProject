@@ -1,6 +1,7 @@
 package com.fei.action.direct_wifi
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Intent
 import android.content.IntentFilter
@@ -139,7 +140,7 @@ class DirectWifiActivity : BaseActivity<EmptyViewModel, ActivityDirectWifiBindin
         })
     }
 
-    var serverSocket: ServerSocket? = null
+    private var serverSocket: ServerSocket? = null
     private fun startServer() {
         // 创建服务器 Socket
         if (serverSocket != null) {
@@ -178,7 +179,7 @@ class DirectWifiActivity : BaseActivity<EmptyViewModel, ActivityDirectWifiBindin
         acceptThread.start()
     }
 
-    var clientSocket: Socket? = null
+    private var clientSocket: Socket? = null
     private fun sendMessage() {
         if (clientSocket == null && connectDevice != null) {
             createClientSocket(connectDevice!!.deviceAddress)
@@ -211,7 +212,7 @@ class DirectWifiActivity : BaseActivity<EmptyViewModel, ActivityDirectWifiBindin
     private fun connect(device: WifiP2pDevice) {
         if (ActivityCompat.checkSelfPermission(
                 this@DirectWifiActivity,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
+                Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             return
@@ -309,12 +310,12 @@ class DirectWifiActivity : BaseActivity<EmptyViewModel, ActivityDirectWifiBindin
         // Check if location permission is granted
         if (ActivityCompat.checkSelfPermission(
                 this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
+                Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
                 this,
-                arrayOf<String>(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                arrayOf<String>(Manifest.permission.ACCESS_FINE_LOCATION),
                 PERMISSION_REQUEST_CODE
             )
             return
@@ -362,13 +363,13 @@ class DirectWifiActivity : BaseActivity<EmptyViewModel, ActivityDirectWifiBindin
         // Check if location permission is granted
         if (ActivityCompat.checkSelfPermission(
                 this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
+                Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
                 this,
-                arrayOf<String>(
-                    android.Manifest.permission.ACCESS_FINE_LOCATION
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION
                 ),
                 PERMISSION_REQUEST_CODE
             )
@@ -475,6 +476,7 @@ class DirectWifiActivity : BaseActivity<EmptyViewModel, ActivityDirectWifiBindin
      * discover 收到的设备信息
      */
     private val peerListListener = object : WifiP2pManager.PeerListListener {
+        @SuppressLint("NotifyDataSetChanged")
         override fun onPeersAvailable(peers: WifiP2pDeviceList?) {
             if (peers != null) {
                 val peerList = peers.deviceList
@@ -482,7 +484,7 @@ class DirectWifiActivity : BaseActivity<EmptyViewModel, ActivityDirectWifiBindin
                     Log.i("tag", peerList.toString())
                     if (deviceListAdapter == null) {
                         deviceListAdapter = DeviceListAdapter(this@DirectWifiActivity, peerList.toList())
-                        mBinding.recyclerView?.adapter = deviceListAdapter
+                        mBinding.recyclerView.adapter = deviceListAdapter
                     } else {
                         deviceListAdapter?.setList(peerList.toList())
                         deviceListAdapter?.notifyDataSetChanged()
