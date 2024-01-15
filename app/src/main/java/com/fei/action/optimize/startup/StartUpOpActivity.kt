@@ -1,0 +1,140 @@
+package com.fei.action.optimize.startup
+
+import android.os.Bundle
+import android.util.Log
+import com.common.base.BaseActivity
+import com.common.viewmodel.EmptyViewModel
+import com.fei.firstproject.databinding.ActivityStartUpOpBinding
+import java.io.BufferedReader
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileReader
+
+/**
+ * 启动优化
+ *
+ * 1.任务调度优化：线程 + CPU 提升任务调度优先级
+ *  1.1调整主线程优先级
+ *      主线程的优先级调整很简单，直接在 Application 的 attachBaseContext() 调用 Process.setThreadPriority(-19)，将主线程设置为最高级别优先级即可。
+ *  1.2调整渲染线程优先级
+ */
+class StartUpOpActivity : BaseActivity<EmptyViewModel, ActivityStartUpOpBinding>() {
+
+    private var renderThreadTid: Int = 0
+    private var maxFreqCPUIndex: Int = 0
+    override fun createObserver() {
+        //获取渲染线程
+        mBinding.btnGetRender.setOnClickListener {
+            renderThreadTid = getRenderThreadId()
+            Log.i("tag", " renderThreadId = $renderThreadTid")
+        }
+        //获取cpu最大核
+        mBinding.btnGetCpu.setOnClickListener {
+            maxFreqCPUIndex = getMaxFreqCPUIndex()
+            Log.i("tag", " maxFreqCPUIndex = $maxFreqCPUIndex")
+        }
+
+        // 线程绑定大核，返回 0 表示成功，否则失败
+        /**
+         * 获取时钟频率最高（即性能最好）的 CPU 核序列
+         *
+         * 获取需要绑定的线程 pid
+         *
+         * 调用 shced_setaffinity 函数将线程绑定到大核
+         */
+        mBinding.btnBinding.setOnClickListener {
+            val result = bindMaxFreqCore(maxFreqCPUIndex, renderThreadTid)
+            Log.v("@@@", "result = $result")
+        }
+
+    }
+
+    private fun getMaxFreqCPUIndex(): Int {
+        //1.可以通过 /sys/devices/system/cpu/ 目录下的文件查看当前设备有几个 CPU
+        val cores = getNumberOfCpuCores()
+        Log.i("tag", "cors = $cores")
+        //2.其中一个 cpu 目录的 cpu{x}/cpufreq/ 目录的 /cpuinfo_max_freq 可以查看该 cpu 的时钟周期频率
+        if (cores == 0) return -1
+        var maxFreq = -1
+        var maxFreqCPUIndex = 0
+        for (i in 0 until cores) {
+            val filename = "/sys/devices/system/cpu/cpu$i/cpufreq/cpuinfo_max_freq"
+            val cpuInfoMaxFreqFile = File(filename)
+            if (!cpuInfoMaxFreqFile.exists()) continue
+
+            val buffer = ByteArray(128)
+            FileInputStream(cpuInfoMaxFreqFile).use { stream ->
+                stream.read(buffer)
+
+                var endIndex = 0
+                while (buffer[endIndex].toInt().toChar() in '0'..'9') endIndex++
+
+                val freqBound = String(buffer, 0, endIndex).toInt()
+                if (freqBound > maxFreq) {
+                    maxFreq = freqBound
+                    maxFreqCPUIndex = i
+                }
+            }
+        }
+        return maxFreqCPUIndex
+    }
+
+    /**
+     * 获取cpu数量
+     */
+    private fun getNumberOfCpuCores(): Int {
+        val file = File("/sys/devices/system/cpu/").listFiles()
+        var size = 0
+        file.forEach { file ->
+            val path = file.name
+            if (path.startsWith("cpu")) {
+                val chars = path.toCharArray()
+                //获取文件名字，如果文件名是cpu + 数字就是
+                for (i in 3 until path.length) {
+                    if (chars[i] in '0'..'9') {
+                    }
+                    size++
+                }
+            }
+        }
+        return size
+    }
+
+
+    private fun getRenderThreadId(): Int {
+        //查看应用的所有线程信息
+        val appAllThreadMsgDir = File("/proc/${android.os.Process.myPid()}/task/")
+        if (!appAllThreadMsgDir.isDirectory) return -1
+        val files = appAllThreadMsgDir.listFiles() ?: arrayOf()
+        var result = -1
+        //接着查看目录线程的 stat 节点，就能具体查看线程的详细信息了，比如 tid、name 等
+        //只需要遍历 /proc/pid/task 目录下的所有目录，查看 pid/stat 文件
+        files.forEach { file ->
+            val br = BufferedReader(FileReader("${file.path}/stat"), 100)
+            val cpuRate = br.use {
+                return@use br.readLine()
+            }
+            if (!cpuRate.isNullOrEmpty()) {
+                val param = cpuRate.split(" ")
+                val threadName = param[1]
+                if (threadName == "(RenderThread)") {
+                    result = param[0].toInt()
+                    return@forEach
+                }
+            }
+        }
+        return result
+    }
+
+    override fun initViewAndData(savedInstanceState: Bundle?) {
+    }
+
+    private external fun bindMaxFreqCore(maxFreqCpuIndex: Int, pid: Int): Int
+
+    companion object {
+        // Used to load the 'demo' library on application startup.
+        init {
+            System.loadLibrary("demo")
+        }
+    }
+}

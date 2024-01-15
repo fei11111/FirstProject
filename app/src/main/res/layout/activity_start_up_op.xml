@@ -6,23 +6,22 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/btn_wifi"
+        android:id="@+id/btn_get_cpu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="wifi" />
+        android:text="获取cpu最大大核序列位置" />
 
     <Button
-        android:id="@+id/btn_bluetooth"
+        android:id="@+id/btn_get_render"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="bluetooth" />
+        android:text="获取渲染线程" />
+
 
     <Button
-        android:id="@+id/btn_optimize"
+        android:id="@+id/btn_binding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="性能优化" />
-
-
+        android:text="绑定" />
 
 </LinearLayout>

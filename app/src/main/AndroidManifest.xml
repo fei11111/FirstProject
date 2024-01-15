@@ -224,6 +224,15 @@
         <activity android:name="com.fei.action.wifi.rtt.RttWifiActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:screenOrientation="portrait"/>
+        <activity android:name="com.fei.action.optimize.startup.StartUpOpActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.fei.action.optimize.ActionOptimizeActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.fei.action.wifi.ActionWifiActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import com.common.base.BaseActivity
 import com.common.viewmodel.EmptyViewModel
+import com.fei.action.optimize.ActionOptimizeActivity
+import com.fei.action.wifi.ActionWifiActivity
 import com.fei.action.wifi.aware.AwareWifiActivity
 import com.fei.action.wifi.direct.DirectWifiActivity
 import com.fei.action.wifi.rtt.RttWifiActivity
@@ -15,17 +17,12 @@ class ActionMainActivity : BaseActivity<EmptyViewModel, ActivityActionMainBindin
     }
 
     override fun initViewAndData(savedInstanceState: Bundle?) {
-        mBinding.btnApWifi.setOnClickListener {
-            startActivity(Intent(this, ApWifiActivity::class.java))
+        mBinding.btnWifi.setOnClickListener {
+            startActivity(Intent(this, ActionWifiActivity::class.java))
         }
-        mBinding.btnDirectWifi.setOnClickListener {
-            startActivity(Intent(this, DirectWifiActivity::class.java))
+        mBinding.btnOptimize.setOnClickListener {
+            startActivity(Intent(this, ActionOptimizeActivity::class.java))
         }
-        mBinding.btnAwareWifi.setOnClickListener {
-            startActivity(Intent(this, AwareWifiActivity::class.java))
-        }
-        mBinding.btnRttWifi.setOnClickListener {
-            startActivity(Intent(this, RttWifiActivity::class.java))
-        }
+
     }
 }
