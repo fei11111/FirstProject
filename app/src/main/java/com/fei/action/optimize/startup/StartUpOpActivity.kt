@@ -9,6 +9,11 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileReader
+import java.util.concurrent.LinkedBlockingQueue
+import java.util.concurrent.SynchronousQueue
+import java.util.concurrent.ThreadFactory
+import java.util.concurrent.ThreadPoolExecutor
+import java.util.concurrent.TimeUnit
 
 /**
  * 启动优化
@@ -49,6 +54,9 @@ class StartUpOpActivity : BaseActivity<EmptyViewModel, ActivityStartUpOpBinding>
 
     }
 
+    /**
+     * 获取cpu最大核
+     */
     private fun getMaxFreqCPUIndex(): Int {
         //1.可以通过 /sys/devices/system/cpu/ 目录下的文件查看当前设备有几个 CPU
         val cores = getNumberOfCpuCores()
@@ -100,7 +108,9 @@ class StartUpOpActivity : BaseActivity<EmptyViewModel, ActivityStartUpOpBinding>
         return size
     }
 
-
+    /**
+     * 获取渲染线程id
+     */
     private fun getRenderThreadId(): Int {
         //查看应用的所有线程信息
         val appAllThreadMsgDir = File("/proc/${android.os.Process.myPid()}/task/")
@@ -126,10 +136,59 @@ class StartUpOpActivity : BaseActivity<EmptyViewModel, ActivityStartUpOpBinding>
         return result
     }
 
+    /**
+     * 配置CPU线程池
+     */
+    private fun getCpuThreadPool(): ThreadPoolExecutor {
+        //获取cpu核数
+        val corePoolSize = Runtime.getRuntime().availableProcessors()
+        return ThreadPoolExecutor(
+            corePoolSize, corePoolSize,
+            0L, TimeUnit.MILLISECONDS,
+            LinkedBlockingQueue<Runnable>(64),
+            object : ThreadFactory {
+                override fun newThread(r: Runnable): Thread {
+                    return Thread(r, "cpu-thread")
+                }
+            }
+        )
+    }
+
+    /**
+     * 配置IO线程池
+     */
+    private fun getIoThreadPool(): ThreadPoolExecutor {
+        return ThreadPoolExecutor(
+            0, 64,
+            60, TimeUnit.SECONDS,
+            SynchronousQueue(),
+            object : ThreadFactory {
+                override fun newThread(r: Runnable): Thread {
+                    val thread = Thread(r, "io-thread")
+                    //提高线程级别
+                    thread.priority = Thread.MAX_PRIORITY
+                    return thread
+                }
+            }
+        )
+    }
+
+    /**
+     * times 函数判断 CPU 是否闲置
+     */
+
     override fun initViewAndData(savedInstanceState: Bundle?) {
     }
 
+    /**
+     * 绑定线程到最大核
+     */
     private external fun bindMaxFreqCore(maxFreqCpuIndex: Int, pid: Int): Int
+
+    /**
+     * 单位时间内进程消耗的 CPU 时间
+     */
+    private external fun getCpuTime():Float
 
     companion object {
         // Used to load the 'demo' library on application startup.

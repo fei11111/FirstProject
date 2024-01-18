@@ -163,7 +163,7 @@ throw new RuntimeException(e);
                         }
                     }
                 }
-
+    
         fun disconnectDeviceWifi(result: MethodChannel.Result) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 val manager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -185,18 +185,18 @@ throw new RuntimeException(e);
                 }
     
         }
-
+    
     //锁定wifi
     private fun bindWifi(id: String, password: String) {
         Log.i("aa", "bindWifi")
         val wifiManager = getSystemService(Context.WIFI_SERVICE) as WifiManager
-
+    
         if (wifiManager.isWifiEnabled) {
             wifiLock =
                 wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, "MyWifiLock")
             wifiLock?.acquire()
         }
-
+    
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 val networkSuggestions = wifiManager.networkSuggestions
@@ -221,7 +221,7 @@ throw new RuntimeException(e);
                     Manifest.permission.ACCESS_FINE_LOCATION
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
-
+    
                 return
             }
             wifiManager.configuredNetworks?.forEach {
@@ -231,16 +231,16 @@ throw new RuntimeException(e);
             }
         }
     }
-
+    
     private fun stringReplace(str: String): String? {
         return str.replace("\"", "")
     }
-
+    
     private fun unbindWifi(id: String, password: String) {
         if (wifiLock?.isHeld == true) {
             wifiLock?.release()
         }
-
+    
         val wifiManager = getSystemService(Context.WIFI_SERVICE) as WifiManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             Log.d("WifiUtils", "移除建议");
@@ -311,14 +311,14 @@ throw new RuntimeException(e);
         wifiManager = applicationContext.getSystemService(WIFI_SERVICE) as WifiManager
         wifiP2pManager = getSystemService(WIFI_P2P_SERVICE) as WifiP2pManager
         channel = wifiP2pManager!!.initialize(this, mainLooper, null)
-
+    
         intentFilter = IntentFilter()
         intentFilter!!.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION)
         intentFilter!!.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION)
         intentFilter!!.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION)
         intentFilter!!.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION)
         intentFilter!!.addAction(WifiP2pManager.WIFI_P2P_DISCOVERY_CHANGED_ACTION)
-
+    
         wifiP2pReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 val action = intent.action
@@ -328,10 +328,10 @@ throw new RuntimeException(e);
                     if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
                         // WiFi P2P is enabled
                         Log.i("tag", "状态改变 WiFi P2P is enabled")
-
+    
                         //todo
                         //可搜索周围P2P设备 discoverPeers
-
+    
                     } else {
                         // WiFi P2P is not enabled
                         Log.i("tag", "状态改变 WiFi P2P is not enabled");
@@ -355,19 +355,19 @@ throw new RuntimeException(e);
                 } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION == action) {
                     Log.i("tag", "表明Wi-Fi对等网络的连接状态发生了改变");
                     // Respond to new connection or disconnections
-
+    
                     // 获取 NetworkInfo 对象
                     val networkInfo: NetworkInfo? =
                         intent.getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO)
-
+    
                     // 获取 WifiP2pInfo 对象
                     val wifiP2pInfo: WifiP2pInfo? =
                         intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_INFO)
-
+    
                     // 获取 WifiP2pGroup 对象
                     val wifiP2pGroup: WifiP2pGroup? =
                         intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_GROUP)
-
+    
                     if (networkInfo!!.isConnected()) {
                         if (wifiP2pInfo!!.isGroupOwner) {
                             Toast.makeText(
@@ -407,7 +407,7 @@ throw new RuntimeException(e);
                     // Respond to this device's wifi state changing
                 } else if (WifiP2pManager.WIFI_P2P_DISCOVERY_CHANGED_ACTION == action) {
                     Log.i("tag", "WIFI_P2P_DISCOVERY_CHANGED_ACTION")
-
+    
                     //todo
                     //搜索状态发生改变时的广播
                 }
@@ -415,7 +415,7 @@ throw new RuntimeException(e);
         }
         registerReceiver(wifiP2pReceiver, intentFilter)
     }
-
+    
     private fun connectGroup(
         wifiP2pDevice: WifiP2pDevice
     ) {
@@ -431,7 +431,7 @@ throw new RuntimeException(e);
             ) {
                 return
             }
-
+    
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 if (ActivityCompat.checkSelfPermission(
                         this@MainActivity,
@@ -445,7 +445,7 @@ throw new RuntimeException(e);
                 override fun onSuccess() {
                     Log.i("TAG", "onSuccess: connect")
                 }
-
+    
                 override fun onFailure(i: Int) {
                     Log.i("TAG", "onFailure: connect $i")
                 }
@@ -454,7 +454,7 @@ throw new RuntimeException(e);
             Log.i("TAG", "对方设备不是群组")
         }
     }
-
+    
     private fun requestGroupInfo() {
         if (ActivityCompat.checkSelfPermission(
                 this,
@@ -463,7 +463,7 @@ throw new RuntimeException(e);
         ) {
             return
         }
-
+    
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ActivityCompat.checkSelfPermission(
                     this@MainActivity,
@@ -481,32 +481,32 @@ throw new RuntimeException(e);
             }
         }
     }
-
+    
     private fun removeGroup() {
         wifiP2pManager!!.removeGroup(channel, object : WifiP2pManager.ActionListener {
             override fun onSuccess() {
                 Log.i("TAG", "onSuccess: removeGroup")
             }
-
+    
             override fun onFailure(i: Int) {
                 Log.i("TAG", "onFailure: removeGroup")
             }
         })
     }
-
+    
     private fun cancelConnect() {
         wifiP2pManager!!.cancelConnect(channel, object : WifiP2pManager.ActionListener {
             override fun onSuccess() {
                 Log.d("tag", "cancel success")
             }
-
+    
             override fun onFailure(p0: Int) {
                 Log.d("tag", "cancel fail")
             }
-
+    
         })
     }
-
+    
     var serverSocket: ServerSocket? = null
     private fun startServer() {
         // 创建服务器 Socket
@@ -519,7 +519,7 @@ throw new RuntimeException(e);
         } catch (e: IOException) {
             e.printStackTrace()
         }
-
+    
         // 开启接收线程监听客户端连接
         val acceptThread = Thread {
             while (true) {
@@ -527,11 +527,11 @@ throw new RuntimeException(e);
                     // 等待客户端连接
                     val socket: Socket = serverSocket!!.accept()
                     Log.d("Server", "客户端已连接：" + socket.inetAddress)
-
+    
                     // 读取客户端发送的数据
                     val reader = BufferedReader(InputStreamReader(socket.getInputStream()))
                     val data = reader.readLine()
-
+    
                     // 发送响应给客户端
                     val writer =
                         BufferedWriter(OutputStreamWriter(socket.getOutputStream()))
@@ -545,7 +545,7 @@ throw new RuntimeException(e);
         }
         acceptThread.start()
     }
-
+    
     var clientSocket: Socket? = null
     private fun sendMessage() {
         if (clientSocket == null && connectDevice != null) {
@@ -561,7 +561,7 @@ throw new RuntimeException(e);
                 writer.write("Hello, World!")
                 writer.newLine()
                 writer.flush()
-
+    
                 // 读取服务端响应数据
                 val reader = BufferedReader(InputStreamReader(clientSocket!!.getInputStream()))
                 val data = reader.readLine()
@@ -572,7 +572,7 @@ throw new RuntimeException(e);
         }
         thread.start()
     }
-
+    
      /**
      * 连接群组 、连接设备一样
      */
@@ -584,7 +584,7 @@ throw new RuntimeException(e);
         ) {
             return
         }
-
+    
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ActivityCompat.checkSelfPermission(
                     this@MainActivity,
@@ -594,7 +594,7 @@ throw new RuntimeException(e);
                 return
             }
         }
-
+    
         /**
          * WifiP2pDevice.AVAILABLE：可连接
          * WifiP2pDevice.CONNECTED：已连接
@@ -605,7 +605,7 @@ throw new RuntimeException(e);
             WifiP2pDevice.AVAILABLE -> {
                 // 请求连接
                 Log.i("tag", "发起连接 $device")
-
+    
                 val config = WifiP2pConfig()
                 config.deviceAddress = device.deviceAddress
                 wifiP2pManager!!.connect(channel,
@@ -620,7 +620,7 @@ throw new RuntimeException(e);
                             ).show()
                             Log.i("tag", "发起成功")
                         }
-
+    
                         override fun onFailure(reason: Int) {
                             // Connection failed
                             Toast.makeText(
@@ -632,21 +632,21 @@ throw new RuntimeException(e);
                         }
                     })
             }
-
+    
             WifiP2pDevice.CONNECTED -> {
                 // 断开连接
                 wifiP2pManager!!.removeGroup(channel, object : WifiP2pManager.ActionListener {
                     override fun onSuccess() {
                         Log.i("tag", "断开成功")
                     }
-
+    
                     override fun onFailure(p0: Int) {
                         Log.i("tag", "断开失败")
                     }
-
+    
                 })
             }
-
+    
             WifiP2pDevice.INVITED -> {
                 // 接受连接
                 // 关闭连接请求
@@ -654,7 +654,7 @@ throw new RuntimeException(e);
                     override fun onSuccess() {
                         Log.i("TAG", "cancelConnect success.");
                     }
-
+    
                     override fun onFailure(p0: Int) {
                         Log.i("TAG", "cancelConnect failed.");
                     }
@@ -662,7 +662,7 @@ throw new RuntimeException(e);
             }
         }
     }
-
+    
     private fun createGroup() {
         // Check if location permission is granted
         if (ActivityCompat.checkSelfPermission(
@@ -677,7 +677,7 @@ throw new RuntimeException(e);
             )
             return
         }
-
+    
         // Check if location service is enabled
         if (!wifiManager!!.isWifiEnabled) {
             Toast.makeText(this, "Please enable WiFi", Toast.LENGTH_SHORT).show()
@@ -688,14 +688,14 @@ throw new RuntimeException(e);
             override fun onSuccess() {
                 Toast.makeText(this@MainActivity, "Group created", Toast.LENGTH_SHORT).show()
             }
-
+    
             override fun onFailure(reason: Int) {
                 Toast.makeText(this@MainActivity, "Failed to create group", Toast.LENGTH_SHORT)
                     .show()
             }
         })
     }
-
+    
     private fun isLocationEnabled(): Boolean {
         val locationMode: Int
         val locationProviders: String
@@ -732,7 +732,7 @@ throw new RuntimeException(e);
             )
             return
         }
-
+    
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ActivityCompat.checkSelfPermission(
                     this,
@@ -749,20 +749,20 @@ throw new RuntimeException(e);
                 return
             }
         }
-
+    
         // Check if location service is enabled
         if (!wifiManager!!.isWifiEnabled) {
             Toast.makeText(this, "Please enable WiFi", Toast.LENGTH_SHORT).show()
             startActivity(Intent(Settings.ACTION_WIFI_SETTINGS))
             return
         }
-
+    
         if (!isLocationEnabled()) {
             Toast.makeText(this, "Please enable Location", Toast.LENGTH_SHORT).show()
             startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
             return
         }
-
+    
         wifiP2pManager!!.discoverPeers(channel, object : WifiP2pManager.ActionListener {
             override fun onSuccess() {
                 isDiscover = true
@@ -770,7 +770,7 @@ throw new RuntimeException(e);
                 Toast.makeText(this@MainActivity, "Discovering peers", Toast.LENGTH_SHORT)
                     .show()
             }
-
+    
             override fun onFailure(reason: Int) {
                 Toast.makeText(
                     this@MainActivity,
@@ -781,7 +781,7 @@ throw new RuntimeException(e);
             }
         })
     }
-
+    
     private val connectionInfoListener =
         WifiP2pManager.ConnectionInfoListener { info ->
             if (info != null) {
@@ -798,7 +798,7 @@ throw new RuntimeException(e);
                 Log.d("tag", "connectionInfo 为空");
             }
         }
-
+    
     private fun createClientSocket(address: String) {
         val thread = Thread {
             if (clientSocket == null) {
@@ -810,26 +810,26 @@ throw new RuntimeException(e);
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
-
+    
             }
         }
         thread.start()
     }
-
+    
     private fun stopPeerDiscovery() {
         Log.i("tag", "停止找寻设备")
         wifiP2pManager!!.stopPeerDiscovery(channel, object : WifiP2pManager.ActionListener {
             override fun onSuccess() {
                 Log.i("tag", "停止成功")
             }
-
+    
             override fun onFailure(p0: Int) {
                 Log.i("tag", "停止成功")
             }
-
+    
         })
     }
-
+    
     /**
      * discover 收到的设备信息
      */
@@ -861,15 +861,632 @@ throw new RuntimeException(e);
         }
     }
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
 
+​        
+
+```
+/***********************************FFMPEG*************************************************/
+1.ubuntu-22.04.2镜像
+2.vmware 17.5.0
+3.ffmpeg 6.0.1和ndk r21-linux，ffmpeg 在linux上解压tar xf 文件 
+3.终端安装gcc
+	sudo apt install gcc
+4.安装samba，可以在windows传输文件	
+	1.sudo apt install samba
+	2.在home下新建目录用来存放传输的文件，例如huangjf
+	3.sudo apt install vim
+	4.sudo vim /etc/samba/smb.conf，配置传输信息
+		在最底部添加
+		[Project]
+			comment = project
+			path = /home/用户名/huangjf
+			browseable = yes
+			writable = yes
+	5.sudo touch /etc/samba/smbpasswd    //新建/etc/samba/smbpasswd文件
+	   sudo smbpasswd -a shine    //设置的valid users，设置用户密码
+	6.sudo /etc/init.d/samba restart
+	7.在windows上测试：\\linux上的ip地址
+	8.linux联网模式改成桥接模式
+5.放入ndk21已解压的文件夹和ffmpeg6.0已解压的文件夹
+6.修改ffmpeg6.0文件夹configure文件
+
+# SLIBNAME_WITH_MAJOR='$(SLIBNAME).$(LIBMAJOR)'
+# LIB_INSTALL_EXTRA_CMD='$$(RANLIB) "$(LIBDIR)/$(LIBNAME)"'
+# SLIB_INSTALL_NAME='$(SLIBNAME_WITH_VERSION)'
+# SLIB_INSTALL_LINKS='$(SLIBNAME_WITH_MAJOR) $(SLIBNAME)'
+# 替换成如下
+SLIBNAME_WITH_MAJOR='$(SLIBPREF)$(FULLNAME)-$(LIBMAJOR)$(SLIBSUF)'
+LIB_INSTALL_EXTRA_CMD='$$(RANLIB)"$(LIBDIR)/$(LIBNAME)"'
+SLIB_INSTALL_NAME='$(SLIBNAME_WITH_MAJOR)'
+SLIB_INSTALL_LINKS='$(SLIBNAME)'
+
+7.修改一个地方，libavcodec.a和libswscale.a包含同一个half2float.o，在链接libavcodec.a和libswscale.a时会出现函数重定义的错误。
+需要在执行脚本之前修改libswscale文件夹下的Makefile，将OBJS下的half2float.o删除。脚本中NDK等路径根据自己电脑的路径自行修改。
+8.在ffmpeg6.0文件夹里添加脚本文件,注意文件格式是linux，不要是windows，右下角可以设置
+9.切换到root用户sudo su - ，进行编译
+10. 执行./build.sh编译，会生成libffmpeg.so
+
+\\192.168.30.128\Project\android-ndk-r21e-linux-x86_64\android-ndk-r21e\toolchains\llvm\prebuilt\linux-x86_64\bin
+/home/root01/android-ndk-r21e-linux-x86_64/android-ndk-r21e/toolchains/llvm/prebuilt/linux-x86_64
+
+arm64-v8a平台编译脚本：
+#!/bin/sh
+# NDK 所在的路径
+NDK=/home/root01/huangjf/android-ndk-r21e-linux-x86_64/android-ndk-r21e
+# 需要编译出的平台，这里是 arm64-v8a
+ARCH=aarch64
+# 支持的最低 Android API
+API=21
+# 编译后输出目录，在 ffmpeg 源码目录下的 /android/arm64-v8a
+OUTPUT=$(pwd)/android/arm64-v8a
+# NDK 交叉编译工具链所在路径
+TOOLCHAIN=/home/root01/huangjf/android-ndk-r21e-linux-x86_64/android-ndk-r21e/toolchains/llvm/prebuilt/linux-x86_64
+ 
+SYSROOT_L=$TOOLCHAIN/sysroot/usr/lib/aarch64-linux-android
+GCC_L=$NDK/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64/lib/gcc/aarch64-linux-android/4.9.x
+ 
+build() {
+   ./configure \
+   --target-os=android \
+   --prefix=$OUTPUT \
+   --arch=$ARCH \
+   --cpu=armv8-a \
+   --sysroot=$TOOLCHAIN/sysroot \
+   --enable-static \
+   --disable-ffmpeg \
+   --disable-ffplay \
+   --disable-ffprobe \
+   --disable-debug \
+   --disable-doc \
+   --disable-avdevice \
+   --disable-shared \
+   --enable-cross-compile \
+   --enable-asm \
+   --enable-small \
+   --enable-avcodec \
+   --enable-avformat \
+   --enable-avutil \
+   --enable-swresample \
+   --enable-swscale \
+   --enable-avfilter \
+   --enable-postproc \
+   --enable-network \
+   --enable-bsfs \
+   --enable-filters \
+   --enable-encoders \
+   --enable-gpl \
+   --enable-muxers \
+   --enable-parsers \
+   --enable-protocols \
+   --enable-nonfree \
+   --enable-jni \
+   --cross-prefix=$TOOLCHAIN/bin/aarch64-linux-android- \
+   --cc=$TOOLCHAIN/bin/aarch64-linux-android$API-clang \
+   --cxx=$TOOLCHAIN/bin/aarch64-linux-android$API-clang++ \
+   --extra-cflags="-fpic -march=armv8-a -I$OUTPUT/include" \
+   --extra-ldflags="-lc -ldl -lm -lz -llog -lgcc -L$OUTPUT/lib"
+ 
+   make clean all
+   make -j12
+   make install
+}
+
+
+package_library() {
+   $TOOLCHAIN/bin/aarch64-linux-android-ld -L$OUTPUT/lib -L$GCC_L \
+    -rpath-link=$SYSROOT_L/$API -L$SYSROOT_L/$API -soname libffmpeg.so \
+    -shared -nostdlib -Bsymbolic --whole-archive --no-undefined -o $OUTPUT/libffmpeg.so \
+    -lavcodec -lpostproc -lavfilter -lswresample -lavformat -lavutil -lswscale -lgcc \
+    -lc -ldl -lm -lz -llog \
+    --dynamic-linker=/system/bin/linker
+    # 设置动态链接器，不同平台的不同，android 使用的是/system/bin/linker
+}
+build
+package_library
+
+
+armeabi-v7a平台编译脚本：
+#!/bin/sh
+# NDK 所在路径
+NDK=/home/root01/huangjf/android-ndk-r21e-linux-x86_64/android-ndk-r21e
+# 需要编译出的平台，这里是arm
+ARCH=arm
+# 支持的最低Android API
+API=21
+# 编译后输出目录，在ffmpeg 源码目录下的android/armeabi-v7a
+OUTPUT=$(pwd)/android/armeabi-v7a
+# NDK 交叉编译工具链所在路径
+TOOLCHAIN=/home/root01/huangjf/android-ndk-r21e-linux-x86_64/android-ndk-r21e/toolchains/llvm/prebuilt/linux-x86_64
+
+SYSROOT_L=$TOOLCHAIN/sysroot/usr/lib/arm-linux-androideabi
+GCC_L=$NDK/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/lib/gcc/arm-linux-androideabi/4.9.x
+
+#执行.configure文件(./configure)
+#运行./configure --help查看配置 裁剪
+#换行后不要用空格，可以使用tab
+
+build() {
+   ./configure \
+   #指定目标平台
+   --target-os=android \
+   --prefix=$OUTPUT \
+   #指定cpu架构
+   --arch=$ARCH \
+   #指定cpu类型
+   --cpu=armv7-a \
+   #配置编译环境c语言的头文件环境
+   --sysroot=$TOOLCHAIN/sysroot \
+   #编译动态库
+   --enable-static \
+   #根据需要进行裁剪
+   --disable-ffmpeg \
+   --disable-ffplay \
+   --disable-ffprobe \
+   --disable-debug \
+   --disable-doc \
+   --disable-avdevice \
+   --disable-shared \
+   --enable-asm \
+   #开启交叉编译
+   --enable-cross-compile \
+   --enable-small \
+   --enable-avcodec \
+   --enable-avformat \
+   --enable-avutil \
+   --enable-swresample \
+   --enable-swscale \
+   --enable-avfilter \
+   --enable-postproc \
+   --enable-network \
+   --enable-bsfs \
+   --enable-filters \
+   --enable-encoders \
+   --enable-gpl \
+   --enable-muxers \
+   --enable-parsers \
+   --enable-protocols \
+   --enable-nonfree \
+   --enable-jni \
+   #指定交叉编译工具目录
+   --cross-prefix=$TOOLCHAIN/bin/arm-linux-androideabi- \
+   --cc=$TOOLCHAIN/bin/armv7a-linux-androideabi$API-clang \
+   --cxx=$TOOLCHAIN/bin/armv7a-linux-androideabi$API-clang++ \
+   --extra-cflags="-fpic -march=armv7-a -mcpu=cortex-a8 -mfpu=vfpv3-d16 -mfloat-abi=softfp -mthumb -I$OUTPUT/include" \
+   --extra-ldflags="-lc -ldl -lm -lz -llog -lgcc -L$OUTPUT/lib"
+   
+   make clean all
+   make -j12
+   make install
+}
+ 
+package_library() {
+   $TOOLCHAIN/bin/arm-linux-androideabi-ld -L$OUTPUT/lib -L$GCC_L \
+    -rpath-link=$SYSROOT_L/$API -L$SYSROOT_L/$API -soname libffmpeg.so \
+    -shared -nostdlib -Bsymbolic --whole-archive --no-undefined -o $OUTPUT/libffmpeg.so \
+    -lavcodec -lpostproc -lavfilter -lswresample -lavformat -lavutil -lswscale -lgcc \
+    -lc -ldl -lm -lz -llog \
+    --dynamic-linker=/system/bin/linker
+    # 设置动态链接器，不同平台的不同，android 使用的是/system/bin/linker
+}
+ 
+ 
+build
+package_library
+
+
+x86平台编译脚本：
+#!/bin/sh
+# NDK 所在路径
+NDK=/home/root01/huangjf/android-ndk-r21e-linux-x86_64/android-ndk-r21e
+# 需要编译出的平台，这里是 i686
+ARCH=i686
+# 支持的最低 Android API
+API=21
+# 编译后输出目录，在 ffmpeg 源码目录下的 /android/x86
+OUTPUT=$(pwd)/android/x86
+# NDK 交叉编译工具链所在路径
+TOOLCHAIN=/home/root01/huangjf/android-ndk-r21e-linux-x86_64/android-ndk-r21e/toolchains/llvm/prebuilt/linux-x86_64
+
+SYSROOT_L=$TOOLCHAIN/sysroot/usr/lib/i686-linux-android
+GCC_L=$NDK/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x
+ 
+build() {
+   ./configure \
+   --target-os=android \
+   --prefix=$OUTPUT \
+   --arch=$ARCH \
+   --cpu=i686 \
+   --sysroot=$TOOLCHAIN/sysroot \
+   --enable-static \
+   --disable-ffmpeg \
+   --disable-ffplay \
+   --disable-ffprobe \
+   --disable-debug \
+   --disable-doc \
+   --disable-avdevice \
+   --disable-shared \
+   --disable-asm \
+   --enable-neon \
+   --enable-hwaccels \
+   --enable-cross-compile \
+   --enable-small \
+   --enable-avcodec \
+   --enable-avformat \
+   --enable-avutil \
+   --enable-swresample \
+   --enable-swscale \
+   --enable-avfilter \
+   --enable-postproc \
+   --enable-network \
+   --enable-bsfs \
+   --enable-filters \
+   --enable-encoders \
+   --enable-gpl \
+   --enable-muxers \
+   --enable-parsers \
+   --enable-protocols \
+   --enable-nonfree \
+   --enable-jni \
+   --cross-prefix=$TOOLCHAIN/bin/i686-linux-android- \
+   --cc=$TOOLCHAIN/bin/i686-linux-android$API-clang \
+   --cxx=$TOOLCHAIN/bin/i686-linux-android$API-clang++ \
+   --extra-cflags="-fpic -march=i686 -mtune=intel -mssse3 -mfpmath=sse -m32 -I$OUTPUT/include" \
+   --extra-ldflags="-lc -ldl -lm -lz -llog -lgcc -L$OUTPUT/lib"
+ 
+   make clean all
+   make -j12
+   make install
+}
+   #--enable-mediacodec \
+ 
+ 
+package_library() {
+   $TOOLCHAIN/bin/i686-linux-android-ld -L$OUTPUT/lib -L$GCC_L \
+    -rpath-link=$SYSROOT_L/$API -L$SYSROOT_L/$API -soname libffmpeg.so \
+    -shared -nostdlib -Bsymbolic --whole-archive --no-undefined -o $OUTPUT/libffmpeg.so \
+    -lavcodec -lpostproc -lavfilter -lswresample -lavformat -lavutil -lswscale -lgcc \
+    -lc -ldl -lm -lz -llog \
+    --dynamic-linker=/system/bin/linker
+    # 设置动态链接器，不同平台的不同，android 使用的是/system/bin/linker
+}
+ 
+ 
+build
+package_library
+
+x86_64平台编译脚本：
+#!/bin/sh
+# NDK 所在的路径
+NDK=/home/root01/huangjf/android-ndk-r21e-linux-x86_64/android-ndk-r21e
+# 需要编译出的平台，这里是 x86_64
+ARCH=x86_64
+# 支持的最低 Android API
+API=21
+# 编译后输出目录，在 ffmpeg 源码目录下的 /android/x86_64
+OUTPUT=$(pwd)/android/x86_64
+# NDK 交叉编译工具链所在路径
+TOOLCHAIN=/home/root01/huangjf/android-ndk-r21e-linux-x86_64/android-ndk-r21e/toolchains/llvm/prebuilt/linux-x86_64
+ 
+SYSROOT_L=$TOOLCHAIN/sysroot/usr/lib/x86_64-linux-android
+GCC_L=$NDK/toolchains/x86_64-4.9/prebuilt/linux-x86_64/lib/gcc/x86_64-linux-android/4.9.x
+ 
+build() {
+   ./configure \
+   --target-os=android \
+   --prefix=$OUTPUT \
+   --arch=$ARCH \
+   --cpu=x86-64 \
+   --sysroot=$TOOLCHAIN/sysroot \
+   --enable-static \
+   --disable-ffmpeg \
+   --disable-ffplay \
+   --disable-ffprobe \
+   --disable-debug \
+   --disable-doc \
+   --disable-avdevice \
+   --disable-shared \
+   --enable-cross-compile \
+   --enable-asm \
+   --enable-small \
+   --enable-avcodec \
+   --enable-avformat \
+   --enable-avutil \
+   --enable-swresample \
+   --enable-swscale \
+   --enable-avfilter \
+   --enable-postproc \
+   --enable-network \
+   --enable-bsfs \
+   --enable-filters \
+   --enable-encoders \
+   --enable-gpl \
+   --enable-muxers \
+   --enable-parsers \
+   --enable-protocols \
+   --enable-nonfree \
+   --enable-jni \
+   --cross-prefix=$TOOLCHAIN/bin/x86_64-linux-android- \
+   --cc=$TOOLCHAIN/bin/x86_64-linux-android$API-clang \
+   --cxx=$TOOLCHAIN/bin/x86_64-linux-android$API-clang++ \
+   --extra-cflags="-fpic -march=x86-64 -msse4.2 -mpopcnt -m64 -mtune=intel -I$OUTPUT/include" \
+   --extra-ldflags="-lc -ldl -lm -lz -llog -lgcc -L$OUTPUT/lib"
+ 
+   make clean all
+   make -j12
+   make install
+}
+ 
+package_library() {
+   $TOOLCHAIN/bin/x86_64-linux-android-ld -L$OUTPUT/lib -L$GCC_L \
+    -rpath-link=$SYSROOT_L/$API -L$SYSROOT_L/$API -soname libffmpeg.so \
+    -shared -nostdlib -Bsymbolic --whole-archive --no-undefined -o $OUTPUT/libffmpeg.so \
+    -lavcodec -lpostproc -lavfilter -lswresample -lavformat -lavutil -lswscale -lgcc \
+    -lc -ldl -lm -lz -llog \
+    --dynamic-linker=/system/bin/linker
+    # 设置动态链接器，不同平台的不同，android 使用的是/system/bin/linker
+}
+ 
+ 
+build
+package_library
+
+
+
+//合并
+# armv8a
+# 需要编译出的平台，这里是arm
+ARCH=aarch64
+CPU=armv8-a
+CROSS_PREFIX=$TOOLCHAIN/bin/aarch64-linux-android-
+CC=$TOOLCHAIN/bin/aarch64-linux-android$API-clang
+CXX=$TOOLCHAIN/bin/aarch64-linux-android$API-clang++
+OUTPUT=$(pwd)/android/arm64-v8a
+CFLAGS="-fpic -march=armv8-a -I$OUTPUT/include"
+SYSROOT_L=$TOOLCHAIN/sysroot/usr/lib/aarch64-linux-android
+GCC_L=$NDK/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64/lib/gcc/aarch64-linux-android/4.9.x
+LIBRARY=$TOOLCHAIN/bin/aarch64-linux-android-ld
+ 
+ 
+build
+package_library
+
+
+# armv7a
+# 需要编译出的平台，这里是arm
+ARCH=arm
+CPU=armv7-a
+CROSS_PREFIX=$TOOLCHAIN/bin/arm-linux-androideabi-
+CC=$TOOLCHAIN/bin/armv7a-linux-androideabi$API-clang
+CXX=$TOOLCHAIN/bin/armv7a-linux-androideabi$API-clang++
+OUTPUT=$(pwd)/android/armeabi-v7a
+CFLAGS="-fpic -march=armv7-a -mcpu=cortex-a8 -mfpu=vfpv3-d16 -mfloat-abi=softfp -mthumb -I$OUTPUT/include"
+SYSROOT_L=$TOOLCHAIN/sysroot/usr/lib/arm-linux-androideabi
+GCC_L=$NDK/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/lib/gcc/arm-linux-androideabi/4.9.x
+LIBRARY=$TOOLCHAIN/bin/arm-linux-androideabi-ld
+ 
+ 
+build
+package_library
+
+
+#x86_64/android-ndk-r21e
+ARCH=x86_64
+CPU=x86-64
+CROSS_PREFIX=$TOOLCHAIN/bin/x86_64-linux-android-
+CC=$TOOLCHAIN/bin/x86_64-linux-android$API-clang
+CXX=$TOOLCHAIN/bin/x86_64-linux-android$API-clang++
+OUTPUT=$(pwd)/android/x86_64
+CFLAGS="-fpic -march=x86-64 -msse4.2 -mpopcnt -m64 -mtune=intel -I$OUTPUT/include"
+SYSROOT_L=$TOOLCHAIN/sysroot/usr/lib/x86_64-linux-android
+GCC_L=$NDK/toolchains/x86_64-4.9/prebuilt/linux-x86_64/lib/gcc/x86_64-linux-android/4.9.x
+LIBRARY=$TOOLCHAIN/bin/x86_64-linux-android-ld
+build
+package_library
+
+#x86
+ARCH=i686
+CPU=i686
+CROSS_PREFIX=$TOOLCHAIN/bin/i686-linux-android-
+CC=$TOOLCHAIN/bin/i686-linux-android$API-clang
+CXX=$TOOLCHAIN/bin/i686-linux-android$API-clang++
+OUTPUT=$(pwd)/android/x86
+CFLAGS="-fpic -march=i686 -mtune=intel -mssse3 -mfpmath=sse -m32 -I$OUTPUT/include"
+SYSROOT_L=$TOOLCHAIN/sysroot/usr/lib/i686-linux-android
+GCC_L=$NDK/toolchains/x86-4.9/prebuilt/linux-x86_64/lib/gcc/i686-linux-android/4.9.x
+LIBRARY=$TOOLCHAIN/bin/i686-linux-android-ld
+build
+package_library
+
+
+enable-static
+disable-shared
+
+   --enable-libx264 \
+   --enable-libx265 \
+   #指定禁用所有组件
+   --disable-all \	
+/***********************************FFMPEG*************************************************/
+```
+
+```
+/**********************************IJKPLAYER***********************************************/
+1.ubuntu-22.04.2镜像
+2.vmware 17.5.0
+3.搭建samba
+4.window平台连接linux新建ijk目录
+sudo apt-get update
+sudo apt-get install git
+sudo apt-get install yasm
+sudo apt-get install make
+5.切换root，输入"sudo su -"
+6.安装jdk8 "sudo apt-get install openjdk-8-jdk"
+7.export  JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+8.window下载android-ndk-r10eandroid和android-sdk_r24.4.1-linux，解压到linux系统
+sdk可以使用命令：sudo wget http://dl.google.com/android/android-sdk_r24.4.1-linux.tgz 
+9.解压sdk：tar -zxvf android-sdk_r24.4.1-linux.tgz
+10.sh android-sdk-linux/tools/android update sdk -u 下载脚本
+11.vim /etc/profile末尾加入
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+export PATH=/home/root01/huangjf/ijk/android-sdk-linux/platform-tools:$PATH
+export PATH=/home/root01/huangjf/ijk/android-sdk-linux/tools:$PATH
+export ANDROID_NDK=/home/root01/huangjf/ijk/android-ndk-r10e-linux-x86_64/android-ndk-r10e
+export PATH=/home/root01/huangjf/ijk/android-ndk-r10e-linux-x86_64:$PATH
+export PATH=$ANDROID_NDK:$PATH
+11.1source /etc/profile
+11.2 ndk-build --version 可以查看版本
+
+实现vmware与windows复制粘贴
+sudo apt-get autoremove open-vm-tools
+sudo apt-get install open-vm-tools
+sudo apt-get install open-vm-tools-desktop
+
+12.将ijkplayer代码复制到linux系统或使用git：git clone https://github.com/Bilibili/ijkplayer.git ijkplayer(这里不行，一定要控制台下载，否则后面会编译报错)
+用：1.wget https://codeload.github.com/bilibili/ijkplayer/zip/refs/tags/k0.8.8
+       2.unzip k0.8.8
+
+13.cd ijkplayer 初始化脚本：./init-android.sh,执行之前注释##pull_fork "armv5"
+
+   把armv5去掉
+	init-android-openssl.sh
+	init-android.sh
+	init-android-libsoxr.sh
+	./android/contrib/compile-openssl.sh
+	./android/contrib/compile-libsoxr.sh
+	./android/compile-ijk.sh
+    
+    出现格式报错（tools/pull-repo-base.sh: 行 2: $'\r': 未找到命令）
+    解决：sudo apt-get install dos2unix
+    用命令转化：dos2unix test.sh
+	1.转化tools下所有sh文件
+	2.转化init-config.sh
+	3.转化init-android-libyuv.sh
+	4.转化init-android-soundtouch.sh
+	5.转化init-android-openssl.sh
+	6.转化android/contrib/compile-openssl.sh
+ 	7.android/contrib/tools 所有sh
+	8.android/contrib所有sh
+
+    连接github超时
+    解决：vi /etc/hosts
+    加入：140.82.114.3 github.com
+
+   问题：RPC 失败。curl 92 HTTP/2 stream 0 was not closed cleanly: CANCEL (err 8)
+   解决：git config --global http.postBuffer 524288000
+      	git config --global --unset http.proxy
+	git config --global --unset https.proxy
+
+13.1去除init-android-openssl.sh里armv5
+14.输入./init-android-openssl.sh
+15.cd config 在module-default.sh增加以下几行配置：
+export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-linux-perf"
+export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-vda"
+export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-ffserver"
+export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --disable-bzlib"
+16.然后删除 module.sh文件，重新生成module.sh 文件
+   ln -s module-lite.sh module.sh
+17.cd android/contrib
+   去除/compile-openssl.s “armv5”
+   ./compile-openssl.sh clean
+   ./compile-openssl.sh all
+18.cd ../
+cd android/contrib,删除所有sh里的“armv5”
+./compile-ffmpeg.sh clean
+./compile-ffmpeg.sh all
+   问题：.....config/module.sh: line 1: module-lite.sh: command not found
+    解决方式：进入ijkpalyer-master／config
+    rm module.sh
+    ln -s module-lite.sh module.sh
+19.cd ..
+删除所有sh里的“armv5”
+./compile-ijk.sh clean
+./compile-ijk.sh all
+20.添加拍照和录像功能
+向config 目录下的module-lite.sh 文件末尾添加以下内容：（目录在ijkplayer/config）
+export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --enable-protocol=rtp"
+export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --enable-demuxer=rtsp"
+export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --enable-muxer=mjpeg"
+export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --enable-decoder=mjpeg"
+export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --enable-demuxer=mjpeg"
+export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --enable-encoder=mjpeg"
+21.解决报错问题，下一帧比上一帧时间短
+cd extra/ffmpeg/libavformat
+vi mux.c
+    if (sti->cur_dts && sti->cur_dts != AV_NOPTS_VALUE &&
+        ((!(s->oformat->flags & AVFMT_TS_NONSTRICT) &&
+          st->codecpar->codec_type != AVMEDIA_TYPE_SUBTITLE &&
+          st->codecpar->codec_type != AVMEDIA_TYPE_DATA &&
+          sti->cur_dts >= pkt->dts) || sti->cur_dts > pkt->dts)) {}
+
+22.然后重新编译ffmpeg库，在 ijkplayer-android / android / contrib 目录下：
+./compile-ffmpeg.sh clean  //清理以前编译的ffmpeg库文件
+./compile-ffmpeg.sh all
+21.添加代码
+https://blog.csdn.net/iqq_37382732/article/details/109101681
+22.编译ijkplayer
+cd ..
+./compile-ijk.sh clean
+./compile-ijk.sh armv7a
+23.默认不支持rtsp
+   cd ijkplayer-android/config
+   vim module-lite.sh
+   #在相关地方加入如下两行代码
+   export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --enable-protocol=rtp"
+   export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --enable-demuxer=rtsp"
+
+24.启动就闪退问题
+   解决：native方法写成public static 了，改成private native
+
+25.录制视频报错：Application provided invalid, non monotonically increasing dts to muxer in stream 0: 30488760 >= 30488760
+   解决： ffmpeg源码中的mux.c文件======>compute_muxer_pkt_fields函数
+   注释了：
+    if (sti->cur_dts && sti->cur_dts != AV_NOPTS_VALUE &&
+        ((!(s->oformat->flags & AVFMT_TS_NONSTRICT) &&
+          st->codecpar->codec_type != AVMEDIA_TYPE_SUBTITLE &&
+          st->codecpar->codec_type != AVMEDIA_TYPE_DATA &&
+          sti->cur_dts >= pkt->dts) || sti->cur_dts > pkt->dts)) {}
+pkt.pts = pkt.dts;
+        }
+26.rtsp延迟问题
+   解决：
+   1.ijkmedia/ijkplayer/ff_ffplay.c
+	在static void video_refresh(FFPlayer *opaque, double *remaining_time)方法中
+static void video_refresh(FFPlayer *opaque, double *remaining_time)
+{
+	/* compute nominal last_duration */
+            last_duration = vp_duration(is, lastvp, vp);
+            delay = 0;//compute_target_delay(ffp, last_duration, is);//计算渲染延时
+
+}
+  2.
+static int video_refresh_thread(void *arg)
+{
+    FFPlayer *ffp = arg;
+    VideoState *is = ffp->is;
+    double remaining_time = 0.0;
+    while (!is->abort_request) {
+        if (remaining_time > 0.0)
+            av_usleep((int)(int64_t)(remaining_time * 1000000.0));
+        remaining_time = REFRESH_RATE;//这里有刷新速率限制
+        if (is->show_mode != SHOW_MODE_NONE && (!is->paused || is->force_refresh))
+            video_refresh(ffp, &remaining_time);
+    }
+
+    return 0;
+}
+REFRESH_RATE速率限制会造成渲染线程有一定的睡眠时间
+这里默认配置REFRESH_RATE为0.01，我们可以尝试调小这个值，在一定情况下可以解决延迟问题，但是这样修改也不彻底
+
+  3.（未采取）设置ff_ffplay.c 搜索“codec_ctx-” 加入
+    img_info->frame_img_codec_ctx->flags |= CODEC_FLAG_LOW_DELAY;
+
+  4.
+
+27.Invalid level prefix,error while decoding MB 100 50
+ 解决：mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "framedrop", 5);
+
+28.问题：Application provided duration: %"PRId64" / timestamp: %"PRId64" is out of range for mov/mp4 format\n",
+解决：android\contrib\ffmpeg-arm64\libavformat找到movenc.c
+找到check_pkt，注释代码直接return 0
+/**********************************IJKPLAYER***********************************************/
+```
 
