@@ -1426,67 +1426,42 @@ https://blog.csdn.net/iqq_37382732/article/details/109101681
 cd ..
 ./compile-ijk.sh clean
 ./compile-ijk.sh armv7a
-23.默认不支持rtsp
-   cd ijkplayer-android/config
-   vim module-lite.sh
-   #在相关地方加入如下两行代码
-   export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --enable-protocol=rtp"
-   export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --enable-demuxer=rtsp"
-
-24.启动就闪退问题
-   解决：native方法写成public static 了，改成private native
-
-25.录制视频报错：Application provided invalid, non monotonically increasing dts to muxer in stream 0: 30488760 >= 30488760
-   解决： ffmpeg源码中的mux.c文件======>compute_muxer_pkt_fields函数
-   注释了：
-    if (sti->cur_dts && sti->cur_dts != AV_NOPTS_VALUE &&
-        ((!(s->oformat->flags & AVFMT_TS_NONSTRICT) &&
-          st->codecpar->codec_type != AVMEDIA_TYPE_SUBTITLE &&
-          st->codecpar->codec_type != AVMEDIA_TYPE_DATA &&
-          sti->cur_dts >= pkt->dts) || sti->cur_dts > pkt->dts)) {}
-pkt.pts = pkt.dts;
-        }
-26.rtsp延迟问题
-   解决：
-   1.ijkmedia/ijkplayer/ff_ffplay.c
-	在static void video_refresh(FFPlayer *opaque, double *remaining_time)方法中
-static void video_refresh(FFPlayer *opaque, double *remaining_time)
-{
-	/* compute nominal last_duration */
-            last_duration = vp_duration(is, lastvp, vp);
-            delay = 0;//compute_target_delay(ffp, last_duration, is);//计算渲染延时
-
-}
-  2.
-static int video_refresh_thread(void *arg)
-{
-    FFPlayer *ffp = arg;
-    VideoState *is = ffp->is;
-    double remaining_time = 0.0;
-    while (!is->abort_request) {
-        if (remaining_time > 0.0)
-            av_usleep((int)(int64_t)(remaining_time * 1000000.0));
-        remaining_time = REFRESH_RATE;//这里有刷新速率限制
-        if (is->show_mode != SHOW_MODE_NONE && (!is->paused || is->force_refresh))
-            video_refresh(ffp, &remaining_time);
-    }
-
-    return 0;
-}
-REFRESH_RATE速率限制会造成渲染线程有一定的睡眠时间
-这里默认配置REFRESH_RATE为0.01，我们可以尝试调小这个值，在一定情况下可以解决延迟问题，但是这样修改也不彻底
-
-  3.（未采取）设置ff_ffplay.c 搜索“codec_ctx-” 加入
-    img_info->frame_img_codec_ctx->flags |= CODEC_FLAG_LOW_DELAY;
-
-  4.
-
-27.Invalid level prefix,error while decoding MB 100 50
- 解决：mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "framedrop", 5);
-
-28.问题：Application provided duration: %"PRId64" / timestamp: %"PRId64" is out of range for mov/mp4 format\n",
-解决：android\contrib\ffmpeg-arm64\libavformat找到movenc.c
-找到check_pkt，注释代码直接return 0
 /**********************************IJKPLAYER***********************************************/
 ```
 
+```
+/***********************************************性能优化*************************************************************************/
+1.启动优化
+	1.1 提高线程等级，核心线程绑定CPU大核
+		Process.setThreadPriority(int priority) / Process.setThreadPriority(int pid, int priority)
+		Thread.setPriority(int priority)
+		1.1.1主线程的优先级调整很简单，直接在 Application 的 attachBaseContext() 调用 Process.setThreadPriority(-19)，将主线程设置为最高级别优先级即可。
+		1.1.2 获取渲染线程id，设置Process.setThreadPriority(int pid, int priority)，在绑定CPU大核
+	1.2 线程池配置
+	插桩方式确认任务属于哪种类型
+		CPU线程池：CPU线程池  == Executors.newFixedThreadPool
+                核心=最大=CPU核
+                keepAliveTime=0
+                workqueue=无限大或设置
+		IO线程池：IO线程池(设置线程优先级比CPU高)
+                核心=0
+                最大=60以上
+                keepAlive=60s
+                workqueue=SynchronousQueue
+	1.3 减少CPU闲置，执行预准备任务
+		times函数判断CPU是否闲置，当CPU速率一定在0.1以下，就可认为是闲置状态
+	1.4 dex重排序 用Redex
+2.ANR
+    2.1 ANR 日志准备（traces.txt + mainlog）
+    2.2 在 traces.txt 找到 ANR 信息（发生 ANR 时间节点、主线程状态、事故点、ANR 类型）
+    2.3 在mainlog 日志分析发生 ANR 时的 CPU 状态
+    2.4 在 traces.txt 分析发生 ANR 时的 GC 情况（分析内存）
+    简单说就是我们至少需要两份文件：/data/anr/traces.txt 和 mainlog 日志。如果有eventlog 能更快的定位到 ANR 的类型，当然 traces.txt 和 mainlog 也能分析得到。
+traces.txt 文件通过命令 adb pull /data/anr/ 获取，如果没有权限，用adb bugreport
+mainlog 日志需要在程序运行时就时刻记录 adb logcat -v time -b main > mainlog.log。
+	mainlog 日志 搜索关键词 ANR in
+	在 eventlog 日志 搜索关键词 am_anr
+3.UI卡顿
+4.全局异常捕获
+/***********************************************性能优化*************************************************************************/
+```

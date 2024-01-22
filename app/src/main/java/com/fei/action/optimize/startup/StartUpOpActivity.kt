@@ -1,6 +1,9 @@
 package com.fei.action.optimize.startup
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.util.Log
 import com.common.base.BaseActivity
 import com.common.viewmodel.EmptyViewModel
@@ -9,6 +12,9 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileReader
+import java.util.Random
+import java.util.Timer
+import java.util.TimerTask
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.SynchronousQueue
 import java.util.concurrent.ThreadFactory
@@ -27,16 +33,33 @@ class StartUpOpActivity : BaseActivity<EmptyViewModel, ActivityStartUpOpBinding>
 
     private var renderThreadTid: Int = 0
     private var maxFreqCPUIndex: Int = 0
+
+    private lateinit var timer: Timer
+    private var beforeCpuTime = 0f
+
+    private val random = Random()
+    private var num: Int = 0
+    private val handler = object : Handler(Looper.getMainLooper()) {
+        // 模拟 cpu 计算消耗
+        override fun handleMessage(msg: Message) {
+            for (i in 0 until 100_0000) {
+                num += i
+            }
+            val time = random.nextInt(5000).toLong()
+            Log.v("@@@", "延迟 time = $time")
+            sendEmptyMessageDelayed(0, time)
+        }
+    }
     override fun createObserver() {
         //获取渲染线程
         mBinding.btnGetRender.setOnClickListener {
             renderThreadTid = getRenderThreadId()
-            Log.i("tag", " renderThreadId = $renderThreadTid")
+            Log.i("@@@", " renderThreadId = $renderThreadTid")
         }
         //获取cpu最大核
         mBinding.btnGetCpu.setOnClickListener {
             maxFreqCPUIndex = getMaxFreqCPUIndex()
-            Log.i("tag", " maxFreqCPUIndex = $maxFreqCPUIndex")
+            Log.i("@@@", " maxFreqCPUIndex = $maxFreqCPUIndex")
         }
 
         // 线程绑定大核，返回 0 表示成功，否则失败
@@ -48,8 +71,31 @@ class StartUpOpActivity : BaseActivity<EmptyViewModel, ActivityStartUpOpBinding>
          * 调用 shced_setaffinity 函数将线程绑定到大核
          */
         mBinding.btnBinding.setOnClickListener {
+            //线程提高等级
+            android.os.Process.setThreadPriority(renderThreadTid,-19)
+            //线程绑定大核
             val result = bindMaxFreqCore(maxFreqCPUIndex, renderThreadTid)
             Log.v("@@@", "result = $result")
+        }
+
+        mBinding.btnOperater.setOnClickListener {
+            val time = random.nextInt(5000).toLong()
+            Log.v("@@@", "延迟 time = $time")
+            handler.sendEmptyMessageDelayed(0, time)
+
+            timer = Timer()
+            timer.schedule(object: TimerTask() {
+                override fun run() {
+                    val cpuTime = getCpuTime()
+                    // 计算单位时间内的 CPU 速率
+                    val cpuSpeed = (cpuTime - beforeCpuTime) / 5f
+                    Log.v("@@@", "cpuSpeed = $cpuSpeed")
+                    if (cpuSpeed <= 0.1) {
+                        Log.v("@@@", "cpu is idle")
+                    }
+                    beforeCpuTime = cpuTime
+                }
+            }, 0, 5 * 1000)
         }
 
     }
@@ -60,7 +106,7 @@ class StartUpOpActivity : BaseActivity<EmptyViewModel, ActivityStartUpOpBinding>
     private fun getMaxFreqCPUIndex(): Int {
         //1.可以通过 /sys/devices/system/cpu/ 目录下的文件查看当前设备有几个 CPU
         val cores = getNumberOfCpuCores()
-        Log.i("tag", "cors = $cores")
+        Log.i("@@@", "cors = $cores")
         //2.其中一个 cpu 目录的 cpu{x}/cpufreq/ 目录的 /cpuinfo_max_freq 可以查看该 cpu 的时钟周期频率
         if (cores == 0) return -1
         var maxFreq = -1
@@ -173,11 +219,8 @@ class StartUpOpActivity : BaseActivity<EmptyViewModel, ActivityStartUpOpBinding>
         )
     }
 
-    /**
-     * times 函数判断 CPU 是否闲置
-     */
-
     override fun initViewAndData(savedInstanceState: Bundle?) {
+
     }
 
     /**
@@ -195,5 +238,11 @@ class StartUpOpActivity : BaseActivity<EmptyViewModel, ActivityStartUpOpBinding>
         init {
             System.loadLibrary("demo")
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        timer.cancel()
+        handler.removeCallbacksAndMessages(null)
     }
 }
