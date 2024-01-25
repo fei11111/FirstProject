@@ -24,7 +24,7 @@ import com.google.zxing.LuminanceSource;
 import java.io.FileNotFoundException;
 
 /**
- * This class is used to help decode images from files which arrive as RGB data
+ * This class is used to help decodePacket images from files which arrive as RGB data
  * from Android bitmaps. It does not support cropping or rotation.
  * 
  * @author dswitkin@google.com (Daniel Switkin)

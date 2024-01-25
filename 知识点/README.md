@@ -1463,5 +1463,165 @@ mainlog 日志需要在程序运行时就时刻记录 adb logcat -v time -b main
 	在 eventlog 日志 搜索关键词 am_anr
 3.UI卡顿
 4.全局异常捕获
+5.布局优化
+    5.1 手机开发者选项开启显示GPU过度绘制调试开关，分别有蓝色、淡绿、淡红、深红四种不同情况
+    5.2 手机开发者选项开启GPU呈现模式分析
+    5.3 theme去除主题默认背景
+    	<resource>
+            <style name="Theme.NoBackground" parent="android:Theme">
+                <item name="android:windowBackground">@android:color/transparent</item>
+            </style>
+		</resources>
+	5.4 截取部分，避免过度绘制
+	5.5 背景图使用9-patches
+	5.6 减少层级嵌套
+	5.7 布局标签：<include><merge><viewstub>
+		每次在调用 LayoutInflater.inflate() 时，必须为 <merge> 布局文件提供一个view，作为它的父容器：
+		LayoutInflater.from(parent.getContext()).inflate(R.layout.merge_layout, parent, true);
+	5.8 硬件加速
+6.内存性能优化：
+    6.1 Android系统通过在Android Lollipop替换Dalvik为ART，且在Android N添加JIT的方式提升编译安装性能
+    6.2 对象内存管理，避免内存抖动、内存泄漏
+    6.3 按需要提供变量的基本数据类型
+    6.4 避免自动装箱拆箱的转换
+    6.5 在某些场景使用Android提供的SparseArray集合组和ArrayMap代替HashMap能达到内存高效
+    6.6 尽量使用for each循环
+    6.7 使用Annotation @IntDef实现枚举
+    6.8 常量使用static final声明能节约内存
+    6.9 使用StringBuilder或StringBuffer拼接字符串+
+    6.10 生命周期内不变的变量声明为本地变量对象，不在方法内创建节省内存
+    6.11 对象数量固定不变的列表，使用数组比集合更内存高效
+    6.12 尽量少创建临时对象，因为会频繁触发垃圾回收；避免实例化非必要对象，因为会对内存和计算性能带来影响
+    6.13 对于要大量创建耗费资源的对象时，使用对象池模式或享元模式
+    	对象池
+    	public abstract class ObjectPool<T> {
+            // 使用两个SparseArray数组保存对象集合，防止这些对象在借出后被系统回收
+            private SparseArray<T> freePool;
+            private SparseArray<T> lentPool;
+            private int maxCapacity;
+
+            public ObjectPool(int initialCapacity, int maxCapacity) {
+                initialize(initialCapacity);
+                this.maxCapacity = maxCapacity;
+            }
+
+            public ObjectPool(int maxCapacity) {
+                this(maxCapacity / 2, maxCapacity);
+            }
+
+            public T acquire() {
+                T t = null;
+                synchronized(freePool) {
+                    int freeSize = freePool.size();
+                    for (int i = 0; i < freeSize; i++) {
+                        int key = freePool.keyAt(i);
+                        t = freePool.get(key);
+                        if (t != null) {
+                            this.lentPool.put(key, t);
+                            this.freePool.remove(key);
+                            return t;
+                        }
+                    }
+                    if (t == null && lentPool.size() + freeSize < maxCapacity) {
+                        t = create();
+                        lentPool.put(lentPool.size() + freeSize, t);
+                    }
+                }
+                return t;
+            }
+
+            public void release(T t) {
+                if (t == null) {
+                    return null;
+                }
+                int key = lentPool.indexOfValue(t);
+                restore(t);
+                this.freePool.put(key, t);
+                this.lentPool.remove(key);
+            }
+
+            protected abstract T create();
+
+            protected void restore(T t) {}
+
+            private void initialize(final int initialCapacity) {
+                lentPool = new SparseArray<>();
+                freePool = new SparseArray<>();
+                for (int i = 0; i < initialCapacity; i++) {
+                    freePool.put(i, create());
+                }
+            }
+        }
+        享元模式
+        public interface Courier<T> {
+            void equip(T param);
+        }
+
+        // 享元对象
+        public class PackCourier implements Courier<Pack> {
+            private Van van;
+
+            // id为内部状态且用于唯一标识一个对象，用在Factory中实现对象复用
+            public PackCourier(int id) {
+                super(id);
+                van = new Van(id);
+            }
+
+            // pack为外部状态
+            public void equip(Pack pack) {
+                van.load(pack);
+            }
+        }
+
+        // 客户，通过courier.equip(pack)将外部状态pack传入享元对象courier
+        public class Delivery extends Id {
+            private Courier<Pack> courier;
+
+            public Delivery(int id) {
+                super(id);
+                courier = new Factory().getCourier(0);
+            }
+
+            public void deliver(Pack pack, Destination destination) {
+                courier.equip(pack);
+            }
+        }
+
+        public class Factory {
+            private static SparseArray<Courier> pool;
+
+            public Factory() {
+                if (pool == null)
+                    pool = new SparseArray<>();
+            }
+
+            public Courier getCourier(int type) {
+                Courier courier = pool.get(type);
+                if (courier == null) {
+                    courier = create(type);
+                    pool.put(type, courier);
+                }
+                return courier;
+            }
+
+            private Courier create(int type) {
+                Courier courier = null;
+                switch(type) {
+                    case 0:
+                        courier = new PackCourier(0);
+                }
+                return courier;
+            }
+        }
+
+        // 每个Delivery都是由同一个Courier完成操作
+        for (int i = 0; i < DEFAULT_COURIER_NUMBER; i++) {
+            new Delivery(i).deliver(new Pack(i), new Destination(i));
+        }
+
+
+
+
+        
 /***********************************************性能优化*************************************************************************/
 ```

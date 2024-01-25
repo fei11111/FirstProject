@@ -4,12 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import com.common.base.BaseActivity
 import com.common.viewmodel.EmptyViewModel
+import com.fei.action.animation.ActionAnimationActivity
+import com.fei.action.ffmpeg.IjkActivity
 import com.fei.action.optimize.ActionOptimizeActivity
 import com.fei.action.wifi.ActionWifiActivity
-import com.fei.action.wifi.aware.AwareWifiActivity
-import com.fei.action.wifi.direct.DirectWifiActivity
-import com.fei.action.wifi.rtt.RttWifiActivity
-import com.fei.action.wifi.simple.ApWifiActivity
 import com.fei.firstproject.databinding.ActivityActionMainBinding
 
 class ActionMainActivity : BaseActivity<EmptyViewModel, ActivityActionMainBinding>() {
@@ -23,6 +21,11 @@ class ActionMainActivity : BaseActivity<EmptyViewModel, ActivityActionMainBindin
         mBinding.btnOptimize.setOnClickListener {
             startActivity(Intent(this, ActionOptimizeActivity::class.java))
         }
-
+        mBinding.btnFfmpeg.setOnClickListener {
+            startActivity(Intent(this, IjkActivity::class.java))
+        }
+        mBinding.btnAnim.setOnClickListener {
+            startActivity(Intent(this, ActionAnimationActivity::class.java))
+        }
     }
 }

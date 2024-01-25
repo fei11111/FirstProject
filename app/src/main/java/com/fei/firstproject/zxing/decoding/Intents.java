@@ -32,7 +32,7 @@ public final class Intents {
     public static final String ACTION = "com.google.zxing.client.android.SCAN";
 
     /**
-     * By default, sending Scan.ACTION will decode all barcodes that we understand. However it
+     * By default, sending Scan.ACTION will decodePacket all barcodes that we understand. However it
      * may be useful to limit scanning to certain formats. Use Intent.putExtra(MODE, value) with
      * one of the values below ({@link #PRODUCT_MODE}, {@link #ONE_D_MODE}, {@link #QR_CODE_MODE}).
      * Optional.

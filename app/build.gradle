@@ -97,12 +97,12 @@ android {
         freeCompilerArgs += ["-Xjvm-default=all"]
     }
 
-    sourceSets {
-        main {
-            jniLibs.srcDir 'libs'
-            jni.srcDirs = []
-        }
-    }
+//    sourceSets {
+//        main {
+//            jniLibs.srcDir 'libs'
+//            jni.srcDirs = []
+//        }
+//    }
 
     externalNativeBuild {
         cmake {
@@ -114,7 +114,6 @@ android {
     packagingOptions {
         exclude 'META-INF/rxjava.properties'
     }
-
 }
 
 

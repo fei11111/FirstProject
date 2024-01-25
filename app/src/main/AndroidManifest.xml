@@ -10,7 +10,8 @@
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
+    <uses-permission
+        android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -30,7 +31,7 @@
     <!-- 这个权限用于访问GPS定位 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- SD卡读取权限，用户写入离线定位数据 -->
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -41,13 +42,13 @@
     <application
         android:name=".MyApplication"
         android:allowBackup="false"
+        android:exported="true"
         android:icon="@drawable/ic_app"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:allowBackup"
-        android:exported="true"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        tools:replace="android:allowBackup">
         <meta-data
             android:name="design_width_in_dp"
             android:value="360" />
@@ -62,9 +63,9 @@
         <activity
             android:name="com.fei.action.ActionMainActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/WhiteTheme"
-            android:exported="true">
+            android:theme="@style/WhiteTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -212,27 +213,45 @@
             android:name=".activity.AlbumActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:screenOrientation="portrait"></activity>
-        <activity android:name="com.fei.action.wifi.simple.ApWifiActivity"
+        <activity
+            android:name="com.fei.action.wifi.simple.ApWifiActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.fei.action.wifi.direct.DirectWifiActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.fei.action.wifi.aware.AwareWifiActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.fei.action.wifi.rtt.RttWifiActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.fei.action.optimize.startup.StartUpOpActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.fei.action.optimize.ActionOptimizeActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.fei.action.wifi.ActionWifiActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.fei.action.ffmpeg.IjkActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.fei.action.animation.ActionAnimationActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:screenOrientation="portrait"/>
-        <activity android:name="com.fei.action.wifi.direct.DirectWifiActivity"
+        <activity
+            android:name="com.fei.action.animation.placehold.PlaceholdActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.fei.action.wifi.aware.AwareWifiActivity"
-            android:configChanges="orientation|keyboardHidden|navigation"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.fei.action.wifi.rtt.RttWifiActivity"
-            android:configChanges="orientation|keyboardHidden|navigation"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.fei.action.optimize.startup.StartUpOpActivity"
-            android:configChanges="orientation|keyboardHidden|navigation"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.fei.action.optimize.ActionOptimizeActivity"
-            android:configChanges="orientation|keyboardHidden|navigation"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.fei.action.wifi.ActionWifiActivity"
-            android:configChanges="orientation|keyboardHidden|navigation"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

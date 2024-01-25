@@ -18,11 +18,22 @@
         android:text="bluetooth" />
 
     <Button
+        android:id="@+id/btn_ffmpeg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ffmpeg" />
+
+    <Button
         android:id="@+id/btn_optimize"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="性能优化" />
 
+    <Button
+        android:id="@+id/btn_anim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="动画效果" />
 
 
 </LinearLayout>

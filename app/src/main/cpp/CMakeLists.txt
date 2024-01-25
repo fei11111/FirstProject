@@ -11,6 +11,17 @@ cmake_minimum_required(VERSION 3.22.1)
 # build script scope).
 project("demo")
 
+# 2. 添加头文件目录
+include_directories(include)
+# 3. 添加ffmpeg相关的so库
+add_library(ffmpeg
+        SHARED
+        #        STATIC
+        IMPORTED )
+set_target_properties(ffmpeg
+        PROPERTIES IMPORTED_LOCATION
+        ${CMAKE_SOURCE_DIR}/../../../libs/${CMAKE_ANDROID_ARCH_ABI}/libffmpeg.so)
+
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
 # You can define multiple libraries, and CMake builds them for you.
@@ -33,5 +44,6 @@ add_library(${CMAKE_PROJECT_NAME} SHARED
 # build script, prebuilt third-party libraries, or Android system libraries.
 target_link_libraries(${CMAKE_PROJECT_NAME}
         # List libraries link to the target library
+        ffmpeg
         android
         log)
