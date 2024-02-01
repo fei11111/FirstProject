@@ -1618,6 +1618,99 @@ mainlog 日志需要在程序运行时就时刻记录 adb logcat -v time -b main
         for (int i = 0; i < DEFAULT_COURIER_NUMBER; i++) {
             new Delivery(i).deliver(new Pack(i), new Destination(i));
         }
+        
+        6.14 bitmap优化
+        private BitmapPool bitmapPool;
+        public Bitmap decodeBitmap(Context context, File file, int reqWidth, int reqHeight) {
+            bitmapPool = GlideApp.get(context).getBitmapPool();
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+            options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+            options.inMutable = true; // 复用 inBitmap 需要将 inMutable 设置为 true
+            options.inBitmap = bitmapPool.getDirty(options.outWidth, options.outHeight, options.inPreferredConfig);
+            options.inJustDecodeBounds = false;
+            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+            // 处理 BitmapFactory.decodeXxx() 复用失败时，按普通方式加载处理
+            if (bitmap == null && options.inBitmap != null) {
+                bitmapPool.put(options.inBitmap);
+                options.inBitmap = null;
+                bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+            }
+            if (bitmap != null && options.inBitmap != null) {
+                bitmapPool.put(options.inBitmap);
+            }
+            return bitmap;
+        }
+        
+        private int calculateSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+            // 图片原始宽高
+            int width = options.outWidth;
+            int height = options.outHeight;
+
+            // 默认不缩放
+            int inSampleSize = 1; 
+            // 当原始图片宽高大于控件所需宽或高才进行缩放
+            if (width > reqWidth || height > reqHeight) {
+                // 取宽度比与高度比的最大值
+                int widthRound = Math.round(width * 1f / reqWidth);
+                int heightRound = Math.round(height * 1f / reqHeight);
+
+                inSampleSize = Math.max(widthRound, heightRound);
+            }
+
+            return inSampleSize;
+        }
+7.第三方框架优化
+	7.1 okhttp
+		Dispatcher 提供了配置异步网络请求的最大数量 maxRequests 属性，默认最大请求数量为64
+		Dispatcher dispatcher = new Dispatcher();
+        dispatcher.setMaxRequests(32);//重新配置为32
+        new OkHttpClient.Builder()
+            .dispatcher(dispatcher);
+    7.2 Glide
+    	限制 Glide 异步图片加载开启线程数量
+    	@GlideModule
+        public class MyGlideModule extends AppGlideModule {
+            @Override
+            public boolean isManifestParsingEnabled() {
+                return false;
+            }
+
+            @Override
+            public void applyOptions(@NonNull Context context, @NonNull GlideBuilder builder) {
+                super.applyOptions(context, builder);
+
+                builder.setSourceExecutor(GlideExecutor.newSourceExecutor(
+                        1, // 修改处理图片加载的线程数量
+                        "glide-load-source",
+                        GlideExecutor.UncaughtThrowableStrategy.DEFAULT));
+            }
+        }
+        
+        列表滑动暂停加载图片
+        recyclerView.addOnScrollListener(new RecyclerView.onScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                GlideRequests requests = Glide.with(context);
+                if (newState != RecyclerView.SCROLL_STATE_IDLE) {
+                    if (!requests.isPaused()) {
+                        requests.pauseRequests(); // 列表滑动时暂停图片加载
+                    }
+                } else {
+                    if (requests.isPaused()) {
+                        requests.resumeRequests(); // 列表停止滑动时恢复图片加载
+                    }
+                }
+            }
+        });
+
+
+
+     
+
 
 
 
