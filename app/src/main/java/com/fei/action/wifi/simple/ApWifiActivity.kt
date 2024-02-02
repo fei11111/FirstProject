@@ -11,6 +11,7 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.net.wifi.WifiConfiguration
+import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
 import android.net.wifi.WifiNetworkSpecifier
 import android.net.wifi.WifiNetworkSuggestion
@@ -38,12 +39,65 @@ class ApWifiActivity : BaseActivity<EmptyViewModel, ActivityApWifiBinding>() {
 
     override fun initViewAndData(savedInstanceState: Bundle?) {
         mBinding.btnScan.setOnClickListener { scanWifi() }
+        mBinding.btnGetWifiName.setOnClickListener { getWifiName() }
+    }
+
+    private fun getWifiName() {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),1)
+            }
+            return
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) { //android12以上监听修改wifi
+            val request = NetworkRequest.Builder()
+                .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+                .build()
+            val connectivityManager =
+                this.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val networkCallback =
+                object : ConnectivityManager.NetworkCallback(FLAG_INCLUDE_LOCATION_INFO) {
+                    override fun onCapabilitiesChanged(
+                        network: Network,
+                        networkCapabilities: NetworkCapabilities
+                    ) {
+                        val wifiInfo = networkCapabilities.transportInfo as WifiInfo
+                        Log.i("tag", "wifi名字 = ${wifiInfo.ssid}")
+                        super.onCapabilitiesChanged(network, networkCapabilities)
+                        connectivityManager.unregisterNetworkCallback(this)
+                    }
+                }
+            connectivityManager.registerNetworkCallback(request, networkCallback)
+        } else { //android12以下定时获取当前wifi信息
+            val wifimanager =
+                applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+            Log.i("tag", "wifi名字 = ${wifimanager.connectionInfo.ssid}")
+        }
     }
 
     /**
      * 扫码wifi
      */
     private fun scanWifi() {
+
+        if (!openWifi()) return
+
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),1)
+            }
+            return
+        }
+
         wifiManager =
             applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
         wifiScanReceiver = object : BroadcastReceiver() {
@@ -82,19 +136,9 @@ class ApWifiActivity : BaseActivity<EmptyViewModel, ActivityApWifiBinding>() {
          * 适用 Android 9 的节流限制。新增一个开发者选项，用户可以关闭节流功能以便进行本地测试（位于开发者选项 > 网络 > WLAN 扫描调节下）。
          *
          */
-        if (!openWifi()) return
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P){
-            //9.0开始要开定位
-            if (!isLocationEnabled()) {
-                Toast.makeText(this@ApWifiActivity, "Please enable Location", Toast.LENGTH_SHORT)
-                    .show()
-                startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
-                return
-            }
-        }
 
-        Log.i("tag","wifi已打开")
+        Log.i("tag", "wifi已打开")
 
         val success = wifiManager!!.startScan()
         if (!success) {
@@ -136,8 +180,8 @@ class ApWifiActivity : BaseActivity<EmptyViewModel, ActivityApWifiBinding>() {
             for (scanResult in wifiList) {
                 Log.i("scanResult历史", scanResult.toString())
             }
-        }else {
-            Log.i("scanResult历史","wifiList is null")
+        } else {
+            Log.i("scanResult历史", "wifiList is null")
         }
         // potentially use older scan results ...
     }
@@ -155,8 +199,8 @@ class ApWifiActivity : BaseActivity<EmptyViewModel, ActivityApWifiBinding>() {
             for (scanResult in wifiList) {
                 Log.i("scanResult", scanResult.toString())
             }
-        }else {
-            Log.i("scanResult","wifiList is null")
+        } else {
+            Log.i("scanResult", "wifiList is null")
         }
     }
 
