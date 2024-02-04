@@ -43,6 +43,9 @@ class ApWifiActivity : BaseActivity<EmptyViewModel, ActivityApWifiBinding>() {
     }
 
     private fun getWifiName() {
+
+        if (!openWifi()) return
+
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -52,6 +55,16 @@ class ApWifiActivity : BaseActivity<EmptyViewModel, ActivityApWifiBinding>() {
                 requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),1)
             }
             return
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P){
+            //9.0开始要开定位
+            if (!isLocationEnabled()) {
+                Toast.makeText(this@ApWifiActivity, "Please enable Location", Toast.LENGTH_SHORT)
+                    .show()
+                startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+                return
+            }
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) { //android12以上监听修改wifi
@@ -96,6 +109,16 @@ class ApWifiActivity : BaseActivity<EmptyViewModel, ActivityApWifiBinding>() {
                 requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),1)
             }
             return
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P){
+            //9.0开始要开定位
+            if (!isLocationEnabled()) {
+                Toast.makeText(this@ApWifiActivity, "Please enable Location", Toast.LENGTH_SHORT)
+                    .show()
+                startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+                return
+            }
         }
 
         wifiManager =

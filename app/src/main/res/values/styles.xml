@@ -16,6 +16,7 @@
         <item name="toolbarStyle">@style/CustomToolbar</item>
         <item name="colorControlHighlight">@color/colorPrimary</item>
         <item name="colorControlNormal">@color/colorPrimary</item>
+        <item name="android:windowBackground">@drawable/ic_background</item>
         <item name="colorControlActivated">@color/colorPrimary</item>
         <item name="android:windowFullscreen">false</item>
     </style>
@@ -46,7 +47,6 @@
         <item name="windowNoTitle">true</item>
         <item name="toolbarStyle">@style/CustomToolbar</item>
         <item name="colorControlHighlight">@color/colorBlack</item>
-        <item name="android:windowBackground">@drawable/ic_background</item>
         <item name="android:windowFullscreen">true</item>
     </style>
 

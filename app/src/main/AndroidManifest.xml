@@ -64,8 +64,7 @@
             android:name="com.fei.action.ActionMainActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/WhiteTheme">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
