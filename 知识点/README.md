@@ -1461,6 +1461,19 @@ traces.txt 文件通过命令 adb pull /data/anr/ 获取，如果没有权限，
 mainlog 日志需要在程序运行时就时刻记录 adb logcat -v time -b main > mainlog.log。
 	mainlog 日志 搜索关键词 ANR in
 	在 eventlog 日志 搜索关键词 am_anr
+	ANR 定位分析总结如下：
+        在 traces.txt 找到发生 ANR 时间节点、主线程的状态、ANR 类型和事故点
+        在 mainlog 日志查看 CPU 状态
+        根据以上步骤收集的信息大致判断问题原因
+        是 CPU 问题还是 非 CPU 问题
+        如果是非 CPU 问题，那么看 GC 处理信息
+        在 traces.txt 分析 CG 信息
+        结合项目代码和以上步骤分析到的原因，定位到问题修复 ANR
+        其实 ANR 发生的原因本质上只有三个：
+        线程挂起
+        CPU 不给资源
+        GC 触发 STW 导致线程执行时间被拉长
+
 3.UI卡顿
 4.全局异常捕获
 5.布局优化
@@ -1671,6 +1684,8 @@ mainlog 日志需要在程序运行时就时刻记录 adb logcat -v time -b main
             .dispatcher(dispatcher);
     7.2 Glide
     	限制 Glide 异步图片加载开启线程数量
+    	private static final int DEFAULT_DISK_CACHE_SIZE = 20 * 1024 * 1024;
+		private static final int LOW_DISK_CACHE_SIZE = 5 * 1024 * 1024;
     	@GlideModule
         public class MyGlideModule extends AppGlideModule {
             @Override
@@ -1680,13 +1695,25 @@ mainlog 日志需要在程序运行时就时刻记录 adb logcat -v time -b main
 
             @Override
             public void applyOptions(@NonNull Context context, @NonNull GlideBuilder builder) {
-                super.applyOptions(context, builder);
-
-                builder.setSourceExecutor(GlideExecutor.newSourceExecutor(
-                        1, // 修改处理图片加载的线程数量
-                        "glide-load-source",
+                super.applyOptions(context, builder);               
+                // 默认使用 ARGB_8888，改为RGB_565
+                builder.setDefaultRequestOptions(new RequestOptions().format(DecodeFormat.PREFER_RGB_565)
+                        .set(Downsampler.ALLOW_HARDWARE_CONFIG, true)
+                        .encodeQuality(70)
+                        .timeout(25000));
+                // 设置磁盘缓存大小
+                builder.setDiskCache(new InternalCacheDiskCacheFactory(context, DiskCache.Factory.DEFAULT_DISK_CACHE_DIR, DEFAULT_DISK_CACHE_SIZE));
+                // 设置图片异步加载的线程数量为2个
+                builder.setSourceExecutors(GlideExecutor.newSourceExecutor(
+                        2, 
+                        "source", 
                         GlideExecutor.UncaughtThrowableStrategy.DEFAULT));
-            }
+                // 设置缓存大小，设置为原始缓存的一半
+                MemorySizeCalculator calculator = new MemorySizeCalculator.Builder(context).build();
+                    builder.setMemoryCache(new LruResourceCache(calculator.getMemoryCacheSize() / 2));
+                    builder.setBitmapPool(new LruBitmapPool(calculator.getBitmapPoolSize() / 2));
+                    builder.setArrayPool(new LruArrayPool(calculator.getBitmapPoolSize() / 2));
+                    }
         }
         
         列表滑动暂停加载图片
