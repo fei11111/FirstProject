@@ -4,10 +4,15 @@
 #include <sys/times.h>
 #include <android/log.h>
 #include "pthread.h"
+#include "DZConstDefine.h"
+#include "DZJNICall.h"
+#include "DZFFmpeg.h"
+
 
 extern "C" {
 #include "libavformat/avformat.h"
 #include "libavcodec/avcodec.h"
+#include <libswresample/swresample.h>
 }
 
 
@@ -28,6 +33,7 @@ Java_com_fei_action_optimize_startup_StartUpOpActivity_bindMaxFreqCore(JNIEnv *e
     CPU_SET(max_freq_cpu_index, &mask);
     return sched_setaffinity(pid, sizeof(mask), &mask);
 }
+
 extern "C"
 JNIEXPORT jfloat JNICALL
 Java_com_fei_action_optimize_startup_StartUpOpActivity_getCpuTime(JNIEnv *env, jobject thiz) {
@@ -35,6 +41,7 @@ Java_com_fei_action_optimize_startup_StartUpOpActivity_getCpuTime(JNIEnv *env, j
     times(&currentTms);
     return currentTms.tms_utime + currentTms.tms_stime;
 }
+
 AVFormatContext *pFormatCtx;
 AVCodecContext *context;
 bool isStart = false;
@@ -140,6 +147,51 @@ Java_com_fei_action_ffmpeg_MNPlayer_play(JNIEnv *env, jobject thiz, jstring s, j
     env->ReleaseStringUTFChars(s, url);
 
 
-
-
 }
+
+JavaVM *g_vm;
+DZJNICall *dzjniCall;
+DZFFmpeg *dzfFmpeg;
+extern "C"
+JNIEXPORT jint JNICALL
+JNI_OnLoad(JavaVM *vm, void *reserved) {
+    g_vm = vm;
+    return JNI_VERSION_1_6;
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_fei_action_ffmpeg_MusicPlayer_nPrepare(JNIEnv *env, jobject thiz, jstring url_) {
+    const char *url = env->GetStringUTFChars(url_, 0);
+    if (dzjniCall == NULL) {
+        dzjniCall = new DZJNICall(g_vm, env, thiz);
+    }
+    if (dzfFmpeg == NULL) {
+        dzfFmpeg = new DZFFmpeg(url, env, dzjniCall);
+    }
+    dzfFmpeg->prepare();
+    env->ReleaseStringUTFChars(url_, url);
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_fei_action_ffmpeg_MusicPlayer_nPrepareAsync(JNIEnv *env, jobject thiz, jstring url_) {
+    const char *url = env->GetStringUTFChars(url_, 0);
+    if (dzjniCall == NULL) {
+        dzjniCall = new DZJNICall(g_vm, env, thiz);
+    }
+    if (dzfFmpeg == NULL) {
+        dzfFmpeg = new DZFFmpeg(url, env, dzjniCall);
+    }
+    dzfFmpeg->prepareAsync();
+    env->ReleaseStringUTFChars(url_, url);
+}
+
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_fei_action_ffmpeg_MusicPlayer_nPlay(JNIEnv *env, jobject thiz) {
+    dzfFmpeg->play();
+}
+
+

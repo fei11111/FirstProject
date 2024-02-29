@@ -7,11 +7,13 @@ import android.view.SurfaceHolder
 import com.common.base.BaseActivity
 import com.common.viewmodel.EmptyViewModel
 import com.fei.firstproject.databinding.ActivityIjkBinding
+import java.io.File
 
 class IjkActivity : BaseActivity<EmptyViewModel, ActivityIjkBinding>() {
 
     private var surface: Surface? = null
-    private var mnPlayer:MNPlayer? = null
+    private var mnPlayer: MNPlayer? = null
+    private var musicPlayer: MusicPlayer? = null
 
     override fun createObserver() {
 
@@ -36,10 +38,21 @@ class IjkActivity : BaseActivity<EmptyViewModel, ActivityIjkBinding>() {
 
         })
         mBinding.btnPlay.setOnClickListener {
-            if(mnPlayer==null) {
-                mnPlayer = MNPlayer(mBinding.surfaceView)
+//            if(mnPlayer==null) {
+//                mnPlayer = MNPlayer(mBinding.surfaceView)
+//            }
+//            mnPlayer?.play("/storage/emulated/0/Android/media/com.fei.firstproject/mmexport1704758389503.mp4", surface)
+            if (musicPlayer == null) {
+                musicPlayer = MusicPlayer()
+                val url =
+                    "/storage/emulated/0/Android/media/com.fei.firstproject/mda-ngi22v9vr986hsnm.mp4"
+                if (File(url).exists()) {
+                    Log.i("tag", "文件存在")
+                }
+                musicPlayer!!.setDataSource(url)
             }
-            mnPlayer?.play("/storage/emulated/0/Android/media/com.fei.firstproject/mmexport1704758389503.mp4", surface)
+            musicPlayer!!.prepareAsync()
+
         }
     }
 
