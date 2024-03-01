@@ -74,7 +74,9 @@ void DZFFmpeg::prepare(ThreadMode threadMode) {
 
 
 void DZFFmpeg::play() {
-    dzAudio->play();
+    if(dzAudio!=NULL) {
+        dzAudio->play();
+    }
 }
 
 void DZFFmpeg::release() {

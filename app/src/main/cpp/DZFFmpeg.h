@@ -19,11 +19,11 @@ extern "C" {
 //解析
 class DZFFmpeg {
 private:
-    char *url;
-    DZJNICall *dzjniCall = NULL;
-    DZAudio *dzAudio = NULL;
-    JNIEnv *jniEnv;
-    AVFormatContext *pFormatContext = NULL;
+    char *url = nullptr;
+    DZJNICall *dzjniCall = nullptr;
+    DZAudio *dzAudio = nullptr;
+    JNIEnv *jniEnv = nullptr;
+    AVFormatContext *pFormatContext = nullptr;
 
 public:
     DZFFmpeg(const char *url, JNIEnv *env,DZJNICall *jniCall);

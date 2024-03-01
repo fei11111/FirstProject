@@ -1,6 +1,7 @@
 package com.fei.action.ffmpeg
 
 import android.media.AudioTrack
+import android.media.MediaPlayer
 import android.text.TextUtils
 import android.util.Log
 
@@ -42,6 +43,21 @@ class MusicPlayer {
         nPlay()
     }
 
+    /**
+     * 暂停
+     */
+    fun pause() {
+
+    }
+
+    fun stop(){
+
+    }
+
+    fun release(){
+        nRelease()
+    }
+
     private fun onError(errCode:Int,msg:String) {
 
         Log.i("tag","thread = ${Thread.currentThread().name} errCode = $errCode msg = $msg")
@@ -56,6 +72,8 @@ class MusicPlayer {
     private external fun nPrepare(url: String)
 
     private external fun nPrepareAsync(url:String)
+
+    private external fun nRelease()
 
     init {
         System.loadLibrary("demo")

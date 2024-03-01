@@ -7,6 +7,7 @@
 #include "DZConstDefine.h"
 #include "DZJNICall.h"
 #include "DZFFmpeg.h"
+#include "DZQueue.h"
 
 
 extern "C" {
@@ -74,6 +75,7 @@ void *decodeVideo(void *arg) {
 
 
     }
+    return 0;
 }
 
 void *decodeAudio(void *arg) {
@@ -81,6 +83,7 @@ void *decodeAudio(void *arg) {
     while (isStart) {
         //从音频队列读取
     }
+    return 0;
 }
 
 extern "C"
@@ -191,7 +194,22 @@ Java_com_fei_action_ffmpeg_MusicPlayer_nPrepareAsync(JNIEnv *env, jobject thiz, 
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_fei_action_ffmpeg_MusicPlayer_nPlay(JNIEnv *env, jobject thiz) {
-    dzfFmpeg->play();
+    if (dzfFmpeg != NULL) {
+        dzfFmpeg->play();
+    }
 }
 
 
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_fei_action_ffmpeg_MusicPlayer_nRelease(JNIEnv *env, jobject thiz) {
+    if (dzjniCall != NULL) {
+        delete dzjniCall;
+        dzjniCall = NULL;
+    }
+    if (dzfFmpeg != NULL) {
+        delete dzfFmpeg;
+        dzfFmpeg = NULL;
+    }
+}

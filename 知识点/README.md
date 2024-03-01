@@ -1745,14 +1745,41 @@ mainlog 日志需要在程序运行时就时刻记录 adb logcat -v time -b main
         
 /***********************************************性能优化*************************************************************************/
 ```
-管道（半双工,父写子读，或子写父读）
-1.特殊文件
-2.父子进程才能使用,fd[0],fd[1]
-3.不能自己写自己读
-4.数据一旦读走，就不能再次读
+```
+/***********************************************JNI*************************************************************************/
+1.jclass jcls;//需要DeleteLocalRef
+jobject jcls;//需要DeleteLocalRef
+jstring jcls;//需要ReleaseStringUTFChars和DeleteLocalRef
+jarray jcls;//需要DeleteLocalRef
+jmethodid、jfieldid//不需要DeleteLocalRef
 
-信号
+2.java string 转成 c char*
+	const char *url = env->GetStringUTFChars(url_, 0);
+	env->ReleaseStringUTFChars(url_, url);
 
-共享内存
+3.c char* 转成 java string
+	jstring jMsg = this->env->NewStringUTF(msg);
+	this->env->ReleaseStringUTFChars(jMsg, msg);
+	this->env->DeleteLocalRef(jMsg);
 
-socket
+4.c线程无法调用主线程env
+	JNIEnv *env;
+       	 if (this->javaVm->AttachCurrentThread(&env, nullptr) != JNI_OK) {
+           		 LOGE("get child thread jniEnv error");
+       	 }
+	//这时env才能用
+	//之后释放当前线程
+	this->javaVm->DetachCurrentThread();
+
+5.kotlin层访问c++层自动创建JavaVM
+	在JNI_OnLoad函数中将自动创建的JavaVM存为全局的
+
+6.JNI函数执行完后会释放jobject
+	因此如果想保存，需要new出来：env->NewGlobalRef(object)，释放：env->DeleteGlobalRef(object)。
+
+7.复制char*
+	this->url = (char*)malloc(strlen(url)+1);//创建空间
+	memcpy(this->url, url, size);//复制
+/***********************************************JNI*************************************************************************/	
+```
+

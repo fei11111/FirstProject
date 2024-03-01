@@ -10,6 +10,7 @@ DZAudio::DZAudio(DZJNICall *dzjniCall, JNIEnv *env, AVFormatContext *pFormatCont
     this->env = env;
     this->pFormatContext = pFormatContext;
     this->audioIndex = audioIndex;
+    this->avFrame_queue = new DZQueue<AVFrame *>();
 }
 
 void DZAudio::callPlayError(ThreadMode threadMode, int errCode, char *msg) {
@@ -84,56 +85,90 @@ void DZAudio::release() {
         av_free(out_buffer);
     }
 
+    if (avFrame_queue != NULL) {
+        delete avFrame_queue;
+    }
 }
 
-void DZAudio::play() {
-    JNIEnv *env;
-    if (this->dzjniCall->javaVm->AttachCurrentThread(&env, nullptr) != JNI_OK) {
-        LOGE("get child thread jniEnv error");
-    }
+//读
+void *readRun(void *arg) {
+    DZAudio *dzAudio = (DZAudio *) arg;
     AVPacket *pkt = av_packet_alloc();
-    AVFrame *frame = av_frame_alloc();
-
-    while (av_read_frame(pFormatContext, pkt) >= 0) {
+    while (av_read_frame(dzAudio->pFormatContext, pkt) >= 0) {
+        AVFrame *frame = av_frame_alloc();
         //pkt 是压缩的数据，需要解码成pcm数据
-        if (pkt->stream_index == audioIndex) {
+        if (pkt->stream_index == dzAudio->audioIndex) {
             //音频
-            int sendPacketRes = avcodec_send_packet(avCodecContext, pkt);
+            int sendPacketRes = avcodec_send_packet(dzAudio->avCodecContext, pkt);
             if (sendPacketRes == 0) {
-                int receiveFrameRes = avcodec_receive_frame(avCodecContext, frame);
+                int receiveFrameRes = avcodec_receive_frame(dzAudio->avCodecContext, frame);
                 if (receiveFrameRes == 0) {
-                    // AV_PACKET 压缩数据 -> AV_FRAME 解码后的数据
-
-                    //frame.data->java byte
-                    //大小 1s 44100点 2通道 每通道2字节
-                    //一帧不是1s frame->nb_samples
-
-                    swr_convert(swrContext, &out_buffer, AUDIO_SAMPLE_RATE * 2,
-                                (const uint8_t **) (frame->data),
-                                frame->nb_samples);
-                    int size = av_samples_get_buffer_size(NULL,
-                                                          codecParameters->ch_layout.nb_channels,
-                                                          frame->nb_samples,
-                                                          AV_SAMPLE_FMT_S16, 1);
-                    jbyteArray audio_sample_array = env->NewByteArray(size);
-                    env->SetByteArrayRegion(audio_sample_array, 0, size,
-                                            reinterpret_cast<const jbyte *>(out_buffer));
-                    env->CallIntMethod(this->audioTrackObject, this->writeMethodId, audio_sample_array, 0,
-                                       size);
-                    env->DeleteLocalRef(audio_sample_array);
+                    dzAudio->avFrame_queue->push(frame);
                 }
             }
             //解引用
             av_packet_unref(pkt);
-            av_frame_unref(frame);
         }
     }
 
     //1.解引用 2.销毁pkt结构体数据 3.pkt = null
+    LOGE("free引用");
     av_packet_free(&pkt);
-    av_frame_free(&frame);
 
-    this->dzjniCall->javaVm->DetachCurrentThread();
+
+    return 0;
+}
+
+//写
+void *writeRun(void *arg) {
+    DZAudio *dzAudio = (DZAudio *) arg;
+    JNIEnv *env;
+    if (dzAudio->dzjniCall->javaVm->AttachCurrentThread(&env, nullptr) != JNI_OK) {
+        LOGE("get child thread jniEnv error");
+    }
+
+    while (true) {
+        AVFrame *frame = dzAudio->avFrame_queue->pop();
+        // AV_PACKET 压缩数据 -> AV_FRAME 解码后的数据
+        //frame.data->java byte
+        //大小 1s 44100点 2通道 每通道2字节
+        //一帧不是1s frame->nb_samples
+        swr_convert(dzAudio->swrContext, &dzAudio->out_buffer, AUDIO_SAMPLE_RATE * 2,
+                    (const uint8_t **) (frame->data),
+                    frame->nb_samples);
+        int size = av_samples_get_buffer_size(NULL,
+                                              dzAudio->codecParameters->ch_layout.nb_channels,
+                                              frame->nb_samples,
+                                              AV_SAMPLE_FMT_S16, 1);
+        jbyteArray audio_sample_array = env->NewByteArray(size);
+        env->SetByteArrayRegion(audio_sample_array, 0, size,
+                                reinterpret_cast<const jbyte *>(dzAudio->out_buffer));
+        env->CallIntMethod(dzAudio->audioTrackObject, dzAudio->writeMethodId,
+                           audio_sample_array, 0,
+                           size);
+        env->DeleteLocalRef(audio_sample_array);
+
+        av_frame_unref(frame);
+        av_frame_free(&frame);
+    }
+
+
+    dzAudio->dzjniCall->javaVm->DetachCurrentThread();
+    return 0;
+}
+
+void DZAudio::play() {
+    pthread_t readThread;
+    pthread_create(&readThread, NULL, readRun, this);
+
+    pthread_t writeThread;
+    pthread_create(&writeThread, NULL, writeRun, this);
+
+    LOGE("销毁线程");
+    pthread_detach(readThread);
+    pthread_detach(writeThread);
+
+
 }
 
 DZAudio::~DZAudio() {
@@ -169,8 +204,8 @@ void DZAudio::startAudioTrack(ThreadMode threadMode) {
     //构造函数
     jmethodID audioTrackMethodId = env->GetMethodID(audioTrackClass, "<init>", "(IIIIII)V");
     jobject audioTrackObject = env->NewObject(audioTrackClass, audioTrackMethodId, 3,
-                                            sampleRateInHz,
-                                            channelConfig, audioFormat, buffSize, mode);
+                                              sampleRateInHz,
+                                              channelConfig, audioFormat, buffSize, mode);
     this->audioTrackObject = env->NewGlobalRef(audioTrackObject);
     jmethodID playMethodId = env->GetMethodID(audioTrackClass, "play", "()V");
     env->CallVoidMethod(audioTrackObject, playMethodId);
@@ -178,7 +213,7 @@ void DZAudio::startAudioTrack(ThreadMode threadMode) {
     this->writeMethodId = env->GetMethodID(audioTrackClass, "write", "([BII)I");
 
     //释放资源
-//    env->DeleteLocalRef(audioTrackClass);
+    env->DeleteLocalRef(audioTrackClass);
 
     if (threadMode == THREAD_CHILD) {
         this->dzjniCall->javaVm->DetachCurrentThread();

@@ -8,6 +8,7 @@
 #include "DZJNICall.h"
 #include "DZConstDefine.h"
 #include "pthread.h"
+#include "DZQueue.h"
 
 extern "C" {
 #include <libswresample/swresample.h>
@@ -17,7 +18,7 @@ extern "C" {
 
 //播放
 class DZAudio {
-private:
+public:
     JNIEnv *env;
     DZJNICall *dzjniCall;
     AVFormatContext *pFormatContext = NULL;
@@ -27,7 +28,9 @@ private:
     SwrContext *swrContext;
     jobject audioTrackObject;
     jmethodID writeMethodId;
+    DZQueue<AVFrame*> *avFrame_queue;
     uint8_t *out_buffer;
+
 public:
     DZAudio(DZJNICall *dzjniCall, JNIEnv *env, AVFormatContext *pFormatContext, int audioIndex);
 
@@ -43,5 +46,6 @@ public:
 
     void startAudioTrack(ThreadMode threadMode);
 };
+
 
 #endif //FIRSTPROJECT_DZAUDIO_H
