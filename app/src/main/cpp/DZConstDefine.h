@@ -5,7 +5,7 @@
 #ifndef FIRSTPROJECT_DZCONSTDEFINE_H
 #define FIRSTPROJECT_DZCONSTDEFINE_H
 
-#include "../../../../../../android sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/android/log.h"
+#include "../../../../../../android sdk/ndk/26.1.10909125/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/android/log.h"
 
 #define TAG "JNI_TAG"
 #define LOGE(...)     __android_log_print(ANDROID_LOG_ERROR,TAG,__VA_ARGS__) // ANDROID_LOG_DEBUG为日志等级，tag为标识符，message为要打印的内容

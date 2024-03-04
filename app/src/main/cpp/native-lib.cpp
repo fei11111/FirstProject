@@ -7,7 +7,6 @@
 #include "DZConstDefine.h"
 #include "DZJNICall.h"
 #include "DZFFmpeg.h"
-#include "DZQueue.h"
 
 
 extern "C" {

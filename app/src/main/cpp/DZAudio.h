@@ -6,7 +6,6 @@
 #define FIRSTPROJECT_DZAUDIO_H
 
 #include "DZJNICall.h"
-#include "DZConstDefine.h"
 #include "pthread.h"
 #include "DZQueue.h"
 
@@ -28,9 +27,8 @@ public:
     SwrContext *swrContext;
     jobject audioTrackObject;
     jmethodID writeMethodId;
-    DZQueue<AVFrame*> *avFrame_queue;
     uint8_t *out_buffer;
-
+    DZQueue<AVFrame *> avFrame_queue;
 public:
     DZAudio(DZJNICall *dzjniCall, JNIEnv *env, AVFormatContext *pFormatContext, int audioIndex);
 

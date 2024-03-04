@@ -10,7 +10,6 @@ DZAudio::DZAudio(DZJNICall *dzjniCall, JNIEnv *env, AVFormatContext *pFormatCont
     this->env = env;
     this->pFormatContext = pFormatContext;
     this->audioIndex = audioIndex;
-    this->avFrame_queue = new DZQueue<AVFrame *>();
 }
 
 void DZAudio::callPlayError(ThreadMode threadMode, int errCode, char *msg) {
@@ -85,8 +84,10 @@ void DZAudio::release() {
         av_free(out_buffer);
     }
 
-    if (avFrame_queue != NULL) {
-        delete avFrame_queue;
+    while (!avFrame_queue.isEmpty()) {
+        AVFrame *frame = avFrame_queue.pop();
+        av_frame_unref(frame);
+        av_frame_free(&frame);
     }
 }
 
@@ -103,7 +104,7 @@ void *readRun(void *arg) {
             if (sendPacketRes == 0) {
                 int receiveFrameRes = avcodec_receive_frame(dzAudio->avCodecContext, frame);
                 if (receiveFrameRes == 0) {
-                    dzAudio->avFrame_queue->push(frame);
+                    dzAudio->avFrame_queue.push(frame);
                 }
             }
             //解引用
@@ -128,7 +129,7 @@ void *writeRun(void *arg) {
     }
 
     while (true) {
-        AVFrame *frame = dzAudio->avFrame_queue->pop();
+        AVFrame *frame = dzAudio->avFrame_queue.pop();
         // AV_PACKET 压缩数据 -> AV_FRAME 解码后的数据
         //frame.data->java byte
         //大小 1s 44100点 2通道 每通道2字节
@@ -164,10 +165,8 @@ void DZAudio::play() {
     pthread_t writeThread;
     pthread_create(&writeThread, NULL, writeRun, this);
 
-    LOGE("销毁线程");
     pthread_detach(readThread);
     pthread_detach(writeThread);
-
 
 }
 
