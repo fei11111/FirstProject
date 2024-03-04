@@ -170,40 +170,44 @@ void playerCallback(SLAndroidSimpleBufferQueueItf caller, void *pContext) {
 
 
 void DZAudio::startSLES() {
-    //创建引擎接口对象
     SLObjectItf engineObject = NULL;
     SLEngineItf engineEngine;
+    //创建引擎
     slCreateEngine(&engineObject, 0, NULL, 0, NULL, NULL);
-    // realize the engine
+    //实现引擎
     (*engineObject)->Realize(engineObject, SL_BOOLEAN_FALSE);
+    //获取引擎接口
     (*engineObject)->GetInterface(engineObject, SL_IID_ENGINE, &engineEngine);
     //设置混音器:  创建输出混音器对象，实现输出混音器
     SLObjectItf outputMixObject = NULL;
     const SLInterfaceID ids[1] = {SL_IID_ENVIRONMENTALREVERB};
     const SLboolean req[1] = {SL_BOOLEAN_FALSE};
+    //创建混音器
     (*engineEngine)->CreateOutputMix(engineEngine, &outputMixObject, 1, ids, req);
+    //实现输出混音器
     (*outputMixObject)->Realize(outputMixObject, SL_BOOLEAN_FALSE);
-    //获取混淆接口
     SLEnvironmentalReverbItf outputMixEnvironmentalReverb = NULL;
+    //获取混响接口
     (*outputMixObject)->GetInterface(outputMixObject, SL_IID_ENVIRONMENTALREVERB,
                                      &outputMixEnvironmentalReverb);
     SLEnvironmentalReverbSettings reverbSettings = SL_I3DL2_ENVIRONMENT_PRESET_STONECORRIDOR;
     //设置混响
     (*outputMixEnvironmentalReverb)->SetEnvironmentalReverbProperties(outputMixEnvironmentalReverb,
                                                                       &reverbSettings);
-    // 3.3 创建播放器
+    // 创建播放器
     SLObjectItf pPlayer = NULL;
     SLPlayItf pPlayItf = NULL;
     SLDataLocator_AndroidSimpleBufferQueue simpleBufferQueue = {
             SL_DATALOCATOR_ANDROIDSIMPLEBUFFERQUEUE, 2};
+    // PCM 格式
     SLDataFormat_PCM formatPcm = {
-            SL_DATAFORMAT_PCM,
-            2,
-            SL_SAMPLINGRATE_44_1,
-            SL_PCMSAMPLEFORMAT_FIXED_16,
-            SL_PCMSAMPLEFORMAT_FIXED_16,
-            SL_SPEAKER_FRONT_LEFT | SL_SPEAKER_FRONT_RIGHT,
-            SL_BYTEORDER_LITTLEENDIAN};
+            SL_DATAFORMAT_PCM,//pcm 格式
+            2,//两声道
+            SL_SAMPLINGRATE_44_1,//采样率44100 Hz
+            SL_PCMSAMPLEFORMAT_FIXED_16,//采样位16位
+            SL_PCMSAMPLEFORMAT_FIXED_16,//容器 16位
+            SL_SPEAKER_FRONT_LEFT | SL_SPEAKER_FRONT_RIGHT,//左右声道
+            SL_BYTEORDER_LITTLEENDIAN};//小端格式
     //设置音频数据源：simpleBufferQueue（配置缓冲区）、 formatPcm（音频格式）
     SLDataSource audioSrc = {&simpleBufferQueue, &formatPcm};
 
@@ -214,15 +218,16 @@ void DZAudio::startSLES() {
     (*engineEngine)->CreateAudioPlayer(engineEngine, &pPlayer, &audioSrc, &audioSnk, 3,
                                        interfaceIds, interfaceRequired);
     (*pPlayer)->Realize(pPlayer, SL_BOOLEAN_FALSE);
+    //获取播放器接口
     (*pPlayer)->GetInterface(pPlayer, SL_IID_PLAY, &pPlayItf);
-    // 3.4 设置缓存队列和回调函数
+    // 设置缓存队列和回调函数
     SLAndroidSimpleBufferQueueItf playerBufferQueue;
     (*pPlayer)->GetInterface(pPlayer, SL_IID_BUFFERQUEUE, &playerBufferQueue);
     // 每次回调 this 会被带给 playerCallback 里面的 context
     (*playerBufferQueue)->RegisterCallback(playerBufferQueue, playerCallback, this);
-    // 3.5 设置播放状态
+    // 设置播放状态
     (*pPlayItf)->SetPlayState(pPlayItf, SL_PLAYSTATE_PLAYING);
-    // 3.6 调用回调函数
+    //调用回调函数
     playerCallback(playerBufferQueue, this);
 }
 
