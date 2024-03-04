@@ -8,6 +8,13 @@
 #include "DZJNICall.h"
 #include "pthread.h"
 #include "DZQueue.h"
+#include "SLES/OpenSLES.h"
+#include "SLES/OpenSLES_Android.h"
+
+enum PLAY_TYPE {
+    TYPE_AUDIO_TRACK,
+    TYPE_SLES
+};
 
 extern "C" {
 #include <libswresample/swresample.h>
@@ -29,6 +36,7 @@ public:
     jmethodID writeMethodId;
     uint8_t *out_buffer;
     DZQueue<AVFrame *> avFrame_queue;
+    PLAY_TYPE type;
 public:
     DZAudio(DZJNICall *dzjniCall, JNIEnv *env, AVFormatContext *pFormatContext, int audioIndex);
 
@@ -42,7 +50,11 @@ public:
 
     void release();
 
-    void startAudioTrack(ThreadMode threadMode);
+    void startAudioTrack(JNIEnv *env);
+
+    void startSLES();
+
+    int resampleAudio();
 };
 
 

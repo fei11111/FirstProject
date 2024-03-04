@@ -10,6 +10,8 @@ DZAudio::DZAudio(DZJNICall *dzjniCall, JNIEnv *env, AVFormatContext *pFormatCont
     this->env = env;
     this->pFormatContext = pFormatContext;
     this->audioIndex = audioIndex;
+    //todo 切换不同播放器
+    this->type = TYPE_SLES;
 }
 
 void DZAudio::callPlayError(ThreadMode threadMode, int errCode, char *msg) {
@@ -62,7 +64,6 @@ void DZAudio::prepare(ThreadMode threadMode) {
     this->out_buffer = (uint8_t *) av_malloc(AUDIO_SAMPLE_RATE * 2);
     // ---------- 重采样 end ----------
 
-    startAudioTrack(threadMode);
 }
 
 void DZAudio::release() {
@@ -129,34 +130,100 @@ void *writeRun(void *arg) {
         LOGE("get child thread jniEnv error");
     }
 
-    while (true) {
-        AVFrame *frame = dzAudio->avFrame_queue.pop();
+    if (dzAudio->type == TYPE_AUDIO_TRACK) {
+        //audioTrack
+        dzAudio->startAudioTrack(env);
+    } else {
+        dzAudio->startSLES();
+    }
+
+    dzAudio->dzjniCall->javaVm->DetachCurrentThread();
+    return 0;
+}
+
+
+int DZAudio::resampleAudio() {
+    if (AVFrame *frame = avFrame_queue.pop()) {
         // AV_PACKET 压缩数据 -> AV_FRAME 解码后的数据
         //frame.data->java byte
         //大小 1s 44100点 2通道 每通道2字节
         //一帧不是1s frame->nb_samples
-        swr_convert(dzAudio->swrContext, &dzAudio->out_buffer, AUDIO_SAMPLE_RATE * 2,
+        swr_convert(swrContext, &out_buffer, frame->nb_samples,
                     (const uint8_t **) (frame->data),
                     frame->nb_samples);
         int size = av_samples_get_buffer_size(NULL,
-                                              dzAudio->codecParameters->ch_layout.nb_channels,
+                                              codecParameters->ch_layout.nb_channels,
                                               frame->nb_samples,
                                               AV_SAMPLE_FMT_S16, 1);
-        jbyteArray audio_sample_array = env->NewByteArray(size);
-        env->SetByteArrayRegion(audio_sample_array, 0, size,
-                                reinterpret_cast<const jbyte *>(dzAudio->out_buffer));
-        env->CallIntMethod(dzAudio->audioTrackObject, dzAudio->writeMethodId,
-                           audio_sample_array, 0,
-                           size);
-        env->DeleteLocalRef(audio_sample_array);
-
+        // 解引用
         av_frame_unref(frame);
         av_frame_free(&frame);
+        return size;
     }
+}
+
+void playerCallback(SLAndroidSimpleBufferQueueItf caller, void *pContext) {
+    DZAudio *pAudio = (DZAudio *) pContext;
+    int dataSize = pAudio->resampleAudio();
+    (*caller)->Enqueue(caller, pAudio->out_buffer, dataSize);
+}
 
 
-    dzAudio->dzjniCall->javaVm->DetachCurrentThread();
-    return 0;
+void DZAudio::startSLES() {
+    //创建引擎接口对象
+    SLObjectItf engineObject = NULL;
+    SLEngineItf engineEngine;
+    slCreateEngine(&engineObject, 0, NULL, 0, NULL, NULL);
+    // realize the engine
+    (*engineObject)->Realize(engineObject, SL_BOOLEAN_FALSE);
+    (*engineObject)->GetInterface(engineObject, SL_IID_ENGINE, &engineEngine);
+    //设置混音器:  创建输出混音器对象，实现输出混音器
+    SLObjectItf outputMixObject = NULL;
+    const SLInterfaceID ids[1] = {SL_IID_ENVIRONMENTALREVERB};
+    const SLboolean req[1] = {SL_BOOLEAN_FALSE};
+    (*engineEngine)->CreateOutputMix(engineEngine, &outputMixObject, 1, ids, req);
+    (*outputMixObject)->Realize(outputMixObject, SL_BOOLEAN_FALSE);
+    //获取混淆接口
+    SLEnvironmentalReverbItf outputMixEnvironmentalReverb = NULL;
+    (*outputMixObject)->GetInterface(outputMixObject, SL_IID_ENVIRONMENTALREVERB,
+                                     &outputMixEnvironmentalReverb);
+    SLEnvironmentalReverbSettings reverbSettings = SL_I3DL2_ENVIRONMENT_PRESET_STONECORRIDOR;
+    //设置混响
+    (*outputMixEnvironmentalReverb)->SetEnvironmentalReverbProperties(outputMixEnvironmentalReverb,
+                                                                      &reverbSettings);
+    // 3.3 创建播放器
+    SLObjectItf pPlayer = NULL;
+    SLPlayItf pPlayItf = NULL;
+    SLDataLocator_AndroidSimpleBufferQueue simpleBufferQueue = {
+            SL_DATALOCATOR_ANDROIDSIMPLEBUFFERQUEUE, 2};
+    SLDataFormat_PCM formatPcm = {
+            SL_DATAFORMAT_PCM,
+            2,
+            SL_SAMPLINGRATE_44_1,
+            SL_PCMSAMPLEFORMAT_FIXED_16,
+            SL_PCMSAMPLEFORMAT_FIXED_16,
+            SL_SPEAKER_FRONT_LEFT | SL_SPEAKER_FRONT_RIGHT,
+            SL_BYTEORDER_LITTLEENDIAN};
+    //设置音频数据源：simpleBufferQueue（配置缓冲区）、 formatPcm（音频格式）
+    SLDataSource audioSrc = {&simpleBufferQueue, &formatPcm};
+
+    SLDataLocator_OutputMix outputMix = {SL_DATALOCATOR_OUTPUTMIX, outputMixObject};
+    SLDataSink audioSnk = {&outputMix, NULL};
+    SLInterfaceID interfaceIds[3] = {SL_IID_BUFFERQUEUE, SL_IID_VOLUME, SL_IID_PLAYBACKRATE};
+    SLboolean interfaceRequired[3] = {SL_BOOLEAN_TRUE, SL_BOOLEAN_TRUE, SL_BOOLEAN_TRUE};
+    (*engineEngine)->CreateAudioPlayer(engineEngine, &pPlayer, &audioSrc, &audioSnk, 3,
+                                       interfaceIds, interfaceRequired);
+    (*pPlayer)->Realize(pPlayer, SL_BOOLEAN_FALSE);
+    (*pPlayer)->GetInterface(pPlayer, SL_IID_PLAY, &pPlayItf);
+    // 3.4 设置缓存队列和回调函数
+    SLAndroidSimpleBufferQueueItf playerBufferQueue;
+    (*pPlayer)->GetInterface(pPlayer, SL_IID_BUFFERQUEUE, &playerBufferQueue);
+    // 每次回调 this 会被带给 playerCallback 里面的 context
+    (*playerBufferQueue)->RegisterCallback(playerBufferQueue, playerCallback, this);
+    // 3.5 设置播放状态
+    (*pPlayItf)->SetPlayState(pPlayItf, SL_PLAYSTATE_PLAYING);
+    // 3.6 调用回调函数
+    playerCallback(playerBufferQueue, this);
 }
 
 void DZAudio::play() {
@@ -175,15 +242,7 @@ DZAudio::~DZAudio() {
     release();
 }
 
-void DZAudio::startAudioTrack(ThreadMode threadMode) {
-    JNIEnv *env;
-    if (threadMode == THREAD_CHILD) {
-        if (this->dzjniCall->javaVm->AttachCurrentThread(&env, nullptr) != JNI_OK) {
-            LOGE("get child thread jniEnv error");
-        }
-    } else {
-        env = this->env;
-    }
+void DZAudio::startAudioTrack(JNIEnv *env) {
     jclass audioTrackClass = env->FindClass("android/media/AudioTrack");
     //创建播放器
     /**
@@ -215,8 +274,21 @@ void DZAudio::startAudioTrack(ThreadMode threadMode) {
     //释放资源
     env->DeleteLocalRef(audioTrackClass);
 
-    if (threadMode == THREAD_CHILD) {
-        this->dzjniCall->javaVm->DetachCurrentThread();
+    while (true) {
+        // AV_PACKET 压缩数据 -> AV_FRAME 解码后的数据
+        //frame.data->java byte
+        //大小 1s 44100点 2通道 每通道2字节
+        //一帧不是1s frame->nb_samples
+
+        int size = resampleAudio();
+        jbyteArray audio_sample_array = env->NewByteArray(size);
+        env->SetByteArrayRegion(audio_sample_array, 0, size,
+                                reinterpret_cast<const jbyte *>(out_buffer));
+        env->CallIntMethod(audioTrackObject, writeMethodId,
+                           audio_sample_array, 0,
+                           size);
+        env->DeleteLocalRef(audio_sample_array);
     }
+
 
 }
