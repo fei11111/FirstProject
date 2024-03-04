@@ -73,6 +73,7 @@ void DZAudio::release() {
         avcodec_parameters_free(&codecParameters);
     }
     if (avCodecContext != NULL) {
+        avcodec_close(avCodecContext);
         avcodec_free_context(&avCodecContext);
     }
 
