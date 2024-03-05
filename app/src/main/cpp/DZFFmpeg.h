@@ -36,6 +36,12 @@ public:
 
     void play();
 
+    void pause();
+
+    void stop();
+
+    void seekTo(jint position);
+
     void release();
 
     void callPlayerJniError(ThreadMode threadMode,int errCode,char* msg);

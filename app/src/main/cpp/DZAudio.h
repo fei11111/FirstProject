@@ -8,8 +8,15 @@
 #include "DZJNICall.h"
 #include "pthread.h"
 #include "DZQueue.h"
-#include "SLES/OpenSLES.h"
-#include "SLES/OpenSLES_Android.h"
+#include "DZAudioTrack.h"
+#include "DZOpensles.h"
+
+enum PLAY_STATE {
+    INIT,
+    PLAYING,
+    PAUSE,
+    STOP
+};
 
 enum PLAY_TYPE {
     TYPE_AUDIO_TRACK,
@@ -32,11 +39,12 @@ public:
     AVCodecParameters *codecParameters = NULL;
     AVCodecContext *avCodecContext = NULL;
     SwrContext *swrContext;
-    jobject audioTrackObject;
-    jmethodID writeMethodId;
     uint8_t *out_buffer;
+    DZAudioTrack *dzAudioTrack = NULL;
+    DZOpensles *dzOpensles = NULL;
     DZQueue<AVFrame *> avFrame_queue;
     PLAY_TYPE type;
+    PLAY_STATE state;
 public:
     DZAudio(DZJNICall *dzjniCall, JNIEnv *env, AVFormatContext *pFormatContext, int audioIndex);
 
@@ -47,6 +55,12 @@ public:
     void callPlayError(ThreadMode threadMode, int errCode, char *msg);
 
     void play();
+
+    void pause();
+
+    void stop();
+
+    void seekTo(jint position);
 
     void release();
 

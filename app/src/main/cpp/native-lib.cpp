@@ -212,3 +212,17 @@ Java_com_fei_action_ffmpeg_MusicPlayer_nRelease(JNIEnv *env, jobject thiz) {
         dzfFmpeg = NULL;
     }
 }
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_fei_action_ffmpeg_MusicPlayer_nPause(JNIEnv *env, jobject thiz) {
+    if (dzfFmpeg != NULL) {
+        dzfFmpeg->pause();
+    }
+}
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_fei_action_ffmpeg_MusicPlayer_nStop(JNIEnv *env, jobject thiz) {
+    if (dzfFmpeg != NULL) {
+        dzfFmpeg->stop();
+    }
+}

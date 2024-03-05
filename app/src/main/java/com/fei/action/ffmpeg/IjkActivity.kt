@@ -42,18 +42,64 @@ class IjkActivity : BaseActivity<EmptyViewModel, ActivityIjkBinding>() {
 //                mnPlayer = MNPlayer(mBinding.surfaceView)
 //            }
 //            mnPlayer?.play("/storage/emulated/0/Android/media/com.fei.firstproject/mmexport1704758389503.mp4", surface)
-            if (musicPlayer == null) {
-                musicPlayer = MusicPlayer()
-                val url =
-                    "/storage/emulated/0/Android/media/com.fei.firstproject/mda-ngi22v9vr986hsnm.mp4"
-                if (File(url).exists()) {
-                    Log.i("tag", "文件存在")
-                }
-                musicPlayer!!.setDataSource(url)
+            if (mBinding.btnPlay.text.toString() == "play") {
+                play()
+            } else {
+                pause()
             }
-            musicPlayer!!.prepareAsync()
 
         }
+
+        mBinding.btnStop.setOnClickListener {
+            musicPlayer?.stop()
+        }
+    }
+
+    fun play() {
+        if (musicPlayer == null) {
+            musicPlayer = MusicPlayer()
+            val url =
+                "/storage/emulated/0/Android/media/com.fei.firstproject/mda-ngi22v9vr986hsnm.mp4"
+            if (File(url).exists()) {
+                mBinding.btnPlay.isEnabled = false
+                Log.i("tag", "文件存在")
+                musicPlayer!!.setDataSource(url)
+                musicPlayer!!.prepareAsync()
+            }
+            musicPlayer?.setOnStateCallback(object : MusicPlayer.OnStateCallback {
+                override fun onPrepared() {
+                    musicPlayer?.play()
+                    runOnUiThread {
+                        mBinding.btnPlay.text = "pause"
+                        mBinding.btnPlay.isEnabled = true
+                    }
+                }
+
+                override fun onError(errCode: Int, msg: String) {
+                    runOnUiThread {
+                        mBinding.btnPlay.isEnabled = true
+                    }
+                }
+            })
+        }else {
+            mBinding.btnPlay.isEnabled = false
+            musicPlayer?.play()
+            mBinding.btnPlay.text = "pause"
+            mBinding.btnPlay.isEnabled = true
+        }
+
+    }
+
+    fun pause() {
+        mBinding.btnPlay.isEnabled = false
+        musicPlayer?.pause()
+        mBinding.btnPlay.text = "play"
+        mBinding.btnPlay.isEnabled = true
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        musicPlayer?.release()
     }
 
 }

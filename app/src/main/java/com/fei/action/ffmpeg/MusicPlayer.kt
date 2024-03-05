@@ -1,23 +1,31 @@
 package com.fei.action.ffmpeg
 
-import android.media.AudioTrack
-import android.media.MediaPlayer
 import android.text.TextUtils
 import android.util.Log
 
 class MusicPlayer {
 
-    private lateinit var url:String
+    interface OnStateCallback {
+        fun onPrepared()
+        fun onError(errCode: Int, msg: String);
+    }
 
-    fun setDataSource(url:String) {
+    private lateinit var url: String
+    private var onStateCallback: OnStateCallback? = null
+
+    fun setDataSource(url: String) {
         this.url = url
+    }
+
+    fun setOnStateCallback(callback: OnStateCallback) {
+        this.onStateCallback = callback
     }
 
     /**
      * 准备
      */
-    fun prepare(){
-        if(TextUtils.isEmpty(url)) {
+    fun prepare() {
+        if (TextUtils.isEmpty(url)) {
             throw NullPointerException("url is unknow,please call setDataSource")
         }
         nPrepare(url)
@@ -27,7 +35,7 @@ class MusicPlayer {
      * 异步准备
      */
     fun prepareAsync() {
-        if(TextUtils.isEmpty(url)) {
+        if (TextUtils.isEmpty(url)) {
             throw NullPointerException("url is unknow,please call setDataSource")
         }
         nPrepareAsync(url)
@@ -36,8 +44,8 @@ class MusicPlayer {
     /**
      * 播放
      */
-    fun play(){
-        if(TextUtils.isEmpty(url)) {
+    fun play() {
+        if (TextUtils.isEmpty(url)) {
             throw NullPointerException("url is unknow,please call setDataSource")
         }
         nPlay()
@@ -47,31 +55,34 @@ class MusicPlayer {
      * 暂停
      */
     fun pause() {
-
+        nPause()
     }
 
-    fun stop(){
-
+    fun stop() {
+        nStop()
     }
 
-    fun release(){
+    fun release() {
         nRelease()
     }
 
-    private fun onError(errCode:Int,msg:String) {
-
-        Log.i("tag","thread = ${Thread.currentThread().name} errCode = $errCode msg = $msg")
+    private fun onError(errCode: Int, msg: String) {
+        Log.i("tag", "thread = ${Thread.currentThread().name} errCode = $errCode msg = $msg")
+        onStateCallback?.onError(errCode,msg)
     }
 
     private fun onPrepared() {
-        Log.i("tag","thread = ${Thread.currentThread().name} onPrepared 被调用")
-        play()
+        Log.i("tag", "thread = ${Thread.currentThread().name} onPrepared 被调用")
+        onStateCallback?.onPrepared()
     }
 
     private external fun nPlay()
+
+    private external fun nPause();
+    private external fun nStop();
     private external fun nPrepare(url: String)
 
-    private external fun nPrepareAsync(url:String)
+    private external fun nPrepareAsync(url: String)
 
     private external fun nRelease()
 

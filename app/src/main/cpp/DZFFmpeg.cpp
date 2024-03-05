@@ -74,8 +74,26 @@ void DZFFmpeg::prepare(ThreadMode threadMode) {
 
 
 void DZFFmpeg::play() {
-    if(dzAudio!=NULL) {
+    if (dzAudio != NULL) {
         dzAudio->play();
+    }
+}
+
+void DZFFmpeg::pause() {
+    if (dzAudio != NULL) {
+        dzAudio->pause();
+    }
+}
+
+void DZFFmpeg::stop() {
+    if (dzAudio != NULL) {
+        dzAudio->stop();
+    }
+}
+
+void DZFFmpeg::seekTo(jint position) {
+    if (dzAudio != NULL) {
+        dzAudio->seekTo(position);
     }
 }
 
