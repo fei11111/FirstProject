@@ -43,6 +43,8 @@ public:
     DZAudioTrack *dzAudioTrack = NULL;
     DZOpensles *dzOpensles = NULL;
     DZQueue<AVFrame *> avFrame_queue;
+    pthread_t readThread = NULL;
+    pthread_t writeThread = NULL;
     PLAY_TYPE type;
     PLAY_STATE state;
 public:

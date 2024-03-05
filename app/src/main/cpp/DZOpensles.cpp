@@ -92,22 +92,26 @@ void DZOpensles::stop() {
 }
 
 void DZOpensles::release() {
-    stop();
+    LOGE("pPlayer release");
     if (pPlayer != NULL) {
+        (*pPlayer)->Destroy(pPlayer);
         pPlayer = NULL;
         pPlayItf = NULL;
         playerBufferQueue = NULL;
     }
+
+    LOGE("outputMixObject release");
     if (outputMixObject != NULL) {
         (*outputMixObject)->Destroy(outputMixObject);
         outputMixObject = NULL;
         outputMixEnvironmentalReverb = NULL;
     }
-
+    LOGE("engineObject release");
     if (engineObject != NULL) {
         (*engineObject)->Destroy(engineObject);
         engineObject = NULL;
         engineEngine = NULL;
     }
+
 }
 

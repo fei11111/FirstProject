@@ -163,10 +163,7 @@ int DZAudio::resampleAudio() {
 
 void DZAudio::play() {
     if (state == INIT) {
-        pthread_t readThread;
         pthread_create(&readThread, NULL, readRun, this);
-
-        pthread_t writeThread;
         pthread_create(&writeThread, NULL, writeRun, this);
 
         pthread_detach(readThread);
@@ -217,35 +214,60 @@ void DZAudio::callPlayError(ThreadMode threadMode, int errCode, char *msg) {
 }
 
 void DZAudio::release() {
-    if (codecParameters != NULL) {
-        avcodec_parameters_free(&codecParameters);
-    }
-    if (avCodecContext != NULL) {
-        avcodec_close(avCodecContext);
-        avcodec_free_context(&avCodecContext);
-    }
-    if (swrContext != NULL) {
-        swr_free(&swrContext);
-    }
-    if (out_buffer != NULL) {
-        av_free(out_buffer);
-    }
+
+    state = STOP;
+
+    LOGE("avFrame_queue release");
     while (!avFrame_queue.isEmpty()) {
         AVFrame *frame = avFrame_queue.pop();
-        av_frame_unref(frame);
-        av_frame_free(&frame);
+        if (frame != NULL) {
+            av_frame_unref(frame);
+            av_frame_free(&frame);
+        }
     }
 
+    LOGE("dzAudioTrack release");
     if (dzAudioTrack != NULL) {
+        dzAudioTrack->stop(env);
         dzAudioTrack->release(env);
         free(dzAudioTrack);
         dzAudioTrack = NULL;
     }
 
+    LOGE("dzOpensles release");
     if (dzOpensles != NULL) {
+        dzOpensles->stop();
         dzOpensles->release();
         free(dzOpensles);
         dzOpensles = NULL;
+    }
+
+
+
+    LOGE("out_buffer release");
+    if (out_buffer != NULL) {
+        av_free(out_buffer);
+        out_buffer = NULL;
+    }
+
+    LOGE("swrContext release");
+    if (swrContext != NULL) {
+        swr_close(swrContext);
+        swr_free(&swrContext);
+        swrContext = NULL;
+    }
+
+    LOGE("avCodecContext release");
+    if (avCodecContext != NULL) {
+        avcodec_close(avCodecContext);
+        avcodec_free_context(&avCodecContext);
+        avCodecContext = NULL;
+    }
+
+    LOGE("codecParameters release");
+    if (codecParameters != NULL) {
+        avcodec_parameters_free(&codecParameters);
+        codecParameters = NULL;
     }
 }
 

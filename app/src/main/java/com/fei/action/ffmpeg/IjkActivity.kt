@@ -51,7 +51,12 @@ class IjkActivity : BaseActivity<EmptyViewModel, ActivityIjkBinding>() {
         }
 
         mBinding.btnStop.setOnClickListener {
-            musicPlayer?.stop()
+            if (musicPlayer != null) {
+                mBinding.btnStop.isEnabled = false
+                musicPlayer?.stop()
+                mBinding.btnStop.isEnabled = true
+                mBinding.btnPlay.text = "play"
+            }
         }
     }
 
@@ -81,7 +86,7 @@ class IjkActivity : BaseActivity<EmptyViewModel, ActivityIjkBinding>() {
                     }
                 }
             })
-        }else {
+        } else {
             mBinding.btnPlay.isEnabled = false
             musicPlayer?.play()
             mBinding.btnPlay.text = "pause"
