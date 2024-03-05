@@ -13,6 +13,12 @@
 class DZOpensles {
 private:
     SLPlayItf pPlayItf = NULL;
+    SLObjectItf pPlayer = NULL;
+    SLAndroidSimpleBufferQueueItf playerBufferQueue = NULL;
+    SLObjectItf outputMixObject = NULL;
+    SLEnvironmentalReverbItf outputMixEnvironmentalReverb = NULL;
+    SLObjectItf engineObject = NULL;
+    SLEngineItf engineEngine;
 public:
     DZOpensles();
 

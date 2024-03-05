@@ -9,7 +9,7 @@ DZOpensles::DZOpensles() {
 }
 
 DZOpensles::~DZOpensles() {
-
+    release();
 }
 
 void playerCallback(SLAndroidSimpleBufferQueueItf caller, void *pContext) {
@@ -20,8 +20,6 @@ void playerCallback(SLAndroidSimpleBufferQueueItf caller, void *pContext) {
 
 void DZOpensles::play(void *pContext) {
     if (this->pPlayItf == NULL) {
-        SLObjectItf engineObject = NULL;
-        SLEngineItf engineEngine;
         //创建引擎
         slCreateEngine(&engineObject, 0, NULL, 0, NULL, NULL);
         //实现引擎
@@ -29,14 +27,14 @@ void DZOpensles::play(void *pContext) {
         //获取引擎接口
         (*engineObject)->GetInterface(engineObject, SL_IID_ENGINE, &engineEngine);
         //设置混音器:  创建输出混音器对象，实现输出混音器
-        SLObjectItf outputMixObject = NULL;
+
         const SLInterfaceID ids[1] = {SL_IID_ENVIRONMENTALREVERB};
         const SLboolean req[1] = {SL_BOOLEAN_FALSE};
         //创建混音器
         (*engineEngine)->CreateOutputMix(engineEngine, &outputMixObject, 1, ids, req);
         //实现输出混音器
         (*outputMixObject)->Realize(outputMixObject, SL_BOOLEAN_FALSE);
-        SLEnvironmentalReverbItf outputMixEnvironmentalReverb = NULL;
+
         //获取混响接口
         (*outputMixObject)->GetInterface(outputMixObject, SL_IID_ENVIRONMENTALREVERB,
                                          &outputMixEnvironmentalReverb);
@@ -46,7 +44,7 @@ void DZOpensles::play(void *pContext) {
                 outputMixEnvironmentalReverb,
                 &reverbSettings);
         // 创建播放器
-        SLObjectItf pPlayer = NULL;
+        this->pPlayer = NULL;
         this->pPlayItf = NULL;
         SLDataLocator_AndroidSimpleBufferQueue simpleBufferQueue = {
                 SL_DATALOCATOR_ANDROIDSIMPLEBUFFERQUEUE, 2};
@@ -72,7 +70,6 @@ void DZOpensles::play(void *pContext) {
         //获取播放器接口
         (*pPlayer)->GetInterface(pPlayer, SL_IID_PLAY, &pPlayItf);
         // 设置缓存队列和回调函数
-        SLAndroidSimpleBufferQueueItf playerBufferQueue;
         (*pPlayer)->GetInterface(pPlayer, SL_IID_BUFFERQUEUE, &playerBufferQueue);
         // 每次回调 this 会被带给 playerCallback 里面的 context
         (*playerBufferQueue)->RegisterCallback(playerBufferQueue, playerCallback, pContext);
@@ -95,6 +92,22 @@ void DZOpensles::stop() {
 }
 
 void DZOpensles::release() {
+    stop();
+    if (pPlayer != NULL) {
+        pPlayer = NULL;
+        pPlayItf = NULL;
+        playerBufferQueue = NULL;
+    }
+    if (outputMixObject != NULL) {
+        (*outputMixObject)->Destroy(outputMixObject);
+        outputMixObject = NULL;
+        outputMixEnvironmentalReverb = NULL;
+    }
 
+    if (engineObject != NULL) {
+        (*engineObject)->Destroy(engineObject);
+        engineObject = NULL;
+        engineEngine = NULL;
+    }
 }
 
