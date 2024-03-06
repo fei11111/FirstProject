@@ -44,8 +44,6 @@ public:
     DZQueue<AVFrame *> avFrame_queue;
     PLAY_TYPE type;
     volatile PLAY_STATE state;
-    pthread_t readThread = NULL;
-    pthread_t writeThread = NULL;
 public:
     DZAudio(DZJNICall *dzjniCall, JNIEnv *env, AVFormatContext *pFormatContext, int audioIndex);
 

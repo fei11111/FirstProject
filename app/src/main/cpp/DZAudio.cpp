@@ -163,11 +163,14 @@ int DZAudio::resampleAudio() {
 void DZAudio::play() {
     if (state == INIT) {
 
+        pthread_t readThread = NULL;
+        pthread_t writeThread = NULL;
+
         pthread_create(&readThread, NULL, readRun, this);
         pthread_create(&writeThread, NULL, writeRun, this);
 
-//        pthread_detach(readThread);
-//        pthread_detach(writeThread);
+        pthread_detach(readThread);
+        pthread_detach(writeThread);
 
     } else if (dzOpensles != NULL) {
         //openSLES
@@ -254,17 +257,7 @@ void DZAudio::release() {
         avCodecContext = NULL;
     }
 
-    if (readThread != NULL) {
-        LOGE("readThread release");
-        pthread_join(readThread, NULL);
-    }
-
-    if (writeThread != NULL) {
-        LOGE("writeThread release");
-        pthread_join(writeThread, NULL);
-    }
-
-
+    LOGE("queue size = %d",avFrame_queue.size());
 }
 
 DZAudio::~DZAudio() {
