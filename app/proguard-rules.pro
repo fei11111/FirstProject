@@ -72,6 +72,13 @@
 -keep public class * extends android.preference.Preference
 -keep public class com.android.vending.licensing.ILicensingService
 
+-keep class * implements androidx.viewbinding.ViewBinding {
+    *;
+}
+-keepclassmembers class * {
+    public <init>(android.view.View);
+ }
+
 ##################### 如果引用了v4或者v7包  #####################
 -dontwarn android.support.**
 -keep public class * extends android.support.v4.app.Fragment
@@ -286,4 +293,9 @@
 #-keep class com.umeng.** { *; }
 #-keep class com.umeng.analytics.** { *; }
 #-keep class com.umeng.common.** { *; }
+
+######################## bugly ####################################
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
+######################## bugly ####################################
 
