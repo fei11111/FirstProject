@@ -7,6 +7,7 @@ import com.common.base.BaseApplication;
 import com.fei.firstproject.config.AppConfig;
 import com.fei.firstproject.entity.UserEntity;
 import com.fei.firstproject.utils.SPUtils;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.commonsdk.UMConfigure;
 
 /**
@@ -29,6 +30,11 @@ public class MyApplication extends BaseApplication {
         initCrashHandler();
         initUm();
         initAmap();
+        initBugly();
+    }
+
+    private void initBugly() {
+        CrashReport.initCrashReport(getApplicationContext(), "8fb6060d9b", true);
     }
 
     /**
