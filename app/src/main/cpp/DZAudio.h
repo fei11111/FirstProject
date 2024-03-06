@@ -32,21 +32,20 @@ extern "C" {
 //播放
 class DZAudio {
 public:
-    JNIEnv *env;
-    DZJNICall *dzjniCall;
+    JNIEnv *env = NULL;
+    DZJNICall *dzjniCall = NULL;
     AVFormatContext *pFormatContext = NULL;
     int audioIndex;
-    AVCodecParameters *codecParameters = NULL;
     AVCodecContext *avCodecContext = NULL;
-    SwrContext *swrContext;
-    uint8_t *out_buffer;
+    SwrContext *swrContext = NULL;
+    uint8_t *out_buffer = NULL;
     DZAudioTrack *dzAudioTrack = NULL;
     DZOpensles *dzOpensles = NULL;
     DZQueue<AVFrame *> avFrame_queue;
+    PLAY_TYPE type;
+    volatile PLAY_STATE state;
     pthread_t readThread = NULL;
     pthread_t writeThread = NULL;
-    PLAY_TYPE type;
-    PLAY_STATE state;
 public:
     DZAudio(DZJNICall *dzjniCall, JNIEnv *env, AVFormatContext *pFormatContext, int audioIndex);
 

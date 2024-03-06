@@ -16,8 +16,8 @@ DZAudio::DZAudio(DZJNICall *dzjniCall, JNIEnv *env, AVFormatContext *pFormatCont
 }
 
 void DZAudio::prepare(ThreadMode threadMode) {
-    //查找解码器
-    codecParameters = pFormatContext->streams[audioIndex]->codecpar;
+    //查找解码器，AVCodecParameters不弄成成员变量，不用释放，avcodec_parameters_to_context会与avCodecContext联系，avCodecContext释放就好了
+    AVCodecParameters *codecParameters = pFormatContext->streams[audioIndex]->codecpar;
     const AVCodec *avCodec = avcodec_find_decoder(codecParameters->codec_id);
     if (avCodec == NULL) {
         LOGE("find decoder error");
@@ -117,7 +117,6 @@ void *readRun(void *arg) {
     //1.解引用 2.销毁pkt结构体数据 3.pkt = null
     LOGE("读停止");
     av_packet_free(&pkt);
-
     return 0;
 }
 
@@ -150,7 +149,7 @@ int DZAudio::resampleAudio() {
                     (const uint8_t **) (frame->data),
                     frame->nb_samples);
         int size = av_samples_get_buffer_size(NULL,
-                                              codecParameters->ch_layout.nb_channels,
+                                              avCodecContext->ch_layout.nb_channels,
                                               frame->nb_samples,
                                               AV_SAMPLE_FMT_S16, 1);
         // 解引用
@@ -163,11 +162,12 @@ int DZAudio::resampleAudio() {
 
 void DZAudio::play() {
     if (state == INIT) {
+
         pthread_create(&readThread, NULL, readRun, this);
         pthread_create(&writeThread, NULL, writeRun, this);
 
-        pthread_detach(readThread);
-        pthread_detach(writeThread);
+//        pthread_detach(readThread);
+//        pthread_detach(writeThread);
 
     } else if (dzOpensles != NULL) {
         //openSLES
@@ -188,7 +188,7 @@ void DZAudio::startSLES() {
 //AudioTrack
 void DZAudio::startAudioTrack(JNIEnv *env) {
     if (dzAudioTrack == NULL) {
-        this->dzAudioTrack = new DZAudioTrack(env, codecParameters->sample_rate);
+        this->dzAudioTrack = new DZAudioTrack(env, avCodecContext->sample_rate);
     }
     while (state != STOP) {
         if (state != PLAYING) {
@@ -214,61 +214,57 @@ void DZAudio::callPlayError(ThreadMode threadMode, int errCode, char *msg) {
 }
 
 void DZAudio::release() {
-
     state = STOP;
 
-    LOGE("avFrame_queue release");
-    while (!avFrame_queue.isEmpty()) {
-        AVFrame *frame = avFrame_queue.pop();
-        if (frame != NULL) {
-            av_frame_unref(frame);
-            av_frame_free(&frame);
-        }
-    }
-
-    LOGE("dzAudioTrack release");
     if (dzAudioTrack != NULL) {
+        LOGE("dzAudioTrack release");
         dzAudioTrack->stop(env);
         dzAudioTrack->release(env);
-        free(dzAudioTrack);
+        delete dzAudioTrack;
         dzAudioTrack = NULL;
     }
 
-    LOGE("dzOpensles release");
     if (dzOpensles != NULL) {
+        LOGE("dzOpensles release");
         dzOpensles->stop();
-        dzOpensles->release();
-        free(dzOpensles);
+        delete dzOpensles;
         dzOpensles = NULL;
     }
 
+    LOGE("avFrame_queue release");
+    avFrame_queue.clear();
 
-
-    LOGE("out_buffer release");
     if (out_buffer != NULL) {
+        LOGE("out_buffer release");
         av_free(out_buffer);
         out_buffer = NULL;
     }
 
-    LOGE("swrContext release");
     if (swrContext != NULL) {
+        LOGE("swrContext release");
         swr_close(swrContext);
         swr_free(&swrContext);
         swrContext = NULL;
     }
 
-    LOGE("avCodecContext release");
     if (avCodecContext != NULL) {
+        LOGE("avCodecContext release");
         avcodec_close(avCodecContext);
         avcodec_free_context(&avCodecContext);
         avCodecContext = NULL;
     }
 
-    LOGE("codecParameters release");
-    if (codecParameters != NULL) {
-        avcodec_parameters_free(&codecParameters);
-        codecParameters = NULL;
+    if (readThread != NULL) {
+        LOGE("readThread release");
+        pthread_join(readThread, NULL);
     }
+
+    if (writeThread != NULL) {
+        LOGE("writeThread release");
+        pthread_join(writeThread, NULL);
+    }
+
+
 }
 
 DZAudio::~DZAudio() {

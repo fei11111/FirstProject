@@ -99,27 +99,27 @@ void DZFFmpeg::seekTo(jint position) {
 
 void DZFFmpeg::release() {
 
-    LOGE("dzAudio release");
     if (dzAudio != NULL) {
+        LOGE("dzAudio release");
         delete dzAudio;
         dzAudio = NULL;
     }
 
-//    LOGE("pFormatContext release");
-//    if (pFormatContext != NULL) {
-//        avformat_close_input(&pFormatContext);
-//        avformat_free_context(pFormatContext);
-//        pFormatContext = NULL;
-//    }
+    if (pFormatContext != NULL) {
+        LOGE("pFormatContext release");
+        avformat_close_input(&pFormatContext);
+        avformat_free_context(pFormatContext);
+        pFormatContext = NULL;
+    }
 
-//    LOGE("url release");
-//    if (url != NULL) {
-//        free(url);
-//        url = NULL;
-//    }
-//
-//    LOGE("avformat_network_deinit release");
-//    avformat_network_deinit();
+    LOGE("url release");
+    if (url != NULL) {
+        free(url);
+        url = NULL;
+    }
+
+    LOGE("avformat_network_deinit release");
+    avformat_network_deinit();
 }
 
 DZFFmpeg::~DZFFmpeg() {

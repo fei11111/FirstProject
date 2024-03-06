@@ -18,7 +18,7 @@ private:
     SLObjectItf outputMixObject = NULL;
     SLEnvironmentalReverbItf outputMixEnvironmentalReverb = NULL;
     SLObjectItf engineObject = NULL;
-    SLEngineItf engineEngine;
+    SLEngineItf engineEngine = NULL;
 public:
     DZOpensles();
 

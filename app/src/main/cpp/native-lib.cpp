@@ -198,20 +198,6 @@ Java_com_fei_action_ffmpeg_MusicPlayer_nPlay(JNIEnv *env, jobject thiz) {
     }
 }
 
-
-
-extern "C"
-JNIEXPORT void JNICALL
-Java_com_fei_action_ffmpeg_MusicPlayer_nRelease(JNIEnv *env, jobject thiz) {
-    if (dzjniCall != NULL) {
-        delete dzjniCall;
-        dzjniCall = NULL;
-    }
-    if (dzfFmpeg != NULL) {
-        delete dzfFmpeg;
-        dzfFmpeg = NULL;
-    }
-}
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_fei_action_ffmpeg_MusicPlayer_nPause(JNIEnv *env, jobject thiz) {
@@ -224,5 +210,18 @@ JNIEXPORT void JNICALL
 Java_com_fei_action_ffmpeg_MusicPlayer_nStop(JNIEnv *env, jobject thiz) {
     if (dzfFmpeg != NULL) {
         dzfFmpeg->stop();
+    }
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_fei_action_ffmpeg_MusicPlayer_nRelease(JNIEnv *env, jobject thiz) {
+    if (dzfFmpeg != NULL) {
+        delete dzfFmpeg;
+        dzfFmpeg = NULL;
+    }
+    if (dzjniCall != NULL) {
+        delete dzjniCall;
+        dzjniCall = NULL;
     }
 }

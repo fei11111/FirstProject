@@ -61,16 +61,9 @@ class IjkActivity : BaseActivity<EmptyViewModel, ActivityIjkBinding>() {
     }
 
     fun play() {
+        //todo 第一次没文件时进入初始化了，但是在点一次play就崩溃
         if (musicPlayer == null) {
             musicPlayer = MusicPlayer()
-            val url =
-                "/storage/emulated/0/Android/media/com.fei.firstproject/mda-ngi22v9vr986hsnm.mp4"
-            if (File(url).exists()) {
-                mBinding.btnPlay.isEnabled = false
-                Log.i("tag", "文件存在")
-                musicPlayer!!.setDataSource(url)
-                musicPlayer!!.prepareAsync()
-            }
             musicPlayer?.setOnStateCallback(object : MusicPlayer.OnStateCallback {
                 override fun onPrepared() {
                     musicPlayer?.play()
@@ -86,6 +79,15 @@ class IjkActivity : BaseActivity<EmptyViewModel, ActivityIjkBinding>() {
                     }
                 }
             })
+            val url =
+                "/storage/emulated/0/Android/media/com.fei.firstproject/mda-ngi22v9vr986hsnm.mp4"
+            if (File(url).exists()) {
+                mBinding.btnPlay.isEnabled = false
+                Log.i("tag", "文件存在")
+                musicPlayer!!.setDataSource(url)
+                musicPlayer!!.prepare()
+            }
+
         } else {
             mBinding.btnPlay.isEnabled = false
             musicPlayer?.play()
@@ -104,6 +106,7 @@ class IjkActivity : BaseActivity<EmptyViewModel, ActivityIjkBinding>() {
 
     override fun onDestroy() {
         super.onDestroy()
+        surface?.release()
         musicPlayer?.release()
     }
 

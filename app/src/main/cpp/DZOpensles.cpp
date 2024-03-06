@@ -94,6 +94,7 @@ void DZOpensles::stop() {
 void DZOpensles::release() {
     LOGE("pPlayer release");
     if (pPlayer != NULL) {
+        (*playerBufferQueue)->Clear(playerBufferQueue);
         (*pPlayer)->Destroy(pPlayer);
         pPlayer = NULL;
         pPlayItf = NULL;

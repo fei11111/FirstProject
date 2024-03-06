@@ -12,7 +12,7 @@
 class DZAudioTrack {
 private:
     bool isCallPlay = false;
-    jobject audioTrackObject;
+    jobject audioTrackObject = NULL;
     jmethodID playMethodId;
     jmethodID writeMethodId;
     jmethodID pauseMethodId;

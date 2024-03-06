@@ -58,14 +58,14 @@ void DZAudioTrack::pause(JNIEnv *env) {
 void DZAudioTrack::stop(JNIEnv *env) {
     isCallPlay = false;
     env->CallVoidMethod(audioTrackObject, stopMethodId);
+    this->isCallPlay = false;
 }
 
 void DZAudioTrack::release(JNIEnv *env) {
     env->CallVoidMethod(audioTrackObject, releaseMethodId);
-
     if (audioTrackObject != NULL) {
         env->DeleteGlobalRef(this->audioTrackObject);
+        audioTrackObject = NULL;
     }
 
-    audioTrackObject = NULL;
 }

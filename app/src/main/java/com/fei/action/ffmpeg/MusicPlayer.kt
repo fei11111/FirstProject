@@ -1,5 +1,6 @@
 package com.fei.action.ffmpeg
 
+import android.os.Handler
 import android.text.TextUtils
 import android.util.Log
 
@@ -17,7 +18,7 @@ class MusicPlayer {
         this.url = url
     }
 
-    fun setOnStateCallback(callback: OnStateCallback) {
+    fun setOnStateCallback(callback: OnStateCallback?) {
         this.onStateCallback = callback
     }
 
@@ -63,12 +64,13 @@ class MusicPlayer {
     }
 
     fun release() {
+        onStateCallback = null
         nRelease()
     }
 
     private fun onError(errCode: Int, msg: String) {
         Log.i("tag", "thread = ${Thread.currentThread().name} errCode = $errCode msg = $msg")
-        onStateCallback?.onError(errCode,msg)
+        onStateCallback?.onError(errCode, msg)
     }
 
     private fun onPrepared() {

@@ -21,6 +21,7 @@ public:
     std::queue<T> queue;
     pthread_mutex_t mutex;
     pthread_cond_t cond;
+    bool isExit = false;
 public:
     DZQueue();
 
@@ -31,6 +32,10 @@ public:
     bool push(T item);
 
     bool isEmpty();
+
+    int size();
+
+    void clear();
 
 };
 
