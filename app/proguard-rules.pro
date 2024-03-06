@@ -299,3 +299,8 @@
 -keep public class com.tencent.bugly.**{*;}
 ######################## bugly ####################################
 
+##MusicPlayer
+-keep public class com.fei.action.ffmpeg.MusicPlayer {
+    *;
+}
+
