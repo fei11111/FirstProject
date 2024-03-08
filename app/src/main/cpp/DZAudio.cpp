@@ -5,8 +5,8 @@
 #include "DZAudio.h"
 
 double timeBase;
-long current;
-long duration;
+long current = 0;
+long duration = 0;
 timer_t timerid = NULL;
 
 DZAudio::DZAudio(DZJNICall *dzjniCall, JNIEnv *env, AVFormatContext *pFormatContext,
@@ -17,7 +17,7 @@ DZAudio::DZAudio(DZJNICall *dzjniCall, JNIEnv *env, AVFormatContext *pFormatCont
     this->audioIndex = audioIndex;
     this->state = INIT;
     //todo 切换不同播放器
-    this->type = TYPE_AUDIO_TRACK;
+    this->type = TYPE_SLES;
 }
 
 void DZAudio::prepare(ThreadMode threadMode) {
@@ -67,6 +67,7 @@ void DZAudio::prepare(ThreadMode threadMode) {
 
     timeBase = av_q2d(pFormatContext->streams[audioIndex]->time_base);
     duration = pFormatContext->duration / AV_TIME_BASE;//算出时长
+    dzjniCall->callPlayProgress(threadMode, current, duration);
 }
 
 //暂停

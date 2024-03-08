@@ -7,18 +7,16 @@ import android.util.Log
 
 class MusicPlayer {
 
-    interface OnStateCallback {
-        fun onPrepared()
-
-        fun onProgress(current: Long, total: Long)
-
-        fun onCompleted()
-        fun onError(errCode: Int, msg: String)
-    }
-
     private lateinit var url: String
     private var onStateCallback: OnStateCallback? = null
     private val mHandler = Handler(Looper.getMainLooper())
+    private var preparedAndPlay = false
+    var isPrepared = false
+    var isPlaying = false
+
+    init {
+        System.loadLibrary("demo")
+    }
 
     fun setDataSource(url: String) {
         this.url = url
@@ -32,6 +30,7 @@ class MusicPlayer {
      * 准备
      */
     fun prepare() {
+        preparedAndPlay = false
         if (TextUtils.isEmpty(url)) {
             throw NullPointerException("url is unknow,please call setDataSource")
         }
@@ -41,7 +40,19 @@ class MusicPlayer {
     /**
      * 异步准备
      */
+    fun prepareAsyncAndPlay() {
+        preparedAndPlay = true
+        if (TextUtils.isEmpty(url)) {
+            throw NullPointerException("url is unknow,please call setDataSource")
+        }
+        nPrepareAsync(url)
+    }
+
+    /**
+     * 异步准备
+     */
     fun prepareAsync() {
+        preparedAndPlay = false
         if (TextUtils.isEmpty(url)) {
             throw NullPointerException("url is unknow,please call setDataSource")
         }
@@ -56,6 +67,7 @@ class MusicPlayer {
             throw NullPointerException("url is unknow,please call setDataSource")
         }
         nPlay()
+        isPlaying = true
     }
 
     /**
@@ -63,14 +75,17 @@ class MusicPlayer {
      */
     fun pause() {
         nPause()
+        isPlaying = false
     }
 
     fun stop() {
         nStop()
+        isPlaying = false
     }
 
     fun release() {
         nRelease()
+        isPlaying = false
     }
 
     fun destroy() {
@@ -95,14 +110,18 @@ class MusicPlayer {
     }
 
     private fun onPrepared() {
+        isPrepared = true
         Log.i("tag", "thread = ${Thread.currentThread().name} onPrepared 被调用")
         mHandler.post {
             onStateCallback?.onPrepared()
         }
-
+        if (preparedAndPlay) {
+            play()
+        }
     }
 
     private fun onCompleted() {
+        isPrepared = false
         Log.i("tag", "thread = ${Thread.currentThread().name} onCompleted 被调用")
         mHandler.post {
             onStateCallback?.onCompleted()
@@ -120,8 +139,13 @@ class MusicPlayer {
 
     private external fun nRelease()
 
-    init {
-        System.loadLibrary("demo")
+    interface OnStateCallback {
+        fun onPrepared()
+
+        fun onProgress(current: Long, total: Long)
+
+        fun onCompleted()
+        fun onError(errCode: Int, msg: String)
     }
 
 

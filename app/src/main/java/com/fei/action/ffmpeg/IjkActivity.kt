@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Surface
 import android.view.SurfaceHolder
+import android.widget.SeekBar
 import com.common.base.BaseActivity
 import com.common.viewmodel.EmptyViewModel
 import com.fei.firstproject.databinding.ActivityIjkBinding
@@ -58,56 +59,82 @@ class IjkActivity : BaseActivity<EmptyViewModel, ActivityIjkBinding>() {
                 mBinding.btnPlay.text = "play"
             }
         }
+
+        mBinding.seek.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                if (musicPlayer != null && musicPlayer!!.isPlaying) {
+                    pause()
+                }
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                if (musicPlayer != null && !musicPlayer!!.isPlaying) {
+                    play()
+                }
+            }
+
+        })
+
+        musicPlayer = MusicPlayer()
+        musicPlayer?.setOnStateCallback(object : MusicPlayer.OnStateCallback {
+            override fun onPrepared() {
+                mBinding.btnPlay.isEnabled = true
+            }
+
+            override fun onProgress(current: Long, total: Long) {
+                mBinding.tvStartTime.text =
+                    "${getHour(current)}:${getMinute(current)}:${getSecond(current)}"
+                mBinding.tvEndTime.text =
+                    "${getHour(total)}:${getMinute(total)}:${getSecond(total)}"
+                mBinding.seek.max = total.toInt()
+                mBinding.seek.progress = current.toInt()
+            }
+
+            override fun onCompleted() {
+                mBinding.tvStartTime.text = "0:00:00"
+                mBinding.tvEndTime.text = "0:00:00"
+                mBinding.seek.max = 0
+                mBinding.seek.progress = 0
+                mBinding.btnPlay.text = "play"
+            }
+
+            override fun onError(errCode: Int, msg: String) {
+                mBinding.btnPlay.isEnabled = true
+            }
+        })
+        prepare(false)
     }
 
     fun play() {
         //todo 第一次没文件时进入初始化了，但是在点一次play就崩溃
-        if (musicPlayer == null) {
-            musicPlayer = MusicPlayer()
-            musicPlayer?.setOnStateCallback(object : MusicPlayer.OnStateCallback {
-                override fun onPrepared() {
-                    musicPlayer?.play()
-                    mBinding.btnPlay.text = "pause"
-                    mBinding.btnPlay.isEnabled = true
-                }
-
-                override fun onProgress(current: Long, total: Long) {
-                    mBinding.tvStartTime.text =
-                        "${getHour(current)}:${getMinute(current)}:${getSecond(current)}"
-                    mBinding.tvEndTime.text =
-                        "${getHour(total)}:${getMinute(total)}:${getSecond(total)}"
-                    mBinding.seek.max = total.toInt()
-                    mBinding.seek.progress = current.toInt()
-                }
-
-                override fun onCompleted() {
-                    mBinding.tvStartTime.text = "0:00:00"
-                    mBinding.tvEndTime.text = "0:00:00"
-                    mBinding.seek.max = 0
-                    mBinding.seek.progress = 0
-                    mBinding.btnPlay.text = "play"
-                }
-
-                override fun onError(errCode: Int, msg: String) {
-                    mBinding.btnPlay.isEnabled = true
-                }
-            })
-            val url =
-                "/storage/emulated/0/Android/media/com.fei.firstproject/mda-qc5a4fhbfwi9keqh.mp4"
-            if (File(url).exists()) {
-                mBinding.btnPlay.isEnabled = false
-                Log.i("tag", "文件存在")
-                musicPlayer!!.setDataSource(url)
-                musicPlayer!!.prepareAsync()
-            }
-
-        } else {
+        if (!musicPlayer!!.isPrepared) {
+            prepare(true)
+        } else if (!musicPlayer!!.isPlaying) {
             mBinding.btnPlay.isEnabled = false
             musicPlayer?.play()
             mBinding.btnPlay.text = "pause"
             mBinding.btnPlay.isEnabled = true
         }
+    }
 
+    private fun prepare(andPlay: Boolean) {
+        val url =
+            "/storage/emulated/0/Android/media/com.fei.firstproject/mda-qc5a4fhbfwi9keqh.mp4"
+        if (File(url).exists()) {
+            mBinding.btnPlay.isEnabled = false
+            Log.i("tag", "文件存在")
+            musicPlayer!!.setDataSource(url)
+            if (andPlay) {
+                musicPlayer!!.prepareAsyncAndPlay()
+            } else {
+                musicPlayer!!.prepareAsync()
+            }
+
+        }
     }
 
     private fun getHour(time: Long): String {
