@@ -72,27 +72,37 @@ void DZAudio::prepare(ThreadMode threadMode) {
 
 //暂停
 void DZAudio::pause() {
-    state = PAUSE;
-    if (type == TYPE_AUDIO_TRACK) {
+    if (dzAudioTrack != NULL) {
         dzAudioTrack->pause(env);
-    } else {
+        state = PAUSE;
+    } else if (dzOpensles != NULL) {
         dzOpensles->pause();
+        state = PAUSE;
     }
 }
 
 //停止
 void DZAudio::stop() {
-    state = STOP;
-    if (type == TYPE_AUDIO_TRACK) {
+    if (dzAudioTrack != NULL) {
         dzAudioTrack->stop(env);
-    } else {
+        state = STOP;
+    } else if (dzOpensles != NULL) {
         dzOpensles->stop();
+        state = STOP;
     }
 }
 
 //seek
 void DZAudio::seekTo(jint position) {
-//    av_seek_frame(pFormatContext,)
+    LOGE("position = %d", position);
+    int64_t seek = position * AV_TIME_BASE;
+    int res = av_seek_frame(pFormatContext, -1, seek, AVSEEK_FLAG_BACKWARD);
+    if (res < 0) {
+        callPlayError(THREAD_MAIN, SEEK_ERROR_CODE, av_err2str(res));
+    }
+    avcodec_flush_buffers(avCodecContext);
+    avFrame_queue.clear();
+    avFrame_queue.isExit = false;
 }
 
 //读

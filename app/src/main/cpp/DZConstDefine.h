@@ -22,6 +22,7 @@
 #define AVCODEC_OPEN_ERROR_CODE -0x14
 #define SWR_ALLOC_SET_OPTS_ERROR_CODE -0x15
 #define SWR_CONTEXT_INIT_ERROR_CODE -0x16
+#define SEEK_ERROR_CODE -0x17
 // ---------- 播放错误码 end ----------
 
 #endif //FIRSTPROJECT_DZCONSTDEFINE_H

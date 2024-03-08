@@ -70,6 +70,10 @@ class MusicPlayer {
         isPlaying = true
     }
 
+    fun seek(position:Int) {
+        nSeek(position)
+    }
+
     /**
      * 暂停
      */
@@ -131,6 +135,7 @@ class MusicPlayer {
 
     private external fun nPlay()
 
+    private external fun nSeek(position: Int)
     private external fun nPause();
     private external fun nStop();
     private external fun nPrepare(url: String)

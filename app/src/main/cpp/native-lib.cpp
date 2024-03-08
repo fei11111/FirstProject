@@ -214,6 +214,14 @@ Java_com_fei_action_ffmpeg_MusicPlayer_nStop(JNIEnv *env, jobject thiz) {
 
 extern "C"
 JNIEXPORT void JNICALL
+Java_com_fei_action_ffmpeg_MusicPlayer_nSeek(JNIEnv *env, jobject thiz, jint position) {
+    if (dzfFmpeg != NULL) {
+        dzfFmpeg->seekTo(position);
+    }
+}
+
+extern "C"
+JNIEXPORT void JNICALL
 Java_com_fei_action_ffmpeg_MusicPlayer_nRelease(JNIEnv *env, jobject thiz) {
     if (dzfFmpeg != NULL) {
         delete dzfFmpeg;

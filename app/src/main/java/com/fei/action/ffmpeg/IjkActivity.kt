@@ -66,13 +66,12 @@ class IjkActivity : BaseActivity<EmptyViewModel, ActivityIjkBinding>() {
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                if (musicPlayer != null && musicPlayer!!.isPlaying) {
-                    pause()
-                }
+                pause()
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                if (musicPlayer != null && !musicPlayer!!.isPlaying) {
+                if (musicPlayer != null && musicPlayer!!.isPrepared) {
+                    musicPlayer?.seek(seekBar!!.progress)
                     play()
                 }
             }
@@ -153,10 +152,12 @@ class IjkActivity : BaseActivity<EmptyViewModel, ActivityIjkBinding>() {
     }
 
     fun pause() {
-        mBinding.btnPlay.isEnabled = false
-        musicPlayer?.pause()
-        mBinding.btnPlay.text = "play"
-        mBinding.btnPlay.isEnabled = true
+        if (musicPlayer != null && musicPlayer!!.isPrepared) {
+            mBinding.btnPlay.isEnabled = false
+            musicPlayer?.pause()
+            mBinding.btnPlay.text = "play"
+            mBinding.btnPlay.isEnabled = true
+        }
     }
 
     override fun onDestroy() {
