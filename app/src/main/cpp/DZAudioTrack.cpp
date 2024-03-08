@@ -56,7 +56,6 @@ void DZAudioTrack::pause(JNIEnv *env) {
 }
 
 void DZAudioTrack::stop(JNIEnv *env) {
-    isCallPlay = false;
     env->CallVoidMethod(audioTrackObject, stopMethodId);
     this->isCallPlay = false;
 }

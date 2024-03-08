@@ -18,17 +18,23 @@ DZQueue<AVFrame *>::~DZQueue() {
 template<>
 AVFrame *DZQueue<AVFrame *>::pop() {
     pthread_mutex_lock(&mutex);
-    while (queue.empty()) {
+    while (queue.empty() && !isExit) {
         pthread_cond_wait(&cond, &mutex);
     }
-    AVFrame *pData = queue.front();
 
-    queue.pop();
-    if (queue.size() == 20 && !isExit) {
-        pthread_cond_signal(&cond);
+    if (!isExit) {
+        AVFrame *pData = queue.front();
+        queue.pop();
+        if (queue.size() == 20) {
+            pthread_cond_signal(&cond);
+        }
+        pthread_mutex_unlock(&mutex);
+        return pData;
+    } else {
+        pthread_mutex_unlock(&mutex);
+        return NULL;
     }
-    pthread_mutex_unlock(&mutex);
-    return pData;
+
 }
 
 template<>

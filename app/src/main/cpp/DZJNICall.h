@@ -18,6 +18,8 @@ private:
     jobject playObject;
     jmethodID errorMethodId;
     jmethodID preparedMethodId;
+    jmethodID progressMethodId;
+    jmethodID completedMethodId;
 public:
     JavaVM *javaVm;
 public:
@@ -29,6 +31,10 @@ public:
     void callPlayerError(ThreadMode threadMode, int errorCode, char *msg);
 
     void callPlayerPrepared(ThreadMode threadMode);
+
+    void callPlayProgress(ThreadMode threadMode,long current,long total);
+
+    void callPlayCompleted(ThreadMode threadMode);
 };
 
 #endif //FIRSTPROJECT_DZJNICALL_H

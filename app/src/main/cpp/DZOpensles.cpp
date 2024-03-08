@@ -15,6 +15,7 @@ DZOpensles::~DZOpensles() {
 void playerCallback(SLAndroidSimpleBufferQueueItf caller, void *pContext) {
     DZAudio *pAudio = (DZAudio *) pContext;
     int dataSize = pAudio->resampleAudio();
+    if(dataSize==-1) return;
     (*caller)->Enqueue(caller, pAudio->out_buffer, dataSize);
 }
 

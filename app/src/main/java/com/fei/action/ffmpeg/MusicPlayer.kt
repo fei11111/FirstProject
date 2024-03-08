@@ -1,6 +1,7 @@
 package com.fei.action.ffmpeg
 
 import android.os.Handler
+import android.os.Looper
 import android.text.TextUtils
 import android.util.Log
 
@@ -8,11 +9,16 @@ class MusicPlayer {
 
     interface OnStateCallback {
         fun onPrepared()
-        fun onError(errCode: Int, msg: String);
+
+        fun onProgress(current: Long, total: Long)
+
+        fun onCompleted()
+        fun onError(errCode: Int, msg: String)
     }
 
     private lateinit var url: String
     private var onStateCallback: OnStateCallback? = null
+    private val mHandler = Handler(Looper.getMainLooper())
 
     fun setDataSource(url: String) {
         this.url = url
@@ -64,18 +70,44 @@ class MusicPlayer {
     }
 
     fun release() {
-        onStateCallback = null
         nRelease()
+    }
+
+    fun destroy() {
+        release()
+        mHandler.removeCallbacksAndMessages(null)
+        onStateCallback = null
+    }
+
+    private fun onProgress(current: Long, total: Long) {
+        Log.i("tag", "thread = ${Thread.currentThread().name} current = $current total = $total")
+        mHandler.post {
+            onStateCallback?.onProgress(current, total)
+        }
     }
 
     private fun onError(errCode: Int, msg: String) {
         Log.i("tag", "thread = ${Thread.currentThread().name} errCode = $errCode msg = $msg")
-        onStateCallback?.onError(errCode, msg)
+        mHandler.post {
+            onStateCallback?.onError(errCode, msg)
+        }
+
     }
 
     private fun onPrepared() {
         Log.i("tag", "thread = ${Thread.currentThread().name} onPrepared 被调用")
-        onStateCallback?.onPrepared()
+        mHandler.post {
+            onStateCallback?.onPrepared()
+        }
+
+    }
+
+    private fun onCompleted() {
+        Log.i("tag", "thread = ${Thread.currentThread().name} onCompleted 被调用")
+        mHandler.post {
+            onStateCallback?.onCompleted()
+            release()
+        }
     }
 
     private external fun nPlay()

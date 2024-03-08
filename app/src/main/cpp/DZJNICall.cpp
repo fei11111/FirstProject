@@ -12,7 +12,9 @@ DZJNICall::DZJNICall(JavaVM *javaVm, JNIEnv *env, jobject jobject) {
     //通过对象获取类
     jclass objectClass = env->GetObjectClass(jobject);
     this->errorMethodId = env->GetMethodID(objectClass, "onError", "(ILjava/lang/String;)V");
-    this->preparedMethodId = env->GetMethodID(objectClass, "onPrepared","()V");
+    this->preparedMethodId = env->GetMethodID(objectClass, "onPrepared", "()V");
+    this->progressMethodId = env->GetMethodID(objectClass, "onProgress", "(JJ)V");
+    this->completedMethodId = env->GetMethodID(objectClass, "onCompleted", "()V");
     this->env->DeleteLocalRef(objectClass);
 }
 
@@ -53,6 +55,32 @@ void DZJNICall::callPlayerPrepared(ThreadMode threadMode) {
             LOGE("get child thread jniEnv error");
         }
         env->CallVoidMethod(this->playObject, this->preparedMethodId);
+        this->javaVm->DetachCurrentThread();
+    }
+}
+
+void DZJNICall::callPlayProgress(ThreadMode threadMode, long current, long total) {
+    if (threadMode == THREAD_MAIN) {
+        this->env->CallVoidMethod(this->playObject, this->progressMethodId, current, total);
+    } else {
+        JNIEnv *env;
+        if (this->javaVm->AttachCurrentThread(&env, nullptr) != JNI_OK) {
+            LOGE("get child thread jniEnv error");
+        }
+        env->CallVoidMethod(this->playObject, this->progressMethodId, current, total);
+        this->javaVm->DetachCurrentThread();
+    }
+}
+
+void DZJNICall::callPlayCompleted(ThreadMode threadMode) {
+    if (threadMode == THREAD_MAIN) {
+        this->env->CallVoidMethod(this->playObject, this->completedMethodId);
+    } else {
+        JNIEnv *env;
+        if (this->javaVm->AttachCurrentThread(&env, nullptr) != JNI_OK) {
+            LOGE("get child thread jniEnv error");
+        }
+        env->CallVoidMethod(this->playObject, this->completedMethodId);
         this->javaVm->DetachCurrentThread();
     }
 }

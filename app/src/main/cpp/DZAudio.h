@@ -15,7 +15,8 @@ enum PLAY_STATE {
     INIT,
     PLAYING,
     PAUSE,
-    STOP
+    STOP,
+    COMPLETE
 };
 
 enum PLAY_TYPE {

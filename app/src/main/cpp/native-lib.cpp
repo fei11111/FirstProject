@@ -189,7 +189,6 @@ Java_com_fei_action_ffmpeg_MusicPlayer_nPrepareAsync(JNIEnv *env, jobject thiz, 
     env->ReleaseStringUTFChars(url_, url);
 }
 
-
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_fei_action_ffmpeg_MusicPlayer_nPlay(JNIEnv *env, jobject thiz) {

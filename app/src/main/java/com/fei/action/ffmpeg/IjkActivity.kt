@@ -67,25 +67,38 @@ class IjkActivity : BaseActivity<EmptyViewModel, ActivityIjkBinding>() {
             musicPlayer?.setOnStateCallback(object : MusicPlayer.OnStateCallback {
                 override fun onPrepared() {
                     musicPlayer?.play()
-                    runOnUiThread {
-                        mBinding.btnPlay.text = "pause"
-                        mBinding.btnPlay.isEnabled = true
-                    }
+                    mBinding.btnPlay.text = "pause"
+                    mBinding.btnPlay.isEnabled = true
+                }
+
+                override fun onProgress(current: Long, total: Long) {
+                    mBinding.tvStartTime.text =
+                        "${getHour(current)}:${getMinute(current)}:${getSecond(current)}"
+                    mBinding.tvEndTime.text =
+                        "${getHour(total)}:${getMinute(total)}:${getSecond(total)}"
+                    mBinding.seek.max = total.toInt()
+                    mBinding.seek.progress = current.toInt()
+                }
+
+                override fun onCompleted() {
+                    mBinding.tvStartTime.text = "0:00:00"
+                    mBinding.tvEndTime.text = "0:00:00"
+                    mBinding.seek.max = 0
+                    mBinding.seek.progress = 0
+                    mBinding.btnPlay.text = "play"
                 }
 
                 override fun onError(errCode: Int, msg: String) {
-                    runOnUiThread {
-                        mBinding.btnPlay.isEnabled = true
-                    }
+                    mBinding.btnPlay.isEnabled = true
                 }
             })
             val url =
-                "/storage/emulated/0/Android/media/com.fei.firstproject/mda-ngi22v9vr986hsnm.mp4"
+                "/storage/emulated/0/Android/media/com.fei.firstproject/mda-qc5a4fhbfwi9keqh.mp4"
             if (File(url).exists()) {
                 mBinding.btnPlay.isEnabled = false
                 Log.i("tag", "文件存在")
                 musicPlayer!!.setDataSource(url)
-                musicPlayer!!.prepare()
+                musicPlayer!!.prepareAsync()
             }
 
         } else {
@@ -95,6 +108,18 @@ class IjkActivity : BaseActivity<EmptyViewModel, ActivityIjkBinding>() {
             mBinding.btnPlay.isEnabled = true
         }
 
+    }
+
+    private fun getHour(time: Long): String {
+        return String.format("%d", time / 3600)
+    }
+
+    private fun getMinute(time: Long): String {
+        return String.format("%02d", time / 60)
+    }
+
+    private fun getSecond(time: Long): String {
+        return String.format("%02d", time % 60)
     }
 
     fun pause() {
@@ -107,7 +132,7 @@ class IjkActivity : BaseActivity<EmptyViewModel, ActivityIjkBinding>() {
     override fun onDestroy() {
         super.onDestroy()
         surface?.release()
-        musicPlayer?.release()
+        musicPlayer?.destroy()
     }
 
 }
