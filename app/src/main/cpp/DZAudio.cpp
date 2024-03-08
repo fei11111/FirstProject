@@ -17,7 +17,7 @@ DZAudio::DZAudio(DZJNICall *dzjniCall, JNIEnv *env, AVFormatContext *pFormatCont
     this->audioIndex = audioIndex;
     this->state = INIT;
     //todo 切换不同播放器
-    this->type = TYPE_SLES;
+    this->type = TYPE_AUDIO_TRACK;
 }
 
 void DZAudio::prepare(ThreadMode threadMode) {
@@ -92,7 +92,7 @@ void DZAudio::stop() {
 
 //seek
 void DZAudio::seekTo(jint position) {
-
+//    av_seek_frame(pFormatContext,)
 }
 
 //读
@@ -278,9 +278,22 @@ void DZAudio::callPlayError(ThreadMode threadMode, int errCode, char *msg) {
 void DZAudio::release() {
     state = STOP;
 
+    //先停止，在释放队列，在释放播放器，因为播放器播放完时会卡在pop，队列为空，等待输入，先释放队列就会释放所
+    if (dzAudioTrack != NULL) {
+        LOGE("dzAudioTrack stop");
+        dzAudioTrack->stop(env);
+    }
+
+    if (dzOpensles != NULL) {
+        LOGE("dzOpensles stop");
+        dzOpensles->stop();
+    }
+
+    LOGE("avFrame_queue release");
+    avFrame_queue.clear();
+
     if (dzAudioTrack != NULL) {
         LOGE("dzAudioTrack release");
-        dzAudioTrack->stop(env);
         dzAudioTrack->release(env);
         delete dzAudioTrack;
         dzAudioTrack = NULL;
@@ -288,13 +301,9 @@ void DZAudio::release() {
 
     if (dzOpensles != NULL) {
         LOGE("dzOpensles release");
-        dzOpensles->stop();
         delete dzOpensles;
         dzOpensles = NULL;
     }
-
-    LOGE("avFrame_queue release");
-    avFrame_queue.clear();
 
     if (out_buffer != NULL) {
         LOGE("out_buffer release");

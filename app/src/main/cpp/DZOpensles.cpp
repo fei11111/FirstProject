@@ -15,7 +15,10 @@ DZOpensles::~DZOpensles() {
 void playerCallback(SLAndroidSimpleBufferQueueItf caller, void *pContext) {
     DZAudio *pAudio = (DZAudio *) pContext;
     int dataSize = pAudio->resampleAudio();
-    if (dataSize == -1) return;
+    if (dataSize == -1){
+        LOGE("playerCallback 退出");
+        return;
+    }
     (*caller)->Enqueue(caller, pAudio->out_buffer, dataSize);
 }
 
@@ -95,24 +98,25 @@ void DZOpensles::stop() {
 void DZOpensles::release() {
     if (pPlayer != NULL) {
         (*playerBufferQueue)->Clear(playerBufferQueue);
-//        (*pPlayer)->Destroy(pPlayer);
+        (*pPlayer)->Destroy(pPlayer);
         pPlayer = NULL;
         pPlayItf = NULL;
         playerBufferQueue = NULL;
     }
 
-    if (engineObject != NULL) {
-        LOGE("engineObject release");
-//        (*engineObject)->Destroy(engineObject);
-        engineObject = NULL;
-        engineEngine = NULL;
-    }
-
     if (outputMixObject != NULL) {
         LOGE("outputMixObject release");
-//        (*outputMixObject)->Destroy(outputMixObject);
+        (*outputMixObject)->Destroy(outputMixObject);
         outputMixObject = NULL;
         outputMixEnvironmentalReverb = NULL;
+    }
+
+
+    if (engineObject != NULL) {
+        LOGE("engineObject release");
+        (*engineObject)->Destroy(engineObject);
+        engineObject = NULL;
+        engineEngine = NULL;
     }
 
 }
