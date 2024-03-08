@@ -142,11 +142,13 @@ class IjkActivity : BaseActivity<EmptyViewModel, ActivityIjkBinding>() {
     }
 
     private fun getMinute(time: Long): String {
-        return String.format("%02d", time / 60)
+        val minute = time / 60
+        return String.format("%02d", if (minute == 60L) 0 else minute)
     }
 
     private fun getSecond(time: Long): String {
-        return String.format("%02d", time % 60)
+        val second = time % 60
+        return String.format("%02d", if (second == 60L) 0 else second)
     }
 
     fun pause() {
