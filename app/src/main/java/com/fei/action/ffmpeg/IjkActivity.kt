@@ -130,6 +130,7 @@ class IjkActivity : BaseActivity<EmptyViewModel, ActivityIjkBinding>() {
             musicPlayer!!.setDataSource(url)
             if (andPlay) {
                 musicPlayer!!.prepareAsyncAndPlay()
+                mBinding.btnPlay.text = "pause"
             } else {
                 musicPlayer!!.prepareAsync()
             }
