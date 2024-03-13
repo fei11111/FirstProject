@@ -14,7 +14,8 @@
 // ---------- 播放错误码 start ----------
 #define OPEN_INPUT_ERROR_CODE -0x01
 #define FIND_STREAM_INFO_ERROR_CODE -0x02
-#define FIND_BEST_STREAM_ERROR_CODE -0x03
+#define FIND_BEST_STREAM_AUDIO_ERROR_CODE -0x03
+#define FIND_BEST_STREAM_VIDEO_ERROR_CODE -0x04
 #define FIND_STREAM_ERROR_CODE -0x10
 #define CODEC_FIND_DECODER_ERROR_CODE -0x11
 #define CODEC_ALLOC_CONTEXT_ERROR_CODE -0x12
@@ -24,5 +25,14 @@
 #define SWR_CONTEXT_INIT_ERROR_CODE -0x16
 #define SEEK_ERROR_CODE -0x17
 // ---------- 播放错误码 end ----------
+
+//播放状态
+enum PLAY_STATE {
+    INIT,
+    PLAYING,
+    PAUSE,
+    STOP,
+    COMPLETE
+};
 
 #endif //FIRSTPROJECT_DZCONSTDEFINE_H

@@ -9,6 +9,7 @@
 #include "DZAudio.h"
 #include "DZConstDefine.h"
 #include "pthread.h"
+#include "DZVideo.h"
 
 extern "C" {
 #include "libavformat/avformat.h"
@@ -18,15 +19,17 @@ extern "C" {
 
 //解析
 class DZFFmpeg {
-private:
+public:
     char *url = nullptr;
     DZJNICall *dzjniCall = nullptr;
     DZAudio *dzAudio = nullptr;
+    DZVideo *dzVideo = nullptr;
     JNIEnv *jniEnv = nullptr;
     AVFormatContext *pFormatContext = nullptr;
-
+    volatile PLAY_STATE state;
+    long duration;
 public:
-    DZFFmpeg(const char *url, JNIEnv *env,DZJNICall *jniCall);
+    DZFFmpeg(const char *url, JNIEnv *env, DZJNICall *jniCall);
 
     void prepare();
 
@@ -44,7 +47,7 @@ public:
 
     void release();
 
-    void callPlayerJniError(ThreadMode threadMode,int errCode,char* msg);
+    void callPlayerJniError(ThreadMode threadMode, int errCode, char *msg);
 
     ~DZFFmpeg();
 };

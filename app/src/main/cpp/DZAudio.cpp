@@ -4,18 +4,16 @@
 
 #include "DZAudio.h"
 
-double timeBase;
-long current = 0;
-long duration = 0;
 timer_t timerid = NULL;
 
 DZAudio::DZAudio(DZJNICall *dzjniCall, JNIEnv *env, AVFormatContext *pFormatContext,
-                 int audioIndex) {
+                 int audioIndex, volatile PLAY_STATE *state, long duration) {
     this->dzjniCall = dzjniCall;
     this->env = env;
     this->pFormatContext = pFormatContext;
     this->audioIndex = audioIndex;
-    this->state = INIT;
+    this->state = state;//在audioTrack播放器上有用
+    this->duration = duration;
     //todo 切换不同播放器
     this->type = TYPE_AUDIO_TRACK;
 }
@@ -65,31 +63,10 @@ void DZAudio::prepare(ThreadMode threadMode) {
     this->out_buffer = (uint8_t *) av_malloc(AUDIO_SAMPLE_RATE * 2);
     // ---------- 重采样 end ----------
 
-    timeBase = av_q2d(pFormatContext->streams[audioIndex]->time_base);
-    duration = pFormatContext->duration / AV_TIME_BASE;//算出时长
+    this->timeBase = av_q2d(pFormatContext->streams[audioIndex]->time_base);
+
     dzjniCall->callPlayProgress(threadMode, current, duration);
-}
 
-//暂停
-void DZAudio::pause() {
-    if (dzAudioTrack != NULL) {
-        dzAudioTrack->pause(env);
-        state = PAUSE;
-    } else if (dzOpensles != NULL) {
-        dzOpensles->pause();
-        state = PAUSE;
-    }
-}
-
-//停止
-void DZAudio::stop() {
-    if (dzAudioTrack != NULL) {
-        dzAudioTrack->stop(env);
-        state = STOP;
-    } else if (dzOpensles != NULL) {
-        dzOpensles->stop();
-        state = STOP;
-    }
 }
 
 //seek
@@ -106,94 +83,69 @@ void DZAudio::seekTo(jint position) {
 }
 
 //读
-void *readRun(void *arg) {
-    DZAudio *dzAudio = (DZAudio *) arg;
-    AVPacket *pkt = av_packet_alloc();
-    while (dzAudio->state != STOP) {
-        if (dzAudio->state != PLAYING) {
-            continue;
-        }
-        if (av_read_frame(dzAudio->pFormatContext, pkt) >= 0) {
-            //pkt 是压缩的数据，需要解码成pcm数据
-            if (pkt->stream_index == dzAudio->audioIndex) {
-                //音频
-                AVFrame *frame = av_frame_alloc();
-                int sendPacketRes = avcodec_send_packet(dzAudio->avCodecContext, pkt);
-                if (sendPacketRes == 0) {
-                    int receiveFrameRes = avcodec_receive_frame(dzAudio->avCodecContext, frame);
-                    if (receiveFrameRes == 0) {
-                        dzAudio->avFrame_queue.push(frame);
-                    }
-                }
-                //解引用
-                av_packet_unref(pkt);
-            } else {
-                av_packet_unref(pkt);
-            }
+void DZAudio::read(AVPacket *pkt) {
+    //pkt 是压缩的数据，需要解码成pcm数据
+    AVFrame *frame = av_frame_alloc();
+    int sendPacketRes = avcodec_send_packet(avCodecContext, pkt);
+    if (sendPacketRes == 0) {
+        int receiveFrameRes = avcodec_receive_frame(avCodecContext, frame);
+        if (receiveFrameRes == 0) {
+            avFrame_queue.push(frame);
+        }else {
+            av_frame_unref(frame);
+            av_frame_free(&frame);
         }
     }
-
-    //1.解引用 2.销毁pkt结构体数据 3.pkt = null
-    LOGE("读停止");
-    av_packet_free(&pkt);
-    return 0;
 }
 
 //写
-void *writeRun(void *arg) {
-    DZAudio *dzAudio = (DZAudio *) arg;
+void DZAudio::write() {
     JNIEnv *env;
-    if (dzAudio->dzjniCall->javaVm->AttachCurrentThread(&env, nullptr) != JNI_OK) {
+    if (dzjniCall->javaVm->AttachCurrentThread(&env, nullptr) != JNI_OK) {
         LOGE("get child thread jniEnv error");
     }
 
-    if (dzAudio->type == TYPE_AUDIO_TRACK) {
+    if (type == TYPE_AUDIO_TRACK) {
         //audioTrack
-        dzAudio->startAudioTrack(env);
+        startAudioTrack(env);
     } else {
-        dzAudio->startSLES();
+        startSLES();
     }
 
-    dzAudio->dzjniCall->javaVm->DetachCurrentThread();
-    return 0;
+    dzjniCall->javaVm->DetachCurrentThread();
 }
 
-//获取size
-int DZAudio::resampleAudio() {
-    if (AVFrame *frame = avFrame_queue.pop()) {
-        // AV_PACKET 压缩数据 -> AV_FRAME 解码后的数据
-        //frame.data->java byte
-        //大小 1s 44100点 2通道 每通道2字节
-        //一帧不是1s frame->nb_samples
-        swr_convert(swrContext, &out_buffer, frame->nb_samples,
-                    (const uint8_t **) (frame->data),
-                    frame->nb_samples);
-        int size = av_samples_get_buffer_size(NULL,
-                                              avCodecContext->ch_layout.nb_channels,
-                                              frame->nb_samples,
-                                              AV_SAMPLE_FMT_S16, 1);
-        current = frame->pts * timeBase;
 
-        // 解引用
-        av_frame_unref(frame);
-        av_frame_free(&frame);
-        return size;
+//暂停
+void DZAudio::pause() {
+    if (dzAudioTrack != NULL) {
+        dzAudioTrack->pause(env);
+    } else if (dzOpensles != NULL) {
+        dzOpensles->pause();
     }
-    return -1;
+}
+
+//停止
+void DZAudio::stop() {
+    if (dzAudioTrack != NULL) {
+        dzAudioTrack->stop(env);
+    } else if (dzOpensles != NULL) {
+        dzOpensles->stop();
+    }
 }
 
 //进度回调
 void timer_thread(union sigval v) {
     DZAudio *dzAudio = (DZAudio *) v.sival_ptr;
-    if (dzAudio->state == PLAYING) {
+    if (*(dzAudio->state) == PLAYING) {
         //回调进度
-        dzAudio->dzjniCall->callPlayProgress(THREAD_CHILD, current, duration);
-        if (current == duration) {
+        dzAudio->dzjniCall->callPlayProgress(THREAD_CHILD, dzAudio->current, dzAudio->duration);
+        if (dzAudio->current == dzAudio->duration) {
             LOGE("读取完成");
             timer_delete(timerid);
             timerid = NULL;
             dzAudio->dzjniCall->callPlayCompleted(THREAD_CHILD);
-            dzAudio->state = COMPLETE;
+            *(dzAudio->state) = COMPLETE;
         }
     }
 }
@@ -225,27 +177,40 @@ void *progressRun(void *arg) {
     return 0;
 }
 
+//获取size
+int DZAudio::resampleAudio() {
+    if (AVFrame *frame = avFrame_queue.pop()) {
+        // AV_PACKET 压缩数据 -> AV_FRAME 解码后的数据
+        //frame.data->java byte
+        //大小 1s 44100点 2通道 每通道2字节
+        //一帧不是1s frame->nb_samples
+        swr_convert(swrContext, &out_buffer, frame->nb_samples,
+                    (const uint8_t **) (frame->data),
+                    frame->nb_samples);
+        int size = av_samples_get_buffer_size(NULL,
+                                              avCodecContext->ch_layout.nb_channels,
+                                              frame->nb_samples,
+                                              AV_SAMPLE_FMT_S16, 1);
+        current = frame->pts * timeBase;
+        // 解引用
+        av_frame_unref(frame);
+        av_frame_free(&frame);
+        return size;
+    }
+    return -1;
+}
+
 void DZAudio::play() {
-    if (state == INIT) {
-
-        pthread_t readThread = NULL;
-        pthread_t writeThread = NULL;
-        pthread_t timerThread = NULL;
-
-        pthread_create(&readThread, NULL, readRun, this);
-        pthread_create(&writeThread, NULL, writeRun, this);
-        pthread_create(&timerThread, NULL, progressRun, this);
-
-        pthread_detach(readThread);
-        pthread_detach(writeThread);
-        pthread_detach(timerThread);
-
-    } else if (dzOpensles != NULL) {
-        //openSLES
+    if (dzOpensles != NULL) {
+        //openSLES，暂停之后播放
         dzOpensles->play(this);
     }
-
-    state = PLAYING;
+    //todo
+    if (timerid == NULL) {
+        pthread_t timerThread = NULL;
+        pthread_create(&timerThread, NULL, progressRun, this);
+        pthread_detach(timerThread);
+    }
 }
 
 //OpenSLES
@@ -261,8 +226,9 @@ void DZAudio::startAudioTrack(JNIEnv *env) {
     if (dzAudioTrack == NULL) {
         this->dzAudioTrack = new DZAudioTrack(env, avCodecContext->sample_rate);
     }
-    while (state != STOP) {
-        if (state != PLAYING) {
+    while (*state != STOP) {
+        if (*state != PLAYING) {
+            //pause 状态
             continue;
         }
         // AV_PACKET 压缩数据 -> AV_FRAME 解码后的数据
@@ -286,7 +252,6 @@ void DZAudio::callPlayError(ThreadMode threadMode, int errCode, char *msg) {
 }
 
 void DZAudio::release() {
-    state = STOP;
 
     //先停止，在释放队列，在释放播放器，因为播放器播放完时会卡在pop，队列为空，等待输入，先释放队列就会释放所
     if (dzAudioTrack != NULL) {
@@ -340,9 +305,6 @@ void DZAudio::release() {
         timer_delete(timerid);
         timerid = NULL;
     }
-
-    current = 0;
-    duration = 0;
 
     LOGE("queue size = %d", avFrame_queue.size());
 }

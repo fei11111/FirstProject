@@ -15,6 +15,21 @@ class MusicPlayer {
     var isPlaying = false
 
     init {
+        /**
+        "video/x-vnd.on2.vp8" - VP8 video (i.e. video in .webm)
+        "video/x-vnd.on2.vp9" - VP9 video (i.e. video in .webm)
+        "video/avc" - H.264/AVC video
+        "video/hevc" - H.265/HEVC video
+        "video/mp4v-es" - MPEG4 video
+        "video/3gpp" - H.263 video
+        "audio/3gpp" - AMR narrowband audio
+        "audio/amr-wb" - AMR wideband audio
+        "audio/mpeg" - MPEG1/2 audio layer III
+        "audio/mp4a-latm" - AAC audio (note, this is raw AAC packets, not packaged in LATM!)
+        "audio/vorbis" - vorbis audio
+        "audio/g711-alaw" - G.711 alaw audio
+        "audio/g711-mlaw" - G.711 ulaw audio
+         */
         System.loadLibrary("demo")
     }
 
@@ -70,7 +85,7 @@ class MusicPlayer {
         isPlaying = true
     }
 
-    fun seek(position:Int) {
+    fun seek(position: Int) {
         nSeek(position)
     }
 
@@ -99,7 +114,6 @@ class MusicPlayer {
     }
 
     private fun onProgress(current: Long, total: Long) {
-        Log.i("tag", "thread = ${Thread.currentThread().name} current = $current total = $total")
         mHandler.post {
             onStateCallback?.onProgress(current, total)
         }

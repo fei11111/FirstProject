@@ -11,26 +11,17 @@
 #include "DZAudioTrack.h"
 #include "DZOpensles.h"
 
-enum PLAY_STATE {
-    INIT,
-    PLAYING,
-    PAUSE,
-    STOP,
-    COMPLETE
-};
-
-enum PLAY_TYPE {
+//音频播放器类型，audioTrack或者OpenSLES
+enum AUDIO_TYPE {
     TYPE_AUDIO_TRACK,
     TYPE_SLES
 };
 
 extern "C" {
 #include <libswresample/swresample.h>
-#include "libavformat/avformat.h"
-#include "libavcodec/avcodec.h"
 }
 
-//播放
+//音频播放
 class DZAudio {
 public:
     JNIEnv *env = NULL;
@@ -42,11 +33,16 @@ public:
     uint8_t *out_buffer = NULL;
     DZAudioTrack *dzAudioTrack = NULL;
     DZOpensles *dzOpensles = NULL;
+    volatile PLAY_STATE *state;
+    double timeBase = 0;
+    long current = 0;
+    long duration = 0;
+private:
     DZQueue<AVFrame *> avFrame_queue;
-    PLAY_TYPE type;
-    volatile PLAY_STATE state;
+    AUDIO_TYPE type;
 public:
-    DZAudio(DZJNICall *dzjniCall, JNIEnv *env, AVFormatContext *pFormatContext, int audioIndex);
+    DZAudio(DZJNICall *dzjniCall, JNIEnv *env, AVFormatContext *pFormatContext, int audioIndex,
+            volatile PLAY_STATE *state, long duration);
 
     ~DZAudio();
 
@@ -63,6 +59,10 @@ public:
     void seekTo(jint position);
 
     void release();
+
+    void read(AVPacket *pkt);
+
+    void write();
 
     void startAudioTrack(JNIEnv *env);
 

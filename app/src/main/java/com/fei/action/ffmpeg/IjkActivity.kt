@@ -122,7 +122,7 @@ class IjkActivity : BaseActivity<EmptyViewModel, ActivityIjkBinding>() {
 
     private fun prepare(andPlay: Boolean) {
         val url =
-            "/storage/emulated/0/Android/media/com.fei.firstproject/mda-qc5a4fhbfwi9keqh.mp4"
+            "/storage/emulated/0/Android/media/com.fei.firstproject/mda-ngi22v9vr986hsnm.mp4"
         if (File(url).exists()) {
             mBinding.btnPlay.isEnabled = false
             Log.i("tag", "文件存在")
