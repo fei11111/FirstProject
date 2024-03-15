@@ -83,19 +83,24 @@ void DZAudio::seekTo(jint position) {
 }
 
 //读
-void DZAudio::read(AVPacket *pkt) {
+int DZAudio::read(AVPacket *pkt) {
     //pkt 是压缩的数据，需要解码成pcm数据
-    AVFrame *frame = av_frame_alloc();
     int sendPacketRes = avcodec_send_packet(avCodecContext, pkt);
+    // 因为avcodec_send_packet和avcodec_receive_frame并不是一对一的关系的
     if (sendPacketRes == 0) {
-        int receiveFrameRes = avcodec_receive_frame(avCodecContext, frame);
-        if (receiveFrameRes == 0) {
-            avFrame_queue.push(frame);
-        }else {
-            av_frame_unref(frame);
-            av_frame_free(&frame);
+        for (;;) {
+            AVFrame *frame = av_frame_alloc();
+            int receiveFrameRes = avcodec_receive_frame(avCodecContext, frame);
+            if (receiveFrameRes != 0) {
+                av_frame_unref(frame);
+                av_frame_free(&frame);
+                break;
+            } else {
+                avFrame_queue.push(frame);
+            }
         }
     }
+    return sendPacketRes;
 }
 
 //写
@@ -287,7 +292,7 @@ void DZAudio::release() {
     }
 
     if (swrContext != NULL) {
-        LOGE("swrContext release");
+        LOGE("swsContext release");
         swr_close(swrContext);
         swr_free(&swrContext);
         swrContext = NULL;

@@ -83,7 +83,7 @@ void DZFFmpeg::prepare(ThreadMode threadMode) {
     dzAudio->prepare(threadMode);
 
     this->dzVideo = new DZVideo(this->dzjniCall, this->jniEnv, this->pFormatContext, videoIndex,
-                                duration);
+                                &state, duration);
     dzVideo->prepare(threadMode);
 
     //已经准备好了
@@ -123,9 +123,15 @@ void *readRun(void *arg) {
 
 
 //写
-void *writeRun(void *arg) {
+void *audioWriteRun(void *arg) {
     DZFFmpeg *dzfFmpeg = (DZFFmpeg *) arg;
     dzfFmpeg->dzAudio->write();
+    return 0;
+}
+
+//写
+void *videoWriteRun(void *arg) {
+    DZFFmpeg *dzfFmpeg = (DZFFmpeg *) arg;
     dzfFmpeg->dzVideo->write();
     return 0;
 }
@@ -135,14 +141,16 @@ void DZFFmpeg::play() {
     if (state == INIT) {
 
         pthread_t readThread = NULL;
-        pthread_t writeThread = NULL;
+        pthread_t audioWriteThread = NULL;
+        pthread_t videoWriteThread = NULL;
 
         pthread_create(&readThread, NULL, readRun, this);
-        pthread_create(&writeThread, NULL, writeRun, this);
+        pthread_create(&audioWriteThread, NULL, audioWriteRun, this);
+        pthread_create(&videoWriteThread, NULL, videoWriteRun, this);
 
         pthread_detach(readThread);
-        pthread_detach(writeThread);
-
+        pthread_detach(audioWriteThread);
+        pthread_detach(videoWriteThread);
     }
     state = PLAYING;
     if (dzAudio != NULL) {

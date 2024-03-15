@@ -20,6 +20,7 @@ private:
     jmethodID preparedMethodId;
     jmethodID progressMethodId;
     jmethodID completedMethodId;
+    jmethodID sizeChangeMethodId;
 public:
     JavaVM *javaVm;
 public:
@@ -35,6 +36,8 @@ public:
     void callPlayProgress(ThreadMode threadMode,long current,long total);
 
     void callPlayCompleted(ThreadMode threadMode);
+
+    void callPlaySizeChange(ThreadMode threadMode,int width,int height);
 };
 
 #endif //FIRSTPROJECT_DZJNICALL_H

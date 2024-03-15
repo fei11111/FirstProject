@@ -60,7 +60,7 @@ public:
 
     void release();
 
-    void read(AVPacket *pkt);
+    int read(AVPacket *pkt);
 
     void write();
 

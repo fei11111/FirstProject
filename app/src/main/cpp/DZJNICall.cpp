@@ -15,6 +15,7 @@ DZJNICall::DZJNICall(JavaVM *javaVm, JNIEnv *env, jobject jobject) {
     this->preparedMethodId = env->GetMethodID(objectClass, "onPrepared", "()V");
     this->progressMethodId = env->GetMethodID(objectClass, "onProgress", "(JJ)V");
     this->completedMethodId = env->GetMethodID(objectClass, "onCompleted", "()V");
+    this->sizeChangeMethodId = env->GetMethodID(objectClass, "onSizeChange", "(II)V");
     this->env->DeleteLocalRef(objectClass);
 }
 
@@ -81,6 +82,19 @@ void DZJNICall::callPlayCompleted(ThreadMode threadMode) {
             LOGE("get child thread jniEnv error");
         }
         env->CallVoidMethod(this->playObject, this->completedMethodId);
+        this->javaVm->DetachCurrentThread();
+    }
+}
+
+void DZJNICall::callPlaySizeChange(ThreadMode threadMode, int width, int height) {
+    if (threadMode == THREAD_MAIN) {
+        this->env->CallVoidMethod(this->playObject, this->sizeChangeMethodId, width, height);
+    } else {
+        JNIEnv *env;
+        if (this->javaVm->AttachCurrentThread(&env, nullptr) != JNI_OK) {
+            LOGE("get child thread jniEnv error");
+        }
+        env->CallVoidMethod(this->playObject, this->sizeChangeMethodId, width, height);
         this->javaVm->DetachCurrentThread();
     }
 }

@@ -1,5 +1,6 @@
 package com.fei.action.ffmpeg
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.Surface
@@ -7,6 +8,7 @@ import android.view.SurfaceHolder
 import android.widget.SeekBar
 import com.common.base.BaseActivity
 import com.common.viewmodel.EmptyViewModel
+import com.fei.firstproject.R
 import com.fei.firstproject.databinding.ActivityIjkBinding
 import java.io.File
 
@@ -21,9 +23,56 @@ class IjkActivity : BaseActivity<EmptyViewModel, ActivityIjkBinding>() {
     }
 
     override fun initViewAndData(savedInstanceState: Bundle?) {
+
+        musicPlayer = MusicPlayer()
+        musicPlayer?.setOnStateCallback(object : MusicPlayer.OnStateCallback {
+            override fun onPrepared() {
+                mBinding.btnPlay.isEnabled = true
+            }
+
+            override fun onSizeChange(width: Int, height: Int) {
+                mBinding.surfaceView.onSizeChange(width, height)
+            }
+
+            override fun onProgress(current: Long, total: Long) {
+                mBinding.tvStartTime.text =
+                    "${getHour(current)}:${getMinute(current)}:${getSecond(current)}"
+                mBinding.tvEndTime.text =
+                    "${getHour(total)}:${getMinute(total)}:${getSecond(total)}"
+                mBinding.seek.max = total.toInt()
+                mBinding.seek.progress = current.toInt()
+            }
+
+            override fun onCompleted() {
+                mBinding.tvStartTime.text = "0:00:00"
+                mBinding.tvEndTime.text = "0:00:00"
+                mBinding.seek.max = 0
+                mBinding.seek.progress = 0
+                mBinding.btnPlay.text = "play"
+            }
+
+            override fun onError(errCode: Int, msg: String) {
+                mBinding.btnPlay.isEnabled = true
+            }
+        })
+        prepare(false)
+
+        //测试
+        val option = BitmapFactory.Options()
+        option.inScaled = false
+        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_bg_run, option)
+
         mBinding.surfaceView.holder.addCallback(object : SurfaceHolder.Callback {
             override fun surfaceCreated(holder: SurfaceHolder) {
                 surface = holder.surface
+                Log.i(
+                    "tag",
+                    "surfaceView 宽度 = ${mBinding.surfaceView.width} 高度 = ${mBinding.surfaceView.height}"
+                )
+                Log.i("tag", "surface = ${surface.hashCode()}")
+                musicPlayer?.renderSurface(surface!!)
+                //测试
+//                musicPlayer?.renderImage(surface!!,bitmap)
             }
 
             override fun surfaceChanged(
@@ -77,35 +126,6 @@ class IjkActivity : BaseActivity<EmptyViewModel, ActivityIjkBinding>() {
             }
 
         })
-
-        musicPlayer = MusicPlayer()
-        musicPlayer?.setOnStateCallback(object : MusicPlayer.OnStateCallback {
-            override fun onPrepared() {
-                mBinding.btnPlay.isEnabled = true
-            }
-
-            override fun onProgress(current: Long, total: Long) {
-                mBinding.tvStartTime.text =
-                    "${getHour(current)}:${getMinute(current)}:${getSecond(current)}"
-                mBinding.tvEndTime.text =
-                    "${getHour(total)}:${getMinute(total)}:${getSecond(total)}"
-                mBinding.seek.max = total.toInt()
-                mBinding.seek.progress = current.toInt()
-            }
-
-            override fun onCompleted() {
-                mBinding.tvStartTime.text = "0:00:00"
-                mBinding.tvEndTime.text = "0:00:00"
-                mBinding.seek.max = 0
-                mBinding.seek.progress = 0
-                mBinding.btnPlay.text = "play"
-            }
-
-            override fun onError(errCode: Int, msg: String) {
-                mBinding.btnPlay.isEnabled = true
-            }
-        })
-        prepare(false)
     }
 
     fun play() {
@@ -122,7 +142,7 @@ class IjkActivity : BaseActivity<EmptyViewModel, ActivityIjkBinding>() {
 
     private fun prepare(andPlay: Boolean) {
         val url =
-            "/storage/emulated/0/Android/media/com.fei.firstproject/mda-ngi22v9vr986hsnm.mp4"
+            "/storage/emulated/0/Android/media/com.fei.firstproject/mda-qa72ak0psc13w061.mp4"
         if (File(url).exists()) {
             mBinding.btnPlay.isEnabled = false
             Log.i("tag", "文件存在")

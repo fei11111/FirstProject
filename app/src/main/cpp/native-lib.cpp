@@ -3,6 +3,8 @@
 #include <string>
 #include <sys/times.h>
 #include <android/log.h>
+#include <android/bitmap.h>
+#include <android/native_window_jni.h>
 #include "pthread.h"
 #include "DZConstDefine.h"
 #include "DZJNICall.h"
@@ -222,6 +224,15 @@ Java_com_fei_action_ffmpeg_MusicPlayer_nSeek(JNIEnv *env, jobject thiz, jint pos
 
 extern "C"
 JNIEXPORT void JNICALL
+Java_com_fei_action_ffmpeg_MusicPlayer_nSetSurfaceAndArea(JNIEnv *env, jobject thiz,
+                                                          jobject surface) {
+    if (dzfFmpeg != NULL) {
+        dzfFmpeg->dzVideo->setSurfaceAndArea(surface);
+    }
+}
+
+extern "C"
+JNIEXPORT void JNICALL
 Java_com_fei_action_ffmpeg_MusicPlayer_nRelease(JNIEnv *env, jobject thiz) {
     if (dzfFmpeg != NULL) {
         delete dzfFmpeg;
@@ -231,4 +242,37 @@ Java_com_fei_action_ffmpeg_MusicPlayer_nRelease(JNIEnv *env, jobject thiz) {
         delete dzjniCall;
         dzjniCall = NULL;
     }
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_fei_action_ffmpeg_MusicPlayer_nRenderImage(JNIEnv *env, jobject thiz, jobject surface,
+                                                    jobject bitmap) {
+    AndroidBitmapInfo info;
+    AndroidBitmap_getInfo(env, bitmap, &info);
+
+    char *data = NULL;
+    AndroidBitmap_lockPixels(env, bitmap, (void **) &data);
+
+    ANativeWindow *nativeWindow = ANativeWindow_fromSurface(env, surface);
+    ANativeWindow_setBuffersGeometry(nativeWindow, info.width, info.height,
+                                     AHARDWAREBUFFER_FORMAT_R8G8B8A8_UNORM);
+
+    ANativeWindow_Buffer buffer;
+    ANativeWindow_lock(nativeWindow, &buffer, NULL);
+
+    auto *data_src_line = (int32_t *) data;
+    const auto src_line_stride = info.stride / sizeof(int32_t);
+
+    auto *data_dst_line = (uint32_t *) buffer.bits;
+    for (int y = 0; y < buffer.height; y++) {
+        std::copy_n(data_src_line, buffer.width, data_dst_line);
+        data_src_line += src_line_stride;
+        data_dst_line += buffer.stride;
+    }
+
+    ANativeWindow_unlockAndPost(nativeWindow);
+    AndroidBitmap_unlockPixels(env, bitmap);
+
+    ANativeWindow_release(nativeWindow);
 }

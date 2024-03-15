@@ -58,4 +58,5 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
         OpenSLES
         ffmpeg
         android
+        jnigraphics
         log)

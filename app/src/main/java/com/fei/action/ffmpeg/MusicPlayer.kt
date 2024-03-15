@@ -1,9 +1,11 @@
 package com.fei.action.ffmpeg
 
+import android.graphics.Bitmap
 import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
 import android.util.Log
+import android.view.Surface
 
 class MusicPlayer {
 
@@ -119,6 +121,12 @@ class MusicPlayer {
         }
     }
 
+    private fun onSizeChange(width: Int,height: Int) {
+        mHandler.post {
+            onStateCallback?.onSizeChange(width,height)
+        }
+    }
+
     private fun onError(errCode: Int, msg: String) {
         Log.i("tag", "thread = ${Thread.currentThread().name} errCode = $errCode msg = $msg")
         mHandler.post {
@@ -147,8 +155,17 @@ class MusicPlayer {
         }
     }
 
-    private external fun nPlay()
+    fun renderSurface(surface: Surface) {
+        nSetSurfaceAndArea(surface)
+    }
 
+    //测试使用
+    fun renderImage(surface: Surface, bitmap: Bitmap) {
+        nRenderImage(surface, bitmap)
+    }
+
+    private external fun nRenderImage(surface: Surface, bitmap: Bitmap);
+    private external fun nPlay()
     private external fun nSeek(position: Int)
     private external fun nPause();
     private external fun nStop();
@@ -158,8 +175,12 @@ class MusicPlayer {
 
     private external fun nRelease()
 
+    private external fun nSetSurfaceAndArea(surface: Surface)
+
     interface OnStateCallback {
         fun onPrepared()
+
+        fun onSizeChange(width: Int, height: Int)
 
         fun onProgress(current: Long, total: Long)
 

@@ -4,13 +4,18 @@
 
 #include "DZVideo.h"
 
+
 DZVideo::DZVideo(DZJNICall *dzjniCall, JNIEnv *env, AVFormatContext *pFormatContext,
-                 int videoIndex,long duration) {
+                 int videoIndex, volatile PLAY_STATE *state, long duration) {
     this->dzjniCall = dzjniCall;
     this->env = env;
     this->pFormatContext = pFormatContext;
     this->videoIndex = videoIndex;
+    this->state = state;
     this->duration = duration;
+
+    //切换视频播放类型
+    type = TYPE_SURFACE;
 }
 
 void DZVideo::prepare(ThreadMode threadMode) {
@@ -45,6 +50,21 @@ void DZVideo::prepare(ThreadMode threadMode) {
         return;
     }
 
+    //回传宽高
+    dzjniCall->callPlaySizeChange(threadMode, avCodecContext->width, avCodecContext->height);
+
+    // 格式转换关键类
+    // 首先这是mp4 如果需要解析成 yuv 需要用到 SwsContext
+    // 构造函数传入的参数为 原视频的宽高、像素格式、目标的宽高这里也取原视频的宽高（可以修改参数）
+    //todo
+//    swsContext = sws_getContext(avCodecContext->width, avCodecContext->height,
+//                                avCodecContext->pix_fmt,
+//                                1080, 607,
+//                                AV_PIX_FMT_RGBA, SWS_BICUBIC, NULL, NULL, NULL);
+    swsContext = sws_getContext(avCodecContext->width, avCodecContext->height,
+                                avCodecContext->pix_fmt,
+                                avCodecContext->width, avCodecContext->height,
+                                AV_PIX_FMT_RGBA, SWS_BICUBIC, NULL, NULL, NULL);
     this->timeBase = av_q2d(pFormatContext->streams[videoIndex]->time_base);
 }
 
@@ -62,21 +82,32 @@ void DZVideo::seekTo(jint position) {
 }
 
 //读
-void DZVideo::read(AVPacket *pkt) {
-    //pkt 是压缩的数据，需要解码成pcm数据
-//    AVFrame *frame = av_frame_alloc();
-//    int sendPacketRes = avcodec_send_packet(avCodecContext, pkt);
-//    if (sendPacketRes == 0) {
-//        int receiveFrameRes = avcodec_receive_frame(avCodecContext, frame);
-//        if (receiveFrameRes == 0) {
-//            avFrame_queue.push(frame);
-//        }
-//    }
+int DZVideo::read(AVPacket *pkt) {
+    int sendPacketRes = avcodec_send_packet(avCodecContext, pkt);
+    // 因为avcodec_send_packet和avcodec_receive_frame并不是一对一的关系的
+    if (sendPacketRes == 0) {
+        for (;;) {
+            AVFrame *frame = av_frame_alloc();
+            int receiveFrameRes = avcodec_receive_frame(avCodecContext, frame);
+            if (receiveFrameRes != 0) {
+                av_frame_unref(frame);
+                av_frame_free(&frame);
+                break;
+            } else {
+                avFrame_queue.push(frame);
+            }
+        }
+    }
+    return sendPacketRes;
 }
 
 //写
 void DZVideo::write() {
+    if (type == TYPE_SURFACE) {
+        startSurface();
+    } else {
 
+    }
 }
 
 
@@ -94,13 +125,99 @@ void DZVideo::play() {
 
 }
 
+void DZVideo::setSurfaceAndArea(jobject surface) {
+    if (surface != NULL && nativeWindow == NULL) {
+        //todo
+        nativeWindow = ANativeWindow_fromSurface(env, surface);
+    }
+}
 
-void DZVideo::callPlayError(ThreadMode threadMode, int errCode, char *msg) {
-    release();
-    this->dzjniCall->callPlayerError(threadMode, errCode, msg);
+void DZVideo::startSurface() {
+    //1080, 607,
+//    char *rgb = new char[avCodecContext->width * avCodecContext->height * 8];
+//    ANativeWindow_Buffer wbuf;
+    ANativeWindow_setBuffersGeometry(nativeWindow, avCodecContext->width, avCodecContext->height, WINDOW_FORMAT_RGBA_8888);
+    AVFrame* pFrameYUV = av_frame_alloc();
+    while (*state != STOP) {
+        if (*state != PLAYING) {
+            //pause 状态
+            continue;
+        }
+        if (nativeWindow == NULL) continue;
+
+
+        AVFrame *frame = avFrame_queue.pop();
+
+        ANativeWindow_Buffer buffer;
+        ANativeWindow_lock(nativeWindow, &buffer, NULL);
+
+        // 将h264的格式转化成rgb
+        // 从srcFrame中的数据（h264）解析成rgb存放到dstFrame中去
+        sws_scale(swsContext, frame->data, frame->linesize, 0, frame->height, pFrameYUV->data,
+                  pFrameYUV->linesize);
+        // 把数据拷贝到 window_buffer 中
+
+        auto *data_src_line = (int32_t *) pFrameYUV->data[0];
+        const auto src_line_stride = pFrameYUV->linesize[0] / sizeof(int32_t);
+
+        auto *data_dst_line = (uint32_t *) buffer.bits;
+
+        for (int y = 0; y < buffer.height; y++) {
+            std::copy_n(data_src_line, buffer.width, data_dst_line);
+            data_src_line += src_line_stride;
+            data_dst_line += buffer.stride;
+        }
+
+        ANativeWindow_unlockAndPost(nativeWindow);
+
+//        //todo
+//        swsContext = sws_getCachedContext(swsContext,
+//                                          frame->width,
+//                                          frame->height,
+//                                          (AVPixelFormat) frame->format,
+//                                          avCodecContext->width,
+//                                          avCodecContext->height,
+//                                          AV_PIX_FMT_RGBA,
+//                                          SWS_FAST_BILINEAR,
+//                                          0, 0, 0
+//        );
+//        uint8_t *data[AV_NUM_DATA_POINTERS] = {0};
+//        data[0] = (uint8_t *) rgb;
+//        int lines[AV_NUM_DATA_POINTERS] = {0};
+//        lines[0] = avCodecContext->width * 4;
+//        int h = sws_scale(swsContext,
+//                          (const uint8_t **) frame->data,
+//                          frame->linesize, 0,
+//                          frame->height,
+//                          data, lines);
+//        LOGE("sws_scale = %d", h);
+//        if (h > 0) {
+//            // 绘制
+//            ANativeWindow_lock(nativeWindow, &wbuf, 0);
+//            uint8_t *dst = (uint8_t *) wbuf.bits;
+//            memcpy(dst, rgb, avCodecContext->width * avCodecContext->height * 4);
+//            ANativeWindow_unlockAndPost(nativeWindow);
+//        }
+    }
+    av_frame_unref(pFrameYUV);
+    av_frame_free(&pFrameYUV);
+    LOGE("video 写停止");
 }
 
 void DZVideo::release() {
+
+    LOGE("avFrame_queue release");
+    avFrame_queue.clear();
+
+    if (nativeWindow != NULL) {
+        ANativeWindow_release(nativeWindow);
+    }
+
+    if (swsContext != NULL) {
+        LOGE("swsContext release");
+        sws_freeContext(swsContext);
+        swsContext = NULL;
+    }
 
     if (avCodecContext != NULL) {
         LOGE("avCodecContext release");
@@ -109,9 +226,17 @@ void DZVideo::release() {
         avCodecContext = NULL;
     }
 
+
     LOGE("queue size = %d", avFrame_queue.size());
+}
+
+void DZVideo::callPlayError(ThreadMode threadMode, int errCode, char *msg) {
+    release();
+    this->dzjniCall->callPlayerError(threadMode, errCode, msg);
 }
 
 DZVideo::~DZVideo() {
     release();
 }
+
+
