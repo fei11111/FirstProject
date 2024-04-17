@@ -252,6 +252,9 @@
             android:name="com.fei.action.animation.placehold.PlaceholdActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:screenOrientation="portrait" />
+        <activity android:name="com.fei.action.touch.TouchActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
