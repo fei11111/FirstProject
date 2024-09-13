@@ -52,7 +52,7 @@ final class DecodeHandler extends Handler {
   public void handleMessage(Message message) {
     switch (message.what) {
       case R.id.decode:
-        //Log.d(TAG, "Got decode message");
+        //Log.d(TAG, "Got decodePacket message");
         decode((byte[]) message.obj, message.arg1, message.arg2);
         break;
       case R.id.quit:
@@ -63,7 +63,7 @@ final class DecodeHandler extends Handler {
 
   /**
    * Decode the data within the viewfinder rectangle, and time how long it took. For efficiency,
-   * reuse the same reader objects from one decode to the next.
+   * reuse the same reader objects from one decodePacket to the next.
    *
    * @param data   The YUV preview frame.
    * @param width  The width of the preview frame.
@@ -100,7 +100,7 @@ final class DecodeHandler extends Handler {
       Bundle bundle = new Bundle();
       bundle.putParcelable(DecodeThread.BARCODE_BITMAP, source.renderCroppedGreyscaleBitmap());
       message.setData(bundle);
-      //Log.d(TAG, "Sending decode succeeded message...");
+      //Log.d(TAG, "Sending decodePacket succeeded message...");
       message.sendToTarget();
     } else {
       Message message = Message.obtain(activity.getHandler(), R.id.decode_failed);

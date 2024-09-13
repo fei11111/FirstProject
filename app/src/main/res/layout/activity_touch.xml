@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.fei.action.touch.TouchViewGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:orientation="vertical">
+
+   <com.fei.action.touch.TouchView
+       android:layout_width="200dp"
+       android:layout_height="200dp"
+       android:background="@color/bar_grey"/>
+
+</com.fei.action.touch.TouchViewGroup>

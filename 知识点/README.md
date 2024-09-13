@@ -1426,67 +1426,360 @@ https://blog.csdn.net/iqq_37382732/article/details/109101681
 cd ..
 ./compile-ijk.sh clean
 ./compile-ijk.sh armv7a
-23.默认不支持rtsp
-   cd ijkplayer-android/config
-   vim module-lite.sh
-   #在相关地方加入如下两行代码
-   export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --enable-protocol=rtp"
-   export COMMON_FF_CFG_FLAGS="$COMMON_FF_CFG_FLAGS --enable-demuxer=rtsp"
-
-24.启动就闪退问题
-   解决：native方法写成public static 了，改成private native
-
-25.录制视频报错：Application provided invalid, non monotonically increasing dts to muxer in stream 0: 30488760 >= 30488760
-   解决： ffmpeg源码中的mux.c文件======>compute_muxer_pkt_fields函数
-   注释了：
-    if (sti->cur_dts && sti->cur_dts != AV_NOPTS_VALUE &&
-        ((!(s->oformat->flags & AVFMT_TS_NONSTRICT) &&
-          st->codecpar->codec_type != AVMEDIA_TYPE_SUBTITLE &&
-          st->codecpar->codec_type != AVMEDIA_TYPE_DATA &&
-          sti->cur_dts >= pkt->dts) || sti->cur_dts > pkt->dts)) {}
-pkt.pts = pkt.dts;
-        }
-26.rtsp延迟问题
-   解决：
-   1.ijkmedia/ijkplayer/ff_ffplay.c
-	在static void video_refresh(FFPlayer *opaque, double *remaining_time)方法中
-static void video_refresh(FFPlayer *opaque, double *remaining_time)
-{
-	/* compute nominal last_duration */
-            last_duration = vp_duration(is, lastvp, vp);
-            delay = 0;//compute_target_delay(ffp, last_duration, is);//计算渲染延时
-
-}
-  2.
-static int video_refresh_thread(void *arg)
-{
-    FFPlayer *ffp = arg;
-    VideoState *is = ffp->is;
-    double remaining_time = 0.0;
-    while (!is->abort_request) {
-        if (remaining_time > 0.0)
-            av_usleep((int)(int64_t)(remaining_time * 1000000.0));
-        remaining_time = REFRESH_RATE;//这里有刷新速率限制
-        if (is->show_mode != SHOW_MODE_NONE && (!is->paused || is->force_refresh))
-            video_refresh(ffp, &remaining_time);
-    }
-
-    return 0;
-}
-REFRESH_RATE速率限制会造成渲染线程有一定的睡眠时间
-这里默认配置REFRESH_RATE为0.01，我们可以尝试调小这个值，在一定情况下可以解决延迟问题，但是这样修改也不彻底
-
-  3.（未采取）设置ff_ffplay.c 搜索“codec_ctx-” 加入
-    img_info->frame_img_codec_ctx->flags |= CODEC_FLAG_LOW_DELAY;
-
-  4.
-
-27.Invalid level prefix,error while decoding MB 100 50
- 解决：mediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "framedrop", 5);
-
-28.问题：Application provided duration: %"PRId64" / timestamp: %"PRId64" is out of range for mov/mp4 format\n",
-解决：android\contrib\ffmpeg-arm64\libavformat找到movenc.c
-找到check_pkt，注释代码直接return 0
 /**********************************IJKPLAYER***********************************************/
+```
+
+```
+/***********************************************性能优化*************************************************************************/
+1.启动优化
+	1.1 提高线程等级，核心线程绑定CPU大核
+		Process.setThreadPriority(int priority) / Process.setThreadPriority(int pid, int priority)
+		Thread.setPriority(int priority)
+		1.1.1主线程的优先级调整很简单，直接在 Application 的 attachBaseContext() 调用 Process.setThreadPriority(-19)，将主线程设置为最高级别优先级即可。
+		1.1.2 获取渲染线程id，设置Process.setThreadPriority(int pid, int priority)，在绑定CPU大核
+	1.2 线程池配置
+	插桩方式确认任务属于哪种类型
+		CPU线程池：CPU线程池  == Executors.newFixedThreadPool
+                核心=最大=CPU核
+                keepAliveTime=0
+                workqueue=无限大或设置
+		IO线程池：IO线程池(设置线程优先级比CPU高)
+                核心=0
+                最大=60以上
+                keepAlive=60s
+                workqueue=SynchronousQueue
+	1.3 减少CPU闲置，执行预准备任务
+		times函数判断CPU是否闲置，当CPU速率一定在0.1以下，就可认为是闲置状态
+	1.4 dex重排序 用Redex
+2.ANR
+    2.1 ANR 日志准备（traces.txt + mainlog）
+    2.2 在 traces.txt 找到 ANR 信息（发生 ANR 时间节点、主线程状态、事故点、ANR 类型）
+    2.3 在mainlog 日志分析发生 ANR 时的 CPU 状态
+    2.4 在 traces.txt 分析发生 ANR 时的 GC 情况（分析内存）
+    简单说就是我们至少需要两份文件：/data/anr/traces.txt 和 mainlog 日志。如果有eventlog 能更快的定位到 ANR 的类型，当然 traces.txt 和 mainlog 也能分析得到。
+traces.txt 文件通过命令 adb pull /data/anr/ 获取，如果没有权限，用adb bugreport
+mainlog 日志需要在程序运行时就时刻记录 adb logcat -v time -b main > mainlog.log。
+	mainlog 日志 搜索关键词 ANR in
+	在 eventlog 日志 搜索关键词 am_anr
+	ANR 定位分析总结如下：
+        在 traces.txt 找到发生 ANR 时间节点、主线程的状态、ANR 类型和事故点
+        在 mainlog 日志查看 CPU 状态
+        根据以上步骤收集的信息大致判断问题原因
+        是 CPU 问题还是 非 CPU 问题
+        如果是非 CPU 问题，那么看 GC 处理信息
+        在 traces.txt 分析 CG 信息
+        结合项目代码和以上步骤分析到的原因，定位到问题修复 ANR
+        其实 ANR 发生的原因本质上只有三个：
+        线程挂起
+        CPU 不给资源
+        GC 触发 STW 导致线程执行时间被拉长
+
+3.UI卡顿
+4.全局异常捕获
+5.布局优化
+    5.1 手机开发者选项开启显示GPU过度绘制调试开关，分别有蓝色、淡绿、淡红、深红四种不同情况
+    5.2 手机开发者选项开启GPU呈现模式分析
+    5.3 theme去除主题默认背景
+    	<resource>
+            <style name="Theme.NoBackground" parent="android:Theme">
+                <item name="android:windowBackground">@android:color/transparent</item>
+            </style>
+		</resources>
+	5.4 截取部分，避免过度绘制
+	5.5 背景图使用9-patches
+	5.6 减少层级嵌套
+	5.7 布局标签：<include><merge><viewstub>
+		每次在调用 LayoutInflater.inflate() 时，必须为 <merge> 布局文件提供一个view，作为它的父容器：
+		LayoutInflater.from(parent.getContext()).inflate(R.layout.merge_layout, parent, true);
+	5.8 硬件加速
+6.内存性能优化：
+    6.1 Android系统通过在Android Lollipop替换Dalvik为ART，且在Android N添加JIT的方式提升编译安装性能
+    6.2 对象内存管理，避免内存抖动、内存泄漏
+    6.3 按需要提供变量的基本数据类型
+    6.4 避免自动装箱拆箱的转换
+    6.5 在某些场景使用Android提供的SparseArray集合组和ArrayMap代替HashMap能达到内存高效
+    6.6 尽量使用for each循环
+    6.7 使用Annotation @IntDef实现枚举
+    6.8 常量使用static final声明能节约内存
+    6.9 使用StringBuilder或StringBuffer拼接字符串+
+    6.10 生命周期内不变的变量声明为本地变量对象，不在方法内创建节省内存
+    6.11 对象数量固定不变的列表，使用数组比集合更内存高效
+    6.12 尽量少创建临时对象，因为会频繁触发垃圾回收；避免实例化非必要对象，因为会对内存和计算性能带来影响
+    6.13 对于要大量创建耗费资源的对象时，使用对象池模式或享元模式
+    	对象池
+    	public abstract class ObjectPool<T> {
+            // 使用两个SparseArray数组保存对象集合，防止这些对象在借出后被系统回收
+            private SparseArray<T> freePool;
+            private SparseArray<T> lentPool;
+            private int maxCapacity;
+
+            public ObjectPool(int initialCapacity, int maxCapacity) {
+                initialize(initialCapacity);
+                this.maxCapacity = maxCapacity;
+            }
+
+            public ObjectPool(int maxCapacity) {
+                this(maxCapacity / 2, maxCapacity);
+            }
+
+            public T acquire() {
+                T t = null;
+                synchronized(freePool) {
+                    int freeSize = freePool.size();
+                    for (int i = 0; i < freeSize; i++) {
+                        int key = freePool.keyAt(i);
+                        t = freePool.get(key);
+                        if (t != null) {
+                            this.lentPool.put(key, t);
+                            this.freePool.remove(key);
+                            return t;
+                        }
+                    }
+                    if (t == null && lentPool.size() + freeSize < maxCapacity) {
+                        t = create();
+                        lentPool.put(lentPool.size() + freeSize, t);
+                    }
+                }
+                return t;
+            }
+
+            public void release(T t) {
+                if (t == null) {
+                    return null;
+                }
+                int key = lentPool.indexOfValue(t);
+                restore(t);
+                this.freePool.put(key, t);
+                this.lentPool.remove(key);
+            }
+
+            protected abstract T create();
+
+            protected void restore(T t) {}
+
+            private void initialize(final int initialCapacity) {
+                lentPool = new SparseArray<>();
+                freePool = new SparseArray<>();
+                for (int i = 0; i < initialCapacity; i++) {
+                    freePool.put(i, create());
+                }
+            }
+        }
+        享元模式
+        public interface Courier<T> {
+            void equip(T param);
+        }
+
+        // 享元对象
+        public class PackCourier implements Courier<Pack> {
+            private Van van;
+
+            // id为内部状态且用于唯一标识一个对象，用在Factory中实现对象复用
+            public PackCourier(int id) {
+                super(id);
+                van = new Van(id);
+            }
+
+            // pack为外部状态
+            public void equip(Pack pack) {
+                van.load(pack);
+            }
+        }
+
+        // 客户，通过courier.equip(pack)将外部状态pack传入享元对象courier
+        public class Delivery extends Id {
+            private Courier<Pack> courier;
+
+            public Delivery(int id) {
+                super(id);
+                courier = new Factory().getCourier(0);
+            }
+
+            public void deliver(Pack pack, Destination destination) {
+                courier.equip(pack);
+            }
+        }
+
+        public class Factory {
+            private static SparseArray<Courier> pool;
+
+            public Factory() {
+                if (pool == null)
+                    pool = new SparseArray<>();
+            }
+
+            public Courier getCourier(int type) {
+                Courier courier = pool.get(type);
+                if (courier == null) {
+                    courier = create(type);
+                    pool.put(type, courier);
+                }
+                return courier;
+            }
+
+            private Courier create(int type) {
+                Courier courier = null;
+                switch(type) {
+                    case 0:
+                        courier = new PackCourier(0);
+                }
+                return courier;
+            }
+        }
+
+        // 每个Delivery都是由同一个Courier完成操作
+        for (int i = 0; i < DEFAULT_COURIER_NUMBER; i++) {
+            new Delivery(i).deliver(new Pack(i), new Destination(i));
+        }
+        
+        6.14 bitmap优化
+        private BitmapPool bitmapPool;
+        public Bitmap decodeBitmap(Context context, File file, int reqWidth, int reqHeight) {
+            bitmapPool = GlideApp.get(context).getBitmapPool();
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+            options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+            options.inMutable = true; // 复用 inBitmap 需要将 inMutable 设置为 true
+            options.inBitmap = bitmapPool.getDirty(options.outWidth, options.outHeight, options.inPreferredConfig);
+            options.inJustDecodeBounds = false;
+            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+            // 处理 BitmapFactory.decodeXxx() 复用失败时，按普通方式加载处理
+            if (bitmap == null && options.inBitmap != null) {
+                bitmapPool.put(options.inBitmap);
+                options.inBitmap = null;
+                bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+            }
+            if (bitmap != null && options.inBitmap != null) {
+                bitmapPool.put(options.inBitmap);
+            }
+            return bitmap;
+        }
+        
+        private int calculateSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+            // 图片原始宽高
+            int width = options.outWidth;
+            int height = options.outHeight;
+
+            // 默认不缩放
+            int inSampleSize = 1; 
+            // 当原始图片宽高大于控件所需宽或高才进行缩放
+            if (width > reqWidth || height > reqHeight) {
+                // 取宽度比与高度比的最大值
+                int widthRound = Math.round(width * 1f / reqWidth);
+                int heightRound = Math.round(height * 1f / reqHeight);
+
+                inSampleSize = Math.max(widthRound, heightRound);
+            }
+
+            return inSampleSize;
+        }
+7.第三方框架优化
+	7.1 okhttp
+		Dispatcher 提供了配置异步网络请求的最大数量 maxRequests 属性，默认最大请求数量为64
+		Dispatcher dispatcher = new Dispatcher();
+        dispatcher.setMaxRequests(32);//重新配置为32
+        new OkHttpClient.Builder()
+            .dispatcher(dispatcher);
+    7.2 Glide
+    	限制 Glide 异步图片加载开启线程数量
+    	private static final int DEFAULT_DISK_CACHE_SIZE = 20 * 1024 * 1024;
+		private static final int LOW_DISK_CACHE_SIZE = 5 * 1024 * 1024;
+    	@GlideModule
+        public class MyGlideModule extends AppGlideModule {
+            @Override
+            public boolean isManifestParsingEnabled() {
+                return false;
+            }
+
+            @Override
+            public void applyOptions(@NonNull Context context, @NonNull GlideBuilder builder) {
+                super.applyOptions(context, builder);               
+                // 默认使用 ARGB_8888，改为RGB_565
+                builder.setDefaultRequestOptions(new RequestOptions().format(DecodeFormat.PREFER_RGB_565)
+                        .set(Downsampler.ALLOW_HARDWARE_CONFIG, true)
+                        .encodeQuality(70)
+                        .timeout(25000));
+                // 设置磁盘缓存大小
+                builder.setDiskCache(new InternalCacheDiskCacheFactory(context, DiskCache.Factory.DEFAULT_DISK_CACHE_DIR, DEFAULT_DISK_CACHE_SIZE));
+                // 设置图片异步加载的线程数量为2个
+                builder.setSourceExecutors(GlideExecutor.newSourceExecutor(
+                        2, 
+                        "source", 
+                        GlideExecutor.UncaughtThrowableStrategy.DEFAULT));
+                // 设置缓存大小，设置为原始缓存的一半
+                MemorySizeCalculator calculator = new MemorySizeCalculator.Builder(context).build();
+                    builder.setMemoryCache(new LruResourceCache(calculator.getMemoryCacheSize() / 2));
+                    builder.setBitmapPool(new LruBitmapPool(calculator.getBitmapPoolSize() / 2));
+                    builder.setArrayPool(new LruArrayPool(calculator.getBitmapPoolSize() / 2));
+                    }
+        }
+        
+        列表滑动暂停加载图片
+        recyclerView.addOnScrollListener(new RecyclerView.onScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                GlideRequests requests = Glide.with(context);
+                if (newState != RecyclerView.SCROLL_STATE_IDLE) {
+                    if (!requests.isPaused()) {
+                        requests.pauseRequests(); // 列表滑动时暂停图片加载
+                    }
+                } else {
+                    if (requests.isPaused()) {
+                        requests.resumeRequests(); // 列表停止滑动时恢复图片加载
+                    }
+                }
+            }
+        });
+
+
+
+     
+
+
+
+
+
+        
+/***********************************************性能优化*************************************************************************/
+```
+```
+/***********************************************JNI*************************************************************************/
+1.jclass jcls;//需要DeleteLocalRef
+jobject jcls;//需要DeleteLocalRef
+jstring jcls;//需要ReleaseStringUTFChars和DeleteLocalRef
+jarray jcls;//需要DeleteLocalRef
+jmethodid、jfieldid//不需要DeleteLocalRef
+
+2.java string 转成 c char*
+	const char *url = env->GetStringUTFChars(url_, 0);
+	env->ReleaseStringUTFChars(url_, url);
+
+3.c char* 转成 java string
+	jstring jMsg = this->env->NewStringUTF(msg);
+	this->env->ReleaseStringUTFChars(jMsg, msg);
+	this->env->DeleteLocalRef(jMsg);
+
+4.c线程无法调用主线程env
+	JNIEnv *env;
+       	 if (this->javaVm->AttachCurrentThread(&env, nullptr) != JNI_OK) {
+           		 LOGE("get child thread jniEnv error");
+       	 }
+	//这时env才能用
+	//之后释放当前线程
+	this->javaVm->DetachCurrentThread();
+
+5.kotlin层访问c++层自动创建JavaVM
+	在JNI_OnLoad函数中将自动创建的JavaVM存为全局的
+
+6.JNI函数执行完后会释放jobject
+	因此如果想保存，需要new出来：env->NewGlobalRef(object)，释放：env->DeleteGlobalRef(object)。
+
+7.复制char*
+	this->url = (char*)malloc(strlen(url)+1);//创建空间
+	memcpy(this->url, url, size);//复制
+/***********************************************JNI*************************************************************************/	
 ```
 
