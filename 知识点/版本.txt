@@ -20,6 +20,13 @@ Android(12L)  S === 32
 Android(13.0) T === 33
 1.wifi直连应请求 NEARBY_WIFI_DEVICES 运行时权限
 
+2.通过 Intent(MediaStore.ACTION_PICK_IMAGES); 就可以打开，支持视频、音频、图片分类，支持多选和单选
+ android13权限READ_MEDIA_IMAGE、READ_MEDIA_VIDEO、READ_MEDIA_AUDIO
+
+3.通知权限android.permission.POST_NOTIFICATION
+
+
+
 Android(14.0) U === 34
 1.冻结缓存应用，增强杀进程能力
     可用能力：前台服务、JosScheduler、WorkManager

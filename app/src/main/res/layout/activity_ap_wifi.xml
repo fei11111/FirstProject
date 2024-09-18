@@ -17,6 +17,18 @@
         android:text="获取wifi名字"
         android:id="@+id/btn_get_wifi_name"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="连接wifi"
+        android:id="@+id/btn_connect_wifi"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="断开wifi"
+        android:id="@+id/btn_disconnect_wifi"/>
+
 
 
 </LinearLayout>

@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
+import android.net.LinkProperties
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
@@ -17,6 +18,7 @@ import android.net.wifi.WifiNetworkSpecifier
 import android.net.wifi.WifiNetworkSuggestion
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.provider.Settings
 import android.text.TextUtils
 import android.util.Log
@@ -40,8 +42,13 @@ class ApWifiActivity : BaseActivity<EmptyViewModel, ActivityApWifiBinding>() {
     override fun initViewAndData(savedInstanceState: Bundle?) {
         mBinding.btnScan.setOnClickListener { scanWifi() }
         mBinding.btnGetWifiName.setOnClickListener { getWifiName() }
+        mBinding.btnConnectWifi.setOnClickListener{connectDeviceWifi("Fei","Hwestlife . @907")}
+        mBinding.btnDisconnectWifi.setOnClickListener { disconnectDeviceWifi() }
     }
 
+    /**
+     * 获取当前连接wifi的名字
+     */
     private fun getWifiName() {
 
         if (!openWifi()) return
@@ -111,6 +118,9 @@ class ApWifiActivity : BaseActivity<EmptyViewModel, ActivityApWifiBinding>() {
             return
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(arrayOf(Manifest.permission.ACCESS_WIFI_STATE,Manifest.permission.ACCESS_NETWORK_STATE),1)
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P){
             //9.0开始要开定位
             if (!isLocationEnabled()) {
@@ -120,6 +130,7 @@ class ApWifiActivity : BaseActivity<EmptyViewModel, ActivityApWifiBinding>() {
                 return
             }
         }
+
 
         wifiManager =
             applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
@@ -170,21 +181,11 @@ class ApWifiActivity : BaseActivity<EmptyViewModel, ActivityApWifiBinding>() {
             scanFail()
         }
 
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P){
-//            Log.i("tag","android p 直接获取wifi列表")
-//            scanSuccess()
-//        }else {
-//            val success = wifiManager!!.startScan()
-//            if (!success) {
-//                // scan failure handling
-//                Log.i("tag", "开启扫描wifi失败")
-//                scanFail()
-//            }
-//        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        disconnectDeviceWifi()
         if (wifiScanReceiver != null) {
             unregisterReceiver(wifiScanReceiver)
         }
@@ -246,12 +247,15 @@ class ApWifiActivity : BaseActivity<EmptyViewModel, ActivityApWifiBinding>() {
         }
     }
 
-    fun disconnectDeviceWifi() {
+    private fun disconnectDeviceWifi() {
         val wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
         val manager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
         if (wifiManager.isWifiEnabled) {
             if (Build.VERSION.SDK_INT >= 23) {
                 // Android 10及以上版本使用此方法
+                callback?.let {
+                    manager.unregisterNetworkCallback(it)
+                }
                 manager.bindProcessToNetwork(null)//清除绑定，使用null重新绑定network。不然app进程的所有http请求都将继续在目标network上继续进行，即使断开了连接
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     wifiManager.removeNetworkSuggestions(emptyList())
@@ -267,12 +271,11 @@ class ApWifiActivity : BaseActivity<EmptyViewModel, ActivityApWifiBinding>() {
     }
 
     /**
-     * https://blog.csdn.net/nn690960430/article/details/105497251/
-     *
      * @param id
      * @param password
      */
-    fun connectDeviceWifi(id: String?, password: String?) {
+    private var callback: ConnectivityManager.NetworkCallback? = null
+   private fun connectDeviceWifi(id: String?, password: String?) {
         //3、链接wifi
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             val builder = WifiNetworkSpecifier.Builder()
@@ -280,29 +283,64 @@ class ApWifiActivity : BaseActivity<EmptyViewModel, ActivityApWifiBinding>() {
             builder.setWpa2Passphrase(password!!)
             val wifiNetworkSpecifier = builder.build()
             val networkRequestBuilder = NetworkRequest.Builder()
-            networkRequestBuilder.addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
             networkRequestBuilder.removeCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+            networkRequestBuilder.addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
             networkRequestBuilder.setNetworkSpecifier(wifiNetworkSpecifier)
             var networkRequest = networkRequestBuilder.build()
 
             val manager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
-            val callback = object : ConnectivityManager.NetworkCallback() {
+            callback = object : ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: Network) {
                     manager.bindProcessToNetwork(network)
+                    super.onAvailable(network)
                     println("******** connectDeviceWifi onAvailable return.")
                     // 连接成功
+//                    manager.unregisterNetworkCallback(this)
                 }
 
                 override fun onUnavailable() {
+                    super.onUnavailable()
                     println("******** connectDeviceWifi onUnavailable return.")
                     // 失败
+//                    manager.unregisterNetworkCallback(this)
+                }
+
+                override fun onLost(network: Network) {
+                    super.onLost(network)
+                    println("******** connectDeviceWifi onLost return.")
+                }
+
+                override fun onBlockedStatusChanged(network: Network, blocked: Boolean) {
+                    super.onBlockedStatusChanged(network, blocked)
+                    println("******** connectDeviceWifi onBlockedStatusChanged return.")
+                }
+
+                override fun onCapabilitiesChanged(
+                    network: Network,
+                    networkCapabilities: NetworkCapabilities
+                ) {
+                    super.onCapabilitiesChanged(network, networkCapabilities)
+                    println("******** connectDeviceWifi onCapabilitiesChanged return.")
+                }
+
+                override fun onLinkPropertiesChanged(
+                    network: Network,
+                    linkProperties: LinkProperties
+                ) {
+                    super.onLinkPropertiesChanged(network, linkProperties)
+                    println("******** connectDeviceWifi onLinkPropertiesChanged return.")
+                }
+
+                override fun onLosing(network: Network, maxMsToLive: Int) {
+                    super.onLosing(network, maxMsToLive)
+                    println("******** connectDeviceWifi onLosing return.")
                 }
             }
 
-            manager.registerNetworkCallback(
-                networkRequest,
-                callback!!
-            )
+//            manager.registerNetworkCallback(
+//                networkRequest,
+//                callback!!
+//            )
             manager.requestNetwork(networkRequest, callback!!)
 
         } else {
@@ -329,7 +367,7 @@ class ApWifiActivity : BaseActivity<EmptyViewModel, ActivityApWifiBinding>() {
                 "OPEN" ->                 //开放网络
                     conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE)
             }
-            val wifiManager = getApplicationContext().getSystemService(
+            val wifiManager = applicationContext.getSystemService(
                 WIFI_SERVICE
             ) as WifiManager
             val networkId = wifiManager.addNetwork(conf)
@@ -341,7 +379,7 @@ class ApWifiActivity : BaseActivity<EmptyViewModel, ActivityApWifiBinding>() {
         }
     }
 
-    fun openWifi(): Boolean {
+    private fun openWifi(): Boolean {
         val wifiManager = applicationContext.getSystemService(
             WIFI_SERVICE
         ) as WifiManager
@@ -362,20 +400,7 @@ class ApWifiActivity : BaseActivity<EmptyViewModel, ActivityApWifiBinding>() {
         return false
     }
 
-    private fun isOpenWifi(): Boolean {
-        val wifiManager = applicationContext.getSystemService(
-            WIFI_SERVICE
-        ) as WifiManager
-        return wifiManager.isWifiEnabled
-    }
-
-
-    fun setMobileNetworkEnabled() {
-//        if (mobileDataEnabling) return
-//        if (wifiEnabling) return
-//        mobileDataEnabling = true
-        println("移动网络测试")
-        println(Build.VERSION.SDK_INT)
+   private fun setMobileNetworkEnabled() {
         if (Build.VERSION.SDK_INT >= 21) {
             val connectivityManager = getSystemService(
                 CONNECTIVITY_SERVICE
@@ -403,8 +428,7 @@ class ApWifiActivity : BaseActivity<EmptyViewModel, ActivityApWifiBinding>() {
     }
 
     var net: Network? = null
-    fun setWifiNetworkEnabled(isSave: Boolean) {
-        println("WIFI 测试")
+   private fun setWifiNetworkEnabled(isSave: Boolean) {
         var requestCount = 0
         if (Build.VERSION.SDK_INT >= 21) {
             val connectivityManager = getSystemService(

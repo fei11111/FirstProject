@@ -187,12 +187,8 @@ class DirectWifiActivity : BaseActivity<EmptyViewModel, ActivityDirectWifiBindin
 
                 return
             }
-            wifiP2pManager!!.requestDeviceInfo(channel!!,
-                object : WifiP2pManager.DeviceInfoListener {
-                    override fun onDeviceInfoAvailable(p0: WifiP2pDevice?) {
-                        Log.i("tag", p0!!.toString())
-                    }
-                })
+            wifiP2pManager!!.requestDeviceInfo(channel!!
+            ) { p0 -> Log.i("tag", p0!!.toString()) }
 
         }
     }
@@ -583,23 +579,6 @@ class DirectWifiActivity : BaseActivity<EmptyViewModel, ActivityDirectWifiBindin
                 PERMISSION_REQUEST_CODE
             )
             return
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ActivityCompat.checkSelfPermission(
-                    this@DirectWifiActivity,
-                    android.Manifest.permission.NEARBY_WIFI_DEVICES
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    this@DirectWifiActivity,
-                    arrayOf<String>(
-                        android.Manifest.permission.NEARBY_WIFI_DEVICES
-                    ),
-                    PERMISSION_REQUEST_CODE
-                )
-                return
-            }
         }
 
         // Check if location service is enabled
